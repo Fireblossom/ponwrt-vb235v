@@ -1,0 +1,190 @@
+{
+  "classification": "static analysis of verified live objects plus source-derived host layout",
+  "modules": [
+    {
+      "module": "npu",
+      "sha256": "a06e3a060088fc8084a6a895aacae0b214fdf3319a5c877a1e7cbcf99ea0507d",
+      "retained_direct_call_sites": 71,
+      "selected_call_sites": [
+        {
+          "caller": "boot_all_npu_cores",
+          "callee": "boot_npu_all_cores",
+          "section": ".text",
+          "offset": 936,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "npu_dump_mapping_address",
+          "callee": "get_ecnt_npu_dev",
+          "section": ".text",
+          "offset": 1084,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "npu_dump_mapping_address",
+          "callee": "host_notify_npuMbox",
+          "section": ".text",
+          "offset": 1224,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "init_module",
+          "callee": "set_npu_needed_info",
+          "section": ".text",
+          "offset": 1740,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "init_module",
+          "callee": "boot_npu_all_cores",
+          "section": ".text",
+          "offset": 1760,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "init_module",
+          "callee": "get_ecnt_npu_dev",
+          "section": ".text",
+          "offset": 1836,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "init_module",
+          "callee": "host_notify_npuMbox",
+          "section": ".text",
+          "offset": 1968,
+          "tail_branch": false,
+          "external_symbol": true
+        }
+      ],
+      "limits": "Only RELA-backed B/BL direct branches inside sized function symbols. Indirect calls, inline operations and branches without retained relocation records are absent."
+    },
+    {
+      "module": "npu_wifi",
+      "sha256": "0337e079037a486e7c47713b7ec07e617d3f8cc09c2ed209c3821f9f0e07e20f",
+      "retained_direct_call_sites": 202,
+      "selected_call_sites": [
+        {
+          "caller": "npu_wifi_oper_init",
+          "callee": "get_ecnt_npu_dev",
+          "section": ".text",
+          "offset": 236,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "npu_wifi_oper_init",
+          "callee": "host_notify_npuMbox",
+          "section": ".text",
+          "offset": 356,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "npu_wifi_oper_init",
+          "callee": "npu_wifi_offload_get_pkt_buf_addr",
+          "section": ".text",
+          "offset": 396,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "npu_wifi_oper_init",
+          "callee": "get_ecnt_npu_dev",
+          "section": ".text",
+          "offset": 408,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "npu_wifi_oper_init",
+          "callee": "host_notify_npuMbox",
+          "section": ".text",
+          "offset": 536,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "npu_wifi_oper_init",
+          "callee": "npu_wifi_offload_get_tx_pkt_buf_addr",
+          "section": ".text",
+          "offset": 588,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "npu_wifi_oper_init",
+          "callee": "get_ecnt_npu_dev",
+          "section": ".text",
+          "offset": 600,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "npu_wifi_oper_init",
+          "callee": "host_notify_npuMbox",
+          "section": ".text",
+          "offset": 728,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "npu_wifi_oper_init",
+          "callee": "npu_wifi_offload_get_force_to_cpu_flag",
+          "section": ".text",
+          "offset": 792,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "npu_wifi_oper_init",
+          "callee": "get_ecnt_npu_dev",
+          "section": ".text",
+          "offset": 820,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "npu_wifi_oper_init",
+          "callee": "host_notify_npuMbox",
+          "section": ".text",
+          "offset": 1016,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "npu_wifi_offload_get_dbg_counter_address",
+          "callee": "get_ecnt_npu_dev",
+          "section": ".text",
+          "offset": 4256,
+          "tail_branch": false,
+          "external_symbol": true
+        },
+        {
+          "caller": "npu_wifi_offload_get_dbg_counter_address",
+          "callee": "host_notify_npuMbox",
+          "section": ".text",
+          "offset": 4372,
+          "tail_branch": false,
+          "external_symbol": true
+        }
+      ],
+      "limits": "Only RELA-backed B/BL direct branches inside sized function symbols. Indirect calls, inline operations and branches without retained relocation records are absent."
+    }
+  ],
+  "captured_module_provider_nodes": 79,
+  "unambiguous_provider_edges": 71,
+  "host_descriptor_source": {
+    "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/include/global_inc/modules/npu/npuMboxAPI.h",
+    "bytes": 1625,
+    "sha256": "340c08df3d9a9295e2f2ff7e086986c0a1e556b557cdc868266b9c64065bb66b"
+  },
+  "host_descriptor_source_derived_bytes": 40,
+  "live_descriptor_layout_verified": false
+}
