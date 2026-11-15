@@ -1,0 +1,47 @@
+{
+  "milestone": "M2",
+  "classification": "source-derived; not a successful build or hardware test",
+  "scope_contains": "/mt_wifi7/",
+  "reviewed_source_files": 107,
+  "textual_include_count": 358,
+  "include_counts": {
+    "relative-path-present": 163,
+    "basename-candidates-only": 188,
+    "not-found-by-filename": 7
+  },
+  "conditional_preprocessing_performed": false,
+  "core_sources": [
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/wifi_package/mtk/drivers/mt_wifi7/src/wlan_hwifi/chips/mt7993/mt7993.c",
+      "bytes": 56597,
+      "sha256": "a19edb0ae469efda5c0512ba145508d0537eb3e56d4be28fe665a1902fa55e14"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/wifi_package/mtk/drivers/mt_wifi7/src/wlan_hwifi/bus/en_npu.c",
+      "bytes": 59503,
+      "sha256": "f57683b860e2e0d261818ec19b11a34ef3f1ceb60eb11761cd8070d1e61a872f"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/wifi_package/mtk/drivers/mt_wifi7/src/wlan_hwifi/bus/mtk_pci.c",
+      "bytes": 8723,
+      "sha256": "44157a799f1143c5bb18305d05bc70653f257483c10c2b3599530abd3d06d93e"
+    }
+  ],
+  "unmatched_names": [
+    "linux/soc/mediatek/muldf.h",
+    "mcu_hdr/WIFI_MT7990_PATCH_MCU_1_1_hdr.h",
+    "mcu_hdr/WIFI_MT7990_WACPU_RAM_CODE_1_1.h",
+    "mcu_hdr/WIFI_RAM_CODE_MT7990_1_1.h",
+    "mcu_hdr/WIFI_RAM_CODE_MT7990_1_1_TESTMODE.h",
+    "mcu_hdr/WIFI_RAM_CODE_MT7992_1_1.h",
+    "mcu_hdr/WIFI_RAM_CODE_MT7992_1_1_TESTMODE.h"
+  ],
+  "osal_nested_archive_c_header_files": 50,
+  "live_pci_id": "14c3:7993",
+  "chip_registration_function": "mtk_chip_register",
+  "npu_interfaces": [
+    "arht_pdev_pci",
+    "ecnt_hook/ecnt_hook_pcie.h",
+    "modules/npu/wifi_mail.h"
+  ]
+}
