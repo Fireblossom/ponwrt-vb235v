@@ -1,0 +1,17 @@
+/private/
+/vendor/
+/captures/
+/work/
+/results/
+__pycache__/
+*.pyc
+*.bin
+*.ko
+*.elf
+*.zip
+*.tar
+*.tar.gz
+*.tar.xz
+credentials*
+*private*key*
+*.log

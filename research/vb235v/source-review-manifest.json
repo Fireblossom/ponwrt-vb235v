@@ -1,0 +1,42 @@
+{
+  "vendor_archive": "TP-LinkBox 7(VB235v)_GPL.tar.gz",
+  "reviewed_on": "2026-11-15",
+  "vendor_file_contents_included": false,
+  "files": [
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/wifi_package/mtk/drivers/mt_wifi7/Makefile",
+      "bytes": 18460,
+      "sha256": "b47d496d710664587137d3a70055cc5b8a71ac4c8fde403097bc172b7e4c0265"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/wifi_package/mtk/drivers/mt_wifi7/src/wlan_hwifi/chips/mt7993/mt799b.c",
+      "bytes": 26291,
+      "sha256": "84021b0c5691c7ec50ab6f2e2df1f898e0d5cfdcf05b412c6cc80d250ece20f2"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/wifi_package/mtk/drivers/mt_wifi7/src/wlan_hwifi/chips/mt7993/mt7993.c",
+      "bytes": 56597,
+      "sha256": "a19edb0ae469efda5c0512ba145508d0537eb3e56d4be28fe665a1902fa55e14"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/wifi_package/mtk/drivers/mt_wifi7/src/wlan_hwifi/main.c",
+      "bytes": 8022,
+      "sha256": "fc9d6de26273adada40bb7bdeed394df119f5b6da17d16bae0a8bb4a1a37b8a9"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/wifi_package/mtk/drivers/mt_wifi7/src/wlan_hwifi/bus.c",
+      "bytes": 22399,
+      "sha256": "5434f44f8435e6a5c6c8f80409423a950304cfea77e440852a2e2f0d0015005d"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/package/airoha/apps/voip_app/Makefile",
+      "bytes": 2857,
+      "sha256": "148a021c0cf00950517203b6cc3294e35346e1f0eb62bfbe4b1d7297a558ee36"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/package/airoha/drivers/voip_driver/Makefile",
+      "bytes": 2167,
+      "sha256": "5d0149f0e51412807291b0b4007b9b11af760a1adab9abd72188160e5bf03af3"
+    }
+  ]
+}
