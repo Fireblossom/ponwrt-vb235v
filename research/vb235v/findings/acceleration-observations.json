@@ -1,0 +1,204 @@
+{
+  "classification": "observed original running system; not PonWrt performance validation",
+  "eip93_registration_count": 23,
+  "eip93": [
+    {
+      "name": "authenc(hmac(sha256),rfc3686(ctr(aes)))",
+      "driver": "authenc(hmac(sha256-eip93),rfc3686(ctr(aes-eip93)))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "aead"
+    },
+    {
+      "name": "authenc(hmac(sha224),rfc3686(ctr(aes)))",
+      "driver": "authenc(hmac(sha224-eip93),rfc3686(ctr(aes-eip93)))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "aead"
+    },
+    {
+      "name": "authenc(hmac(sha1),rfc3686(ctr(aes)))",
+      "driver": "authenc(hmac(sha1-eip93),rfc3686(ctr(aes-eip93)))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "aead"
+    },
+    {
+      "name": "authenc(hmac(md5),rfc3686(ctr(aes)))",
+      "driver": "authenc(hmac(md5-eip93),rfc3686(ctr(aes-eip93)))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "aead"
+    },
+    {
+      "name": "authenc(hmac(sha256),cbc(aes))",
+      "driver": "authenc(hmac(sha256-eip93),cbc(aes-eip93))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "aead"
+    },
+    {
+      "name": "authenc(hmac(sha224),cbc(aes))",
+      "driver": "authenc(hmac(sha224-eip93),cbc(aes-eip93))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "aead"
+    },
+    {
+      "name": "authenc(hmac(sha1),cbc(aes))",
+      "driver": "authenc(hmac(sha1-eip93),cbc(aes-eip93))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "aead"
+    },
+    {
+      "name": "authenc(hmac(md5),cbc(aes))",
+      "driver": "authenc(hmac(md5-eip93), cbc(aes-eip93))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "aead"
+    },
+    {
+      "name": "authenc(hmac(sha256),cbc(des3_ede))",
+      "driver": "authenc(hmac(sha256-eip93),cbc(des3_ede-eip93))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "aead"
+    },
+    {
+      "name": "authenc(hmac(sha224),cbc(des3_ede))",
+      "driver": "authenc(hmac(sha224-eip93),cbc(des3_ede-eip93))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "aead"
+    },
+    {
+      "name": "authenc(hmac(sha1),cbc(des3_ede))",
+      "driver": "authenc(hmac(sha1-eip93),cbc(des3_ede-eip93))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "aead"
+    },
+    {
+      "name": "authenc(hmac(md5),cbc(des3_ede))",
+      "driver": "authenc(hmac(md5-eip93),cbc(des3_ede-eip93))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "aead"
+    },
+    {
+      "name": "authenc(hmac(sha256),cbc(des))",
+      "driver": "authenc(hmac(sha256-eip93),cbc(des-eip93))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "aead"
+    },
+    {
+      "name": "authenc(hmac(sha224),cbc(des))",
+      "driver": "authenc(hmac(sha224-eip93),cbc(des-eip93))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "aead"
+    },
+    {
+      "name": "authenc(hmac(sha1),cbc(des))",
+      "driver": "authenc(hmac(sha1-eip93),cbc(des-eip93))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "aead"
+    },
+    {
+      "name": "authenc(hmac(md5),cbc(des))",
+      "driver": "authenc(hmac(md5-eip93),cbc(des-eip93))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "aead"
+    },
+    {
+      "name": "rfc3686(ctr(aes))",
+      "driver": "rfc3686(ctr(aes-eip93))",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "skcipher"
+    },
+    {
+      "name": "cbc(aes)",
+      "driver": "cbc(aes-eip93)",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "skcipher"
+    },
+    {
+      "name": "ecb(aes)",
+      "driver": "ecb(aes-eip93)",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "skcipher"
+    },
+    {
+      "name": "cbc(des3_ede)",
+      "driver": "cbc(des3_ede-eip93)",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "skcipher"
+    },
+    {
+      "name": "ecb(des3_ede)",
+      "driver": "ecb(des3_ede-eip93)",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "skcipher"
+    },
+    {
+      "name": "cbc(des)",
+      "driver": "cbc(des-eip93)",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "skcipher"
+    },
+    {
+      "name": "ecb(des)",
+      "driver": "ebc(des-eip93)",
+      "module": "kernel",
+      "priority": "1500",
+      "selftest": "passed",
+      "type": "skcipher"
+    }
+  ],
+  "loaded_acceleration_modules": [
+    "npu",
+    "npu_wifi",
+    "hw_nat",
+    "hwnat_blacklist",
+    "mt_wifi_osal",
+    "mtk_hwifi",
+    "en_npu",
+    "mt7993",
+    "mt799b"
+  ],
+  "validation_limits": "Registration and reported selftests do not measure offload use or throughput.",
+  "vendor_sample_npu_firmware_not_matched_to_live": true,
+  "upstream_baseline": "d9dd3a49f7bb7661c01e9c57c9e2aac2a1114b3e"
+}
