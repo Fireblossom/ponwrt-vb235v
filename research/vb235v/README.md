@@ -25,7 +25,7 @@ PonWrt's Nokia AN7583 profile uses different NAND image geometry. Its device tre
 5. Consider a dedicated RAM-only bring-up image after auditing initialization side effects.
 6. Require DSL synchronization/traffic, telephone calls, and Wi-Fi tests before proposing persistent installation.
 
-See [ROADMAP.md](ROADMAP.md), [SOURCE-AUDIT.md](SOURCE-AUDIT.md), and [EVIDENCE.md](EVIDENCE.md).
+See [SCOPE.md](SCOPE.md), [ROADMAP.md](ROADMAP.md), [SOURCE-AUDIT.md](SOURCE-AUDIT.md), and [EVIDENCE.md](EVIDENCE.md). The first recovery milestone is documented in [RECOVERY-BOOT.md](RECOVERY-BOOT.md).
 
 ## Offline tools
 
