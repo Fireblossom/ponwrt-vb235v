@@ -61,6 +61,39 @@ def inspect(path):
                 undefined.add(symbol)
             if symbol.startswith('__ksymtab_'):
                 exports.add(symbol.removeprefix('__ksymtab_'))
+    # Stripped AArch64 .ko files often retain the export table and its
+    # relocations but remove the local __ksymtab_<name> symbol labels.
+    # Resolve the name field, rather than treating every export-string
+    # candidate (including namespace strings) as an exported function.
+    for relocation in sections:
+        if machine != 183 or relocation[1] != 4:
+            continue
+        if relocation[7] >= count or relocation[6] >= count:
+            raise ValueError('Invalid relocation section links')
+        target = sections[relocation[7]]
+        target_name = cstring(names, target[0])
+        if target_name not in ('__ksymtab', '__ksymtab_gpl', '__ksymtab_unused', '__ksymtab_unused_gpl', '__ksymtab_gpl_future'):
+            continue
+        symbols = sections[relocation[6]]
+        if symbols[1] != 2 or symbols[9] != 24 or relocation[9] != 24 or relocation[5] % 24:
+            raise ValueError('Invalid export relocation table')
+        payload = bounded(data, relocation[4], relocation[5])
+        for offset in range(0, len(payload), 24):
+            address, info, addend = struct.unpack('<QQq', payload[offset:offset+24])
+            kind, symbol_index = info & 0xffffffff, info >> 32
+            width, name_offset = (12, 4) if kind == 261 else (24, 8) if kind == 257 else (0, 0)
+            if not width or address % width != name_offset:
+                continue
+            if address + (4 if kind == 261 else 8) > target[5] or symbol_index * 24 + 24 > symbols[5]:
+                raise ValueError('Export relocation outside table')
+            referenced = struct.unpack('<IBBHQQ', bounded(data, symbols[4]+symbol_index*24, 24))
+            if not 0 < referenced[3] < count:
+                raise ValueError('Export name has no valid string section')
+            strings_header = sections[referenced[3]]
+            if cstring(names, strings_header[0]) != '__ksymtab_strings':
+                continue
+            strings = bounded(data, strings_header[4], strings_header[5])
+            exports.add(cstring(strings, referenced[4]+addend))
     return {'bytes': len(data), 'sha256': hashlib.sha256(data).hexdigest(),
             'elf_machine': machine, 'architecture': 'aarch64' if machine == 183 else f'ELF machine {machine}',
             'modinfo': metadata, 'undefined_symbols': sorted(undefined), 'exported_symbols': sorted(exports)}

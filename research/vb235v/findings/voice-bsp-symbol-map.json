@@ -1,0 +1,690 @@
+{
+  "classification": "vendor BSP modules selected by live module names; exact live binary identity pending",
+  "modules": [
+    {
+      "module": "acodec_ext",
+      "artifact_bytes": 690352,
+      "sha256": "e8d95f73141de1ca75da6044c7ec8afa12c25b77ae58ac1187174f6efa39b926",
+      "vermagic": [
+        "5.4.55 SMP mod_unload aarch64"
+      ],
+      "imports": 6,
+      "exports": 0
+    },
+    {
+      "module": "acodec_x",
+      "artifact_bytes": 414496,
+      "sha256": "ab3cb403e43c2095d3a7bcde926f9b2a40a477b89509fc712da74bf9b28a5aaa",
+      "vermagic": [
+        "5.4.55 SMP mod_unload aarch64"
+      ],
+      "imports": 14,
+      "exports": 13
+    },
+    {
+      "module": "DSPCore",
+      "artifact_bytes": 56296,
+      "sha256": "907085e2de6e9e3a2b583b7bc23b0929e7748b37840298a7cd5a469be07d4bea",
+      "vermagic": [
+        "5.4.55 SMP mod_unload aarch64"
+      ],
+      "imports": 63,
+      "exports": 56
+    },
+    {
+      "module": "foip",
+      "artifact_bytes": 811264,
+      "sha256": "60197928d561d246b8af80406451ef1fe443eeb1c00d0b07c7317ff64e48d15d",
+      "vermagic": [
+        "5.4.55 SMP mod_unload aarch64"
+      ],
+      "imports": 15,
+      "exports": 6
+    },
+    {
+      "module": "fxs3_silicon",
+      "artifact_bytes": 921864,
+      "sha256": "aedc00366a65405c3a9520b74132fcd8ec938117077c02b0d98521f5c0d9ec89",
+      "vermagic": [
+        "5.4.55 SMP mod_unload aarch64"
+      ],
+      "imports": 112,
+      "exports": 99
+    },
+    {
+      "module": "ksocket",
+      "artifact_bytes": 17720,
+      "sha256": "bd62e667172ca2d3cf108608c6ff472da261c97363c1c4a8e2fc1afe22978848",
+      "vermagic": [
+        "5.4.55 SMP mod_unload aarch64"
+      ],
+      "imports": 18,
+      "exports": 17
+    },
+    {
+      "module": "lec",
+      "artifact_bytes": 125048,
+      "sha256": "a9b65e1a17ac1b107e46b468f8f5e07dae9667fd4d4a4cfc77ede8fdb7eeb071",
+      "vermagic": [
+        "5.4.55 SMP mod_unload aarch64"
+      ],
+      "imports": 23,
+      "exports": 11
+    },
+    {
+      "module": "lec_wb",
+      "artifact_bytes": 85336,
+      "sha256": "abffc04b21aaea559cd10b1c646aabece25ff0b4e760ab4b4cf89a33a10d5c2c",
+      "vermagic": [
+        "5.4.55 SMP mod_unload aarch64"
+      ],
+      "imports": 23,
+      "exports": 6
+    },
+    {
+      "module": "ortp",
+      "artifact_bytes": 250560,
+      "sha256": "bb0e537c4bd92bca722e629c00ab690e729ef8b71115d16aaf087ae7e7f610ee",
+      "vermagic": [
+        "5.4.55 SMP mod_unload aarch64"
+      ],
+      "imports": 82,
+      "exports": 168
+    },
+    {
+      "module": "ovdsp",
+      "artifact_bytes": 616080,
+      "sha256": "a5ee48e4062d9c204906b1748e9a0cebb91c5b8272d587438992b44894b71031",
+      "vermagic": [
+        "5.4.55 SMP mod_unload aarch64"
+      ],
+      "imports": 246,
+      "exports": 8
+    },
+    {
+      "module": "pcm1",
+      "artifact_bytes": 67104,
+      "sha256": "62d6a14ceadb386a29eeed2c5be6d9d5bb3ed6959c6980c05482cf6a23d5792d",
+      "vermagic": [
+        "5.4.55 SMP mod_unload aarch64"
+      ],
+      "imports": 50,
+      "exports": 7
+    },
+    {
+      "module": "slic3_silicon",
+      "artifact_bytes": 525576,
+      "sha256": "6d1bb5d186bac8d6efb40e990a688934421cfaf23d3ded4b764c9f25a5fe6ff0",
+      "vermagic": [
+        "5.4.55 SMP mod_unload aarch64"
+      ],
+      "imports": 29,
+      "exports": 0
+    },
+    {
+      "module": "spi",
+      "artifact_bytes": 106240,
+      "sha256": "66977dec271ade6980b571e0dbafebacc32faf6cb8920c114a60adfd9c0f1497",
+      "vermagic": [
+        "5.4.55 SMP mod_unload aarch64"
+      ],
+      "imports": 40,
+      "exports": 10
+    },
+    {
+      "module": "srtp",
+      "artifact_bytes": 123560,
+      "sha256": "50af47d278ac885a5466acd7d0689859749f6e0af8e97d2a863ebb2b5f18f336",
+      "vermagic": [
+        "5.4.55 SMP mod_unload aarch64"
+      ],
+      "imports": 12,
+      "exports": 0
+    },
+    {
+      "module": "sys_mod",
+      "artifact_bytes": 18992,
+      "sha256": "8b07acc01e909c9bd79c62176d671a17e538e7b94aa533a3553326c433254517",
+      "vermagic": [
+        "5.4.55 SMP mod_unload aarch64"
+      ],
+      "imports": 16,
+      "exports": 35
+    }
+  ],
+  "edges": [
+    {
+      "consumer": "DSPCore",
+      "provider": "sys_mod",
+      "symbols": [
+        "GET_Log_level",
+        "GET_Log_moudle_switch",
+        "GET_Log_submoudle_switch",
+        "SET_Log_interval",
+        "SET_Log_level",
+        "SET_Log_moudle_switch",
+        "SET_Log_submoudle_switch",
+        "SET_Log_times",
+        "pcm_log_format_printk"
+      ]
+    },
+    {
+      "consumer": "acodec_ext",
+      "provider": "acodec_x",
+      "symbols": [
+        "BLI_Convert",
+        "BLI_GetMemSize",
+        "BLI_Open",
+        "CODECMGR_HOOK_REGISTER"
+      ]
+    },
+    {
+      "consumer": "fxs3_silicon",
+      "provider": "DSPCore",
+      "symbols": [
+        "IsHdVoice",
+        "IsPcm2Only",
+        "fxsTaskFlag",
+        "fxsTaskWq",
+        "getBoardMap",
+        "get_chan_wideband_flag",
+        "get_fxs_portmap_chanId",
+        "get_half_wideband_data",
+        "get_replace_data_info",
+        "get_slicInit_flag",
+        "offhook_status",
+        "pcmBoardChInit",
+        "pcmFuncTab",
+        "pcm_chan_state_config",
+        "pcm_channel_num_get",
+        "pcm_channel_num_set",
+        "pcm_get_frame_sz",
+        "pcm_listener_add",
+        "pcm_listener_del",
+        "pcm_loopback_flag",
+        "regReadArm",
+        "regWriteArm",
+        "rtp_loopback_flag",
+        "set_chan_wideband_flag",
+        "set_slicInit_flag",
+        "slicIsrFlag",
+        "slicIsrWq"
+      ]
+    },
+    {
+      "consumer": "fxs3_silicon",
+      "provider": "lec",
+      "symbols": [
+        "LEC_BypassSet",
+        "LEC_aesEnableSet",
+        "LEC_ecTailLenSet",
+        "LEC_enableGet",
+        "LEC_enableSet",
+        "LEC_nlpEnableSet",
+        "fax_current_status"
+      ]
+    },
+    {
+      "consumer": "fxs3_silicon",
+      "provider": "pcm1",
+      "symbols": [
+        "getPcmConfig",
+        "pcmChipScuQuery",
+        "pcm_reinit_slic",
+        "pcm_setFreeRunMode"
+      ]
+    },
+    {
+      "consumer": "fxs3_silicon",
+      "provider": "spi",
+      "symbols": [
+        "SPI_Reset",
+        "SPI_cfg",
+        "pSLIC_Reset"
+      ]
+    },
+    {
+      "consumer": "fxs3_silicon",
+      "provider": "sys_mod",
+      "symbols": [
+        "GET_Log_interval",
+        "GET_Log_level",
+        "GET_Log_moudle_switch",
+        "GET_Log_submoudle_switch",
+        "GET_Log_times",
+        "MUTX_Get",
+        "MUTX_Init",
+        "MUTX_Put",
+        "MUTX_Size",
+        "SET_Log_interval",
+        "SET_Log_times",
+        "TASK_Sleep",
+        "ovdsp_log_format_printk",
+        "slic_log_format_printk"
+      ]
+    },
+    {
+      "consumer": "lec",
+      "provider": "DSPCore",
+      "symbols": [
+        "get_chan_wideband_flag",
+        "pcmRxqueueClean",
+        "pcm_get_frame_sz",
+        "pcm_listener_add",
+        "pcm_listener_del"
+      ]
+    },
+    {
+      "consumer": "lec_wb",
+      "provider": "DSPCore",
+      "symbols": [
+        "pcmRxqueueClean",
+        "pcm_listener_add",
+        "pcm_listener_del"
+      ]
+    },
+    {
+      "consumer": "lec_wb",
+      "provider": "lec",
+      "symbols": [
+        "LEC_WB_HOOK_REGISTER"
+      ]
+    },
+    {
+      "consumer": "ortp",
+      "provider": "DSPCore",
+      "symbols": [
+        "isr_count",
+        "pcmFuncTab",
+        "pcm_listener_add",
+        "pcm_listener_del",
+        "regReadArm",
+        "regWriteArm"
+      ]
+    },
+    {
+      "consumer": "ortp",
+      "provider": "fxs3_silicon",
+      "symbols": [
+        "jitterChangeFlag",
+        "ortpDetTelephonyEventFlag",
+        "rtcp_xr_voip_sigal_level_enable",
+        "rtcp_xr_voip_sigal_level_get"
+      ]
+    },
+    {
+      "consumer": "ortp",
+      "provider": "ksocket",
+      "symbols": [
+        "arht_kbind",
+        "arht_kclose",
+        "arht_kconnect",
+        "arht_krecv",
+        "arht_ksend",
+        "arht_ksendto",
+        "arht_ksetsockopt",
+        "arht_ksocket",
+        "inet_ntoa"
+      ]
+    },
+    {
+      "consumer": "ortp",
+      "provider": "sys_mod",
+      "symbols": [
+        "GET_Log_interval",
+        "GET_Log_level",
+        "GET_Log_moudle_switch",
+        "GET_Log_submoudle_switch",
+        "GET_Log_times",
+        "MUTX_Dest",
+        "MUTX_Get",
+        "MUTX_Init",
+        "MUTX_Put",
+        "MUTX_Size",
+        "TASK_Dest",
+        "TASK_Init",
+        "TASK_Resume",
+        "TASK_Size",
+        "TASK_Terminate"
+      ]
+    },
+    {
+      "consumer": "ovdsp",
+      "provider": "DSPCore",
+      "symbols": [
+        "get_chan_wideband_flag",
+        "get_half_wideband_data",
+        "pcmFuncTab",
+        "pcm_active_stage_set",
+        "pcm_channel_num_get",
+        "pcm_listener_add",
+        "pcm_listener_del",
+        "pcm_listener_start",
+        "pcm_listener_stop",
+        "queueSizeGet",
+        "rtp_loopback_flag",
+        "srTaskletRunning",
+        "t38TaskletRunning",
+        "tasklet_sr",
+        "tasklet_t38"
+      ]
+    },
+    {
+      "consumer": "ovdsp",
+      "provider": "acodec_x",
+      "symbols": [
+        "ACODEC_Init_G711",
+        "ACODEC_Init_G722",
+        "ACODEC_Init_G723",
+        "ACODEC_Init_G726",
+        "ACODEC_Init_G729",
+        "acodec_init_amr",
+        "acodec_init_awb",
+        "cn_gen",
+        "gPwrDetThreshold"
+      ]
+    },
+    {
+      "consumer": "ovdsp",
+      "provider": "foip",
+      "symbols": [
+        "FR38_getConfig",
+        "FR38_init",
+        "FR38_putPacket",
+        "FR38_run",
+        "FR38_setLogger",
+        "t38_bak_data_param"
+      ]
+    },
+    {
+      "consumer": "ovdsp",
+      "provider": "fxs3_silicon",
+      "symbols": [
+        "SLIC_GetInstance",
+        "_slic_strmToneDTMF",
+        "_slic_toneFax",
+        "dtmf_rm_get",
+        "fax_reset_fax_flag",
+        "gBypassPlc",
+        "g_Flag_T38Stream",
+        "getForceInbandInConcall",
+        "getRFC2833TonePlayingFlag",
+        "get_dtmf_ignore_flag",
+        "get_modem_drop_data_cnt",
+        "get_modem_drop_data_flag",
+        "get_v21_detect_enable",
+        "jitterChangeFlag",
+        "last_v21_detect_enable",
+        "mixChanTone2Proc",
+        "mixStrToneProc",
+        "reset_stream_DTMF_enable_flag",
+        "reset_stream_tone_enable_flag",
+        "rtcp_xr_voip_sigal_level_enable",
+        "setForceInbandInConcall",
+        "setRFC2833TonePlayingFlag",
+        "setXmitMode",
+        "set_modem_drop_data_flag",
+        "set_v21_detect_enable",
+        "setgCptEnable",
+        "v21_det_flag_set",
+        "v21_fax_tone_detect_init"
+      ]
+    },
+    {
+      "consumer": "ovdsp",
+      "provider": "ksocket",
+      "symbols": [
+        "arht_kbind",
+        "arht_kclose",
+        "arht_ksendto",
+        "arht_ksetsockopt",
+        "arht_ksocket",
+        "inet_addr"
+      ]
+    },
+    {
+      "consumer": "ovdsp",
+      "provider": "lec",
+      "symbols": [
+        "fax_current_status"
+      ]
+    },
+    {
+      "consumer": "ovdsp",
+      "provider": "ortp",
+      "symbols": [
+        "appState",
+        "av_get_payload_type",
+        "av_profile_init",
+        "av_set_payload_type",
+        "curStreamType",
+        "curUseIdx",
+        "freemsg",
+        "g_RtcpPacketStat",
+        "g_SlideFactor",
+        "g_adaptiveJitterFactor",
+        "getq",
+        "inet_aton",
+        "init_srtp_policy_cb",
+        "internal_jitter_sum",
+        "jitterAdaptive",
+        "jitter_count",
+        "k_bind",
+        "k_close",
+        "k_recvfrom",
+        "k_sendto",
+        "k_setsockopt",
+        "k_socket",
+        "k_socket_map_fd",
+        "k_socket_map_fd_clear",
+        "lastDlCodedBuf",
+        "lastDlCodedLen",
+        "lastLostCount",
+        "lastRedCount",
+        "lastState",
+        "lastUlCodedBuf",
+        "lastUlCodedLen",
+        "max_rtp_double_tm",
+        "ortp_global_stats_display",
+        "recvLastState",
+        "redThrld1",
+        "redThrld2",
+        "reset_sched_info",
+        "rfc2833Flag",
+        "rfc2833NoEndWaitThreshold",
+        "rtcpReport",
+        "rtcp_rp_interval",
+        "rtcp_stream_get_dscp",
+        "rtpDumpDA",
+        "rtpDumpEnable",
+        "rtpFlushEnable",
+        "rtpFlushThreshod",
+        "rtp_data_all_g",
+        "rtp_dbl_dbg",
+        "rtp_dlt_offset",
+        "rtp_flush_rtp",
+        "rtp_jitter_count",
+        "rtp_jitter_jitterSum",
+        "rtp_lost_thd",
+        "rtp_send_task",
+        "rtp_session_destroy",
+        "rtp_session_dtmf_convert",
+        "rtp_session_dtmf_events_volume_set",
+        "rtp_session_enable_adaptive_jitter_compensation",
+        "rtp_session_flush_sockets",
+        "rtp_session_get_current_jitter",
+        "rtp_session_get_current_recv_ts",
+        "rtp_session_get_current_send_ts",
+        "rtp_session_get_dscp",
+        "rtp_session_get_profile",
+        "rtp_session_get_stats",
+        "rtp_session_new",
+        "rtp_session_recv_bypass_ts",
+        "rtp_session_recv_with_ts",
+        "rtp_session_resync",
+        "rtp_session_send_cn_with_ts",
+        "rtp_session_send_dtmf_once",
+        "rtp_session_send_with_ts",
+        "rtp_session_set_8021p",
+        "rtp_session_set_blocking_mode",
+        "rtp_session_set_dscp",
+        "rtp_session_set_jitter_compensation",
+        "rtp_session_set_jitter_range",
+        "rtp_session_set_local_addr",
+        "rtp_session_set_max_jitter",
+        "rtp_session_set_mirror_addr",
+        "rtp_session_set_payload_type",
+        "rtp_session_set_recv_buf_size",
+        "rtp_session_set_recv_payload_type",
+        "rtp_session_set_remote_addr",
+        "rtp_session_set_scheduling_mode",
+        "rtp_session_set_scheduling_start",
+        "rtp_session_set_send_payload_type",
+        "rtp_session_set_seq_number",
+        "rtp_session_set_socket_fd",
+        "rtp_session_signal_connect",
+        "rtp_stats_bytes_recv",
+        "rtp_stats_bytes_recv_length",
+        "rtp_stats_bytes_sent",
+        "rtp_stats_display",
+        "rtp_stats_packet_lost",
+        "rtp_stats_packet_recv",
+        "rtp_stats_packet_sent",
+        "session_set_new",
+        "session_set_select",
+        "srtp_create_cb",
+        "srtp_dealloc_cb",
+        "srtp_init_cb",
+        "ulTaskFlag",
+        "update_srtp_send_policy_ssrc_cb"
+      ]
+    },
+    {
+      "consumer": "ovdsp",
+      "provider": "sys_mod",
+      "symbols": [
+        "GET_Log_Print_Type",
+        "GET_Log_interval",
+        "GET_Log_level",
+        "GET_Log_moudle_switch",
+        "GET_Log_submoudle_switch",
+        "GET_Log_times",
+        "LIST_AddTail",
+        "LIST_Del",
+        "MUTX_Init",
+        "MUTX_Size",
+        "SET_Log_Print_Type",
+        "SET_Log_interval",
+        "SET_Log_level",
+        "SET_Log_moudle_switch",
+        "SET_Log_submoudle_switch",
+        "SET_Log_times",
+        "TASK_Dest",
+        "TASK_Init",
+        "TASK_Resume",
+        "TASK_Size",
+        "TASK_Sleep",
+        "TASK_Terminate",
+        "ovdsp_log_format_printk"
+      ]
+    },
+    {
+      "consumer": "pcm1",
+      "provider": "DSPCore",
+      "symbols": [
+        "dspProcInIsr",
+        "enqueue",
+        "fxs3TaskInIsr",
+        "hookStatusInIsr",
+        "pcmIsrResetFlag",
+        "pcmResetFlag",
+        "pcmResetWq",
+        "pcmRxqueueClean",
+        "pcm_func_register",
+        "pcm_func_unregister",
+        "queueSizeGet",
+        "regReadArm",
+        "regWriteArm",
+        "rxBufMagicNumGet"
+      ]
+    },
+    {
+      "consumer": "pcm1",
+      "provider": "sys_mod",
+      "symbols": [
+        "GET_Log_level",
+        "GET_Log_moudle_switch",
+        "GET_Log_submoudle_switch",
+        "pcm_log_format_printk"
+      ]
+    },
+    {
+      "consumer": "slic3_silicon",
+      "provider": "fxs3_silicon",
+      "symbols": [
+        "SLICMGR_HOOK_REGISTER"
+      ]
+    },
+    {
+      "consumer": "slic3_silicon",
+      "provider": "spi",
+      "symbols": [
+        "SPI_bytes_read",
+        "SPI_bytes_write"
+      ]
+    },
+    {
+      "consumer": "spi",
+      "provider": "DSPCore",
+      "symbols": [
+        "IsPcm2Only",
+        "regReadArm",
+        "regWriteArm"
+      ]
+    },
+    {
+      "consumer": "spi",
+      "provider": "pcm1",
+      "symbols": [
+        "pcmChipScuQuery",
+        "pcmSlicResetRegQuery"
+      ]
+    },
+    {
+      "consumer": "spi",
+      "provider": "sys_mod",
+      "symbols": [
+        "GET_Log_level",
+        "GET_Log_moudle_switch",
+        "GET_Log_submoudle_switch",
+        "spi_log_format_printk"
+      ]
+    },
+    {
+      "consumer": "srtp",
+      "provider": "ortp",
+      "symbols": [
+        "ECNT_VOIP_API_SRTP_HOOK_REGISTER"
+      ]
+    }
+  ],
+  "outside_inspected_set_counts": {
+    "acodec_ext": 2,
+    "acodec_x": 14,
+    "DSPCore": 54,
+    "foip": 15,
+    "fxs3_silicon": 57,
+    "ksocket": 18,
+    "lec": 18,
+    "lec_wb": 19,
+    "ortp": 48,
+    "ovdsp": 54,
+    "pcm1": 32,
+    "slic3_silicon": 26,
+    "spi": 31,
+    "srtp": 11,
+    "sys_mod": 16
+  },
+  "ambiguous_providers": {},
+  "note": "A symbol outside this inspected set is not proof of a missing implementation; it may be built into Linux or another module."
+}
