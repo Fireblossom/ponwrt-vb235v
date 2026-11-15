@@ -9,7 +9,7 @@ No missing driver is implemented yet. An item is complete only when its evidence
 - [x] Record board hardware without device identifiers or credentials.
 - [ ] Audit transitive Wi-Fi headers, OS abstraction, connectivity infrastructure, firmware, and build inputs.
 - [ ] Locate the precise DSL PHY/DSP driver, firmware loader, and data-plane modules.
-- [ ] Inventory the exact stock modules, their vermagic, undefined symbols, and dependencies.
+- [x] Inventory files for all 86 currently loaded stock module names, their vermagic, imports and module providers; see [M7](STOCK-MODULE-COVERAGE.md). Built-in providers and unloaded components remain to be mapped.
 - [ ] Determine which voice BSP components have source versus prebuilt-only artifacts.
 
 ## R1: MT7993 Wi-Fi

@@ -1,0 +1,431 @@
+{
+  "classification": "read-only stock-device file collection and offline ELF analysis",
+  "collected_at": "2026-11-15T23:55:35.022312+00:00",
+  "loaded_module_names": 86,
+  "verified_module_files": 87,
+  "unique_module_names": 86,
+  "total_bytes": 29469464,
+  "revalidated_prior_files": 80,
+  "newly_collected_files": 7,
+  "skipped_files": [],
+  "loaded_names_stable": true,
+  "loaded_without_artifact": [],
+  "identical_duplicates": [
+    {
+      "module": "ppp_mppe",
+      "sha256": "080478dd21da8e1ab309aa3b4883dab52311f4ce40ff7e5ec1ff23ec81bb8e3b"
+    }
+  ],
+  "integrity": "device SHA-256 before and after transfer/reuse, plus local size and SHA-256 readback",
+  "new_artifacts": [
+    {
+      "module": "mt_wifi",
+      "bytes": 15436008,
+      "sha256": "790b6aa17345929bb6a658125136d3ddfcd97eefba33675bfbcdf80f5234edf1",
+      "modinfo": {
+        "license": [
+          "Proprietary"
+        ],
+        "depends": [
+          ""
+        ],
+        "name": [
+          "mt_wifi"
+        ],
+        "vermagic": [
+          "5.4.55 SMP mod_unload aarch64"
+        ]
+      },
+      "undefined_symbol_count": 280,
+      "exported_symbol_count": 47
+    },
+    {
+      "module": "voip",
+      "bytes": 13168,
+      "sha256": "5f925bbcea8f895690ed6057201e6c7bcccb5c0172c5c574cbd51960179ebd83",
+      "modinfo": {
+        "license": [
+          "GPL"
+        ],
+        "depends": [
+          ""
+        ],
+        "name": [
+          "voip"
+        ],
+        "vermagic": [
+          "5.4.55 SMP mod_unload aarch64"
+        ]
+      },
+      "undefined_symbol_count": 24,
+      "exported_symbol_count": 0
+    },
+    {
+      "module": "wireguard",
+      "bytes": 169368,
+      "sha256": "9ebae8592f0185cc0859a96218cc3abd47c4dec755389aacb20149a83e6cd311",
+      "modinfo": {
+        "license": [
+          "GPL v2"
+        ],
+        "srcversion": [
+          "A5BB3892C17AE9221BB96EB"
+        ],
+        "depends": [
+          ""
+        ],
+        "name": [
+          "wireguard"
+        ],
+        "vermagic": [
+          "5.4.55 SMP mod_unload aarch64"
+        ]
+      },
+      "undefined_symbol_count": 161,
+      "exported_symbol_count": 0
+    },
+    {
+      "module": "xt_DPI",
+      "bytes": 33400,
+      "sha256": "8ec1f2f022a573d65a76407710afa2ff77981a36edd04091fc822722a135d07c",
+      "modinfo": {
+        "license": [
+          "GPL"
+        ],
+        "depends": [
+          ""
+        ],
+        "name": [
+          "xt_DPI"
+        ],
+        "vermagic": [
+          "5.4.55 SMP mod_unload aarch64"
+        ]
+      },
+      "undefined_symbol_count": 58,
+      "exported_symbol_count": 0
+    },
+    {
+      "module": "xt_TRIGGER",
+      "bytes": 9208,
+      "sha256": "736344b998dc6d2dd3d374533f76dbf3e81669d49d10252be9adb70099ec2e75",
+      "modinfo": {
+        "license": [
+          "GPL"
+        ],
+        "depends": [
+          ""
+        ],
+        "name": [
+          "xt_TRIGGER"
+        ],
+        "vermagic": [
+          "5.4.55 SMP mod_unload aarch64"
+        ]
+      },
+      "undefined_symbol_count": 15,
+      "exported_symbol_count": 0
+    },
+    {
+      "module": "xt_massurl",
+      "bytes": 14416,
+      "sha256": "e6a1eb506a4571324587258a3387b5d5d8704ae1b194c3438da19fce9e5106d8",
+      "modinfo": {
+        "license": [
+          "GPL"
+        ],
+        "depends": [
+          ""
+        ],
+        "name": [
+          "xt_massurl"
+        ],
+        "vermagic": [
+          "5.4.55 SMP mod_unload aarch64"
+        ]
+      },
+      "undefined_symbol_count": 21,
+      "exported_symbol_count": 0
+    },
+    {
+      "module": "xt_pctl_homeshield",
+      "bytes": 110880,
+      "sha256": "3d55b3fc9073b01f020ff8b404a8376c1babfedbedf21927e6372d7eebe99c4c",
+      "modinfo": {
+        "license": [
+          "GPL"
+        ],
+        "depends": [
+          ""
+        ],
+        "name": [
+          "xt_pctl_homeshield"
+        ],
+        "vermagic": [
+          "5.4.55 SMP mod_unload aarch64"
+        ]
+      },
+      "undefined_symbol_count": 88,
+      "exported_symbol_count": 2
+    }
+  ],
+  "dependency_edges": 80,
+  "selected_edges": [
+    {
+      "consumer": "mt_wifi",
+      "provider": "cfg80211",
+      "symbols": [
+        "cfg80211_ch_switch_notify",
+        "cfg80211_connect_done",
+        "cfg80211_del_sta_sinfo",
+        "cfg80211_disconnected",
+        "cfg80211_external_auth_request",
+        "cfg80211_find_elem_match",
+        "cfg80211_find_vendor_elem",
+        "cfg80211_get_bss",
+        "cfg80211_inform_bss_frame_data",
+        "cfg80211_is_element_inherited",
+        "cfg80211_mgmt_tx_status_ext",
+        "cfg80211_michael_mic_failure",
+        "cfg80211_new_sta",
+        "cfg80211_put_bss",
+        "cfg80211_roamed",
+        "cfg80211_rx_mgmt_ext",
+        "cfg80211_scan_done",
+        "ieee80211_channel_to_freq_khz",
+        "ieee80211_freq_khz_to_channel",
+        "regulatory_hint",
+        "wdev_chandef"
+      ]
+    },
+    {
+      "consumer": "mt_wifi",
+      "provider": "ecnt_legacy_api",
+      "symbols": [
+        "ledBlinkOn",
+        "ledTurnOff",
+        "ledTurnOn"
+      ]
+    },
+    {
+      "consumer": "mt_wifi",
+      "provider": "mt_wifi_osal",
+      "symbols": [
+        "mt_add_delayed_work",
+        "mt_cfg80211_get_mac_ad",
+        "mt_cfg80211_get_wiphy",
+        "mt_cfg80211_sup_band_reinit",
+        "mt_cfg80211_unregister",
+        "mt_csi_proc_create",
+        "mt_device_clean_work",
+        "mt_device_init_work",
+        "mt_diag_proc_exit",
+        "mt_diag_proc_init",
+        "mt_get_boottime_ns",
+        "mt_get_time",
+        "mt_ktime_get",
+        "mt_make_csi_nlmsg_fragment",
+        "mt_os_802_11_radiotap_packet",
+        "mt_os_add_timer",
+        "mt_os_alloc_frag_pkt_buf",
+        "mt_os_clone_pkt",
+        "mt_os_clone_pkt_by_data",
+        "mt_os_copy_pkt",
+        "mt_os_del_timer",
+        "mt_os_duplicate_pkt_vlan",
+        "mt_os_file_close",
+        "mt_os_file_open",
+        "mt_os_file_open_ext",
+        "mt_os_file_read",
+        "mt_os_file_seek",
+        "mt_os_file_write",
+        "mt_os_fs_info_change",
+        "mt_os_get_pkt_len",
+        "mt_os_get_time64",
+        "mt_os_init_timer",
+        "mt_os_load_code_from_bin",
+        "mt_os_lockless_barrier_update",
+        "mt_os_lockless_call",
+        "mt_os_lockless_ctx_cleanup",
+        "mt_os_lockless_ctx_init",
+        "mt_os_lockless_enter",
+        "mt_os_lockless_exit",
+        "mt_os_mod_timer",
+        "mt_os_net_dev_create",
+        "mt_os_net_dev_detach",
+        "mt_os_net_dev_eth_convert_search",
+        "mt_os_net_dev_free",
+        "mt_os_net_dev_get_flags",
+        "mt_os_net_dev_get_if_idx",
+        "mt_os_net_dev_get_iw_stats_size",
+        "mt_os_net_dev_get_name",
+        "mt_os_net_dev_get_priv",
+        "mt_os_net_dev_get_priv_flags",
+        "mt_os_net_dev_get_qstate",
+        "mt_os_net_dev_get_state",
+        "mt_os_net_dev_get_txq_num",
+        "mt_os_net_dev_get_wdev",
+        "mt_os_net_dev_is_up",
+        "mt_os_net_dev_protect",
+        "mt_os_net_dev_register",
+        "mt_os_net_dev_set_addr",
+        "mt_os_net_dev_set_priv",
+        "mt_os_net_dev_set_wdev",
+        "mt_os_net_pkt_alloc",
+        "mt_os_pkt_clear_info",
+        "mt_os_pkt_get_wdev",
+        "mt_os_pkt_protocol_assign",
+        "mt_os_pkt_pull_rcsum",
+        "mt_os_pkt_reset",
+        "mt_os_pkt_send",
+        "mt_os_pkt_set_dest_type",
+        "mt_os_pkt_set_protocol",
+        "mt_os_random_get",
+        "mt_os_set_periodic_timer",
+        "mt_os_smp_call_function_single",
+        "mt_os_sysinfo_dir_create",
+        "mt_os_sysinfo_dir_destroy",
+        "mt_os_sysinfo_file_create",
+        "mt_os_sysinfo_file_destroy",
+        "mt_os_task_attach",
+        "mt_os_task_init",
+        "mt_os_task_kill",
+        "mt_os_task_wait",
+        "mt_os_task_wait_cond",
+        "mt_os_task_wait_event",
+        "mt_os_task_wake_up",
+        "mt_os_vlan_8023_header_copy",
+        "mt_os_wm_emi_deinit",
+        "mt_os_wm_emi_get_resource",
+        "mt_os_wm_emi_init",
+        "mt_procCSIDataPrepare",
+        "mt_proc_mkdir",
+        "mt_proc_remove",
+        "mt_proc_show",
+        "mt_rcu_read_lock",
+        "mt_rcu_read_unlock",
+        "mt_send_msg_reply",
+        "mtk_cfg80211_reply_connected_sta_mld_info",
+        "mtk_cfg80211_send_bss_ml_info_event",
+        "mtk_cfg80211_send_bss_ml_sta_profile_info_event",
+        "mtk_cfg80211_send_connect_params_event",
+        "mtk_cfg80211_send_pmksa_event",
+        "mtk_cfg80211_send_reconf_sm_event",
+        "mtk_cfg80211os_VendorEventMloResponse",
+        "mtk_csi_genl_register",
+        "mtk_csi_genl_unregister",
+        "mtk_nl80211_send_acs_complete_event",
+        "mtk_nl80211_send_event_ACS_per_channel_info",
+        "mtk_nl80211_send_offchannel_info_event",
+        "mtk_nl80211_send_sta_link_mac_event",
+        "mtk_nl80211_send_stop_disassoc_timer_event",
+        "mtk_nl80211_send_wapp_qry_rsp_event",
+        "wlan_802_11_to_802_3_packet_ap",
+        "wlan_802_11_to_802_3_packet_sta"
+      ]
+    },
+    {
+      "consumer": "npu",
+      "provider": "npu_wifi",
+      "symbols": [
+        "npu_wifi_oper_exit",
+        "npu_wifi_oper_init"
+      ]
+    }
+  ],
+  "selected_outside_module_set": {
+    "npu": [
+      "__arch_copy_from_user",
+      "__const_udelay",
+      "__ioremap",
+      "arm64_const_caps_ready",
+      "boot_npu_all_cores",
+      "copy_file_to_ram",
+      "cpu_hwcap_keys",
+      "cpu_hwcaps",
+      "create_proc_entry",
+      "delayed_work_timer_fn",
+      "dma_alloc_attrs",
+      "dma_free_attrs",
+      "filp_close",
+      "filp_open",
+      "get_ecnt_npu_dev",
+      "host_dump_npu_csr",
+      "host_notify_npuMbox",
+      "host_set_npu_core_on_off",
+      "init_timer_key",
+      "iounmap",
+      "kstrtouint",
+      "kthread_create_on_node",
+      "kthread_should_stop",
+      "kthread_stop",
+      "mdc_lock_address",
+      "memset",
+      "msleep",
+      "printk",
+      "queue_delayed_work_on",
+      "remove_proc_entry",
+      "set_npu_clk_power_save",
+      "set_npu_needed_info",
+      "set_npu_sram_power_save",
+      "system_wq",
+      "test_ram_b4_npu_load",
+      "vfs_statx",
+      "wake_up_process"
+    ],
+    "npu_wifi": [
+      "__arch_copy_from_user",
+      "__ioremap",
+      "__stack_chk_fail",
+      "arm64_const_caps_ready",
+      "cpu_hwcap_keys",
+      "cpu_hwcaps",
+      "create_proc_entry",
+      "dma_alloc_attrs",
+      "dma_free_attrs",
+      "get_ecnt_npu_dev",
+      "host_notify_npuMbox",
+      "isNpuBand0OnCpu",
+      "memset",
+      "npu_stat",
+      "npu_wifi_offload_get_force_to_cpu_flag",
+      "npu_wifi_offload_get_pkt_buf_addr",
+      "npu_wifi_offload_get_tx_pkt_buf_addr",
+      "printk",
+      "remove_proc_entry",
+      "simple_strtol",
+      "sscanf"
+    ],
+    "voip": [
+      "__arch_copy_from_user",
+      "__arch_copy_to_user",
+      "__stack_chk_fail",
+      "__warn_printk",
+      "add_timer",
+      "arm64_const_caps_ready",
+      "cdev_add",
+      "cdev_alloc",
+      "cdev_del",
+      "cdev_init",
+      "cpu_hwcap_keys",
+      "cpu_hwcaps",
+      "del_timer",
+      "down",
+      "get_voice_rule_mark_hook",
+      "init_timer_key",
+      "jiffies",
+      "memmove",
+      "memset",
+      "mod_timer",
+      "printk",
+      "sprintf",
+      "unregister_chrdev_region",
+      "up"
+    ]
+  },
+  "limitations": [
+    "Files on disk corresponding to loaded module names are not a dump of relocated module memory.",
+    "Complete loaded-module file coverage does not cover built-in drivers or unloaded files.",
+    "No module loading, ioctl, firmware upload, MMIO write, reboot or flash write was performed."
+  ]
+}

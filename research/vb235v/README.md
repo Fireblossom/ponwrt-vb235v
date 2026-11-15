@@ -29,7 +29,7 @@ See [SCOPE.md](SCOPE.md), [ROADMAP.md](ROADMAP.md), [SOURCE-AUDIT.md](SOURCE-AUD
 
 ## Offline tools
 
-Python 3 standard library only; neither tool connects to the router or executes vendor code.
+The offline analysis tools use the Python 3 standard library and do not execute vendor code.
 
 ```sh
 python research/vb235v/tools/gpl_inventory.py /path/to/gpl-archive-index.jsonl --output /private/gpl-inventory.json
@@ -39,3 +39,5 @@ python research/vb235v/tools/elf_inventory.py /private/extracted-modules --outpu
 Keep original firmware, device dumps, calibration data, credentials, serial logs, and copied vendor sources outside the public tree. The initial research contribution contains authored notes, source-path/hash metadata, and offline analysis tools. Vendor source redistribution requires retaining the applicable notices and checking the relevant files individually.
 
 New Python tools in this directory use `GPL-2.0-only`; existing upstream components keep their own licenses.
+
+For bounded read-only SSH collection, see [STOCK-MODULE-COVERAGE.md](STOCK-MODULE-COVERAGE.md). That optional collector requires host-side Paramiko, private credentials and a previously verified host-key pin. M7 completes file coverage for all 86 loaded module names; firmware and built-in kernel coverage remain separate work.
