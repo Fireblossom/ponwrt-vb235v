@@ -1,0 +1,113 @@
+{
+  "classification": "allowlisted facts from retained private stock boot and proc captures",
+  "physical_geometry": {
+    "bytes": 536870912,
+    "erase_bytes": 262144,
+    "page_bytes": 4096,
+    "oob_bytes": 256,
+    "physical_erase_blocks": 2048,
+    "pages_per_erase_block": 64
+  },
+  "reported_ids": [
+    {
+      "manufacturer": "0x2c",
+      "device": "0x34"
+    }
+  ],
+  "reported_ecc_paths": [
+    "Flash"
+  ],
+  "nand_core_ecc_none_warning": true,
+  "reported_bmt_pool_blocks": [
+    163
+  ],
+  "mtd_entries": [
+    {
+      "index": 0,
+      "name": "whole",
+      "bytes": 208142336,
+      "erase_bytes": 262144
+    },
+    {
+      "index": 1,
+      "name": "bootloader",
+      "bytes": 786432,
+      "erase_bytes": 262144
+    },
+    {
+      "index": 2,
+      "name": "art",
+      "bytes": 3670016,
+      "erase_bytes": 262144
+    },
+    {
+      "index": 3,
+      "name": "misc",
+      "bytes": 8388608,
+      "erase_bytes": 262144
+    },
+    {
+      "index": 4,
+      "name": "kernel",
+      "bytes": 16777216,
+      "erase_bytes": 262144
+    },
+    {
+      "index": 5,
+      "name": "rootfs",
+      "bytes": 67108864,
+      "erase_bytes": 262144
+    },
+    {
+      "index": 6,
+      "name": "firmware",
+      "bytes": 83886080,
+      "erase_bytes": 262144
+    },
+    {
+      "index": 7,
+      "name": "kernel_slave",
+      "bytes": 16777216,
+      "erase_bytes": 262144
+    },
+    {
+      "index": 8,
+      "name": "rootfs_slave",
+      "bytes": 67108864,
+      "erase_bytes": 262144
+    },
+    {
+      "index": 9,
+      "name": "firmware_slave",
+      "bytes": 83886080,
+      "erase_bytes": 262144
+    },
+    {
+      "index": 10,
+      "name": "reserve",
+      "bytes": 262144,
+      "erase_bytes": 262144
+    },
+    {
+      "index": 11,
+      "name": "runtime_data",
+      "bytes": 6291456,
+      "erase_bytes": 262144
+    },
+    {
+      "index": 12,
+      "name": "log",
+      "bytes": 8388608,
+      "erase_bytes": 262144
+    }
+  ],
+  "limitations": [
+    "Boot messages report the selected software path, not an electrical ECC test or a feature-register readback.",
+    "MTD entries can overlap and do not supply partition offsets or raw OOB/ECC data.",
+    "The name whole does not establish coverage of the physical chip."
+  ],
+  "input_sha256": {
+    "boot_log": "27a9ce2a387acc954a16b510e7256ac33eb1db29897a15cfbac664372914d6a5",
+    "proc_mtd": "bfbe4da166ea9136cbb9b34f3f206f1112096d9ef86f9aa84a474567f508c413"
+  }
+}

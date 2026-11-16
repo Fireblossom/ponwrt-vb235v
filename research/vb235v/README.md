@@ -43,3 +43,5 @@ New Python tools in this directory use `GPL-2.0-only`; existing upstream compone
 For bounded read-only SSH collection, see [STOCK-MODULE-COVERAGE.md](STOCK-MODULE-COVERAGE.md). That optional collector requires host-side Paramiko, private credentials and a previously verified host-key pin. M7 completes file coverage for all 86 loaded module names; firmware and built-in kernel coverage remain separate work.
 
 [M8: NPU core provider](NPU-CORE-PROVIDER.md) identifies the four core NPU APIs in the live built-in kernel and audits their archived source contract. It does not certify a compatible PonWrt ABI.
+
+[M9: NAND ECC and BMT](NAND-ECC-BMT.md) correlates the reported flash ECC path with vendor source and identifies conditional NAND writes during mapping-table initialization. Audit this path before any RAM-image boot.

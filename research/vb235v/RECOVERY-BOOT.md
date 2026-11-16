@@ -38,7 +38,7 @@ Source references:
 
 ## Remaining gates
 
-1. Identify the exact NAND part, ECC/OOB behavior, Boot ROM boot policy and board-specific authentication requirements through supported read-only evidence.
+1. [M9](NAND-ECC-BMT.md) identifies NAND geometry and the reported on-die ECC path, and finds conditional probe-time BMT/BBT writes. Raw OOB representation, boot-stage mapping compatibility, Boot ROM policy and board authentication remain to be verified before a RAM or recovery-image experiment.
 2. Match RAM training, clocks, reset button, UART, Ethernet ports, PHY and pinmux to VB235v.
 3. Define recovery entry independent of a valid Linux rootfs or writable Linux configuration.
 4. Prove image validation rejects incorrect board/layout images before erasure.

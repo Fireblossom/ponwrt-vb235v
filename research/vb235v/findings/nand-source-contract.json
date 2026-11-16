@@ -1,0 +1,76 @@
+{
+  "classification": "archived source contract, not a live register or flash-write test",
+  "source_artifacts": [
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/drivers/mtd/chips/spi_nand_flash.c",
+      "path": "drivers/mtd/chips/spi_nand_flash.c",
+      "bytes": 239617,
+      "sha256": "717b5242a5c4685b6b48dc18d9f17d11a58d3dc004537981584af17064beca19"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/drivers/mtd/chips/spi_nand_flash_table.c",
+      "path": "drivers/mtd/chips/spi_nand_flash_table.c",
+      "bytes": 93872,
+      "sha256": "df79a7a804c2313380b9c4a4f1fedb42ad38119770a767c2f8df7e723573d39b"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/drivers/mtd/econet/bmt.h",
+      "path": "drivers/mtd/econet/bmt.h",
+      "bytes": 4410,
+      "sha256": "230c30dec72c2a1419385212e83b6814315ab771e4f04543613d4fbee83a4514"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/drivers/mtd/econet/bmt.c",
+      "path": "drivers/mtd/econet/bmt.c",
+      "bytes": 36431,
+      "sha256": "70f6242ffda8bc6643df4d60f628bec95ddfa4b6877e08d2384192fb903a9967"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/include/global_inc/modules/spi/spi_nand_flash.h",
+      "path": "include/global_inc/modules/spi/spi_nand_flash.h",
+      "bytes": 25724,
+      "sha256": "7fc05793903c089117240cb87c7a967b4b726389b65545a50a6aab7f463166d9"
+    }
+  ],
+  "reviewed_entry_points": {
+    "SPI_NAND_Flash_Init": {
+      "path": "drivers/mtd/chips/spi_nand_flash.c",
+      "line": 4902
+    },
+    "chip_ecc_mode": {
+      "path": "drivers/mtd/chips/spi_nand_flash.c",
+      "line": 6087
+    },
+    "pool_sizing": {
+      "path": "drivers/mtd/chips/spi_nand_flash.c",
+      "line": 4222
+    },
+    "setup_initializes_mapping": {
+      "path": "drivers/mtd/chips/spi_nand_flash.c",
+      "line": 6197
+    },
+    "init_bmt_bbt": {
+      "path": "drivers/mtd/chips/spi_nand_flash.c",
+      "line": 4656
+    },
+    "initialization_calls_writeback": {
+      "path": "drivers/mtd/chips/spi_nand_flash.c",
+      "line": 4707
+    },
+    "writeback_dispatcher": {
+      "path": "drivers/mtd/econet/bmt.c",
+      "line": 1093
+    },
+    "bbt_then_bmt": {
+      "path": "drivers/mtd/econet/bmt.c",
+      "line": 1333
+    }
+  },
+  "geometry_arithmetic": {
+    "physical_blocks": 2048,
+    "requested_good_pool_blocks": 163,
+    "maximum_reserved_blocks": 256
+  },
+  "initialization_writeback": "conditional on table reconstruction flags",
+  "no_new_image_booted": true
+}
