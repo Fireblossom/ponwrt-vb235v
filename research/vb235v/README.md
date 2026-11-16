@@ -45,3 +45,5 @@ For bounded read-only SSH collection, see [STOCK-MODULE-COVERAGE.md](STOCK-MODUL
 [M8: NPU core provider](NPU-CORE-PROVIDER.md) identifies the four core NPU APIs in the live built-in kernel and audits their archived source contract. It does not certify a compatible PonWrt ABI.
 
 [M9: NAND ECC and BMT](NAND-ECC-BMT.md) correlates the reported flash ECC path with vendor source and identifies conditional NAND writes during mapping-table initialization. Audit this path before any RAM-image boot.
+
+[M10: NPU firmware identity](NPU-FIRMWARE-IDENTITY.md) establishes that both stock on-disk NPU files differ from the GPL reference blobs. Executing firmware memory and host-command compatibility remain unverified.

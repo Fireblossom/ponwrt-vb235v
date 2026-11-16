@@ -1,0 +1,37 @@
+{
+  "classification": "on-disk firmware file identity, not a live instruction-memory attestation",
+  "stock_module_sha256": "a06e3a060088fc8084a6a895aacae0b214fdf3319a5c877a1e7cbcf99ea0507d",
+  "module_path_strings": [
+    "/userfs/npu_data.bin",
+    "/userfs/npu_rv32.bin"
+  ],
+  "files": [
+    {
+      "file": "npu_rv32.bin",
+      "actual_bytes": 121132,
+      "actual_sha256": "d2ae9338e1391ced12fefef79a90d60c3108c16bc589584463047fe19a299bf9",
+      "reference_bytes": 121724,
+      "reference_sha256": "1a0566c0792c4c4f9d91d3a12a553fab5f31f12f6ad560c55eefe0279f031c6c",
+      "byte_exact": false,
+      "different_positions_within_shared_length": 113899,
+      "shared_length": 121132,
+      "actual_minus_reference_length": -592
+    },
+    {
+      "file": "npu_data.bin",
+      "actual_bytes": 3220,
+      "actual_sha256": "a8e61916d4261fec3da18c6f5461e06e54acfd18f1a4ed23d3f971176e2ba221",
+      "reference_bytes": 3220,
+      "reference_sha256": "81bd8ea4007842aed1c30c46f372ef38f532333cc210969a846a042feda2b4e2",
+      "byte_exact": false,
+      "different_positions_within_shared_length": 139,
+      "shared_length": 3220,
+      "actual_minus_reference_length": 0
+    }
+  ],
+  "limitations": [
+    "Matching module path strings do not prove which bytes were loaded or are executing.",
+    "Byte differences do not identify command compatibility, features, or which build is newer.",
+    "No firmware bytes or extracted strings beyond the two fixed paths are emitted."
+  ]
+}
