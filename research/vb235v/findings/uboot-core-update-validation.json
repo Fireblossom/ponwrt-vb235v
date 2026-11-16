@@ -1,0 +1,61 @@
+{
+  "milestone": "M25",
+  "installed_executable_from": "M24 standard recovery; unchanged binary/source",
+  "core_fit_sha256": "cd550837fc4f35f3b384390a7e61a49c2791b441e77f40e42c9061de6c5935fe",
+  "core_padded_block_sha256": "eab7429d5f4ce356cfe0ae1ff0325ff36c70503f068948d6278b222f98d302e2",
+  "target": {
+    "partition": "bootloader",
+    "logical_offset": 524288,
+    "bytes": 262144,
+    "only_pre_reserved_third_block": true
+  },
+  "authorization": "Owner explicitly requested core update and function tests",
+  "operations": {
+    "erase_commands": 1,
+    "program_commands": 1,
+    "original_stock_mtd_driver": true,
+    "shared_first_two_blocks_written": false,
+    "saveenv_sent": false,
+    "bootcmd_changed": false,
+    "firmware_slot_install_requests": 0
+  },
+  "checks": {
+    "fresh_complete_preupdate_boot_download_and_all_protected_baselines_passed": true,
+    "new_ram_block_crc_and_fit_sha256_passed": true,
+    "old_target_and_first_two_blocks_prewrite_crc_passed": true,
+    "complete_target_readback_crc_and_fit_sha256_passed": true,
+    "first_two_blocks_postwrite_crc_unchanged": true,
+    "complete_boot_partition_predicted_crc_passed": true,
+    "booted_from_separate_nand_readback_buffer": true,
+    "corrected_real_lmb_secure_carveout_passed": true,
+    "factory_mapping_and_anchors_passed": true,
+    "recovery_boot_and_art_backups_sha256_passed": true,
+    "http_root_page_passed": true,
+    "http_boot_art_misc_selector_downloads_verified": true,
+    "ram_firmware_upload_bytes": 3766005,
+    "ram_firmware_upload_sha256_passed": true,
+    "private_original_kernel_entered_from_updated_nand_core": true,
+    "independent_pinned_root_trial_identity_and_original_bootargs_passed": true,
+    "independent_full_boot_download_byte_exact_expected": true,
+    "environment_and_first_two_blocks_byte_exact_preupdate": true,
+    "both_firmware_slots_art_misc_selector_hashes_unchanged": true,
+    "normal_software_reset_autoboot_not_intercepted": true,
+    "normal_original_bl2_uboot_and_kernel_started": true,
+    "postreset_pinned_root_factory_identity_and_complete_readback_passed": true
+  },
+  "final_state": {
+    "corrected_recovery_core_stored_in_nand": true,
+    "manual_recovery_entry_verified": true,
+    "automatic_recovery_entry_enabled": false,
+    "normal_factory_system_boot_preserved": true,
+    "device_running_original_linux": true,
+    "same_M24_candidate_bytes_not_rebuilt_for_M25": true
+  },
+  "remaining_limits": [
+    "No shared code/environment installation hook",
+    "Physical DHCP lease and recovery button unresolved",
+    "No real power-cut or independently demonstrated programmer restore",
+    "No rootfs upgrade or kernel-health rollback test"
+  ],
+  "private_backups_retained": true
+}
