@@ -46,7 +46,12 @@
       "fits_in_one_256k_erase_block": true,
       "hardware_validation": "not evaluated by packaging tool",
       "flashed": false
-    }
+    },
+    "standard_hardware_ram_booted": true,
+    "standard_hardware_bootloader_and_art_backups_verified": true,
+    "standard_direct_original_kernel_boot_observed": true,
+    "standard_return_pinned_root_and_full_boot_readback_verified": true,
+    "standard_validation_flash_commands_sent": false
   },
   "backup": {
     "logical_main_ecc_corrected": true,
