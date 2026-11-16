@@ -51,3 +51,5 @@ For bounded read-only SSH collection, see [STOCK-MODULE-COVERAGE.md](STOCK-MODUL
 [M11: Stock board map](STOCK-BOARD-MAP.md) records allowlisted boot-provided FDT resources and logical partition offsets. The raw tree stays private; its generic nodes and GPIO control signals require board-specific review before use.
 
 [M12: UART development build](UART-DEVELOPMENT-BUILD.md) supplies a compiled minimal ARM64 kernel/DT/initramfs profile with offline admission checks. It excludes normal router subsystems and has not been booted on VB235v.
+
+[M13: NPU/PonWrt contract](NPU-PONWRT-CONTRACT.md) finds matching selected mailbox fields but different core-count, IRQ, DMA and host API contracts. Six stock watchdogs are observed; the reference driver uses eight core slots as its active bound.

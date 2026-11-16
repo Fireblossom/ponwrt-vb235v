@@ -1,0 +1,332 @@
+{
+  "function_selectors": [
+    {
+      "stock_name": "MFUNC_WIFI",
+      "ponwrt_name": "NPU_FUNC_WIFI",
+      "stock": 0,
+      "ponwrt": 0,
+      "equal_numeric_selector": true
+    },
+    {
+      "stock_name": "MFUNC_TUNNEL",
+      "ponwrt_name": "NPU_FUNC_TUNNEL",
+      "stock": 1,
+      "ponwrt": 1,
+      "equal_numeric_selector": true
+    },
+    {
+      "stock_name": "MFUNC_NOTIFY",
+      "ponwrt_name": "NPU_FUNC_NOTIFY",
+      "stock": 2,
+      "ponwrt": 2,
+      "equal_numeric_selector": true
+    },
+    {
+      "stock_name": "MFUNC_DBA",
+      "ponwrt_name": "NPU_FUNC_DBA",
+      "stock": 3,
+      "ponwrt": 3,
+      "equal_numeric_selector": true
+    },
+    {
+      "stock_name": "MFUNC_TR471",
+      "ponwrt_name": "NPU_FUNC_TR471",
+      "stock": 4,
+      "ponwrt": 4,
+      "equal_numeric_selector": true
+    },
+    {
+      "stock_name": "MFUNC_HWNAT",
+      "ponwrt_name": "NPU_FUNC_PPE",
+      "stock": 5,
+      "ponwrt": 5,
+      "equal_numeric_selector": true
+    }
+  ],
+  "control_masks": [
+    {
+      "stock_field": "block_mode",
+      "ponwrt_mask": "MBOX_MSG_WAIT_RSP",
+      "stock": 1,
+      "ponwrt": 1,
+      "equal_numeric_mask": true
+    },
+    {
+      "stock_field": "done_bit",
+      "ponwrt_mask": "MBOX_MSG_DONE",
+      "stock": 2,
+      "ponwrt": 2,
+      "equal_numeric_mask": true
+    },
+    {
+      "stock_field": "ret_status",
+      "ponwrt_mask": "MBOX_MSG_STATUS",
+      "stock": 28,
+      "ponwrt": 28,
+      "equal_numeric_mask": true
+    },
+    {
+      "stock_field": "static_buff",
+      "ponwrt_mask": "MBOX_MSG_STATIC_BUF",
+      "stock": 32,
+      "ponwrt": 32,
+      "equal_numeric_mask": true
+    },
+    {
+      "stock_field": "func_id",
+      "ponwrt_mask": "MBOX_MSG_FUNC_ID",
+      "stock": 30720,
+      "ponwrt": 30720,
+      "equal_numeric_mask": true
+    }
+  ],
+  "all_selected_numeric_fields_equal": true,
+  "not_established": [
+    "Wi-Fi/PPE payload layout and selector compatibility",
+    "DMA buffer ownership and coherency",
+    "callback/lifetime/timeout compatibility",
+    "stock firmware support in PonWrt",
+    "successful mailbox traffic or acceleration"
+  ],
+  "input_sha256": {
+    "stock_header": "340c08df3d9a9295e2f2ff7e086986c0a1e556b557cdc868266b9c64065bb66b",
+    "ponwrt_source": "2b0c5f001a089b28962d3bdf9f98d11e83db9a178163e0622833f0d408daba55"
+  },
+  "classification": "source-level control-field comparison and observed NPU integration differences; no hardware commands",
+  "ponwrt_baseline": "d9dd3a49f7bb7661c01e9c57c9e2aac2a1114b3e",
+  "selected_patch_count": 8,
+  "selected_patches_applied_without_fuzz": true,
+  "full_ponwrt_kernel_preparation": false,
+  "selected_patches": [
+    {
+      "name": "102-02-v6.19-net-airoha-npu-Add-airoha_npu_soc_data-struct.patch",
+      "offset_reported": false
+    },
+    {
+      "name": "102-03-v6.19-net-airoha-npu-Add-7583-SoC-support.patch",
+      "offset_reported": false
+    },
+    {
+      "name": "118-v7.0-net-airoha-npu-Dump-fw-version-during-probe.patch",
+      "offset_reported": false
+    },
+    {
+      "name": "121-v7.0-net-airoha-npu-Init-BA-memory-region-if-provided-via.patch",
+      "offset_reported": false
+    },
+    {
+      "name": "123-v7.0-net-airoha-npu-Add-the-capability-to-read-firmware-n.patch",
+      "offset_reported": false
+    },
+    {
+      "name": "181-v7.3-net-airoha-npu-load-the-firmware-without-the-sysfs-fall.patch",
+      "offset_reported": false
+    },
+    {
+      "name": "924-net-airoha-npu-use-coherent-mailbox-dma.patch",
+      "offset_reported": false
+    },
+    {
+      "name": "926-net-airoha-npu-bound-mailbox-wait.patch",
+      "offset_reported": true
+    }
+  ],
+  "pinned_source_files": [
+    {
+      "path": "target/linux/airoha/patches-6.18/102-02-v6.19-net-airoha-npu-Add-airoha_npu_soc_data-struct.patch",
+      "bytes": 3931,
+      "sha256": "1a0420de51ac3605d6e9ed11f1d24b8c71dd7a19baf9bf14bcd7d4fe1622913c"
+    },
+    {
+      "path": "target/linux/airoha/patches-6.18/102-03-v6.19-net-airoha-npu-Add-7583-SoC-support.patch",
+      "bytes": 2140,
+      "sha256": "df2ddbea54f00b60009376d152bec1abcd87793cc068453ead6e264187fa5de4"
+    },
+    {
+      "path": "target/linux/airoha/patches-6.18/118-v7.0-net-airoha-npu-Dump-fw-version-during-probe.patch",
+      "bytes": 1247,
+      "sha256": "e7abe440ca563d40ab218cd68270d709e5afdec50aa7f0289db3f8c34472193e"
+    },
+    {
+      "path": "target/linux/airoha/patches-6.18/121-v7.0-net-airoha-npu-Init-BA-memory-region-if-provided-via.patch",
+      "bytes": 1200,
+      "sha256": "df7830f9ab51736c77049b26ba8cdec8de6911f9b8f8561cd7089c664c505ab4"
+    },
+    {
+      "path": "target/linux/airoha/patches-6.18/123-v7.0-net-airoha-npu-Add-the-capability-to-read-firmware-n.patch",
+      "bytes": 4209,
+      "sha256": "a45f3b7f629ac427e6096aa6c2aec8d48ef527a13496c16bb265c7837024214a"
+    },
+    {
+      "path": "target/linux/airoha/patches-6.18/181-v7.3-net-airoha-npu-load-the-firmware-without-the-sysfs-fall.patch",
+      "bytes": 4885,
+      "sha256": "ffe944d7f5b027ed124e86e76847dc53a9b1f8eece2c85d2905d1ab9e6a256b2"
+    },
+    {
+      "path": "target/linux/airoha/patches-6.18/924-net-airoha-npu-use-coherent-mailbox-dma.patch",
+      "bytes": 5992,
+      "sha256": "8b0d5139616b22c03f43ab4c336cce7747859383dc0fab0ac8208b623385eb8b"
+    },
+    {
+      "path": "target/linux/airoha/patches-6.18/926-net-airoha-npu-bound-mailbox-wait.patch",
+      "bytes": 1563,
+      "sha256": "206537a84db0b11615907414d17b0a900be0d9b53fd2322696be2fb286d0dca6"
+    },
+    {
+      "path": "target/linux/airoha/dts/an7583.dtsi",
+      "bytes": 21320,
+      "sha256": "372c8befa091ad1d725eab2056d767fa304d99f4a7735e6bce503a5c4b9fa227"
+    },
+    {
+      "path": "package/firmware/linux-firmware/airoha.mk",
+      "bytes": 1865,
+      "sha256": "ee61cbc68db899adc836d0ecc6c892ccd50d8941b2633c73bcc88ef2a5f1f750"
+    },
+    {
+      "path": "target/linux/generic/kernel-6.18",
+      "bytes": 118,
+      "sha256": "d81b55c60f2ffd9cf3b6ed2b5f3d78e4ed307d8a79f31835e1db8f73e5fa898d"
+    }
+  ],
+  "selected_result_files": [
+    {
+      "path": "drivers/net/ethernet/airoha/airoha_npu.c",
+      "bytes": 22349,
+      "sha256": "2b0c5f001a089b28962d3bdf9f98d11e83db9a178163e0622833f0d408daba55"
+    },
+    {
+      "path": "include/linux/soc/airoha/airoha_offload.h",
+      "bytes": 8750,
+      "sha256": "f5da81e31395bde119bcb564503bd747e1c8c245c720b8cbf5de2f8e4182c5a4"
+    }
+  ],
+  "stock_npu_test_header_sha256": "35b06a12f48bbf2e80e84aa2b139fa568b62e6a3b5f9dcf1da807ac1aba71379",
+  "core_count_evidence": {
+    "archived_build_defines": [
+      "TCSUPPORT_CPU_AN7583",
+      "TCSUPPORT_NPU_V2",
+      "TCSUPPORT_NPU_V2_P"
+    ],
+    "archived_selected_core_count": 6,
+    "archived_object_boot_loop_compare_immediate": 6,
+    "live_registered_watchdogs": [
+      {
+        "core": 0,
+        "gic_hwirq": 166,
+        "spi_selector": 134
+      },
+      {
+        "core": 1,
+        "gic_hwirq": 167,
+        "spi_selector": 135
+      },
+      {
+        "core": 2,
+        "gic_hwirq": 168,
+        "spi_selector": 136
+      },
+      {
+        "core": 3,
+        "gic_hwirq": 169,
+        "spi_selector": 137
+      },
+      {
+        "core": 4,
+        "gic_hwirq": 141,
+        "spi_selector": 109
+      },
+      {
+        "core": 5,
+        "gic_hwirq": 142,
+        "spi_selector": 110
+      }
+    ],
+    "ponwrt_core_array_capacity_and_loop_bound": 8,
+    "scope": "owner board stock build; not a universal claim about every AN7583 variant"
+  },
+  "irq_contract": {
+    "stock_full_dt_spi_selectors": [
+      118,
+      119,
+      120,
+      121,
+      122,
+      123,
+      125,
+      134,
+      135,
+      136,
+      137,
+      109,
+      110,
+      111,
+      112
+    ],
+    "stock_consumer_order": "six WLAN, mailbox, selected-core watchdogs",
+    "ponwrt_full_dt_spi_selectors": [
+      125,
+      103,
+      109,
+      113,
+      117,
+      134,
+      135,
+      136,
+      137,
+      118,
+      119,
+      120,
+      121,
+      122,
+      123
+    ],
+    "ponwrt_consumer_order": "mailbox, eight watchdogs, six WLAN",
+    "stock_registered_watchdog_selectors": [
+      134,
+      135,
+      136,
+      137,
+      109,
+      110
+    ],
+    "ponwrt_declared_watchdog_selectors": [
+      103,
+      109,
+      113,
+      117,
+      134,
+      135,
+      136,
+      137
+    ],
+    "order_and_watchdog_set_differ": true
+  },
+  "runtime_contract_differences": {
+    "stock_default_poll_delay_us_approx": 30000,
+    "ponwrt_timeout_us": 100000,
+    "stock_status": "zero error; firmware-defined nonzero statuses",
+    "ponwrt_status": "firmware status exactly one maps to Linux zero; other status -> negative errno",
+    "stock_host_descriptor_bytes_source_abi": 40,
+    "ponwrt_host_entry": "internal send helper, fixed core 0",
+    "ponwrt_mailbox_coherent_buffer_bytes": 256,
+    "stock_coherent_dma_mask_source": "0xbfffffff",
+    "ponwrt_dma_mask": "32 bits",
+    "stock_register_resources": [
+      "0x1e800000/0x80000",
+      "0x1e900000/0x313000"
+    ],
+    "ponwrt_register_resources": [
+      "0x1e900000/0x313000"
+    ],
+    "stock_reserved_npu_bytes": 1048576,
+    "ponwrt_reserved_npu_bytes": 10485760,
+    "stock_firmware_paths": [
+      "/userfs/npu_rv32.bin",
+      "/userfs/npu_data.bin"
+    ],
+    "ponwrt_default_firmware_names": [
+      "airoha/an7583_npu_rv32.bin",
+      "airoha/an7583_npu_data.bin"
+    ]
+  }
+}
