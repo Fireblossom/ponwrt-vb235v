@@ -1,0 +1,2045 @@
+diff --git a/arch/arm/dts/an7583-vb235v-ram-net-u-boot.dtsi b/arch/arm/dts/an7583-vb235v-ram-net-u-boot.dtsi
+new file mode 100644
+index 00000000..4c027f2a
+--- /dev/null
++++ b/arch/arm/dts/an7583-vb235v-ram-net-u-boot.dtsi
+@@ -0,0 +1 @@
++// SPDX-License-Identifier: GPL-2.0+
+diff --git a/arch/arm/dts/an7583-vb235v-ram-net.dts b/arch/arm/dts/an7583-vb235v-ram-net.dts
+new file mode 100644
+index 00000000..0a9af032
+--- /dev/null
++++ b/arch/arm/dts/an7583-vb235v-ram-net.dts
+@@ -0,0 +1,45 @@
++// SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++/* Experimental integrated-switch LAN candidate. Never use as a flash image. */
++/dts-v1/;
++#include "an7583.dtsi"
++
++/ {
++	model = "TP-Link VB235v RAM LAN recovery candidate";
++	compatible = "tplink,vb235v-ram-development", "airoha,an7583";
++	aliases { serial0 = &uart1; ethernet0 = &gdm1; };
++	chosen {
++		stdout-path = "serial0:115200n8";
++		u-boot,usable-memory-range = <0 0x80200000 0 0x1fe00000>;
++	};
++	memory@80000000 {
++		device_type = "memory";
++		reg = <0 0x80000000 0 0x20000000>;
++	};
++	/delete-node/ reserved-memory;
++	reserved-memory {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++		atf@80000000 { reg = <0 0x80000000 0 0x200000>; no-map; };
++		npu@84000000 { reg = <0 0x84000000 0 0x100000>; no-map; };
++		logs@8b000000 { reg = <0 0x8b000000 0 0x200000>; no-map; };
++	};
++};
++
++&gdm1 { status = "okay"; };
++&gdm2 { status = "disabled"; };
++&gdm3 { status = "disabled"; };
++&pon_pcs { status = "disabled"; };
++&eth_pcs { status = "disabled"; };
++&snfi { status = "disabled"; };
++&mmc0 { status = "disabled"; };
++
++&eth {
++	#address-cells = <1>;
++	#size-cells = <0>;
++};
++
++&{/soc/system-controller@1fb00000} {
++	#address-cells = <1>;
++	#size-cells = <0>;
++};
+diff --git a/arch/arm/dts/an7583-vb235v-ram-u-boot.dtsi b/arch/arm/dts/an7583-vb235v-ram-u-boot.dtsi
+new file mode 100644
+index 00000000..4c027f2a
+--- /dev/null
++++ b/arch/arm/dts/an7583-vb235v-ram-u-boot.dtsi
+@@ -0,0 +1 @@
++// SPDX-License-Identifier: GPL-2.0+
+diff --git a/arch/arm/dts/an7583-vb235v-ram.dts b/arch/arm/dts/an7583-vb235v-ram.dts
+new file mode 100644
+index 00000000..8978465c
+--- /dev/null
++++ b/arch/arm/dts/an7583-vb235v-ram.dts
+@@ -0,0 +1,40 @@
++// SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++/dts-v1/;
++
++/ {
++	model = "TP-Link VB235v RAM recovery development";
++	compatible = "tplink,vb235v-ram-development", "airoha,an7583";
++	#address-cells = <2>;
++	#size-cells = <2>;
++
++	aliases { serial0 = &uart; };
++	chosen {
++		stdout-path = "serial0:115200n8";
++		u-boot,usable-memory-range = <0 0x80200000 0 0x1fe00000>;
++	};
++	memory@80000000 {
++		device_type = "memory";
++		reg = <0 0x80000000 0 0x20000000>;
++	};
++	reserved-memory {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++		atf@80000000 { reg = <0 0x80000000 0 0x200000>; no-map; };
++		npu@84000000 { reg = <0 0x84000000 0 0x100000>; no-map; };
++		logs@8b000000 { reg = <0 0x8b000000 0 0x200000>; no-map; };
++	};
++	psci { compatible = "arm,psci-1.0"; method = "smc"; };
++	timer {
++		compatible = "arm,armv8-timer";
++		clock-frequency = <25000000>;
++	};
++	uart: serial@1fbf0000 {
++		compatible = "ns16550a";
++		reg = <0 0x1fbf0000 0 0x30>;
++		reg-shift = <2>;
++		reg-io-width = <4>;
++		clock-frequency = <1843200>;
++		bootph-all;
++	};
++};
+diff --git a/arch/arm/dts/an7583-vb235v-recovery-u-boot.dtsi b/arch/arm/dts/an7583-vb235v-recovery-u-boot.dtsi
+new file mode 100644
+index 00000000..4c027f2a
+--- /dev/null
++++ b/arch/arm/dts/an7583-vb235v-recovery-u-boot.dtsi
+@@ -0,0 +1 @@
++// SPDX-License-Identifier: GPL-2.0+
+diff --git a/arch/arm/dts/an7583-vb235v-recovery.dts b/arch/arm/dts/an7583-vb235v-recovery.dts
+new file mode 100644
+index 00000000..e3554a7a
+--- /dev/null
++++ b/arch/arm/dts/an7583-vb235v-recovery.dts
+@@ -0,0 +1,45 @@
++// SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++/* Experimental integrated-switch LAN candidate. Never use as a flash image. */
++/dts-v1/;
++#include "an7583.dtsi"
++
++/ {
++	model = "TP-Link VB235v recovery development";
++	compatible = "tplink,vb235v", "airoha,an7583";
++	aliases { serial0 = &uart1; ethernet0 = &gdm1; };
++	chosen {
++		stdout-path = "serial0:115200n8";
++		u-boot,usable-memory-range = <0 0x80200000 0 0x1fe00000>;
++	};
++	memory@80000000 {
++		device_type = "memory";
++		reg = <0 0x80000000 0 0x20000000>;
++	};
++	/delete-node/ reserved-memory;
++	reserved-memory {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++		atf@80000000 { reg = <0 0x80000000 0 0x200000>; no-map; };
++		npu@84000000 { reg = <0 0x84000000 0 0x100000>; no-map; };
++		logs@8b000000 { reg = <0 0x8b000000 0 0x200000>; no-map; };
++	};
++};
++
++&gdm1 { status = "okay"; };
++&gdm2 { status = "disabled"; };
++&gdm3 { status = "disabled"; };
++&pon_pcs { status = "disabled"; };
++&eth_pcs { status = "disabled"; };
++&snfi { status = "okay"; };
++&mmc0 { status = "disabled"; };
++
++&eth {
++	#address-cells = <1>;
++	#size-cells = <0>;
++};
++
++&{/soc/system-controller@1fb00000} {
++	#address-cells = <1>;
++	#size-cells = <0>;
++};
+diff --git a/arch/arm/mach-airoha/Kconfig b/arch/arm/mach-airoha/Kconfig
+index 97fcd2f5..27ea80fc 100644
+--- a/arch/arm/mach-airoha/Kconfig
++++ b/arch/arm/mach-airoha/Kconfig
+@@ -35,6 +35,22 @@ config TARGET_AN7583
+ 
+ endchoice
+ 
++config VB235V_RAM_RECOVERY
++	bool "VB235v RAM development recovery"
++	depends on TARGET_AN7583
++	select LINUX_KERNEL_IMAGE_HEADER
++	help
++	  Use the reviewed 512 MiB board memory map inherited from factory DDR
++	  initialization. This is a BL33 RAM development payload, not a FIP.
++
++config LNX_KRNL_IMG_TEXT_OFFSET_BASE
++	default 0x80000000 if VB235V_RAM_RECOVERY
++
++config VB235V_RECOVERY
++	bool "VB235v mapped NAND and web recovery"
++	depends on TARGET_AN7583
++	select VB235V_RAM_RECOVERY
++
+ config AIROHA_HTTP_RECOVERY
+ 	bool "Airoha HTTP recovery"
+ 	default y
+diff --git a/arch/arm/mach-airoha/an7583/init.c b/arch/arm/mach-airoha/an7583/init.c
+index d925d76d..a5519c2c 100644
+--- a/arch/arm/mach-airoha/an7583/init.c
++++ b/arch/arm/mach-airoha/an7583/init.c
+@@ -25,6 +25,10 @@ int dram_init(void)
+ {
+ 	u32 units;
+ 
++	/* Factory BL2 scratch-register encoding is not established for VB235v. */
++	if (IS_ENABLED(CONFIG_VB235V_RAM_RECOVERY))
++		return fdtdec_setup_mem_size_base();
++
+ 	/* BL2 stores the dramc_main() result in SCREG_WR1[29:20] in 16 MiB units. */
+ 	units = (readl(AN7583_SCREG_WR1) >> AN7583_DRAM_SIZE_SHIFT) &
+ 		AN7583_DRAM_SIZE_MASK;
+@@ -63,15 +67,19 @@ static struct mm_region an7583_mem_map[] = {
+ 		/* DDR, 32-bit area */
+ 		.virt = 0x80000000UL,
+ 		.phys = 0x80000000UL,
+-		.size = SZ_2G,
++		.size = IS_ENABLED(CONFIG_VB235V_RAM_RECOVERY) ? SZ_512M : SZ_2G,
+ 		.attrs = PTE_BLOCK_MEMTYPE(MT_NORMAL) | PTE_BLOCK_OUTER_SHARE,
+-	}, {
++	},
++#ifndef CONFIG_VB235V_RAM_RECOVERY
++	{
+ 		/* DDR, 64-bit area */
+ 		.virt = 0x100000000UL,
+ 		.phys = 0x100000000UL,
+ 		.size = SZ_4G + SZ_2G,
+ 		.attrs = PTE_BLOCK_MEMTYPE(MT_NORMAL) | PTE_BLOCK_OUTER_SHARE,
+-	}, {
++	},
++#endif
++	{
+ 		.virt = 0x00000000UL,
+ 		.phys = 0x00000000UL,
+ 		.size = 0x40000000UL,
+diff --git a/board/airoha/an7583/Makefile b/board/airoha/an7583/Makefile
+index d582684d..a8db8719 100644
+--- a/board/airoha/an7583/Makefile
++++ b/board/airoha/an7583/Makefile
+@@ -1,3 +1,4 @@
+ # SPDX-License-Identifier:	GPL-2.0
+ 
+ obj-y	+= an7583_rfb.o
++obj-$(CONFIG_VB235V_RECOVERY) += vb235v-map.o vb235v-storage.o vb235v-factory.o
+diff --git a/board/airoha/an7583/an7583_vb235v_ram.env b/board/airoha/an7583/an7583_vb235v_ram.env
+new file mode 100644
+index 00000000..6c71c39c
+--- /dev/null
++++ b/board/airoha/an7583/an7583_vb235v_ram.env
+@@ -0,0 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++loadaddr=0x90000000
++stdin=serial
++stdout=serial
++stderr=serial
++bootcmd=echo VB235v RAM development: automatic boot disabled
+diff --git a/board/airoha/an7583/an7583_vb235v_recovery.env b/board/airoha/an7583/an7583_vb235v_recovery.env
+new file mode 100644
+index 00000000..cef2cc80
+--- /dev/null
++++ b/board/airoha/an7583/an7583_vb235v_recovery.env
+@@ -0,0 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++loadaddr=0x90000000
++stdin=serial
++stdout=serial
++stderr=serial
++bootcmd=vb recover; vb boot; httpd
+diff --git a/board/airoha/an7583/vb235v-factory.c b/board/airoha/an7583/vb235v-factory.c
+new file mode 100644
+index 00000000..7d7231f9
+--- /dev/null
++++ b/board/airoha/an7583/vb235v-factory.c
+@@ -0,0 +1,80 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <asm/global_data.h>
++#include <command.h>
++#include <image.h>
++#include <lzma/LzmaTools.h>
++#include <malloc.h>
++#include <asm/unaligned.h>
++#include <u-boot/crc.h>
++#include <u-boot/sha256.h>
++#include <vb235v-recovery.h>
++
++DECLARE_GLOBAL_DATA_PTR;
++
++int vb_factory_boot(void)
++{
++	const struct vb_target *boot = vb_target_find("bootloader");
++	u8 *compressed = malloc(310799);
++	u8 hash[32];
++	char hex[65];
++	struct legacy_img_hdr *header = (void *)0x81dfff80;
++	u8 *arm64 = (void *)0x81dfffc0;
++	SizeT size = 903008;
++	int i, ret;
++
++	if (!compressed)
++		return -ENOMEM;
++	ret = vb_storage_read(boot, 0x2f800, compressed, 310799);
++	if (ret)
++		goto out;
++	sha256_csum_wd(compressed, 310799, hash, CHUNKSZ_SHA256);
++	for (i = 0; i < 32; i++)
++		sprintf(hex + i * 2, "%02x", hash[i]);
++	if (strcmp(hex, "b4daaf52ff8224cd8b577f72d769adb12823d536e2408d77919e6c9940fc388b")) {
++		ret = -EBADMSG;
++		goto out;
++	}
++	ret = lzmaBuffToBuffDecompress((void *)0x81e00000, &size, compressed, 310799);
++	if (ret || size != 903008) {
++		ret = -EBADMSG;
++		goto out;
++	}
++	sha256_csum_wd((void *)0x81e00000, size, hash, CHUNKSZ_SHA256);
++	for (i = 0; i < 32; i++)
++		sprintf(hex + i * 2, "%02x", hash[i]);
++	if (strcmp(hex, "e7e36e39ad9f97b379b8a1a8efc0fd7547add8da75b9a125ac1a28479ffbec8b")) {
++		ret = -EBADMSG;
++		goto out;
++	}
++	/* Keep the original BL33 byte-exact at its linked address.
++	 * A 64-byte Linux ARM64 header immediately below it permits bootm
++	 * to perform the normal cache/MMU/exception-level handoff.
++	 */
++	memset(arm64, 0, 64);
++	put_unaligned_le32(0x14000010, arm64); /* b +64 to original BL33 */
++	put_unaligned_le64(0x1dfffc0, arm64 + 8);
++	put_unaligned_le64(size + 64, arm64 + 16);
++	put_unaligned_le32(0x644d5241, arm64 + 56);
++	memset(header, 0, sizeof(*header));
++	image_set_magic(header, IH_MAGIC);
++	image_set_size(header, size + 64);
++	image_set_load(header, 0x81dfffc0);
++	image_set_ep(header, 0x81dfffc0);
++	image_set_os(header, IH_OS_LINUX);
++	image_set_arch(header, IH_ARCH_ARM64);
++	image_set_type(header, IH_TYPE_KERNEL);
++	image_set_comp(header, IH_COMP_NONE);
++	image_set_dcrc(header, crc32(0, arm64, size + 64));
++	image_set_hcrc(header, crc32(0, (void *)header, sizeof(*header)));
++	/* The optional persistent bootcmd hook consumes/clears this RAM guard.
++	 * No flash environment is edited by this function.
++	 */
++	*(volatile u32 *)0x80200000 = 0x5642534b;
++	*(volatile u32 *)0x80200004 = 0xa9bdacb4;
++	free(compressed);
++	printf("Returning to hash-verified original U-Boot through Linux handoff\n");
++	return run_commandf("bootm 0x81dfff80 - %lx", (ulong)gd->fdt_blob);
++out:
++	free(compressed);
++	return ret;
++}
+diff --git a/board/airoha/an7583/vb235v-map.c b/board/airoha/an7583/vb235v-map.c
+new file mode 100644
+index 00000000..21e2959e
+--- /dev/null
++++ b/board/airoha/an7583/vb235v-map.c
+@@ -0,0 +1,151 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/* Bounded decoder for the observed VB235v factory BBT/BMT-v1 format.
++ * No reconstruction, repair, bad-block marking or flash writes occur here.
++ */
++#include <linux/errno.h>
++#include <string.h>
++#include "vb235v-map.h"
++
++static u16 le16(const u8 *p)
++{
++	return p[0] | ((u16)p[1] << 8);
++}
++
++int vb_decode_bbt(struct vb_map *m, const u8 *p, size_t n)
++{
++	u16 sum;
++	unsigned int i;
++
++	if (!m || !p || n < 512 || memcmp(p, "RAWB", 4) || p[8] != 1 || p[9] > 250)
++		return -EINVAL;
++	sum = p[8] + p[9];
++	for (i = 12; i < 512; i++)
++		sum += p[i];
++	if (p[4] != (sum & 255) || p[5] != (sum >> 8) || p[6] || p[7])
++		return -EBADMSG;
++	for (i = 0; i < p[9]; i++) {
++		u16 value = le16(p + 12 + 2 * i);
++
++		if (value >= VB_BLOCKS - VB_POOL || (i && value <= le16(p + 10 + 2 * i)))
++			return -EINVAL;
++	}
++	m->initial_count = p[9];
++	for (i = 0; i < p[9]; i++)
++		m->initial_bad[i] = le16(p + 12 + 2 * i);
++	return 0;
++}
++
++int vb_decode_bmt(struct vb_map *m, const u8 *p, size_t n)
++{
++	unsigned int i, j;
++	u8 sum;
++
++	if (!m || !p || n < 20 + VB_POOL * 4 || memcmp(p, "BMT", 3) ||
++	    p[3] != 1 || p[5] > VB_POOL)
++		return -EINVAL;
++	sum = p[3] + p[5];
++	for (i = 20; i < 20 + VB_POOL * 4; i++)
++		sum += p[i];
++	if (sum != p[6])
++		return -EBADMSG;
++	for (i = 0; i < p[5]; i++) {
++		u16 bad = le16(p + 20 + 4 * i);
++		u16 replacement = le16(p + 22 + 4 * i);
++
++		if (bad >= VB_BLOCKS - VB_POOL || replacement < VB_BLOCKS - VB_POOL ||
++		    replacement >= VB_BLOCKS)
++			return -EINVAL;
++		for (j = 0; j < i; j++)
++			if (bad == le16(p + 20 + 4 * j) || replacement == le16(p + 22 + 4 * j))
++				return -EINVAL;
++	}
++	m->mapped_count = p[5];
++	for (i = 0; i < p[5]; i++) {
++		m->bad[i] = le16(p + 20 + 4 * i);
++		m->replacement[i] = le16(p + 22 + 4 * i);
++	}
++	return 0;
++}
++
++int vb_map_finish(struct vb_map *m)
++{
++	bool used[VB_BLOCKS] = { false };
++	u16 i, j, physical;
++
++	if (!m)
++		return -EINVAL;
++	m->valid = false;
++	if (m->bbt_block < VB_BLOCKS - VB_POOL || m->bbt_block >= VB_BLOCKS ||
++	    m->bmt_block < VB_BLOCKS - VB_POOL || m->bmt_block >= VB_BLOCKS ||
++	    m->bmt_block == m->bbt_block || m->initial_count > 250 || m->mapped_count > VB_POOL)
++		return -EINVAL;
++	for (i = 0; i < m->mapped_count; i++) {
++		if (m->replacement[i] == m->bmt_block || m->replacement[i] == m->bbt_block)
++			return -EINVAL;
++		for (j = 0; j < m->initial_count; j++)
++			if (m->bad[i] == m->initial_bad[j])
++				return -EINVAL;
++	}
++	m->logical_blocks = VB_BLOCKS - VB_POOL - m->initial_count;
++	for (i = 0; i < m->logical_blocks; i++) {
++		physical = i;
++		for (j = 0; j < m->initial_count; j++)
++			if (physical >= m->initial_bad[j])
++				physical++;
++		for (j = 0; j < m->mapped_count; j++)
++			if (physical == m->bad[j]) {
++				physical = m->replacement[j];
++				break;
++			}
++		if (physical >= VB_BLOCKS || used[physical])
++			return -EINVAL;
++		used[physical] = true;
++		m->physical[i] = physical;
++	}
++	m->valid = true;
++	return 0;
++}
++
++int vb_map_load(struct vb_map *m, vb_read_page read_page, void *context)
++{
++	u8 page[VB_PAGE];
++	int block;
++	bool found_bbt = false, found_bmt = false;
++
++	if (!m || !read_page)
++		return -EINVAL;
++	memset(m, 0, sizeof(*m));
++	/* Factory BBT chooses the first valid record from the pool start. */
++	for (block = VB_BLOCKS - VB_POOL; block < VB_BLOCKS; block++) {
++		if (read_page(context, block, page))
++			continue;
++		if (!vb_decode_bbt(m, page, sizeof(page))) {
++			m->bbt_block = block;
++			found_bbt = true;
++			break;
++		}
++	}
++	/* Factory BMT chooses the first valid record from the pool end. */
++	for (block = VB_BLOCKS - 1; block >= VB_BLOCKS - VB_POOL; block--) {
++		if (read_page(context, block, page))
++			continue;
++		if (!vb_decode_bmt(m, page, sizeof(page))) {
++			m->bmt_block = block;
++			found_bmt = true;
++			break;
++		}
++	}
++	if (!found_bbt || !found_bmt)
++		return -ENOENT;
++	return vb_map_finish(m);
++}
++
++int vb_translate(const struct vb_map *m, u32 logical, u32 *physical)
++{
++	u32 block = logical / VB_ERASE;
++
++	if (!m || !physical || !m->valid || logical >= VB_LIMIT || block >= m->logical_blocks)
++		return -EINVAL;
++	*physical = (u32)m->physical[block] * VB_ERASE + logical % VB_ERASE;
++	return 0;
++}
+diff --git a/board/airoha/an7583/vb235v-map.h b/board/airoha/an7583/vb235v-map.h
+new file mode 100644
+index 00000000..c212fc66
+--- /dev/null
++++ b/board/airoha/an7583/vb235v-map.h
+@@ -0,0 +1,24 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef VB235V_MAP_H
++#define VB235V_MAP_H
++#include <linux/types.h>
++#define VB_BLOCKS 2048
++#define VB_POOL 163
++#define VB_PAGE 4096
++#define VB_ERASE 0x40000
++#define VB_LIMIT 0xc680000
++struct vb_map {
++	u16 physical[VB_BLOCKS];
++	u16 initial_bad[250];
++	u16 bad[250], replacement[250];
++	u16 bbt_block, bmt_block, logical_blocks;
++	u8 initial_count, mapped_count;
++	bool valid;
++};
++typedef int (*vb_read_page)(void *context, u16 block, u8 *page);
++int vb_decode_bbt(struct vb_map *map, const u8 *page, size_t length);
++int vb_decode_bmt(struct vb_map *map, const u8 *page, size_t length);
++int vb_map_finish(struct vb_map *map);
++int vb_map_load(struct vb_map *map, vb_read_page read_page, void *context);
++int vb_translate(const struct vb_map *map, u32 logical, u32 *physical);
++#endif
+diff --git a/board/airoha/an7583/vb235v-storage.c b/board/airoha/an7583/vb235v-storage.c
+new file mode 100644
+index 00000000..337c1ca9
+--- /dev/null
++++ b/board/airoha/an7583/vb235v-storage.c
+@@ -0,0 +1,527 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <asm/global_data.h>
++#include <command.h>
++#include <env.h>
++#include <image.h>
++#include <malloc.h>
++#include <mtd.h>
++#include <linux/err.h>
++#include <linux/libfdt.h>
++#include <linux/mtd/mtd.h>
++#include <u-boot/sha256.h>
++#include <u-boot/crc.h>
++#include <vb235v-recovery.h>
++#include "vb235v-map.h"
++
++DECLARE_GLOBAL_DATA_PTR;
++static struct mtd_info *flash;
++static struct vb_map mapping;
++static bool anchors_verified, attempted;
++static int cached_active = -99;
++static u32 cached_sequence;
++#ifndef VB_SLOT_SCRATCH
++#define VB_SLOT_SCRATCH 0x95000000UL
++#endif
++static const char *storage_state = "not initialized";
++static const struct vb_target targets[] = {
++	{ "bootloader", 0, 0xc0000, false },
++	{ "art", 0xc0000, 0x380000, false },
++	{ "misc", 0x440000, 0x800000, false },
++	{ "slot0", 0xc40000, 0x5000000, false },
++	{ "slot1", 0x5c40000, 0x5000000, false },
++	{ "reserve", 0xb840000, 0x40000, false },
++	{ "whole-logical", 0, VB_LIMIT, false },
++	{ "nand-raw-main-oob", 0, 2048U * 64U * (4096U + 256U), true },
++};
++
++static int physical_read(u32 address, void *data, size_t length)
++{
++	size_t done;
++	int ret = mtd_read(flash, address, length, &done, data);
++
++	if (ret && !mtd_is_bitflip(ret))
++		return ret;
++	return done == length ? 0 : -EIO;
++}
++
++static int table_page(void *context, u16 block, u8 *page)
++{
++	u8 oob[256];
++	struct mtd_oob_ops ops = { .mode = MTD_OPS_PLACE_OOB,
++		.ooblen = sizeof(oob), .oobbuf = oob };
++	int ret;
++
++	ret = mtd_read_oob(flash, (u32)block * VB_ERASE, &ops);
++	if ((ret && !mtd_is_bitflip(ret)) || ops.oobretlen != sizeof(oob))
++		return -EIO;
++	/* Vendor Flash-ECC path retains physical OOB positions. Byte 0
++	 * marks initial bad blocks; byte 1 marks later failed blocks.
++	 * The first-page markers are inspected without changing them.
++	 */
++	if (oob[0] != 0xff || oob[1] != 0xff)
++		return -EIO;
++	return physical_read((u32)block * VB_ERASE, page, VB_PAGE);
++}
++
++const struct vb_target *vb_target_find(const char *name)
++{
++	unsigned int i;
++
++	for (i = 0; i < ARRAY_SIZE(targets); i++)
++		if (!strcmp(name, targets[i].name))
++			return &targets[i];
++	return NULL;
++}
++
++static int mapped_read(u32 address, void *data, size_t length)
++{
++	u8 *out = data;
++	int ret;
++	u32 physical;
++	size_t count;
++
++	if (address >= VB_LIMIT || length > VB_LIMIT - address)
++		return -EINVAL;
++	while (length) {
++		ret = vb_translate(&mapping, address, &physical);
++		if (ret)
++			return ret;
++		count = min_t(size_t, length, VB_ERASE - address % VB_ERASE);
++		ret = physical_read(physical, out, count);
++		if (ret)
++			return ret;
++		out += count;
++		address += count;
++		length -= count;
++	}
++	return 0;
++}
++
++static int anchor_hash(u32 address, u32 length, const char *expected)
++{
++	u8 *buffer, hash[32];
++	sha256_context ctx;
++	char hex[65];
++	u32 count;
++	int ret = 0, i;
++
++	buffer = malloc(65536);
++	if (!buffer)
++		return -ENOMEM;
++	sha256_starts(&ctx);
++	while (length) {
++		count = min(length, 65536U);
++		ret = mapped_read(address, buffer, count);
++		if (ret)
++			break;
++		sha256_update(&ctx, buffer, count);
++		address += count;
++		length -= count;
++	}
++	free(buffer);
++	if (ret)
++		return ret;
++	sha256_finish(&ctx, hash);
++	for (i = 0; i < 32; i++)
++		sprintf(hex + 2 * i, "%02x", hash[i]);
++	return strcmp(hex, expected) ? -EBADMSG : 0;
++}
++
++int vb_storage_init(void)
++{
++	struct mtd_info *mtd;
++	int ret;
++
++	if (attempted)
++		return mapping.valid ? 0 : -ENODEV;
++	attempted = true;
++	mtd_probe_devices();
++	mtd_for_each_device(mtd) {
++		if (!mtd_is_partition(mtd) && mtd->size == 0x20000000 &&
++		    mtd->erasesize == VB_ERASE && mtd->writesize == VB_PAGE &&
++		    mtd->oobsize == 256) {
++			flash = mtd;
++			break;
++		}
++	}
++	if (!flash) {
++		storage_state = "NAND geometry not matched";
++		return -ENODEV;
++	}
++	ret = vb_map_load(&mapping, table_page, NULL);
++	if (ret) {
++		storage_state = "factory BBT/BMT unavailable; raw backup only";
++		return ret;
++	}
++	/* These hashes derive from this board's verified private backup. */
++	anchors_verified = !anchor_hash(0xc0000, 0x380000,
++		"b0fbd6ca59927d190aea300734d8aceb41309ee591d3a37d003bf8f3e16a1aa3") &&
++		!anchor_hash(0x2f800, 310799,
++		"b4daaf52ff8224cd8b577f72d769adb12823d536e2408d77919e6c9940fc388b");
++	storage_state = anchors_verified ? "factory map and board anchors verified" :
++		"factory map loaded; board anchors differ; install disabled";
++	return 0;
++}
++
++const char *vb_storage_status(void)
++{
++	return storage_state;
++}
++
++int vb_storage_read(const struct vb_target *t, u32 offset, void *data, size_t length)
++{
++	u8 raw[VB_PAGE + 256];
++	u32 page, within;
++	size_t count;
++	u8 *out = data;
++	int ret;
++	struct mtd_oob_ops ops;
++
++	if (!t || !data || offset > t->size || length > t->size - offset)
++		return -EINVAL;
++	ret = vb_storage_init();
++	if (!t->physical_raw && ret)
++		return ret;
++	if (!flash)
++		return -ENODEV;
++	if (!t->physical_raw)
++		return mapped_read(t->offset + offset, data, length);
++	while (length) {
++		page = offset / sizeof(raw);
++		within = offset % sizeof(raw);
++		memset(&ops, 0, sizeof(ops));
++		ops.mode = MTD_OPS_RAW;
++		ops.len = VB_PAGE;
++		ops.ooblen = 256;
++		ops.datbuf = raw;
++		ops.oobbuf = raw + VB_PAGE;
++		ret = mtd_read_oob(flash, page * VB_PAGE, &ops);
++		if (ret || ops.retlen != VB_PAGE || ops.oobretlen != 256)
++			return ret ? ret : -EIO;
++		count = min_t(size_t, length, sizeof(raw) - within);
++		memcpy(out, raw + within, count);
++		out += count;
++		offset += count;
++		length -= count;
++	}
++	return 0;
++}
++
++static bool single_string(const char *text, int length)
++{
++	return text && length > 1 && text[length - 1] == '\0' &&
++		strlen(text) == length - 1 && !strchr(text, '/');
++}
++
++static int validate_board_dtb(const void *data, size_t length)
++{
++	void *aligned;
++	int ret;
++
++	if (length < 40 || length > 0x100000)
++		return -EINVAL;
++	aligned = malloc(length);
++	if (!aligned)
++		return -ENOMEM;
++	memcpy(aligned, data, length);
++	ret = fdt_check_full(aligned, length);
++	if (!ret)
++		ret = fdt_node_check_compatible(aligned, 0, "tplink,vb235v");
++	free(aligned);
++	return ret ? -EXDEV : 0;
++}
++
++int vb_fit_validate(const void *image, size_t length)
++{
++	int images, configs, conf, node, hash_node, len, count = 0;
++	const char *name, *type, *arch, *algo;
++	const void *data, *value;
++	u8 hash[32];
++	const char *references[] = { "kernel", "fdt", "ramdisk" };
++	unsigned int i;
++
++	if (!image || length < 40 || length > 0x5000000 || fdt_check_full(image, length))
++		return -EINVAL;
++	if (fdt_totalsize(image) != length)
++		return -EINVAL;
++	images = fdt_path_offset(image, "/images");
++	configs = fdt_path_offset(image, "/configurations");
++	if (images < 0 || configs < 0)
++		return -EINVAL;
++	name = fdt_getprop(image, configs, "default", &len);
++	if (!single_string(name, len))
++		return -EINVAL;
++	conf = fdt_subnode_offset(image, configs, name);
++	if (conf < 0 || fdt_node_check_compatible(image, conf, "tplink,vb235v") ||
++	    fdt_getprop(image, conf, "vb235v,recovery-core", NULL))
++		return -EXDEV;
++	value = fdt_getprop(image, conf, "vb235v,firmware-image", &len);
++	if (!value || len != 4 || fdt32_to_cpu(*(const fdt32_t *)value) != 1)
++		return -EINVAL;
++	value = fdt_getprop(image, conf, "vb235v,sequence", &len);
++	if (!value || len != 4 || !fdt32_to_cpu(*(const fdt32_t *)value))
++		return -EINVAL;
++	for (i = 0; i < ARRAY_SIZE(references); i++) {
++		name = fdt_getprop(image, conf, references[i], &len);
++		if (!name && i == 2)
++			continue;
++		if (!single_string(name, len))
++			return -EINVAL;
++		node = fdt_subnode_offset(image, images, name);
++		type = fdt_getprop(image, node, "type", &len);
++		if (!single_string(type, len) || strcmp(type, i == 1 ? "flat_dt" : references[i]))
++			return -EINVAL;
++		arch = fdt_getprop(image, node, "arch", &len);
++		if (!single_string(arch, len) || strcmp(arch, "arm64"))
++			return -EINVAL;
++		algo = fdt_getprop(image, node, "compression", &len);
++		if (!single_string(algo, len) ||
++		    (strcmp(algo, "none") && (i == 1 || (strcmp(algo, "gzip") && strcmp(algo, "lzma")))))
++			return -EINVAL;
++		if (i == 0) {
++			algo = fdt_getprop(image, node, "os", &len);
++			if (!single_string(algo, len) || strcmp(algo, "linux"))
++				return -EINVAL;
++		}
++		data = fdt_getprop(image, node, "data", &len);
++		if (!data || len <= 0)
++			return -EINVAL;
++		if (i == 1 && validate_board_dtb(data, len))
++			return -EXDEV;
++		sha256_csum_wd(data, len, hash, CHUNKSZ_SHA256);
++		hash_node = fdt_first_subnode(image, node);
++		if (hash_node < 0 || strncmp(fdt_get_name(image, hash_node, NULL), "hash", 4) ||
++		    fdt_next_subnode(image, hash_node) >= 0)
++			return -EINVAL;
++		algo = fdt_getprop(image, hash_node, "algo", &len);
++		if (!single_string(algo, len) || strcmp(algo, "sha256"))
++			return -EINVAL;
++		value = fdt_getprop(image, hash_node, "value", &len);
++		if (!value || len != 32 || memcmp(value, hash, 32))
++			return -EBADMSG;
++		count++;
++	}
++	fdt_for_each_subnode(node, image, images)
++		count--;
++	return count ? -EINVAL : 0;
++}
++
++static int factory_slot(void)
++{
++	u8 flag[8], checksum = 0;
++	unsigned int i;
++	int ret = vb_storage_read(vb_target_find("reserve"), 0, flag, sizeof(flag));
++
++	if (ret)
++		return ret;
++	for (i = 0; i < 7; i++)
++		checksum += flag[i];
++	/* The format is checked, rather than defaulting unknown data to slot 0. */
++	if (checksum != flag[7])
++		return -EBADMSG;
++	for (i = 0; i < 6; i++)
++		if (flag[i] > 1)
++			return -EINVAL;
++	return flag[4] && flag[5] ? 1 : 0;
++}
++
++static u32 fit_sequence(const void *image)
++{
++	int configs = fdt_path_offset(image, "/configurations");
++	const char *name = fdt_getprop(image, configs, "default", NULL);
++	int conf = fdt_subnode_offset(image, configs, name);
++	const fdt32_t *value = fdt_getprop(image, conf, "vb235v,sequence", NULL);
++
++	return fdt32_to_cpu(*value);
++}
++
++int vb_active_slot(void)
++{
++	const struct vb_target *target;
++	u8 *image = (void *)VB_SLOT_SCRATCH;
++	u32 length, sequence;
++	int slot, selected, ret;
++
++	if (cached_active != -99)
++		return cached_active;
++	ret = vb_storage_init();
++	if (ret)
++		return ret;
++	if (gd->start_addr_sp < VB_SLOT_SCRATCH + 0x5000000)
++		return -ENOMEM;
++	selected = factory_slot();
++	cached_sequence = 0;
++	for (slot = 0; slot < 2; slot++) {
++		target = vb_target_find(slot ? "slot1" : "slot0");
++		if (mapped_read(target->offset, image, VB_PAGE) || fdt_check_header(image))
++			continue;
++		length = fdt_totalsize(image);
++		if (length < 40 || length > target->size ||
++		    mapped_read(target->offset, image, length) || vb_fit_validate(image, length))
++			continue;
++		sequence = fit_sequence(image);
++		if (sequence > cached_sequence) {
++			selected = slot;
++			cached_sequence = sequence;
++		}
++	}
++	cached_active = selected;
++	return selected;
++}
++
++int vb_storage_install(unsigned int slot, const void *image, size_t length,
++		       const char *expected)
++{
++	const struct vb_target *target;
++	u32 address, physical, page, count;
++	u16 metadata_index;
++	u8 metadata[2];
++	struct mtd_oob_ops ops;
++	u8 hash[32], verify[VB_PAGE], padded[VB_PAGE];
++	char hex[65];
++	int i, ret, active;
++	struct erase_info erase;
++
++	if (slot > 1 || !expected || strlen(expected) != 64)
++		return -EINVAL;
++	ret = vb_storage_init();
++	if (ret || !anchors_verified)
++		return ret ? ret : -EXDEV;
++	active = vb_active_slot();
++	if (active < 0 || active == slot)
++		return active < 0 ? active : -EPERM;
++	ret = vb_fit_validate(image, length);
++	if (ret)
++		return ret;
++	if (fit_sequence(image) <= cached_sequence)
++		return -ERANGE;
++	sha256_csum_wd(image, length, hash, CHUNKSZ_SHA256);
++	for (i = 0; i < 32; i++)
++		sprintf(hex + 2 * i, "%02x", hash[i]);
++	if (strcmp(hex, expected))
++		return -EBADMSG;
++	target = vb_target_find(slot ? "slot1" : "slot0");
++	/* Only the inactive firmware partition is writable through this API.
++	 * Boot stages, ART, misc, selector and mapping tables stay untouched.
++	 */
++	for (address = 0; address < length; address += VB_ERASE) {
++		ret = vb_translate(&mapping, target->offset + address, &physical);
++		if (ret)
++			return ret;
++		memset(&erase, 0, sizeof(erase));
++		erase.addr = physical;
++		erase.len = VB_ERASE;
++		ret = mtd_erase(flash, &erase);
++		if (ret)
++			return ret;
++		for (page = 0; page < VB_ERASE && address + page < length; page += VB_PAGE) {
++			count = min_t(u32, VB_PAGE, length - address - page);
++			memset(padded, 0xff, sizeof(padded));
++			memcpy(padded, (const u8 *)image + address + page, count);
++			metadata_index = physical / VB_ERASE;
++			for (i = 0; i < mapping.mapped_count; i++)
++				if (mapping.replacement[i] == metadata_index) {
++					metadata_index = mapping.bad[i];
++					break;
++				}
++			metadata[0] = metadata_index & 255;
++			metadata[1] = metadata_index >> 8;
++			memset(&ops, 0, sizeof(ops));
++			ops.mode = MTD_OPS_PLACE_OOB;
++			ops.len = VB_PAGE;
++			ops.datbuf = padded;
++			ops.ooboffs = 2;
++			ops.ooblen = sizeof(metadata);
++			ops.oobbuf = metadata;
++			ret = mtd_write_oob(flash, physical + page, &ops);
++			if (ret || ops.retlen != VB_PAGE || ops.oobretlen != sizeof(metadata))
++				return ret ? ret : -EIO;
++			ret = physical_read(physical + page, verify, VB_PAGE);
++			if (ret || memcmp(padded, verify, VB_PAGE))
++				return ret ? ret : -EIO;
++		}
++	}
++	ret = anchor_hash(target->offset, length, expected);
++	if (!ret) {
++		cached_active = slot;
++		cached_sequence = fit_sequence(image);
++	}
++	return ret;
++}
++
++int vb_boot(void)
++{
++	u8 *image;
++	int active, slot, attempt, ret;
++	u32 length;
++	const struct vb_target *target;
++
++	active = vb_active_slot();
++	if (active < 0)
++		active = 0;
++	for (attempt = 0; attempt < 2; attempt++) {
++		slot = active ^ attempt;
++		target = vb_target_find(slot ? "slot1" : "slot0");
++		image = (void *)0x90000000;
++		ret = vb_storage_read(target, 0, image, VB_PAGE);
++		if (ret || fdt_check_header(image))
++			continue;
++		length = fdt_totalsize(image);
++		if (length < 40 || length > target->size)
++			continue;
++		ret = vb_storage_read(target, 0, image, length);
++		if (ret || vb_fit_validate(image, length))
++			continue;
++		printf("Booting verified FIT in slot %d\n", slot);
++		ret = run_command("bootm 0x90000000", 0);
++		if (!ret)
++			return 0;
++	}
++	return vb_factory_boot();
++}
++
++static int do_vb(struct cmd_tbl *cmd, int flag, int argc, char *const argv[])
++{
++	const struct vb_target *target;
++	u32 length;
++	ulong address;
++	int ret;
++
++	if (argc < 2)
++		return CMD_RET_USAGE;
++	if (!strcmp(argv[1], "recover") && argc == 2) {
++		ret = vb_httpd_window();
++	} else if (!strcmp(argv[1], "info") && argc == 2) {
++		ret = vb_storage_init();
++		printf("%s; active slot %d\n", vb_storage_status(), vb_active_slot());
++	} else if (!strcmp(argv[1], "backup") && argc == 4) {
++		target = vb_target_find(argv[2]);
++		address = hextoul(argv[3], NULL);
++		if (!target || target->physical_raw || target->size > 0x5000000 ||
++		    address != 0x90000000)
++			return CMD_RET_USAGE;
++		ret = vb_storage_read(target, 0, (void *)address, target->size);
++		if (!ret) {
++			env_set_hex("fileaddr", address);
++			env_set_hex("filesize", target->size);
++		}
++	} else if (!strcmp(argv[1], "install") && argc == 6) {
++		address = hextoul(argv[3], NULL);
++		length = hextoul(argv[4], NULL);
++		if (address != 0x90000000 || length > 0x5000000 ||
++		    (strcmp(argv[2], "0") && strcmp(argv[2], "1")))
++			return CMD_RET_USAGE;
++		ret = vb_storage_install(argv[2][0] - '0', (void *)address, length, argv[5]);
++	} else if (!strcmp(argv[1], "boot") && argc == 2) {
++		ret = vb_boot();
++	} else {
++		return CMD_RET_USAGE;
++	}
++	printf("VB235v result: %d\n", ret);
++	return ret ? CMD_RET_FAILURE : CMD_RET_SUCCESS;
++}
++
++U_BOOT_CMD(vb, 6, 0, do_vb, "VB235v mapped storage and recovery",
++	"info | backup <bootloader|art|misc|slot0|slot1|reserve> 90000000\n"
++	"vb install <0|1> 90000000 <hex-size> <sha256>\n"
++	"vb boot");
+diff --git a/cmd/Kconfig b/cmd/Kconfig
+index c702d690..91837a2a 100644
+--- a/cmd/Kconfig
++++ b/cmd/Kconfig
+@@ -2296,7 +2296,7 @@ config CMD_WGET
+ config CMD_HTTPD
+ 	bool "httpd"
+ 	depends on NET_LWIP
+-	depends on !ARCH_AIROHA || AIROHA_HTTP_RECOVERY
++	depends on !ARCH_AIROHA || AIROHA_HTTP_RECOVERY || HTTPD_RAM_RECOVERY || VB235V_RECOVERY
+ 	select BUILD_BIN2C
+ 	select PROT_TCP_LWIP
+ 	help
+@@ -2304,6 +2304,14 @@ config CMD_HTTPD
+ 	  service supports RAM uploads and downloads, command execution, and
+ 	  boot or reset actions.
+ 
++config HTTPD_RAM_RECOVERY
++	bool "RAM-only HTTP upload service"
++	depends on NET_LWIP
++	select SHA256
++	help
++	  Replace the management backend with bounded allocated-RAM upload and
++	  status APIs. No storage, environment edit or command execution API.
++
+ config HTTPD_DHCP_SERVER
+ 	bool "DHCP server for httpd"
+ 	depends on CMD_HTTPD
+diff --git a/configs/an7583_vb235v_ram_defconfig b/configs/an7583_vb235v_ram_defconfig
+new file mode 100644
+index 00000000..8d991de1
+--- /dev/null
++++ b/configs/an7583_vb235v_ram_defconfig
+@@ -0,0 +1,54 @@
++CONFIG_ARM=y
++CONFIG_ARCH_AIROHA=y
++CONFIG_TARGET_AN7583=y
++CONFIG_VB235V_RAM_RECOVERY=y
++# CONFIG_AIROHA_HTTP_RECOVERY is not set
++# CONFIG_AIROHA_UBI_ENV is not set
++CONFIG_POSITION_INDEPENDENT=y
++CONFIG_TEXT_BASE=0x81e00000
++CONFIG_SYS_MALLOC_F_LEN=0x4000
++CONFIG_SYS_MALLOC_LEN=0x2000000
++CONFIG_NR_DRAM_BANKS=1
++CONFIG_SYS_LOAD_ADDR=0x90000000
++CONFIG_BUILD_TARGET="u-boot.bin"
++CONFIG_BOOTDELAY=-1
++# CONFIG_USE_PREBOOT is not set
++CONFIG_ENV_IS_NOWHERE=y
++CONFIG_ENV_SIZE=0x4000
++CONFIG_ENV_SOURCE_FILE="an7583_vb235v_ram"
++CONFIG_HUSH_PARSER=y
++CONFIG_SYS_PROMPT="VB235v-RAM> "
++CONFIG_SYS_MAXARGS=16
++CONFIG_FIT=y
++CONFIG_FIT_VERBOSE=y
++CONFIG_CMD_BOOTI=y
++CONFIG_CMD_IMI=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_LOADS=y
++CONFIG_CMD_HASH=y
++CONFIG_SHA256=y
++CONFIG_CMD_BDI=y
++CONFIG_CMD_MEMORY=y
++CONFIG_CMD_CACHE=y
++# CONFIG_CMD_SAVEENV is not set
++# CONFIG_CMD_ERASEENV is not set
++# CONFIG_CMD_FLASH is not set
++# CONFIG_CMD_SF is not set
++# CONFIG_CMD_MTD is not set
++# CONFIG_CMD_NAND is not set
++# CONFIG_CMD_UBI is not set
++# CONFIG_MTD is not set
++# CONFIG_SPI is not set
++# CONFIG_MMC is not set
++# CONFIG_PCI is not set
++# CONFIG_USB is not set
++# CONFIG_WDT is not set
++# CONFIG_WATCHDOG is not set
++# CONFIG_BUTTON is not set
++# CONFIG_LED is not set
++# CONFIG_EFI_LOADER is not set
++CONFIG_DM_SERIAL=y
++CONFIG_SYS_NS16550=y
++# CONFIG_SYS_CONSOLE_IS_IN_ENV is not set
++CONFIG_DEFAULT_DEVICE_TREE="an7583-vb235v-ram"
++# CONFIG_NET is not set
+diff --git a/configs/an7583_vb235v_ram_net_defconfig b/configs/an7583_vb235v_ram_net_defconfig
+new file mode 100644
+index 00000000..570ba8da
+--- /dev/null
++++ b/configs/an7583_vb235v_ram_net_defconfig
+@@ -0,0 +1,75 @@
++CONFIG_ARM=y
++CONFIG_ARCH_AIROHA=y
++CONFIG_TARGET_AN7583=y
++CONFIG_VB235V_RAM_RECOVERY=y
++# CONFIG_AIROHA_HTTP_RECOVERY is not set
++# CONFIG_AIROHA_UBI_ENV is not set
++CONFIG_POSITION_INDEPENDENT=y
++CONFIG_TEXT_BASE=0x81e00000
++CONFIG_SYS_MALLOC_F_LEN=0x4000
++CONFIG_SYS_MALLOC_LEN=0x2000000
++CONFIG_NR_DRAM_BANKS=1
++CONFIG_SYS_LOAD_ADDR=0x90000000
++CONFIG_BUILD_TARGET="u-boot.bin"
++CONFIG_BOOTDELAY=-1
++# CONFIG_USE_PREBOOT is not set
++CONFIG_ENV_IS_NOWHERE=y
++CONFIG_ENV_SIZE=0x4000
++CONFIG_ENV_SOURCE_FILE="an7583_vb235v_ram"
++CONFIG_HUSH_PARSER=y
++CONFIG_SYS_PROMPT="VB235v-RAM> "
++CONFIG_SYS_MAXARGS=16
++CONFIG_FIT=y
++CONFIG_FIT_VERBOSE=y
++CONFIG_CMD_BOOTI=y
++CONFIG_CMD_IMI=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_LOADS=y
++CONFIG_CMD_HASH=y
++CONFIG_SHA256=y
++CONFIG_CMD_BDI=y
++CONFIG_CMD_MEMORY=y
++CONFIG_CMD_CACHE=y
++# CONFIG_CMD_SAVEENV is not set
++# CONFIG_CMD_ERASEENV is not set
++# CONFIG_CMD_FLASH is not set
++# CONFIG_CMD_SF is not set
++# CONFIG_CMD_MTD is not set
++# CONFIG_CMD_NAND is not set
++# CONFIG_CMD_UBI is not set
++# CONFIG_MTD is not set
++# CONFIG_SPI is not set
++# CONFIG_MMC is not set
++# CONFIG_PCI is not set
++# CONFIG_USB is not set
++# CONFIG_WDT is not set
++# CONFIG_WATCHDOG is not set
++# CONFIG_BUTTON is not set
++# CONFIG_LED is not set
++# CONFIG_EFI_LOADER is not set
++CONFIG_DM_SERIAL=y
++CONFIG_SYS_NS16550=y
++# CONFIG_SYS_CONSOLE_IS_IN_ENV is not set
++CONFIG_DEFAULT_DEVICE_TREE="an7583-vb235v-ram-net"
++CONFIG_NET=y
++CONFIG_NET_LWIP=y
++CONFIG_CMD_HTTPD=y
++CONFIG_HTTPD_RAM_RECOVERY=y
++CONFIG_HTTPD_SERVER_IP="192.168.0.1"
++CONFIG_HTTPD_SERVER_NETMASK="255.255.255.0"
++# CONFIG_HTTPD_DHCP_SERVER is not set
++CONFIG_NET_RANDOM_ETHADDR=y
++CONFIG_SYS_RX_ETH_BUFFER=8
++CONFIG_AIROHA_ETH=y
++CONFIG_DM_MDIO=y
++CONFIG_REGMAP=y
++CONFIG_SYSCON=y
++CONFIG_CLK=y
++CONFIG_DMA=y
++CONFIG_PHY=y
++CONFIG_PINCTRL=y
++CONFIG_PINCTRL_AIROHA_AN7583=y
++CONFIG_DM_GPIO=y
++CONFIG_POWER_DOMAIN=y
++CONFIG_DM_REGULATOR=y
++CONFIG_DM_REGULATOR_FIXED=y
+diff --git a/configs/an7583_vb235v_recovery_defconfig b/configs/an7583_vb235v_recovery_defconfig
+new file mode 100644
+index 00000000..4f45bd48
+--- /dev/null
++++ b/configs/an7583_vb235v_recovery_defconfig
+@@ -0,0 +1,91 @@
++CONFIG_ARM=y
++CONFIG_ARCH_AIROHA=y
++CONFIG_TARGET_AN7583=y
++CONFIG_VB235V_RAM_RECOVERY=y
++# CONFIG_AIROHA_HTTP_RECOVERY is not set
++# CONFIG_AIROHA_UBI_ENV is not set
++CONFIG_POSITION_INDEPENDENT=y
++CONFIG_TEXT_BASE=0x81e00000
++CONFIG_SYS_MALLOC_F_LEN=0x4000
++CONFIG_SYS_MALLOC_LEN=0x4000000
++CONFIG_NR_DRAM_BANKS=1
++CONFIG_SYS_LOAD_ADDR=0x90000000
++CONFIG_BUILD_TARGET="u-boot.bin"
++CONFIG_BOOTDELAY=3
++# CONFIG_USE_PREBOOT is not set
++CONFIG_ENV_IS_NOWHERE=y
++CONFIG_ENV_SIZE=0x4000
++CONFIG_ENV_SOURCE_FILE="an7583_vb235v_recovery"
++CONFIG_HUSH_PARSER=y
++CONFIG_SYS_PROMPT="VB235v-Recovery> "
++CONFIG_SYS_MAXARGS=16
++CONFIG_FIT=y
++CONFIG_FIT_VERBOSE=y
++CONFIG_CMD_BOOTI=y
++CONFIG_CMD_IMI=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_LOADS=y
++CONFIG_CMD_HASH=y
++CONFIG_SHA256=y
++CONFIG_CMD_BDI=y
++CONFIG_CMD_MEMORY=y
++CONFIG_CMD_CACHE=y
++# CONFIG_CMD_SAVEENV is not set
++# CONFIG_CMD_ERASEENV is not set
++# CONFIG_CMD_FLASH is not set
++# CONFIG_CMD_SF is not set
++# CONFIG_CMD_MTD is not set
++# CONFIG_CMD_NAND is not set
++# CONFIG_CMD_UBI is not set
++# CONFIG_MMC is not set
++# CONFIG_PCI is not set
++# CONFIG_USB is not set
++# CONFIG_WDT is not set
++# CONFIG_WATCHDOG is not set
++# CONFIG_BUTTON is not set
++# CONFIG_LED is not set
++# CONFIG_EFI_LOADER is not set
++CONFIG_DM_SERIAL=y
++CONFIG_SYS_NS16550=y
++# CONFIG_SYS_CONSOLE_IS_IN_ENV is not set
++CONFIG_DEFAULT_DEVICE_TREE="an7583-vb235v-recovery"
++CONFIG_NET=y
++CONFIG_NET_LWIP=y
++CONFIG_CMD_HTTPD=y
++CONFIG_HTTPD_SERVER_IP="192.168.1.1"
++CONFIG_HTTPD_SERVER_NETMASK="255.255.255.0"
++CONFIG_HTTPD_DHCP_SERVER=y
++CONFIG_HTTPD_DHCP_POOL_START=2
++CONFIG_HTTPD_DHCP_POOL_END=2
++CONFIG_NET_RANDOM_ETHADDR=y
++CONFIG_SYS_RX_ETH_BUFFER=8
++CONFIG_AIROHA_ETH=y
++CONFIG_DM_MDIO=y
++CONFIG_REGMAP=y
++CONFIG_SYSCON=y
++CONFIG_CLK=y
++CONFIG_DMA=y
++CONFIG_PHY=y
++CONFIG_PINCTRL=y
++CONFIG_PINCTRL_AIROHA_AN7583=y
++CONFIG_DM_GPIO=y
++CONFIG_POWER_DOMAIN=y
++CONFIG_DM_REGULATOR=y
++CONFIG_DM_REGULATOR_FIXED=y
++CONFIG_VB235V_RECOVERY=y
++CONFIG_MTD=y
++CONFIG_DM_MTD=y
++CONFIG_MTD_SPI_NAND=y
++CONFIG_SPI=y
++CONFIG_DM_SPI=y
++CONFIG_AIROHA_SNFI_SPI=y
++CONFIG_LZMA=y
++CONFIG_LEGACY_IMAGE_FORMAT=y
++CONFIG_CMD_TFTPBOOT=y
++CONFIG_CMD_TFTPPUT=y
++CONFIG_CMD_DHCP=y
++CONFIG_CMD_PING=y
++# CONFIG_ARMV8_SWITCH_TO_EL1 is not set
++# CONFIG_MTD_UBI is not set
++
++# CONFIG_ENV_IS_IN_MTD is not set
+diff --git a/include/vb235v-recovery.h b/include/vb235v-recovery.h
+new file mode 100644
+index 00000000..77ecaffd
+--- /dev/null
++++ b/include/vb235v-recovery.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++#ifndef VB235V_RECOVERY_H
++#define VB235V_RECOVERY_H
++#include <linux/types.h>
++struct vb_target { const char *name; u32 offset, size; bool physical_raw; };
++int vb_storage_init(void);
++const struct vb_target *vb_target_find(const char *name);
++int vb_storage_read(const struct vb_target *target, u32 offset, void *buffer, size_t length);
++int vb_fit_validate(const void *image, size_t length);
++int vb_storage_install(unsigned int slot, const void *image, size_t length, const char *sha256);
++int vb_boot(void);
++int vb_httpd_window(void);
++int vb_factory_boot(void);
++int vb_active_slot(void);
++const char *vb_storage_status(void);
++#endif
+diff --git a/net/lwip/Makefile b/net/lwip/Makefile
+index af85f171..3f284b96 100644
+--- a/net/lwip/Makefile
++++ b/net/lwip/Makefile
+@@ -3,8 +3,14 @@ ccflags-y += -I$(srctree)/lib/lwip/lwip/src/include -I$(srctree)/lib/lwip/u-boot
+ obj-$(CONFIG_$(PHASE_)DM_ETH) += net-lwip.o
+ obj-$(CONFIG_CMD_DHCP) += dhcp.o
+ obj-$(CONFIG_DNS) += dns.o
++ifeq ($(CONFIG_VB235V_RECOVERY),y)
++obj-$(CONFIG_CMD_HTTPD) += httpd-vb235v.o
++else ifeq ($(CONFIG_HTTPD_RAM_RECOVERY),y)
++obj-$(CONFIG_CMD_HTTPD) += httpd-ram.o
++else
+ obj-$(CONFIG_CMD_HTTPD) += httpd.o
+ obj-$(CONFIG_CMD_HTTPD) += httpd_page.o
++endif
+ obj-$(CONFIG_HTTPD_DHCP_SERVER) += httpd-dhcp.o
+ obj-$(CONFIG_LWIP_ICMP_SHOW_UNREACH) += icmp_unreach.o
+ obj-$(CONFIG_CMD_NFS) += nfs.o
+diff --git a/net/lwip/httpd-dhcp.c b/net/lwip/httpd-dhcp.c
+index bbfed08b..04940bf5 100644
+--- a/net/lwip/httpd-dhcp.c
++++ b/net/lwip/httpd-dhcp.c
+@@ -263,6 +263,10 @@ static void dhcp_receive(void *arg, struct udp_pcb *pcb, struct pbuf *p,
+ 	    request.cookie != PP_HTONL(DHCP_MAGIC_COOKIE) ||
+ 	    dhcp_parse_options(&request, p->tot_len, &options))
+ 		goto out;
++#ifdef CONFIG_VB235V_RECOVERY
++	if (env_get_yesno("vb_dhcp_debug") == 1)
++		printf("Recovery DHCP UDP request type: %d\n", options.type);
++#endif
+ 	if (options.server && options.server != dhcp_server_addr.addr)
+ 		goto out;
+ 	if (options.type == DHCP_RELEASE) {
+diff --git a/net/lwip/httpd-ram.c b/net/lwip/httpd-ram.c
+new file mode 100644
+index 00000000..c9970f51
+--- /dev/null
++++ b/net/lwip/httpd-ram.c
+@@ -0,0 +1,234 @@
++// SPDX-License-Identifier: GPL-2.0+
++/* VB235v development recovery: uploads live only in allocated RAM. */
++#include <command.h>
++#include <console.h>
++#include <env.h>
++#include <malloc.h>
++#include <net.h>
++#include <net-lwip.h>
++#include <net/httpd.h>
++#include <u-boot/sha256.h>
++#include <lwip/apps/fs.h>
++#include <lwip/apps/httpd.h>
++#include <lwip/pbuf.h>
++
++#define RAM_UPLOAD_LIMIT (16U * 1024 * 1024)
++
++static void *upload_connection;
++static unsigned char *upload_buffer;
++static size_t upload_expected, upload_received, upload_ready;
++static bool upload_failed, running;
++static char upload_hash[SHA256_SUM_LEN * 2 + 1];
++
++static const char page[] =
++ "<!doctype html><meta charset=utf-8><title>VB235v RAM recovery</title>"
++ "<style>body{font:18px system-ui;max-width:48em;margin:3em auto;padding:1em}"
++ "button,input{font:inherit;margin:.5em}pre{white-space:pre-wrap}</style>"
++ "<h1>VB235v RAM recovery / 内存恢复开发版</h1>"
++ "<p>文件仅接收到内存，最大 16 MiB。此页面不刷写闪存、不执行命令。"
++ "上传不会自动启动；返回串口后需另行核对镜像和地址。</p>"
++ "<input id=f type=file><button id=u>上传到 RAM</button><pre id=s></pre>"
++ "<script>const s=document.getElementById('s');"
++ "document.getElementById('u').onclick=async()=>{"
++ "const f=document.getElementById('f').files[0];if(!f)return;"
++ "if(!f.size||f.size>16777216){s.textContent='文件大小无效';return;}"
++ "document.getElementById('u').disabled=true;try{"
++ "s.textContent='正在上传';let r=await fetch('/api/upload',"
++ "{method:'POST',headers:{'Content-Type':'application/octet-stream'},body:f});"
++ "let t=await r.json();s.textContent=JSON.stringify(t,null,2);"
++ "if(t.ready&&window.crypto&&crypto.subtle){let d=await crypto.subtle.digest('SHA-256',await f.arrayBuffer());"
++ "let h=Array.from(new Uint8Array(d),x=>x.toString(16).padStart(2,'0')).join('');"
++ "s.textContent+='\\n本机 SHA-256: '+h+'\\n'+(h===t.sha256?'校验一致':'校验不一致');}"
++ "}catch(e){s.textContent=String(e);}finally{"
++ "document.getElementById('u').disabled=false;}};</script>";
++
++static void clear_ready(void)
++{
++	upload_ready = 0;
++	upload_hash[0] = '\0';
++	env_set("fileaddr", NULL);
++	env_set("filesize", NULL);
++}
++
++static int response(struct fs_file *file, const char *body,
++		    const char *type, int status)
++{
++	size_t len = strlen(body);
++	char *data = malloc(len + 192);
++	int head;
++
++	if (!data)
++		return 0;
++	head = snprintf(data, 192, "HTTP/1.1 %d %s\r\nContent-Type: %s\r\n"
++			"Content-Length: %zu\r\nCache-Control: no-store\r\n"
++			"Connection: close\r\n\r\n", status,
++			status == 200 ? "OK" : "Error", type, len);
++	memcpy(data + head, body, len);
++	file->data = data;
++	file->len = head + len;
++	file->index = file->len;
++	file->flags = FS_FILE_FLAGS_HEADER_INCLUDED;
++	file->pextension = data;
++	return 1;
++}
++
++int fs_open_custom(struct fs_file *file, const char *name)
++{
++	char body[256];
++
++	if (!strcmp(name, "/") || !strcmp(name, "/index.html"))
++		return response(file, page, "text/html; charset=utf-8", 200);
++	if (!strcmp(name, "/api/device"))
++		return response(file, "{\"model\":\"VB235v development\","
++			"\"ram_only\":true,\"flash\":false,\"execute\":false,"
++			"\"max_upload\":16777216}", "application/json", 200);
++	if (!strcmp(name, "/api/status")) {
++		snprintf(body, sizeof(body), "{\"ready\":%s,\"receiving\":%s,"
++			 "\"bytes\":%zu,\"address\":\"0x%lx\",\"sha256\":\"%s\"}",
++			 upload_ready ? "true" : "false",
++			 upload_connection ? "true" : "false", upload_ready,
++			 upload_ready ? (ulong)upload_buffer : 0, upload_hash);
++		return response(file, body, "application/json", 200);
++	}
++	return response(file, "{\"error\":\"unsupported request\"}",
++			"application/json", 400);
++}
++
++void fs_close_custom(struct fs_file *file)
++{
++	free(file->pextension);
++	file->pextension = NULL;
++}
++
++int fs_read_custom(struct fs_file *file, char *buffer, int count)
++{
++	return FS_READ_EOF;
++}
++
++err_t httpd_post_begin(void *connection, const char *uri,
++		       const char *request, u16_t request_len, int content_len,
++		       char *response_uri, u16_t response_len, u8_t *auto_wnd)
++{
++	unsigned char *new_buffer;
++
++	strlcpy(response_uri, "/api/error", response_len);
++	if (!connection || upload_connection || strcmp(uri, "/api/upload") ||
++	    content_len <= 0 || content_len > RAM_UPLOAD_LIMIT)
++		return ERR_ARG;
++	clear_ready();
++	free(upload_buffer);
++	upload_buffer = NULL;
++	new_buffer = malloc(content_len);
++	if (!new_buffer)
++		return ERR_MEM;
++	upload_buffer = new_buffer;
++	upload_connection = connection;
++	upload_expected = content_len;
++	upload_received = 0;
++	upload_failed = false;
++	*auto_wnd = 1;
++	return ERR_OK;
++}
++
++err_t httpd_post_receive_data(void *connection, struct pbuf *p)
++{
++	u16_t copied;
++	size_t len;
++
++	if (!p)
++		return ERR_ARG;
++	len = p->tot_len;
++	if (connection != upload_connection || !upload_connection) {
++		pbuf_free(p);
++		return ERR_ARG;
++	}
++	if (upload_failed || len > upload_expected - upload_received) {
++		upload_failed = true;
++		pbuf_free(p);
++		return ERR_ARG;
++	}
++	copied = pbuf_copy_partial(p, upload_buffer + upload_received, len, 0);
++	pbuf_free(p);
++	if (copied != len) {
++		upload_failed = true;
++		return ERR_ARG;
++	}
++	upload_received += len;
++	return ERR_OK;
++}
++
++void httpd_post_finished(void *connection, char *response_uri, u16_t len)
++{
++	unsigned char hash[SHA256_SUM_LEN];
++	int i;
++
++	strlcpy(response_uri, "/api/error", len);
++	if (!upload_connection || connection != upload_connection)
++		return;
++	if (!upload_failed && upload_received == upload_expected) {
++		sha256_csum_wd(upload_buffer, upload_received, hash, CHUNKSZ_SHA256);
++		for (i = 0; i < SHA256_SUM_LEN; i++)
++			sprintf(upload_hash + i * 2, "%02x", hash[i]);
++		if (!env_set_hex("fileaddr", (ulong)upload_buffer) &&
++		    !env_set_hex("filesize", upload_received)) {
++			upload_ready = upload_received;
++			strlcpy(response_uri, "/api/status", len);
++			printf("RAM upload: %zu bytes at %p, SHA256 %s\n",
++			       upload_ready, upload_buffer, upload_hash);
++		} else {
++			clear_ready();
++		}
++	}
++	upload_connection = NULL;
++}
++
++bool uboot_httpd_is_running(void)
++{
++	return running;
++}
++
++int uboot_httpd_start(bool with_dhcp)
++{
++	struct udevice *dev;
++	struct netif *netif;
++	int ret = 0;
++
++	if (running)
++		return -EBUSY;
++	if (with_dhcp)
++		return -EOPNOTSUPP;
++	if (env_set("ipaddr", CONFIG_HTTPD_SERVER_IP) ||
++	    env_set("netmask", CONFIG_HTTPD_SERVER_NETMASK))
++		return -ENOMEM;
++	ret = net_lwip_eth_start();
++	if (ret)
++		return ret;
++	dev = eth_get_dev();
++	netif = net_lwip_new_netif(dev);
++	if (!netif) {
++		net_lwip_eth_stop();
++		return -ENODEV;
++	}
++	running = true;
++	httpd_init();
++	printf("VB235v RAM-only HTTP: http://%s/ (static IP, Ctrl-C exits)\n",
++	       CONFIG_HTTPD_SERVER_IP);
++	clear_ctrlc();
++	while (!ctrlc()) {
++		ret = net_lwip_rx(dev, netif);
++		if (ret == -ENETDOWN || ret == -ENOLINK)
++			ret = 0;
++		if (ret < 0)
++			break;
++	}
++	httpd_stop();
++	if (upload_connection) {
++		upload_connection = NULL;
++		clear_ready();
++	}
++	net_lwip_remove_netif(netif);
++	net_lwip_eth_stop();
++	running = false;
++	clear_ctrlc();
++	return ret < 0 ? ret : 0;
++}
+diff --git a/net/lwip/httpd-vb235v.c b/net/lwip/httpd-vb235v.c
+new file mode 100644
+index 00000000..27a6ec5c
+--- /dev/null
++++ b/net/lwip/httpd-vb235v.c
+@@ -0,0 +1,382 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <asm/global_data.h>
++#include <command.h>
++#include <console.h>
++#include <env.h>
++#include <time.h>
++#include <malloc.h>
++#include <net.h>
++#include <net-lwip.h>
++#include <net/httpd.h>
++#include <u-boot/sha256.h>
++#include <vb235v-recovery.h>
++#include <lwip/apps/fs.h>
++#include <lwip/apps/httpd.h>
++#include <lwip/pbuf.h>
++
++DECLARE_GLOBAL_DATA_PTR;
++
++#define MAX_UPLOAD 0x5000000U
++#ifndef UPLOAD_ADDRESS
++#define UPLOAD_ADDRESS 0x90000000UL
++#endif
++static void *receiving;
++static u32 expected_bytes, received_bytes, ready_bytes;
++static bool failed, running;
++static char digest[65], status_json[512];
++static int operation_result, pending_slot = -1;
++static bool pending_boot, awaiting_reply;
++static enum { POST_UPLOAD, POST_INSTALL, POST_BOOT } post_kind;
++static unsigned int downloads;
++static bool auto_window, client_seen;
++struct owner {
++	char *allocated;
++	const struct vb_target *target;
++	u32 length, position;
++	char header[256];
++	int header_length;
++	bool task_reply;
++};
++
++static const char page[] =
++ "<!doctype html><meta charset=utf-8><title>VB235v Recovery</title>"
++ "<style>body{font:17px system-ui;max-width:58em;margin:2em auto;padding:1em}"
++ "button,input{font:inherit;margin:.4em}pre{white-space:pre-wrap}a{margin:.5em}</style>"
++ "<h1>VB235v 恢复控制台</h1><pre id=status>正在读取设备状态</pre>"
++ "<h2>备份</h2><p>校准备份请同时保存 ART 和 misc。完整物理镜像包含 main+OOB。</p>"
++ "<p><a href=/api/backup/bootloader>引导区</a><a href=/api/backup/art>ART</a>"
++ "<a href=/api/backup/misc>misc</a><a href=/api/backup/reserve>启动选择区</a></p>"
++ "<p><a href=/api/backup/slot0>固件槽 0</a><a href=/api/backup/slot1>固件槽 1</a>"
++ "<a href=/api/backup/nand-raw-main-oob>完整物理 NAND（含 OOB）</a></p>"
++ "<h2>恢复固件</h2><p>接收带 tplink,vb235v 板型标识和 SHA-256 的 FIT。"
++ "写入当前非活动槽并逐页读回，保留引导、校准和活动固件。新镜像序列号须递增，最大 80 MiB。</p>"
++ "<input id=file type=file><button id=upload>上传到内存</button>"
++ "<p><input id=hash size=66 placeholder='本地文件 SHA-256，64 位十六进制'></p>"
++ "<button id=install>写入非活动槽</button><button id=boot>启动系统</button>"
++ "<pre id=result></pre><p>开发构建：功能已实现，板级适配与实机验证状态请见随包说明。</p>"
++ "<script>let state={};const status=document.getElementById('status'),"
++ "result=document.getElementById('result');"
++ "async function refresh(){let r=await fetch('/api/status');state=await r.json();"
++ "status.textContent=JSON.stringify(state,null,2);}refresh();"
++ "document.getElementById('upload').onclick=async()=>{try{"
++ "let f=document.getElementById('file').files[0];if(!f)return;"
++ "result.textContent='正在上传';let r=await fetch('/api/upload',{method:'POST',body:f});"
++ "result.textContent=await r.text();if(window.crypto&&crypto.subtle){"
++ "let d=await crypto.subtle.digest('SHA-256',await f.arrayBuffer());"
++ "document.getElementById('hash').value=Array.from(new Uint8Array(d),"
++ "x=>x.toString(16).padStart(2,'0')).join('');}await refresh();"
++ "}catch(e){result.textContent=String(e);}};"
++ "document.getElementById('install').onclick=async()=>{try{await refresh();"
++ "let h=document.getElementById('hash').value.trim().toLowerCase();"
++ "if(!/^[a-f0-9]{64}$/.test(h))throw Error('请先用本机工具计算并填写 SHA-256');"
++ "if(state.active_slot!==0&&state.active_slot!==1)throw Error('活动槽未识别');"
++ "let r=await fetch('/api/install/'+(state.active_slot^1)+'/'+h,{method:'POST',body:'!'});"
++ "result.textContent=await r.text();}catch(e){result.textContent=String(e);}};"
++ "document.getElementById('boot').onclick=async()=>{let r=await fetch('/api/boot',"
++ "{method:'POST',body:'!'});result.textContent=await r.text();};"
++ "setInterval(refresh,3000);</script>";
++
++static void status(void)
++{
++	snprintf(status_json, sizeof(status_json),
++		"{\"storage\":\"%s\",\"active_slot\":%d,\"ready_bytes\":%u,"
++		"\"sha256\":\"%s\",\"operation_result\":%d,\"pending\":%s}",
++		vb_storage_status(), vb_active_slot(), ready_bytes, digest,
++		operation_result, pending_slot >= 0 || pending_boot ? "true" : "false");
++}
++
++static int response(struct fs_file *file, const char *body, const char *type, int code)
++{
++	struct owner *owner = calloc(1, sizeof(*owner));
++	size_t len = strlen(body);
++	int head;
++
++	if (!owner)
++		return 0;
++	owner->allocated = malloc(len + 256);
++	if (!owner->allocated) {
++		free(owner);
++		return 0;
++	}
++	head = snprintf(owner->allocated, 256,
++		"HTTP/1.1 %d %s\r\nContent-Type: %s\r\nContent-Length: %zu\r\n"
++		"Cache-Control: no-store\r\nConnection: close\r\n\r\n",
++		code, code == 200 ? "OK" : "Error", type, len);
++	memcpy(owner->allocated + head, body, len);
++	file->data = owner->allocated;
++	file->len = head + len;
++	file->index = file->len;
++	file->flags = FS_FILE_FLAGS_HEADER_INCLUDED;
++	file->pextension = owner;
++	return 1;
++}
++
++int fs_open_custom(struct fs_file *file, const char *path)
++{
++	const struct vb_target *target;
++	struct owner *owner;
++	u8 check;
++
++	client_seen = true;
++	if (!strcmp(path, "/") || !strcmp(path, "/index.html")) {
++		client_seen = true;
++		return response(file, page, "text/html; charset=utf-8", 200);
++	}
++	if (!strcmp(path, "/api/status") || !strcmp(path, "/api/queued")) {
++		status();
++		int ok = response(file, status_json, "application/json", 200);
++		if (ok && !strcmp(path, "/api/queued"))
++			((struct owner *)file->pextension)->task_reply = true;
++		return ok;
++	}
++	if (!strncmp(path, "/api/backup/", 12)) {
++		if (receiving || pending_slot >= 0 || pending_boot || downloads)
++			return response(file, "{\"error\":\"busy\"}", "application/json", 409);
++		target = vb_target_find(path + 12);
++		if (!target || vb_storage_read(target, 0, &check, 1))
++			return response(file, "{\"error\":\"backup unavailable\"}", "application/json", 400);
++		owner = calloc(1, sizeof(*owner));
++		if (!owner)
++			return 0;
++		owner->target = target;
++		owner->length = target->size;
++		owner->header_length = snprintf(owner->header, sizeof(owner->header),
++			"HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\n"
++			"Content-Length: %u\r\nContent-Disposition: attachment; filename=\"%s.bin\"\r\n"
++			"Cache-Control: no-store\r\nConnection: close\r\n\r\n", target->size, target->name);
++		file->data = NULL;
++		file->len = owner->header_length + target->size;
++		file->index = 0;
++		file->flags = FS_FILE_FLAGS_HEADER_INCLUDED;
++		file->pextension = owner;
++		downloads++;
++		return 1;
++	}
++	/* Let lwIP try its next default index before returning 404. */
++	if (strncmp(path, "/api/", 5))
++		return 0;
++	return response(file, "{\"error\":\"unsupported request\"}", "application/json", 400);
++}
++
++void fs_close_custom(struct fs_file *file)
++{
++	struct owner *owner = file->pextension;
++
++	if (!owner)
++		return;
++	if (owner->target)
++		downloads--;
++	if (owner->task_reply)
++		awaiting_reply = false;
++	free(owner->allocated);
++	free(owner);
++	file->pextension = NULL;
++}
++
++int fs_read_custom(struct fs_file *file, char *buffer, int count)
++{
++	struct owner *owner = file->pextension;
++	u32 length;
++	int ret;
++
++	if (!owner || !owner->target || count <= 0 || file->index >= file->len)
++		return FS_READ_EOF;
++	if (file->index < owner->header_length) {
++		length = min(count, owner->header_length - file->index);
++		memcpy(buffer, owner->header + file->index, length);
++	} else {
++		length = min_t(u32, count, owner->length - owner->position);
++		ret = vb_storage_read(owner->target, owner->position, buffer, length);
++		if (ret) {
++			operation_result = ret;
++			return FS_READ_EOF;
++		}
++		owner->position += length;
++	}
++	file->index += length;
++	return length;
++}
++
++err_t httpd_post_begin(void *connection, const char *path, const char *request,
++		       u16_t request_len, int length, char *reply, u16_t reply_len, u8_t *wnd)
++{
++	int i;
++
++	strlcpy(reply, "/api/error", reply_len);
++	if (!connection || receiving || downloads || pending_slot >= 0 || pending_boot)
++		return ERR_ARG;
++	if (!strcmp(path, "/api/upload") && length > 0 && length <= MAX_UPLOAD) {
++		post_kind = POST_UPLOAD;
++		ready_bytes = 0;
++		digest[0] = 0;
++		receiving = connection;
++		expected_bytes = length;
++		received_bytes = 0;
++		failed = false;
++		*wnd = 1;
++		return ERR_OK;
++	}
++	if (!strncmp(path, "/api/install/", 13) && strlen(path) == 79 &&
++	    (path[13] == '0' || path[13] == '1') && path[14] == '/' && length == 1 && ready_bytes) {
++		for (i = 15; i < 79; i++)
++			if (!((path[i] >= '0' && path[i] <= '9') || (path[i] >= 'a' && path[i] <= 'f')))
++				return ERR_ARG;
++		if (strcmp(digest, path + 15) || vb_fit_validate((void *)UPLOAD_ADDRESS, ready_bytes))
++			return ERR_ARG;
++		/* Queuing happens only after the one-byte request body completes. */
++		receiving = connection;
++		expected_bytes = 1;
++		received_bytes = 0;
++		failed = false;
++		operation_result = path[13] - '0';
++		post_kind = POST_INSTALL;
++		*wnd = 1;
++		return ERR_OK;
++	}
++	if (!strcmp(path, "/api/boot") && length == 1) {
++		receiving = connection;
++		expected_bytes = 1;
++		received_bytes = 0;
++		operation_result = 2;
++		post_kind = POST_BOOT;
++		failed = false;
++		*wnd = 1;
++		return ERR_OK;
++	}
++	return ERR_ARG;
++}
++
++err_t httpd_post_receive_data(void *connection, struct pbuf *p)
++{
++	u32 length;
++	u16_t copied;
++	u8 control;
++
++	if (!p)
++		return ERR_ARG;
++	length = p->tot_len;
++	if (!receiving || connection != receiving || failed || length > expected_bytes - received_bytes) {
++		if (connection == receiving)
++			failed = true;
++		pbuf_free(p);
++		return ERR_ARG;
++	}
++	if (post_kind != POST_UPLOAD) {
++		copied = pbuf_copy_partial(p, &control, length, 0);
++		if (copied != length || (length && control != '!'))
++			failed = true;
++	} else {
++		copied = pbuf_copy_partial(p, (void *)(UPLOAD_ADDRESS + received_bytes), length, 0);
++		if (copied != length)
++			failed = true;
++	}
++	pbuf_free(p);
++	received_bytes += length;
++	return failed ? ERR_ARG : ERR_OK;
++}
++
++void httpd_post_finished(void *connection, char *reply, u16_t length)
++{
++	u8 hash[32];
++	int i;
++
++	strlcpy(reply, "/api/error", length);
++	if (!receiving || connection != receiving)
++		return;
++	if (!failed && received_bytes == expected_bytes) {
++		if (post_kind != POST_UPLOAD) {
++			awaiting_reply = true;
++			if (post_kind == POST_BOOT)
++				pending_boot = true;
++			else
++				pending_slot = operation_result;
++		} else {
++			sha256_csum_wd((void *)UPLOAD_ADDRESS, received_bytes, hash, CHUNKSZ_SHA256);
++			for (i = 0; i < 32; i++)
++				sprintf(digest + i * 2, "%02x", hash[i]);
++			ready_bytes = received_bytes;
++			operation_result = 0;
++		}
++		strlcpy(reply, post_kind == POST_UPLOAD ? "/api/status" : "/api/queued", length);
++	}
++	receiving = NULL;
++}
++
++bool uboot_httpd_is_running(void) { return running; }
++
++int uboot_httpd_start(bool with_dhcp)
++{
++	struct udevice *device;
++	struct netif *netif;
++	ulong started;
++	int ret;
++
++	if (running)
++		return -EBUSY;
++	/* The fixed upload window is below relocated U-Boot and its 64 MiB heap. */
++	if (gd->ram_base != 0x80000000 || gd->ram_size != 0x20000000 ||
++	    gd->start_addr_sp < UPLOAD_ADDRESS + MAX_UPLOAD)
++		return -ENOMEM;
++	/* Volatile overrides also allow recovery on a host link-local subnet. */
++	if (env_set("ipaddr", env_get("httpd_ipaddr") ?: CONFIG_HTTPD_SERVER_IP) ||
++	    env_set("netmask", env_get("httpd_netmask") ?: CONFIG_HTTPD_SERVER_NETMASK))
++		return -ENOMEM;
++	vb_storage_init();
++	ret = net_lwip_eth_start();
++	if (ret)
++		return ret;
++	device = eth_get_dev();
++	netif = net_lwip_new_netif(device);
++	if (!netif) {
++		net_lwip_eth_stop();
++		return -ENODEV;
++	}
++	running = true;
++	client_seen = false;
++	started = get_timer(0);
++	httpd_init();
++	if (with_dhcp && uboot_httpd_dhcp_start(netif))
++		puts("Recovery DHCP server unavailable; static addressing remains available\n");
++	printf("VB235v recovery: http://%s/; Ctrl-C returns to serial\n", env_get("ipaddr"));
++	clear_ctrlc();
++	while (!ctrlc()) {
++		if (auto_window && !client_seen && get_timer(started) >= 15000)
++			break;
++		ret = net_lwip_rx(device, netif);
++		if (ret == -ENETDOWN || ret == -ENOLINK)
++			ret = 0;
++		if (ret < 0)
++			break;
++		if (pending_slot >= 0 && !awaiting_reply) {
++			operation_result = vb_storage_install(pending_slot, (void *)UPLOAD_ADDRESS, ready_bytes, digest);
++			pending_slot = -1;
++		}
++		if (pending_boot && !awaiting_reply)
++			break;
++	}
++	uboot_httpd_dhcp_stop();
++	httpd_stop();
++	receiving = NULL;
++	net_lwip_remove_netif(netif);
++	net_lwip_eth_stop();
++	running = false;
++	clear_ctrlc();
++	if (pending_boot && !awaiting_reply) {
++		pending_boot = false;
++		return vb_boot();
++	}
++	pending_slot = -1;
++	pending_boot = false;
++	awaiting_reply = false;
++	return ret < 0 ? ret : 0;
++}
++
++int vb_httpd_window(void)
++{
++	int ret;
++
++	auto_window = true;
++	ret = uboot_httpd_start(true);
++	auto_window = false;
++	return ret;
++}
+diff --git a/net/lwip/net-lwip.c b/net/lwip/net-lwip.c
+index 6ed9811c..f3159983 100644
+--- a/net/lwip/net-lwip.c
++++ b/net/lwip/net-lwip.c
+@@ -351,6 +351,17 @@ int net_lwip_rx(struct udevice *udev, struct netif *netif)
+ 		flags = 0;
+ 
+ 		if (len > 0) {
++#ifdef CONFIG_VB235V_RECOVERY
++			/* Opt-in port/length trace; no packet, MAC or lease contents. */
++			if (env_get_yesno("vb_dhcp_debug") == 1 && len >= 42 &&
++			    packet[12] == 8 && packet[13] == 0 &&
++			    (packet[14] >> 4) == 4 && packet[23] == 17) {
++				unsigned int udp = 14 + (packet[14] & 15) * 4;
++				if (udp >= 34 && udp + 8 <= len &&
++				    packet[udp + 2] == 0 && packet[udp + 3] == 67)
++					printf("Recovery DHCP Ethernet RX: %d bytes\n", len);
++			}
++#endif
+ 			if (CONFIG_IS_ENABLED(LWIP_DEBUG_RXTX)) {
+ 				printf("net_lwip_tx: %u bytes, udev %s \n", len,
+ 				       udev->name);

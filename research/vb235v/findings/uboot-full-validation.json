@@ -1,0 +1,73 @@
+{
+  "milestone": "M21",
+  "upstream_commit": "4b91e112c345b8a4ad4f954775f3f4955f2cafb2",
+  "candidate": {
+    "binary_bytes": 516200,
+    "binary_sha256": "ad1141bed62b0679cc6f275aea0a9f96c37acd90c4de826f9d73de0a5d7f1e52",
+    "fit_bytes": 184724,
+    "fit_sha256": "8a98b81db401e04a36c5d3506ce1f02f3d8e66f46760ede1d44a291597928353",
+    "compressed_core_bytes": 170710,
+    "fits_blank_third_256k_block": true,
+    "hardware_ram_booted": true,
+    "persistent_installation": false,
+    "public_workflow_reproduced_identical_binary_and_fit": true,
+    "cumulative_patch_replayed_from_pristine_revision": true
+  },
+  "native_checks": {
+    "asan_ubsan": true,
+    "storage_cases": 1182,
+    "storage_assertions": 5015,
+    "web_cases": 28,
+    "web_assertions": 132,
+    "actual_lwip_ipv4_udp_dhcp_cases": 8,
+    "actual_lwip_ipv4_udp_dhcp_assertions": 78,
+    "firmware_packer_and_actual_c_validator_cases": 1183,
+    "firmware_packer_and_actual_c_validator_assertions": 5020,
+    "firmware_packer_fixture_bootable": false,
+    "existing_unittest_cases": 57,
+    "existing_unittest_skipped": 0
+  },
+  "hardware": {
+    "ordinary_1g_lan_confirmed_by_owner": true,
+    "nand_factory_mapping_and_anchors_verified": true,
+    "serial_bootloader_and_art_ram_backups_verified": true,
+    "http_root_page_verified": true,
+    "http_critical_backups_verified": true,
+    "http_ram_upload_bytes": 1171456,
+    "http_ram_upload_sha256": "3388ab3e4f5054b71b8688072c1cff42101e50e568c67179ed8d696942addaf5",
+    "http_addressing": "volatile link-local env overrides; no Windows static-address configuration",
+    "dhcp_lease_acquisition_verified": false,
+    "factory_bl33_direct_chainload_and_original_linux_boot_verified": true,
+    "stock_blank_third_block_read_verified": true,
+    "stock_ram_guard_hush_syntax_verified": true,
+    "flash_erase_or_program_sent": false,
+    "saveenv_sent": false,
+    "original_root_ssh_and_bootloader_hash_restored_and_verified": true
+  },
+  "raw_backup": {
+    "physical_main_bytes": 536870912,
+    "physical_oob_bytes": 33554432,
+    "raw_stream_bytes": 570425344,
+    "page_main_bytes": 4096,
+    "page_oob_bytes": 256,
+    "complete_independent_reads": 3,
+    "repeat_2_and_3_different_bytes_from_first": [
+      9,
+      5
+    ],
+    "differences_are_single_bit": true,
+    "first_0x440000_main_region_and_tail_mapping_pool_identical": true,
+    "whole_raw_repeat_bit_exact": false,
+    "programmer_restoration_tested": false,
+    "raw_contents_private": true
+  },
+  "limits": [
+    "No persistent install or hardware flash-program validation",
+    "Physical DHCP path remains unresolved",
+    "Physical button GPIO unassigned",
+    "No new bad-block replacement allocation",
+    "No kernel-health based automatic rollback",
+    "Initial shared code/environment block write is not power-loss safe",
+    "PonWrt drivers and installable firmware remain unfinished"
+  ]
+}
