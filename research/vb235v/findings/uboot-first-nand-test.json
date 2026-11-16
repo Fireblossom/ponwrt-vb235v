@@ -1,0 +1,45 @@
+{
+  "milestone": "M22",
+  "candidate_from_milestone": "M21",
+  "fit_sha256": "8a98b81db401e04a36c5d3506ce1f02f3d8e66f46760ede1d44a291597928353",
+  "user_authorized_staged_hardware_testing": true,
+  "target": {
+    "logical_partition": "bootloader",
+    "offset": 524288,
+    "length": 262144,
+    "original_main_all_ff": true,
+    "first_three_physical_blocks_match_logical_in_three_independent_raw_reads": true,
+    "raw_bad_markers_erased": true
+  },
+  "operations": {
+    "program_commands": 1,
+    "program_driver": "existing original U-Boot MTD driver",
+    "erase_commands": 0,
+    "saveenv_commands": 0,
+    "bootcmd_changed": false,
+    "shared_code_environment_block_programmed": false
+  },
+  "results": {
+    "whole_target_crc_and_fit_sha256_readback_passed": true,
+    "first_two_blocks_crc_unchanged": true,
+    "nand_readback_core_booted": true,
+    "recovery_factory_mapping_and_anchors_passed": true,
+    "recovery_boot_and_art_sha256_passed": true,
+    "direct_factory_chainload_passed": true,
+    "original_linux_complete_boot_download_byte_exact_expected": true,
+    "first_two_blocks_and_environment_byte_exact_original": true,
+    "art_and_misc_unchanged": true,
+    "normal_software_reset_factory_autoboot_passed": true,
+    "post_reset_root_ssh_and_complete_readback_passed": true
+  },
+  "status": {
+    "core_staged_in_nand": true,
+    "automatic_persistent_recovery_installed": false,
+    "new_recovery_driver_firmware_slot_programming_hardware_tested": false,
+    "programmer_recovery_tested": false,
+    "power_loss_testing_performed": false,
+    "device_running_original_linux": true
+  },
+  "private_evidence_retained": true,
+  "serial_automation_note": "Readback resumed after a completed stock program command emitted progress dots directly before the prompt; no second program was performed."
+}
