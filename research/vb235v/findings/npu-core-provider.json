@@ -1,0 +1,214 @@
+{
+  "classification": "live kernel symbol definitions plus independently inspected archived source/build artifacts",
+  "input_sha256": {
+    "inventory": "c990257f27c5fca9f2921809a0f57522e321898cda152ef67d3d354485fc4a83",
+    "kallsyms": "6b4cbfbd0758cefc5958ba0e6743b5a093c92f597935d724f55e04ffa035206f",
+    "archived_symvers": "ec811b17af8d4e38ca4d9e8a4d43f7ebb643ad7523d34dd172777c202eb0a7cf"
+  },
+  "core_functions": [
+    {
+      "symbol": "boot_npu_all_cores",
+      "module_export_candidates": [],
+      "live_definitions": [
+        {
+          "type": "T",
+          "provider": "vmlinux"
+        }
+      ],
+      "archived_build_exports": [
+        {
+          "provider": "vmlinux",
+          "export": "EXPORT_SYMBOL"
+        }
+      ],
+      "archived_object_function_bytes": 200,
+      "live_next_text_symbol_delta": 208
+    },
+    {
+      "symbol": "get_ecnt_npu_dev",
+      "module_export_candidates": [],
+      "live_definitions": [
+        {
+          "type": "T",
+          "provider": "vmlinux"
+        }
+      ],
+      "archived_build_exports": [
+        {
+          "provider": "vmlinux",
+          "export": "EXPORT_SYMBOL"
+        }
+      ],
+      "archived_object_function_bytes": 20,
+      "live_next_text_symbol_delta": 20
+    },
+    {
+      "symbol": "host_notify_npuMbox",
+      "module_export_candidates": [],
+      "live_definitions": [
+        {
+          "type": "T",
+          "provider": "vmlinux"
+        }
+      ],
+      "archived_build_exports": [
+        {
+          "provider": "vmlinux",
+          "export": "EXPORT_SYMBOL"
+        }
+      ],
+      "archived_object_function_bytes": 1152,
+      "live_next_text_symbol_delta": 1152
+    },
+    {
+      "symbol": "set_npu_needed_info",
+      "module_export_candidates": [],
+      "live_definitions": [
+        {
+          "type": "T",
+          "provider": "vmlinux"
+        }
+      ],
+      "archived_build_exports": [
+        {
+          "provider": "vmlinux",
+          "export": "EXPORT_SYMBOL"
+        }
+      ],
+      "archived_object_function_bytes": 144,
+      "live_next_text_symbol_delta": 144
+    }
+  ],
+  "consumer_summary": {
+    "mt_wifi": {
+      "imports": 280,
+      "only_live_vmlinux_provider": 128,
+      "not_observed_in_live_symbols": [
+        "_ctype",
+        "arm64_const_caps_ready",
+        "cpu_hwcap_keys",
+        "cpu_hwcaps",
+        "cpu_number",
+        "hwnat_clean_entry_by_dst_mac_wifi_hook",
+        "init_net",
+        "jiffies",
+        "kmalloc_caches",
+        "param_ops_charp",
+        "ra_sw_nat_hook_clean_entry_by_mac",
+        "ra_sw_nat_hook_rx",
+        "ra_sw_nat_hook_set_magic",
+        "ra_sw_nat_hook_tx",
+        "skb_from_igmp_mld_proxy",
+        "sys_tz",
+        "system_wq"
+      ]
+    },
+    "npu": {
+      "imports": 39,
+      "only_live_vmlinux_provider": 32,
+      "not_observed_in_live_symbols": [
+        "arm64_const_caps_ready",
+        "cpu_hwcap_keys",
+        "cpu_hwcaps",
+        "mdc_lock_address",
+        "system_wq"
+      ]
+    },
+    "npu_wifi": {
+      "imports": 21,
+      "only_live_vmlinux_provider": 16,
+      "not_observed_in_live_symbols": [
+        "arm64_const_caps_ready",
+        "cpu_hwcap_keys",
+        "cpu_hwcaps",
+        "isNpuBand0OnCpu",
+        "npu_stat"
+      ]
+    },
+    "voip": {
+      "imports": 24,
+      "only_live_vmlinux_provider": 19,
+      "not_observed_in_live_symbols": [
+        "arm64_const_caps_ready",
+        "cpu_hwcap_keys",
+        "cpu_hwcaps",
+        "get_voice_rule_mark_hook",
+        "jiffies"
+      ]
+    }
+  },
+  "source_artifacts": [
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/arch/arm64/mach-econet/.ecnt_npu.o.cmd",
+      "path": "arch/arm64/mach-econet/.ecnt_npu.o.cmd",
+      "bytes": 93514,
+      "sha256": "0510ca191b0da8db3e61b772214e85953a03dc9fbdcaab18f89f2f4f7bea7f18"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/arch/arm64/mach-econet/Makefile",
+      "path": "arch/arm64/mach-econet/Makefile",
+      "bytes": 1687,
+      "sha256": "4bad0bbe6e66fb92ab191674243d832448b116f8bfd3d9af26f232e830faf37b"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/arch/arm64/mach-econet/ecnt_npu.c",
+      "path": "arch/arm64/mach-econet/ecnt_npu.c",
+      "bytes": 45385,
+      "sha256": "6bb6b10d85e6f8b692a195cc4a107df374887025d7048e6fb0a517ae2a13ce1c"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/arch/arm64/mach-econet/ecnt_npu.o",
+      "path": "arch/arm64/mach-econet/ecnt_npu.o",
+      "bytes": 158336,
+      "sha256": "a332e21fb11b01cf612090a8928c43ae56be7056da69e2cce7b41b057c5433b1"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/include/global_inc/modules/npu/npuMboxAPI.h",
+      "path": "include/global_inc/modules/npu/npuMboxAPI.h",
+      "bytes": 1625,
+      "sha256": "340c08df3d9a9295e2f2ff7e086986c0a1e556b557cdc868266b9c64065bb66b"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/Module.symvers",
+      "path": "Module.symvers",
+      "bytes": 524208,
+      "sha256": "ec811b17af8d4e38ca4d9e8a4d43f7ebb643ad7523d34dd172777c202eb0a7cf"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/.config",
+      "path": ".config",
+      "bytes": 120742,
+      "sha256": "986796a28df79f65f3694b42154c988d1deb6dde01369d607913a5baa0981777"
+    }
+  ],
+  "archived_config": {
+    "CONFIG_KALLSYMS": "y",
+    "CONFIG_KALLSYMS_ALL": false,
+    "CONFIG_MODVERSIONS": false
+  },
+  "source_contract": {
+    "file": "arch/arm64/mach-econet/ecnt_npu.c",
+    "host_notify_function_line": 821,
+    "per_core_lock": "spin_lock_bh except DBA",
+    "poll_delay_microseconds": 100,
+    "default_poll_counter": 300,
+    "status_bits": 3,
+    "mailbox_physical_address_storage_bits": 32,
+    "mailbox_length_storage_bits": 16,
+    "probe_requires": [
+      "MMIO resources",
+      "memory-region phandle",
+      "mailbox IRQ",
+      "conditional watchdog IRQs"
+    ],
+    "conditional_coherent_dma_mask": "0xbfffffff",
+    "source_review_issue": "Missing-default-buffer branch uses spin_unlock_irqrestore although regular entry uses spin_lock_bh; not tested on live hardware."
+  },
+  "limitations": [
+    "Kallsyms definitions do not independently attest export-table entries or ABI compatibility.",
+    "Archived exports and compiler artifacts are not a bytewise match of the live kernel.",
+    "Next text-symbol delta includes possible padding and is not a function size or code equality test.",
+    "Archived DWARF contains a declaration-only npuMboxInfo type; the 40-byte layout is still source/ABI-derived.",
+    "No mailbox command, kernel-memory read, module load or hardware register write was performed."
+  ]
+}

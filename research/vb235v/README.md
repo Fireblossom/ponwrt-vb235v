@@ -41,3 +41,5 @@ Keep original firmware, device dumps, calibration data, credentials, serial logs
 New Python tools in this directory use `GPL-2.0-only`; existing upstream components keep their own licenses.
 
 For bounded read-only SSH collection, see [STOCK-MODULE-COVERAGE.md](STOCK-MODULE-COVERAGE.md). That optional collector requires host-side Paramiko, private credentials and a previously verified host-key pin. M7 completes file coverage for all 86 loaded module names; firmware and built-in kernel coverage remain separate work.
+
+[M8: NPU core provider](NPU-CORE-PROVIDER.md) identifies the four core NPU APIs in the live built-in kernel and audits their archived source contract. It does not certify a compatible PonWrt ABI.

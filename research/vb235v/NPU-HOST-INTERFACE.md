@@ -16,6 +16,8 @@ After deduplicating the identical PPP module copies, the 79 captured module obje
 
 The `depends` modinfo field is not a complete description of vendor callbacks, exported globals, or built-in provider APIs. Missing `mt_wifi.ko` also limits the Wi-Fi provider graph.
 
+Update: [M7](STOCK-MODULE-COVERAGE.md) completes loaded-module file coverage, including `mt_wifi.ko`. [M8](NPU-CORE-PROVIDER.md) identifies the four named core functions in the live built-in kernel and correlates them with archived source and build exports.
+
 ## Source-defined host descriptor
 
 The selected `npuMboxAPI.h` has an explicit GPL-2.0-only notice. Its enum and structure declarations give this layout under the ordinary AArch64 C ABI (4-byte enums/u32, 8-byte pointers/unsigned long, default alignment):
