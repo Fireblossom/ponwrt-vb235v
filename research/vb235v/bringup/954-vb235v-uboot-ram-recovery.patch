@@ -1,0 +1,609 @@
+diff --git a/arch/arm/dts/an7583-vb235v-ram-net-u-boot.dtsi b/arch/arm/dts/an7583-vb235v-ram-net-u-boot.dtsi
+new file mode 100644
+index 00000000..4c027f2a
+--- /dev/null
++++ b/arch/arm/dts/an7583-vb235v-ram-net-u-boot.dtsi
+@@ -0,0 +1 @@
++// SPDX-License-Identifier: GPL-2.0+
+diff --git a/arch/arm/dts/an7583-vb235v-ram-net.dts b/arch/arm/dts/an7583-vb235v-ram-net.dts
+new file mode 100644
+index 00000000..0a9af032
+--- /dev/null
++++ b/arch/arm/dts/an7583-vb235v-ram-net.dts
+@@ -0,0 +1,45 @@
++// SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++/* Experimental integrated-switch LAN candidate. Never use as a flash image. */
++/dts-v1/;
++#include "an7583.dtsi"
++
++/ {
++	model = "TP-Link VB235v RAM LAN recovery candidate";
++	compatible = "tplink,vb235v-ram-development", "airoha,an7583";
++	aliases { serial0 = &uart1; ethernet0 = &gdm1; };
++	chosen {
++		stdout-path = "serial0:115200n8";
++		u-boot,usable-memory-range = <0 0x80200000 0 0x1fe00000>;
++	};
++	memory@80000000 {
++		device_type = "memory";
++		reg = <0 0x80000000 0 0x20000000>;
++	};
++	/delete-node/ reserved-memory;
++	reserved-memory {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++		atf@80000000 { reg = <0 0x80000000 0 0x200000>; no-map; };
++		npu@84000000 { reg = <0 0x84000000 0 0x100000>; no-map; };
++		logs@8b000000 { reg = <0 0x8b000000 0 0x200000>; no-map; };
++	};
++};
++
++&gdm1 { status = "okay"; };
++&gdm2 { status = "disabled"; };
++&gdm3 { status = "disabled"; };
++&pon_pcs { status = "disabled"; };
++&eth_pcs { status = "disabled"; };
++&snfi { status = "disabled"; };
++&mmc0 { status = "disabled"; };
++
++&eth {
++	#address-cells = <1>;
++	#size-cells = <0>;
++};
++
++&{/soc/system-controller@1fb00000} {
++	#address-cells = <1>;
++	#size-cells = <0>;
++};
+diff --git a/arch/arm/dts/an7583-vb235v-ram-u-boot.dtsi b/arch/arm/dts/an7583-vb235v-ram-u-boot.dtsi
+new file mode 100644
+index 00000000..4c027f2a
+--- /dev/null
++++ b/arch/arm/dts/an7583-vb235v-ram-u-boot.dtsi
+@@ -0,0 +1 @@
++// SPDX-License-Identifier: GPL-2.0+
+diff --git a/arch/arm/dts/an7583-vb235v-ram.dts b/arch/arm/dts/an7583-vb235v-ram.dts
+new file mode 100644
+index 00000000..8978465c
+--- /dev/null
++++ b/arch/arm/dts/an7583-vb235v-ram.dts
+@@ -0,0 +1,40 @@
++// SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++/dts-v1/;
++
++/ {
++	model = "TP-Link VB235v RAM recovery development";
++	compatible = "tplink,vb235v-ram-development", "airoha,an7583";
++	#address-cells = <2>;
++	#size-cells = <2>;
++
++	aliases { serial0 = &uart; };
++	chosen {
++		stdout-path = "serial0:115200n8";
++		u-boot,usable-memory-range = <0 0x80200000 0 0x1fe00000>;
++	};
++	memory@80000000 {
++		device_type = "memory";
++		reg = <0 0x80000000 0 0x20000000>;
++	};
++	reserved-memory {
++		#address-cells = <2>;
++		#size-cells = <2>;
++		ranges;
++		atf@80000000 { reg = <0 0x80000000 0 0x200000>; no-map; };
++		npu@84000000 { reg = <0 0x84000000 0 0x100000>; no-map; };
++		logs@8b000000 { reg = <0 0x8b000000 0 0x200000>; no-map; };
++	};
++	psci { compatible = "arm,psci-1.0"; method = "smc"; };
++	timer {
++		compatible = "arm,armv8-timer";
++		clock-frequency = <25000000>;
++	};
++	uart: serial@1fbf0000 {
++		compatible = "ns16550a";
++		reg = <0 0x1fbf0000 0 0x30>;
++		reg-shift = <2>;
++		reg-io-width = <4>;
++		clock-frequency = <1843200>;
++		bootph-all;
++	};
++};
+diff --git a/arch/arm/mach-airoha/Kconfig b/arch/arm/mach-airoha/Kconfig
+index 97fcd2f5..78473ee8 100644
+--- a/arch/arm/mach-airoha/Kconfig
++++ b/arch/arm/mach-airoha/Kconfig
+@@ -35,6 +35,17 @@ config TARGET_AN7583
+ 
+ endchoice
+ 
++config VB235V_RAM_RECOVERY
++	bool "VB235v RAM development recovery"
++	depends on TARGET_AN7583
++	select LINUX_KERNEL_IMAGE_HEADER
++	help
++	  Use the reviewed 512 MiB board memory map inherited from factory DDR
++	  initialization. This is a BL33 RAM development payload, not a FIP.
++
++config LNX_KRNL_IMG_TEXT_OFFSET_BASE
++	default 0x80000000 if VB235V_RAM_RECOVERY
++
+ config AIROHA_HTTP_RECOVERY
+ 	bool "Airoha HTTP recovery"
+ 	default y
+diff --git a/arch/arm/mach-airoha/an7583/init.c b/arch/arm/mach-airoha/an7583/init.c
+index d925d76d..a5519c2c 100644
+--- a/arch/arm/mach-airoha/an7583/init.c
++++ b/arch/arm/mach-airoha/an7583/init.c
+@@ -25,6 +25,10 @@ int dram_init(void)
+ {
+ 	u32 units;
+ 
++	/* Factory BL2 scratch-register encoding is not established for VB235v. */
++	if (IS_ENABLED(CONFIG_VB235V_RAM_RECOVERY))
++		return fdtdec_setup_mem_size_base();
++
+ 	/* BL2 stores the dramc_main() result in SCREG_WR1[29:20] in 16 MiB units. */
+ 	units = (readl(AN7583_SCREG_WR1) >> AN7583_DRAM_SIZE_SHIFT) &
+ 		AN7583_DRAM_SIZE_MASK;
+@@ -63,15 +67,19 @@ static struct mm_region an7583_mem_map[] = {
+ 		/* DDR, 32-bit area */
+ 		.virt = 0x80000000UL,
+ 		.phys = 0x80000000UL,
+-		.size = SZ_2G,
++		.size = IS_ENABLED(CONFIG_VB235V_RAM_RECOVERY) ? SZ_512M : SZ_2G,
+ 		.attrs = PTE_BLOCK_MEMTYPE(MT_NORMAL) | PTE_BLOCK_OUTER_SHARE,
+-	}, {
++	},
++#ifndef CONFIG_VB235V_RAM_RECOVERY
++	{
+ 		/* DDR, 64-bit area */
+ 		.virt = 0x100000000UL,
+ 		.phys = 0x100000000UL,
+ 		.size = SZ_4G + SZ_2G,
+ 		.attrs = PTE_BLOCK_MEMTYPE(MT_NORMAL) | PTE_BLOCK_OUTER_SHARE,
+-	}, {
++	},
++#endif
++	{
+ 		.virt = 0x00000000UL,
+ 		.phys = 0x00000000UL,
+ 		.size = 0x40000000UL,
+diff --git a/board/airoha/an7583/an7583_vb235v_ram.env b/board/airoha/an7583/an7583_vb235v_ram.env
+new file mode 100644
+index 00000000..6c71c39c
+--- /dev/null
++++ b/board/airoha/an7583/an7583_vb235v_ram.env
+@@ -0,0 +1,6 @@
++/* SPDX-License-Identifier: GPL-2.0+ */
++loadaddr=0x90000000
++stdin=serial
++stdout=serial
++stderr=serial
++bootcmd=echo VB235v RAM development: automatic boot disabled
+diff --git a/cmd/Kconfig b/cmd/Kconfig
+index c702d690..22e86737 100644
+--- a/cmd/Kconfig
++++ b/cmd/Kconfig
+@@ -2296,7 +2296,7 @@ config CMD_WGET
+ config CMD_HTTPD
+ 	bool "httpd"
+ 	depends on NET_LWIP
+-	depends on !ARCH_AIROHA || AIROHA_HTTP_RECOVERY
++	depends on !ARCH_AIROHA || AIROHA_HTTP_RECOVERY || HTTPD_RAM_RECOVERY
+ 	select BUILD_BIN2C
+ 	select PROT_TCP_LWIP
+ 	help
+@@ -2304,6 +2304,14 @@ config CMD_HTTPD
+ 	  service supports RAM uploads and downloads, command execution, and
+ 	  boot or reset actions.
+ 
++config HTTPD_RAM_RECOVERY
++	bool "RAM-only HTTP upload service"
++	depends on NET_LWIP
++	select SHA256
++	help
++	  Replace the management backend with bounded allocated-RAM upload and
++	  status APIs. No storage, environment edit or command execution API.
++
+ config HTTPD_DHCP_SERVER
+ 	bool "DHCP server for httpd"
+ 	depends on CMD_HTTPD
+diff --git a/configs/an7583_vb235v_ram_defconfig b/configs/an7583_vb235v_ram_defconfig
+new file mode 100644
+index 00000000..8d991de1
+--- /dev/null
++++ b/configs/an7583_vb235v_ram_defconfig
+@@ -0,0 +1,54 @@
++CONFIG_ARM=y
++CONFIG_ARCH_AIROHA=y
++CONFIG_TARGET_AN7583=y
++CONFIG_VB235V_RAM_RECOVERY=y
++# CONFIG_AIROHA_HTTP_RECOVERY is not set
++# CONFIG_AIROHA_UBI_ENV is not set
++CONFIG_POSITION_INDEPENDENT=y
++CONFIG_TEXT_BASE=0x81e00000
++CONFIG_SYS_MALLOC_F_LEN=0x4000
++CONFIG_SYS_MALLOC_LEN=0x2000000
++CONFIG_NR_DRAM_BANKS=1
++CONFIG_SYS_LOAD_ADDR=0x90000000
++CONFIG_BUILD_TARGET="u-boot.bin"
++CONFIG_BOOTDELAY=-1
++# CONFIG_USE_PREBOOT is not set
++CONFIG_ENV_IS_NOWHERE=y
++CONFIG_ENV_SIZE=0x4000
++CONFIG_ENV_SOURCE_FILE="an7583_vb235v_ram"
++CONFIG_HUSH_PARSER=y
++CONFIG_SYS_PROMPT="VB235v-RAM> "
++CONFIG_SYS_MAXARGS=16
++CONFIG_FIT=y
++CONFIG_FIT_VERBOSE=y
++CONFIG_CMD_BOOTI=y
++CONFIG_CMD_IMI=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_LOADS=y
++CONFIG_CMD_HASH=y
++CONFIG_SHA256=y
++CONFIG_CMD_BDI=y
++CONFIG_CMD_MEMORY=y
++CONFIG_CMD_CACHE=y
++# CONFIG_CMD_SAVEENV is not set
++# CONFIG_CMD_ERASEENV is not set
++# CONFIG_CMD_FLASH is not set
++# CONFIG_CMD_SF is not set
++# CONFIG_CMD_MTD is not set
++# CONFIG_CMD_NAND is not set
++# CONFIG_CMD_UBI is not set
++# CONFIG_MTD is not set
++# CONFIG_SPI is not set
++# CONFIG_MMC is not set
++# CONFIG_PCI is not set
++# CONFIG_USB is not set
++# CONFIG_WDT is not set
++# CONFIG_WATCHDOG is not set
++# CONFIG_BUTTON is not set
++# CONFIG_LED is not set
++# CONFIG_EFI_LOADER is not set
++CONFIG_DM_SERIAL=y
++CONFIG_SYS_NS16550=y
++# CONFIG_SYS_CONSOLE_IS_IN_ENV is not set
++CONFIG_DEFAULT_DEVICE_TREE="an7583-vb235v-ram"
++# CONFIG_NET is not set
+diff --git a/configs/an7583_vb235v_ram_net_defconfig b/configs/an7583_vb235v_ram_net_defconfig
+new file mode 100644
+index 00000000..570ba8da
+--- /dev/null
++++ b/configs/an7583_vb235v_ram_net_defconfig
+@@ -0,0 +1,75 @@
++CONFIG_ARM=y
++CONFIG_ARCH_AIROHA=y
++CONFIG_TARGET_AN7583=y
++CONFIG_VB235V_RAM_RECOVERY=y
++# CONFIG_AIROHA_HTTP_RECOVERY is not set
++# CONFIG_AIROHA_UBI_ENV is not set
++CONFIG_POSITION_INDEPENDENT=y
++CONFIG_TEXT_BASE=0x81e00000
++CONFIG_SYS_MALLOC_F_LEN=0x4000
++CONFIG_SYS_MALLOC_LEN=0x2000000
++CONFIG_NR_DRAM_BANKS=1
++CONFIG_SYS_LOAD_ADDR=0x90000000
++CONFIG_BUILD_TARGET="u-boot.bin"
++CONFIG_BOOTDELAY=-1
++# CONFIG_USE_PREBOOT is not set
++CONFIG_ENV_IS_NOWHERE=y
++CONFIG_ENV_SIZE=0x4000
++CONFIG_ENV_SOURCE_FILE="an7583_vb235v_ram"
++CONFIG_HUSH_PARSER=y
++CONFIG_SYS_PROMPT="VB235v-RAM> "
++CONFIG_SYS_MAXARGS=16
++CONFIG_FIT=y
++CONFIG_FIT_VERBOSE=y
++CONFIG_CMD_BOOTI=y
++CONFIG_CMD_IMI=y
++CONFIG_CMD_LOADB=y
++CONFIG_CMD_LOADS=y
++CONFIG_CMD_HASH=y
++CONFIG_SHA256=y
++CONFIG_CMD_BDI=y
++CONFIG_CMD_MEMORY=y
++CONFIG_CMD_CACHE=y
++# CONFIG_CMD_SAVEENV is not set
++# CONFIG_CMD_ERASEENV is not set
++# CONFIG_CMD_FLASH is not set
++# CONFIG_CMD_SF is not set
++# CONFIG_CMD_MTD is not set
++# CONFIG_CMD_NAND is not set
++# CONFIG_CMD_UBI is not set
++# CONFIG_MTD is not set
++# CONFIG_SPI is not set
++# CONFIG_MMC is not set
++# CONFIG_PCI is not set
++# CONFIG_USB is not set
++# CONFIG_WDT is not set
++# CONFIG_WATCHDOG is not set
++# CONFIG_BUTTON is not set
++# CONFIG_LED is not set
++# CONFIG_EFI_LOADER is not set
++CONFIG_DM_SERIAL=y
++CONFIG_SYS_NS16550=y
++# CONFIG_SYS_CONSOLE_IS_IN_ENV is not set
++CONFIG_DEFAULT_DEVICE_TREE="an7583-vb235v-ram-net"
++CONFIG_NET=y
++CONFIG_NET_LWIP=y
++CONFIG_CMD_HTTPD=y
++CONFIG_HTTPD_RAM_RECOVERY=y
++CONFIG_HTTPD_SERVER_IP="192.168.0.1"
++CONFIG_HTTPD_SERVER_NETMASK="255.255.255.0"
++# CONFIG_HTTPD_DHCP_SERVER is not set
++CONFIG_NET_RANDOM_ETHADDR=y
++CONFIG_SYS_RX_ETH_BUFFER=8
++CONFIG_AIROHA_ETH=y
++CONFIG_DM_MDIO=y
++CONFIG_REGMAP=y
++CONFIG_SYSCON=y
++CONFIG_CLK=y
++CONFIG_DMA=y
++CONFIG_PHY=y
++CONFIG_PINCTRL=y
++CONFIG_PINCTRL_AIROHA_AN7583=y
++CONFIG_DM_GPIO=y
++CONFIG_POWER_DOMAIN=y
++CONFIG_DM_REGULATOR=y
++CONFIG_DM_REGULATOR_FIXED=y
+diff --git a/net/lwip/Makefile b/net/lwip/Makefile
+index af85f171..06f38827 100644
+--- a/net/lwip/Makefile
++++ b/net/lwip/Makefile
+@@ -3,8 +3,12 @@ ccflags-y += -I$(srctree)/lib/lwip/lwip/src/include -I$(srctree)/lib/lwip/u-boot
+ obj-$(CONFIG_$(PHASE_)DM_ETH) += net-lwip.o
+ obj-$(CONFIG_CMD_DHCP) += dhcp.o
+ obj-$(CONFIG_DNS) += dns.o
++ifeq ($(CONFIG_HTTPD_RAM_RECOVERY),y)
++obj-$(CONFIG_CMD_HTTPD) += httpd-ram.o
++else
+ obj-$(CONFIG_CMD_HTTPD) += httpd.o
+ obj-$(CONFIG_CMD_HTTPD) += httpd_page.o
++endif
+ obj-$(CONFIG_HTTPD_DHCP_SERVER) += httpd-dhcp.o
+ obj-$(CONFIG_LWIP_ICMP_SHOW_UNREACH) += icmp_unreach.o
+ obj-$(CONFIG_CMD_NFS) += nfs.o
+diff --git a/net/lwip/httpd-ram.c b/net/lwip/httpd-ram.c
+new file mode 100644
+index 00000000..c9970f51
+--- /dev/null
++++ b/net/lwip/httpd-ram.c
+@@ -0,0 +1,234 @@
++// SPDX-License-Identifier: GPL-2.0+
++/* VB235v development recovery: uploads live only in allocated RAM. */
++#include <command.h>
++#include <console.h>
++#include <env.h>
++#include <malloc.h>
++#include <net.h>
++#include <net-lwip.h>
++#include <net/httpd.h>
++#include <u-boot/sha256.h>
++#include <lwip/apps/fs.h>
++#include <lwip/apps/httpd.h>
++#include <lwip/pbuf.h>
++
++#define RAM_UPLOAD_LIMIT (16U * 1024 * 1024)
++
++static void *upload_connection;
++static unsigned char *upload_buffer;
++static size_t upload_expected, upload_received, upload_ready;
++static bool upload_failed, running;
++static char upload_hash[SHA256_SUM_LEN * 2 + 1];
++
++static const char page[] =
++ "<!doctype html><meta charset=utf-8><title>VB235v RAM recovery</title>"
++ "<style>body{font:18px system-ui;max-width:48em;margin:3em auto;padding:1em}"
++ "button,input{font:inherit;margin:.5em}pre{white-space:pre-wrap}</style>"
++ "<h1>VB235v RAM recovery / 内存恢复开发版</h1>"
++ "<p>文件仅接收到内存，最大 16 MiB。此页面不刷写闪存、不执行命令。"
++ "上传不会自动启动；返回串口后需另行核对镜像和地址。</p>"
++ "<input id=f type=file><button id=u>上传到 RAM</button><pre id=s></pre>"
++ "<script>const s=document.getElementById('s');"
++ "document.getElementById('u').onclick=async()=>{"
++ "const f=document.getElementById('f').files[0];if(!f)return;"
++ "if(!f.size||f.size>16777216){s.textContent='文件大小无效';return;}"
++ "document.getElementById('u').disabled=true;try{"
++ "s.textContent='正在上传';let r=await fetch('/api/upload',"
++ "{method:'POST',headers:{'Content-Type':'application/octet-stream'},body:f});"
++ "let t=await r.json();s.textContent=JSON.stringify(t,null,2);"
++ "if(t.ready&&window.crypto&&crypto.subtle){let d=await crypto.subtle.digest('SHA-256',await f.arrayBuffer());"
++ "let h=Array.from(new Uint8Array(d),x=>x.toString(16).padStart(2,'0')).join('');"
++ "s.textContent+='\\n本机 SHA-256: '+h+'\\n'+(h===t.sha256?'校验一致':'校验不一致');}"
++ "}catch(e){s.textContent=String(e);}finally{"
++ "document.getElementById('u').disabled=false;}};</script>";
++
++static void clear_ready(void)
++{
++	upload_ready = 0;
++	upload_hash[0] = '\0';
++	env_set("fileaddr", NULL);
++	env_set("filesize", NULL);
++}
++
++static int response(struct fs_file *file, const char *body,
++		    const char *type, int status)
++{
++	size_t len = strlen(body);
++	char *data = malloc(len + 192);
++	int head;
++
++	if (!data)
++		return 0;
++	head = snprintf(data, 192, "HTTP/1.1 %d %s\r\nContent-Type: %s\r\n"
++			"Content-Length: %zu\r\nCache-Control: no-store\r\n"
++			"Connection: close\r\n\r\n", status,
++			status == 200 ? "OK" : "Error", type, len);
++	memcpy(data + head, body, len);
++	file->data = data;
++	file->len = head + len;
++	file->index = file->len;
++	file->flags = FS_FILE_FLAGS_HEADER_INCLUDED;
++	file->pextension = data;
++	return 1;
++}
++
++int fs_open_custom(struct fs_file *file, const char *name)
++{
++	char body[256];
++
++	if (!strcmp(name, "/") || !strcmp(name, "/index.html"))
++		return response(file, page, "text/html; charset=utf-8", 200);
++	if (!strcmp(name, "/api/device"))
++		return response(file, "{\"model\":\"VB235v development\","
++			"\"ram_only\":true,\"flash\":false,\"execute\":false,"
++			"\"max_upload\":16777216}", "application/json", 200);
++	if (!strcmp(name, "/api/status")) {
++		snprintf(body, sizeof(body), "{\"ready\":%s,\"receiving\":%s,"
++			 "\"bytes\":%zu,\"address\":\"0x%lx\",\"sha256\":\"%s\"}",
++			 upload_ready ? "true" : "false",
++			 upload_connection ? "true" : "false", upload_ready,
++			 upload_ready ? (ulong)upload_buffer : 0, upload_hash);
++		return response(file, body, "application/json", 200);
++	}
++	return response(file, "{\"error\":\"unsupported request\"}",
++			"application/json", 400);
++}
++
++void fs_close_custom(struct fs_file *file)
++{
++	free(file->pextension);
++	file->pextension = NULL;
++}
++
++int fs_read_custom(struct fs_file *file, char *buffer, int count)
++{
++	return FS_READ_EOF;
++}
++
++err_t httpd_post_begin(void *connection, const char *uri,
++		       const char *request, u16_t request_len, int content_len,
++		       char *response_uri, u16_t response_len, u8_t *auto_wnd)
++{
++	unsigned char *new_buffer;
++
++	strlcpy(response_uri, "/api/error", response_len);
++	if (!connection || upload_connection || strcmp(uri, "/api/upload") ||
++	    content_len <= 0 || content_len > RAM_UPLOAD_LIMIT)
++		return ERR_ARG;
++	clear_ready();
++	free(upload_buffer);
++	upload_buffer = NULL;
++	new_buffer = malloc(content_len);
++	if (!new_buffer)
++		return ERR_MEM;
++	upload_buffer = new_buffer;
++	upload_connection = connection;
++	upload_expected = content_len;
++	upload_received = 0;
++	upload_failed = false;
++	*auto_wnd = 1;
++	return ERR_OK;
++}
++
++err_t httpd_post_receive_data(void *connection, struct pbuf *p)
++{
++	u16_t copied;
++	size_t len;
++
++	if (!p)
++		return ERR_ARG;
++	len = p->tot_len;
++	if (connection != upload_connection || !upload_connection) {
++		pbuf_free(p);
++		return ERR_ARG;
++	}
++	if (upload_failed || len > upload_expected - upload_received) {
++		upload_failed = true;
++		pbuf_free(p);
++		return ERR_ARG;
++	}
++	copied = pbuf_copy_partial(p, upload_buffer + upload_received, len, 0);
++	pbuf_free(p);
++	if (copied != len) {
++		upload_failed = true;
++		return ERR_ARG;
++	}
++	upload_received += len;
++	return ERR_OK;
++}
++
++void httpd_post_finished(void *connection, char *response_uri, u16_t len)
++{
++	unsigned char hash[SHA256_SUM_LEN];
++	int i;
++
++	strlcpy(response_uri, "/api/error", len);
++	if (!upload_connection || connection != upload_connection)
++		return;
++	if (!upload_failed && upload_received == upload_expected) {
++		sha256_csum_wd(upload_buffer, upload_received, hash, CHUNKSZ_SHA256);
++		for (i = 0; i < SHA256_SUM_LEN; i++)
++			sprintf(upload_hash + i * 2, "%02x", hash[i]);
++		if (!env_set_hex("fileaddr", (ulong)upload_buffer) &&
++		    !env_set_hex("filesize", upload_received)) {
++			upload_ready = upload_received;
++			strlcpy(response_uri, "/api/status", len);
++			printf("RAM upload: %zu bytes at %p, SHA256 %s\n",
++			       upload_ready, upload_buffer, upload_hash);
++		} else {
++			clear_ready();
++		}
++	}
++	upload_connection = NULL;
++}
++
++bool uboot_httpd_is_running(void)
++{
++	return running;
++}
++
++int uboot_httpd_start(bool with_dhcp)
++{
++	struct udevice *dev;
++	struct netif *netif;
++	int ret = 0;
++
++	if (running)
++		return -EBUSY;
++	if (with_dhcp)
++		return -EOPNOTSUPP;
++	if (env_set("ipaddr", CONFIG_HTTPD_SERVER_IP) ||
++	    env_set("netmask", CONFIG_HTTPD_SERVER_NETMASK))
++		return -ENOMEM;
++	ret = net_lwip_eth_start();
++	if (ret)
++		return ret;
++	dev = eth_get_dev();
++	netif = net_lwip_new_netif(dev);
++	if (!netif) {
++		net_lwip_eth_stop();
++		return -ENODEV;
++	}
++	running = true;
++	httpd_init();
++	printf("VB235v RAM-only HTTP: http://%s/ (static IP, Ctrl-C exits)\n",
++	       CONFIG_HTTPD_SERVER_IP);
++	clear_ctrlc();
++	while (!ctrlc()) {
++		ret = net_lwip_rx(dev, netif);
++		if (ret == -ENETDOWN || ret == -ENOLINK)
++			ret = 0;
++		if (ret < 0)
++			break;
++	}
++	httpd_stop();
++	if (upload_connection) {
++		upload_connection = NULL;
++		clear_ready();
++	}
++	net_lwip_remove_netif(netif);
++	net_lwip_eth_stop();
++	running = false;
++	clear_ctrlc();
++	return ret < 0 ? ret : 0;
++}

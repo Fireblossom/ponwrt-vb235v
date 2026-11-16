@@ -1,5 +1,7 @@
 # M1: Original boot chain and recovery prerequisites
 
+Update: [M20](UBOOT-RAM-RECOVERY.md) now implements and cross-builds VB235v BL33 RAM profiles with NAND/UBI and persistent environment drivers excluded. Their initialization avoids the M9 flash-probe path by omitting it. Neither profile has been hardware-booted; authentication, physical NAND mapping and persistent recovery gates remain open.
+
 ## Original artifact analysis
 
 The owner's original 768 KiB `bootloader` partition backup contains a structurally valid Arm TF-A FIP table at partition offset `0x800`. A second magic-byte occurrence at `0x330` does not pass the bounded parser. Recognition checks table termination, payload bounds and overlaps; it does not verify signatures.

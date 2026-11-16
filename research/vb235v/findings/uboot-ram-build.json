@@ -1,0 +1,77 @@
+{
+  "source_hashes_checked": 16,
+  "native_http": {
+    "cases": 42,
+    "assertions": 181,
+    "asan_ubsan": true,
+    "sha256": "pinned upstream implementation",
+    "hardware_emulated": false
+  },
+  "builds": [
+    {
+      "mode": "serial",
+      "binary_bytes": 239896,
+      "binary_sha256": "ec33b8817d2844165d886d1744c36f96ff7bc7bbfab2d4029e50932417544729",
+      "dtb_sha256": "fa40bb6c2c6f09641fb4621ecd73ed46b54651c07ff1af334cf229ca33787d4d",
+      "config_sha256": "0b303ae6aed465cba48dbd68acef4afd50dac01a5ebc180c31751bea6acf80ba",
+      "storage_function_count": 0,
+      "arm64_text_offset": 31457280,
+      "arm64_image_size": 734312,
+      "dt_nodes": 11,
+      "compiled": true,
+      "hardware_booted": false
+    },
+    {
+      "mode": "net",
+      "binary_bytes": 390168,
+      "binary_sha256": "2bd5b36ed8f3bdb898afb62e5a85ec11bb1224efc688d205ff99443b8f0cf69e",
+      "dtb_sha256": "d03dbb2c95db3fac7b7a3a274f3968beaa14ab1603f4746fc6c6b262c04ea878",
+      "config_sha256": "efc2dddaecce3814bb27f02503b19dc46cd5008651522217ee3d0abb94438395",
+      "storage_function_count": 0,
+      "arm64_text_offset": 31457280,
+      "arm64_image_size": 854552,
+      "dt_nodes": 55,
+      "compiled": true,
+      "hardware_booted": false
+    }
+  ],
+  "flashable": false,
+  "hardware_access": false,
+  "upstream_commit": "4b91e112c345b8a4ad4f954775f3f4955f2cafb2",
+  "packages": [
+    {
+      "mode": "serial",
+      "flashable": false,
+      "hardware_booted": false,
+      "fit_bytes": 246108,
+      "fit_sha256": "89b0d3c7efe953a6c669e8c335b289170e4e16b6c203e9eafd13d426876136e1",
+      "payload_sha256": "ec33b8817d2844165d886d1744c36f96ff7bc7bbfab2d4029e50932417544729",
+      "dtb_sha256": "fa40bb6c2c6f09641fb4621ecd73ed46b54651c07ff1af334cf229ca33787d4d",
+      "fit_payload_hashes_verified": true,
+      "load_address": "0x81e00000",
+      "entry_address": "0x81e00000",
+      "stock_acceptance_verified": false,
+      "signature": "unsigned development FIT"
+    },
+    {
+      "mode": "net",
+      "flashable": false,
+      "hardware_booted": false,
+      "fit_bytes": 404188,
+      "fit_sha256": "1314a72589cc66c63ad5de8e8d14502ad946f5c7a13be6bb4029cd9a6cb23c66",
+      "payload_sha256": "2bd5b36ed8f3bdb898afb62e5a85ec11bb1224efc688d205ff99443b8f0cf69e",
+      "dtb_sha256": "d03dbb2c95db3fac7b7a3a274f3968beaa14ab1603f4746fc6c6b262c04ea878",
+      "fit_payload_hashes_verified": true,
+      "load_address": "0x81e00000",
+      "entry_address": "0x81e00000",
+      "stock_acceptance_verified": false,
+      "signature": "unsigned development FIT"
+    }
+  ],
+  "fresh_build_workflow_passed": true,
+  "fresh_build_payload_hashes_match_first_build": true,
+  "dtc_warning_counts": {
+    "serial": 0,
+    "net": 0
+  }
+}

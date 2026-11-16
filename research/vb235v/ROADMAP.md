@@ -5,6 +5,18 @@ compiled opt-in NPU layout prototype; M18 adds a compiled opt-in PCS Ethernet
 profile. M12 and M16 add UART and reference PCS build coverage.
 An item is complete only when its evidence and validation are recorded.
 
+## Current priority: recovery U-Boot
+
+The owner requested recovery first on 2026-11-16. DSL receiver/calibration work is deferred. [M20](UBOOT-RAM-RECOVERY.md) records the implementation and remaining gates.
+
+- [x] Pin the AN758x U-Boot source and implement VB235v serial and LAN RAM development configurations.
+- [x] Exclude NAND/UBI and persistent environment backends; replace the management HTTP backend with bounded RAM upload/status only.
+- [x] Cross-build both profiles, run native callback checks and verify FIT payload hashes.
+- [ ] Validate factory-to-RAM handoff and the serial prompt on VB235v.
+- [ ] Validate physical LAN/PHY operation and recovery-button assignment/polarity.
+- [ ] Resolve authentication, physical NAND mapping/ECC and independent early-stage recovery.
+- [ ] Implement and test protected persistent layout, image admission and interrupted-update behavior.
+
 ## R0: Source and artifact inventory
 
 - [x] Locate MT7993 chip source and the vendor Wi-Fi framework in the GPL archive.
@@ -49,6 +61,6 @@ nodes; complete calibration and endpoint/data-path behavior remain open.
 - [ ] Create a VB235v-specific device tree and NAND layout; preserve board calibration.
 - [ ] Document a recovery path appropriate to 4 KiB-page SPI NAND.
 - [ ] Inspect potential persistent writes before any RAM-image experiment.
-- [ ] Keep permanent installation blocked until all three required subsystems pass hardware tests.
+- [ ] Require all three subsystem hardware tests before permanent replacement Linux installation; validate recovery-bootloader installation through its separate gates above.
 
 Record experiments with artifact SHA-256, kernel/config/compiler versions, exact commands, observed results, and reproducible limitations. Avoid speculative hardware register writes.

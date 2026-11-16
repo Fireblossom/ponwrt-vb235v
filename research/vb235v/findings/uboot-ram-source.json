@@ -1,0 +1,38 @@
+{
+  "upstream": "https://github.com/pbs05/uboot-an758x",
+  "commit": "4b91e112c345b8a4ad4f954775f3f4955f2cafb2",
+  "source_sha256": {
+    "net/lwip/httpd-ram.c": "b3ff110e326864a220d8eca49614b2e1cf4362a66a2635e2558b45eea004895f",
+    "net/lwip/Makefile": "83fdfc22583507f3acc0c77fee8be74c09b7269accae2fe5cd5910607ea48488",
+    "cmd/Kconfig": "60cbb06dd74fcd97673cd3748bbb22b6db0c67cf6727b5d09d1caaef1a1e1496",
+    "arch/arm/mach-airoha/Kconfig": "7b853a20b36a2e615a80736cc5be522bbb88dc8111ba68aa8ed1eb54ed13a5b4",
+    "arch/arm/mach-airoha/an7583/init.c": "d8d341f0c1a8e34e54cf6623cd72d460461da69065e03740a0f8df3c37c97428",
+    "lib/sha256.c": "582d83dd6e6f49aeb77a468a743c264092a05eef3fe572a4bc7240b5d7814ca0",
+    "lib/sha256_common.c": "093dac94abf532fa8ba6499b0be33644867a858d40ffcbb7966006ae82403b51",
+    "include/u-boot/sha256.h": "d562c402fc7b97e3acc81cd80ea13d99edfd365020b50bd9916cda5def24e3dd",
+    "arch/arm/dts/an7583.dtsi": "b91cb541cfaa362e3f32ca7ae80cfbe194d1bc6fe1461ed73c7b4aee746b076f",
+    "arch/arm/dts/an7583-vb235v-ram.dts": "67c2e14f90ed1da456702bb3769c1119ea6f58b981f1937ae0ee1335826ba2ef",
+    "arch/arm/dts/an7583-vb235v-ram-net.dts": "2e7cc52e6470d1b9bececabf5496932a8d70963d95a76f4cc61530e79fa58773",
+    "configs/an7583_vb235v_ram_defconfig": "f983b9b5ffbb2a2dc48ef02195588cb6512d8708d448e2dd33b47b04040f95d8",
+    "configs/an7583_vb235v_ram_net_defconfig": "b016fb3a6fc594764afbc2b32567a3b3a0d2db082c144d1e97a1265916ef30d4",
+    "board/airoha/an7583/an7583_vb235v_ram.env": "6867e61d85a93058c27d04dfc053517d2d61e2b5e297959e3942f575f69ad1d6",
+    "arch/arm/dts/an7583-vb235v-ram-u-boot.dtsi": "d15bd4a71605bf1d8babe3f95aed9bf34f38f74708db3b5a859142abfe92700b",
+    "arch/arm/dts/an7583-vb235v-ram-net-u-boot.dtsi": "d15bd4a71605bf1d8babe3f95aed9bf34f38f74708db3b5a859142abfe92700b"
+  },
+  "patch_sha256": "6c86a40a073325571f1919b9c7699c3780075f23e2871611aab1f88ce5cff763",
+  "patch_files": [
+    "arch/arm/dts/an7583-vb235v-ram-net-u-boot.dtsi",
+    "arch/arm/dts/an7583-vb235v-ram-net.dts",
+    "arch/arm/dts/an7583-vb235v-ram-u-boot.dtsi",
+    "arch/arm/dts/an7583-vb235v-ram.dts",
+    "arch/arm/mach-airoha/Kconfig",
+    "arch/arm/mach-airoha/an7583/init.c",
+    "board/airoha/an7583/an7583_vb235v_ram.env",
+    "cmd/Kconfig",
+    "configs/an7583_vb235v_ram_defconfig",
+    "configs/an7583_vb235v_ram_net_defconfig",
+    "net/lwip/Makefile",
+    "net/lwip/httpd-ram.c"
+  ],
+  "patch_reapplied_without_fuzz": true
+}

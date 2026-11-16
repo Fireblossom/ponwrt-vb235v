@@ -2,6 +2,8 @@
 
 This research branch targets TP-LinkBox 7 (VB235v). It is **not an installable device port**. The goal is to retain DSL, the analog telephone port, and MT7993 Wi-Fi while investigating support in PonWrt.
 
+Current owner priority (2026-11-16): recovery U-Boot first. [M20](UBOOT-RAM-RECOVERY.md) provides two compiled BL33 RAM development profiles and hash-checked FIT packages, with a separate RAM-only HTTP backend. Hardware boot and persistent recovery installation remain unvalidated; DSL/PCS implementation is deferred while recovery is developed.
+
 ## Observed hardware
 
 | Component | Observation |
@@ -65,3 +67,5 @@ For bounded read-only SSH collection, see [STOCK-MODULE-COVERAGE.md](STOCK-MODUL
 [M18: PCS Ethernet prototype](PCS-ETHERNET-PROTOTYPE.md) implements an explicit USXGMII profile with pre-write interface checks and optical API separation. It cross-compiles and passes host-model/schema/overlay checks; all development hardware nodes remain disabled.
 
 [M19: Receiver gaps](PCS-RECEIVER-GAPS.md) identifies five remaining clock-field differences and distinct direct TDC/reset sequences in the analog backend. Its source checker does not execute C or access hardware.
+
+[M20: Recovery U-Boot builds](UBOOT-RAM-RECOVERY.md) supplies serial-first and experimental LAN profiles, a bounded RAM HTTP upload backend, native callback checks and a reproducible build/package wrapper. The outputs exclude NAND/UBI and persistent environment drivers and are not flash images.
