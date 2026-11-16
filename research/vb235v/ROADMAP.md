@@ -1,6 +1,8 @@
 # Driver research roadmap
 
-No missing driver is implemented yet. An item is complete only when its evidence and validation are recorded.
+No complete replacement driver has passed hardware validation. M14 supplies a
+compiled opt-in NPU layout prototype; M12 and M16 add UART and PCS build coverage.
+An item is complete only when its evidence and validation are recorded.
 
 ## R0: Source and artifact inventory
 
@@ -21,6 +23,10 @@ No missing driver is implemented yet. An item is complete only when its evidence
 - [ ] Choose source porting or a narrowly scoped upstream-driver implementation based on evidence.
 
 ## R2: DSL
+
+M15 establishes Ethernet control boundaries; M16 decodes the boot-selected
+DSL/WAN/USXGMII path and compiles the existing PCS sources. Neither establishes
+the exact endpoint, its full lifecycle, or working DSL traffic.
 
 - [ ] Identify the exact PHY/DSP and transport path; PPPoE support alone does not establish DSL support.
 - [ ] Map firmware loading, line-state control, interrupts, and ATM/PTM/Ethernet interfaces.

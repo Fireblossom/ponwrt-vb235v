@@ -1,0 +1,100 @@
+{
+  "classification": "boot-argument selections; no live-register or wiring validation",
+  "port_count": 5,
+  "parameters_per_port": 3,
+  "ports": [
+    {
+      "port_index": 0,
+      "port_name": "Serdes-1",
+      "phy_selector": 7,
+      "phy_label": "DSL",
+      "ether_role_selector": 2,
+      "ether_role_label": "WAN",
+      "interface_selector": 2,
+      "interface_label": "USXGMII",
+      "supported_interfaces": [
+        "PON",
+        "XFI",
+        "USXGMII",
+        "HSGMII",
+        "NONE",
+        "SGMII"
+      ]
+    },
+    {
+      "port_index": 1,
+      "port_name": "Serdes-2",
+      "phy_selector": 1,
+      "phy_label": "an8811",
+      "ether_role_selector": 1,
+      "ether_role_label": "LAN",
+      "interface_selector": 2,
+      "interface_label": "USXGMII",
+      "supported_interfaces": [
+        "XFI",
+        "USXGMII",
+        "HSGMII",
+        "5G_BaseR",
+        "NONE",
+        "FTTR_OLT",
+        "SGMII"
+      ]
+    },
+    {
+      "port_index": 2,
+      "port_name": "Serdes-3",
+      "phy_selector": 0,
+      "phy_label": "NONE",
+      "ether_role_selector": 0,
+      "ether_role_label": "NONE",
+      "interface_selector": 1,
+      "interface_label": "XFI",
+      "supported_interfaces": [
+        "PCIE_G3_1LANE",
+        "PCIE_G2_1LANE",
+        "HSGMII",
+        "USXGMII",
+        "XFI",
+        "NONE"
+      ]
+    },
+    {
+      "port_index": 3,
+      "port_name": "Serdes-4",
+      "phy_selector": 0,
+      "phy_label": "NONE",
+      "ether_role_selector": 0,
+      "ether_role_label": "NONE",
+      "interface_selector": 1,
+      "interface_label": "XFI",
+      "supported_interfaces": [
+        "PCIE_G3_1LANE",
+        "PCIE_G2_1LANE",
+        "HSGMII",
+        "USXGMII",
+        "XFI",
+        "NONE",
+        "SGMII"
+      ]
+    },
+    {
+      "port_index": 4,
+      "port_name": "Serdes-5",
+      "phy_selector": 0,
+      "phy_label": "NONE",
+      "ether_role_selector": 0,
+      "ether_role_label": "NONE",
+      "interface_selector": 0,
+      "interface_label": "NONE",
+      "supported_interfaces": [
+        "USB3.0",
+        "HSGMII+USB2.0",
+        "NONE",
+        "SGMII"
+      ]
+    }
+  ],
+  "uninterpreted_trailing_rfb_entries": 2,
+  "unrelated_bootargs_exported": false,
+  "dtb_sha256": "387f309fea8a488c5de92fdea1632a07933316e32fc94013755342e6934c3a4a"
+}

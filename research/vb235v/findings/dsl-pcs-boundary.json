@@ -1,0 +1,318 @@
+{
+  "milestone": "M16",
+  "boot_selection": {
+    "dtb_sha256": "387f309fea8a488c5de92fdea1632a07933316e32fc94013755342e6934c3a4a",
+    "detail": "stock-serdes-boot.json",
+    "dsl_port_index": 0,
+    "dsl_phy_selector": 7,
+    "dsl_ether_role": "WAN",
+    "dsl_interface": "USXGMII",
+    "current_hardware_state_verified": false
+  },
+  "ae_wan": {
+    "bytes": 97424,
+    "sha256": "2fbf8e98950a88c4da28df7a16097c3b11f3662df816110bc5a7b756ecc1d864",
+    "modinfo_license": [
+      "Proprietary"
+    ],
+    "selected_direct_callees": {
+      "ae_wan_mac_init": [
+        "GET_HIR",
+        "GET_PDIDR",
+        "get_xsi_data",
+        "set_xsi_data",
+        "xsi_mac_api_logic_reset",
+        "xsi_mac_api_set_rx_frag",
+        "xsi_mac_api_set_tx_frag",
+        "xsi_mac_itf_reset",
+        "xsi_mac_set_ipg",
+        "xsi_mac_set_mpi_mbi_disable",
+        "xsi_mac_set_mpi_mbi_enable",
+        "xsi_mac_set_rx_frag_len",
+        "xsi_mac_set_tx_frag_len"
+      ],
+      "ae_wan_mac_rx": [
+        "__ECNT_HOOK",
+        "__dev_kfree_skb_any",
+        "dump_skb",
+        "eth_type_trans",
+        "netif_receive_skb",
+        "skb_put",
+        "wan_to_lan"
+      ],
+      "ae_wan_mac_tx": [
+        "__ECNT_HOOK",
+        "__dev_kfree_skb_any",
+        "dump_skb",
+        "wan_to_lan"
+      ],
+      "check_phy_sel_is_DSL": [
+        "get_serdes_phy_sel",
+        "get_serdes_port_count"
+      ],
+      "init_module": [
+        "GET_HIR",
+        "ae_wan_mac_init",
+        "ae_wan_proc_init",
+        "ae_wan_ratelimit_init",
+        "alloc_netdev_mqs",
+        "ecnt_register_hook",
+        "get_serdes_ether_type_sel",
+        "get_serdes_interface_sel",
+        "get_serdes_port_count",
+        "get_xsi_dev",
+        "get_xsi_mac_eee_irq",
+        "netif_napi_add",
+        "register_netdev",
+        "request_threaded_irq",
+        "serdes_phy_init",
+        "xsi_mac_api_release"
+      ],
+      "serdes_phy_init": [
+        "__ECNT_HOOK",
+        "get_serdes_phy_sel",
+        "get_serdes_port_count",
+        "xsgmii_api",
+        "xsi_set_mdio",
+        "xsi_set_xsgmii_serdes_an8831_phy_preset",
+        "xsi_set_xsgmii_serdes_enable_interrupt",
+        "xsi_set_xsgmii_serdes_speed_forcemode_anauto",
+        "xsi_set_xsgmii_serdes_speed_forcemode_andisable",
+        "xsi_set_xsgmii_serdes_speed_forcemode_anon"
+      ],
+      "xsi_api_set_mac": [
+        "get_xsi_data",
+        "set_xsi_data"
+      ]
+    },
+    "live_symbol_providers": [
+      {
+        "symbol": "xsgmii_api",
+        "type": "T",
+        "provider": "built-in kernel"
+      },
+      {
+        "symbol": "set_frame_engine_data",
+        "type": "T",
+        "provider": "built-in kernel"
+      },
+      {
+        "symbol": "get_frame_engine_data",
+        "type": "T",
+        "provider": "built-in kernel"
+      },
+      {
+        "symbol": "get_xsi_dev",
+        "type": "T",
+        "provider": "built-in kernel"
+      },
+      {
+        "symbol": "set_xsi_data",
+        "type": "T",
+        "provider": "built-in kernel"
+      },
+      {
+        "symbol": "get_xsi_data",
+        "type": "T",
+        "provider": "built-in kernel"
+      },
+      {
+        "symbol": "get_serdes_port_count",
+        "type": "T",
+        "provider": "built-in kernel"
+      },
+      {
+        "symbol": "get_serdes_ether_type_sel",
+        "type": "T",
+        "provider": "built-in kernel"
+      },
+      {
+        "symbol": "get_serdes_interface_sel",
+        "type": "T",
+        "provider": "built-in kernel"
+      },
+      {
+        "symbol": "get_serdes_phy_sel",
+        "type": "T",
+        "provider": "built-in kernel"
+      },
+      {
+        "symbol": "macSend",
+        "type": "T",
+        "provider": "eth"
+      }
+    ],
+    "recipe_source_variable": "MODULES_AE_WAN_MAC_DIR",
+    "implementation_source_found_by_ae_wan_filename": false
+  },
+  "archive_sources": [
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/package/network/config/netifd/patches/024_netifd_ae_wan_not_clear_state.patch",
+      "bytes": 347,
+      "sha256": "a44bfda7676c9333b25e07a815118bed308e3d80cc37cda36191e67ea9488ed2"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/package/network/config/netifd/patches/023_netifd_ae_wan_not_down.patch",
+      "bytes": 322,
+      "sha256": "81f9f740b06b80480f52f3778da49e5da0b9d2036105ceb1b650073ea2128ed2"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/package/airoha/drivers/ae_wan/Makefile",
+      "bytes": 1157,
+      "sha256": "471756ef8632332f8634f6e4d953c9d73a4cc9a1e6991a50a36806ed8802c419"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/package/airoha/drivers/airoha_7517/client_info/Makefile",
+      "bytes": 719,
+      "sha256": "f8841605daa6be17fc2db2ee66b715a0ed4d8e9a713966912f30b65ab41ad722"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/arch/arm64/mach-econet/bbu_sgmii/an7583/H/air_eth_xsgmii_config.h",
+      "bytes": 8112,
+      "sha256": "25450bf263c7faa558312756fbf3f751f931478972eed331d8ce3ba9dfdcc3d8"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/arch/arm64/mach-econet/bbu_sgmii/an7583/H/air_eth_xsgmii.h",
+      "bytes": 362,
+      "sha256": "4b9c3fe095bb0e7e1e248abb09e1c70f9855e567d94b39aebcd28cc7b445d75c"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/arch/arm64/mach-econet/bbu_sgmii/an7583/air_eth_xsgmii.c",
+      "bytes": 196227,
+      "sha256": "1213c51629868e34566fdfd53d33d8bf6cc93ec38a170291862709656735f684"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/arch/arm64/mach-econet/ecnt_xsi.c",
+      "bytes": 12371,
+      "sha256": "e2359b78f691f4702e9020b6669110bdeabf6a87217e6d44712721256201dac1"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/arch/arm64/mach-econet/ecnt_frame_engine.c",
+      "bytes": 18944,
+      "sha256": "9441455a3b526fe4e7153a09d2e07195f1b382ae95b6684e37890fd73d612632"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/arch/arm64/mach-econet/combo_phy/an7583/ecnt_serdes_common_phy.h",
+      "bytes": 1231,
+      "sha256": "84058cb20940384c0fc50add68c7aa67e629dc3f51b1b717c18cf7420e108d50"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/arch/arm64/mach-econet/combo_phy/an7583/ecnt_serdes_common_phy.c",
+      "bytes": 13982,
+      "sha256": "996c1d75de0bb61260483886e086476fe4e53c5690c0d5178af140f70cc1972c"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/include/global_inc/uapi/ecnt_event_global/ecnt_event_serdes_sel.h",
+      "bytes": 7749,
+      "sha256": "b3c72c47ab8cd4f65e927b143dbcef9de8118b8b2279c77c04d350ffd1ed11fe"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/include/ecnt_hook/ecnt_hook_xsi_phy.h",
+      "bytes": 7387,
+      "sha256": "12d7b2844d3fe1c0bc9417ac25264fa45473f7cf86a180646427cdc54c260ae9"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/include/ecnt_hook/ecnt_hook_xsi_mac.h",
+      "bytes": 3541,
+      "sha256": "4c0ddf5249a3bd1c200fcf006a53d547c666d3dd3b1874da40f21a3d01f415d4"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/include/ecnt_hook/ecnt_hook_xsi_mac_type.h",
+      "bytes": 2583,
+      "sha256": "4e26b3cbb206c7de261335936f5fbf0c0d48a10ed3284b871871c855c683adb0"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/drivers/char/arht/arht_serdes.c",
+      "bytes": 37963,
+      "sha256": "f59647f6f9f82ecb981982b72eafb9abe14a7b3e2e150e62433139032646c4d2"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/drivers/char/arht_serdes_cfg.c",
+      "bytes": 37809,
+      "sha256": "cb4544f7eba1867b229238c3ccbceb9fafc4d7c3a86c23d6d3537d8f14b63ce7"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/include/global_inc/ecnt_event_global/ecnt_event_serdes.h",
+      "bytes": 2634,
+      "sha256": "ea1fca7c266f0653e2942b6549a65ae9311642345fe9a870c099259d26950c9e"
+    },
+    {
+      "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/linux-5.4.55/include/global_inc/ecnt_event_global/ecnt_event_bootargs_serdes.h",
+      "bytes": 1974,
+      "sha256": "809e5be2f3914497d27b85a17d7d19bbc7b803c92f566306f7a0797c8d76fea2"
+    }
+  ],
+  "kernel_text_search": {
+    "files": 52041,
+    "bytes": 845834439,
+    "exact_needles": [
+      "get_serdes_phy_sel",
+      "srdsPortCombo",
+      "srdsEtherPhyTypeAllComp"
+    ],
+    "matches": 4
+  },
+  "reference_pcs_build": {
+    "kernel": "6.18.60",
+    "kernel_tar_sha256": "3c2f44ef6acc021a7ad444d9a2e6ec1ef488ff09368793d0004a6080f69d621e",
+    "reference_commit": "dcf140cb1d5d2c15c1d7c353c95c4c2a56629820",
+    "preparation": "complete generic/Airoha overlays and 764 target patches, then M14 development patches",
+    "compiler": "aarch64-linux-gnu-gcc-10 10.2.1 20210110",
+    "required_resolved_config": [
+      "CONFIG_PCS_AIROHA=y",
+      "CONFIG_PCS_AIROHA_AN7583=y",
+      "CONFIG_PHYLINK=y",
+      "CONFIG_NVMEM=y"
+    ],
+    "source_files": [
+      {
+        "path": "drivers/net/pcs/airoha/pcs-airoha-common.c",
+        "bytes": 52138,
+        "sha256": "41f8d86c70b053bb0c18c19898c0a67ab0ba786ef3011d2d181d4df077a53e01"
+      },
+      {
+        "path": "drivers/net/pcs/airoha/pcs-an7583.c",
+        "bytes": 89356,
+        "sha256": "67a7c9c9a6c59c434a4931df3047da45bc6db000ce7ebb5e00b3fc613fdc5aaf"
+      },
+      {
+        "path": "drivers/net/pcs/airoha/pcs-airoha.h",
+        "bytes": 98616,
+        "sha256": "198e6a3bef28af75104a6b6fc81277cbd70e0f0cdd2cd71b5043efc8d579c914"
+      }
+    ],
+    "artifacts": [
+      {
+        "file": "pcs-airoha-common.o",
+        "bytes": 27488,
+        "sha256": "ded7b5237dfbffbf211e9ebbd0315bd91bc7d5f2eab6e36ea37c22988c9a7826",
+        "elf_type": "ET_REL",
+        "elf_machine": 183
+      },
+      {
+        "file": "pcs-an7583.o",
+        "bytes": 32776,
+        "sha256": "b96b430a379fad6c8da21839bf715e35475d4971e1e1fd59ad10dceaf95bdcbe",
+        "elf_type": "ET_REL",
+        "elf_machine": 183
+      },
+      {
+        "file": "kernel.config",
+        "bytes": 52900,
+        "sha256": "282b816331ab797acafeccaf891a27c65ebfeee0121cb781f8a9e54796f8e7fa"
+      }
+    ],
+    "build_script_sha256": "d9ccaa1212e0f5298ca0999024f2fa751cb3e0159d8d8ec85cec326e621e89b9",
+    "config_fragment_sha256": "d65b1f9c4a6cef9af8b41ca23c7a78239da09160ff756753fc02431969c57fab",
+    "build_log_sha256": "56616041fbe549b988915b7659765b0771c519124de60c801efed7027c48d4b9",
+    "compile_only": true,
+    "hardware_execution": false
+  },
+  "open_gaps": [
+    "ae_wan vendor hook/SKB ABI and FE/GDMA path",
+    "PON physical block used as Ethernet USXGMII versus optical PON parameter selection",
+    "endpoint reset/boot/discovery and complete DSL control/data semantics",
+    "boot selections versus current state or confirmed physical endpoint identity"
+  ],
+  "device_actions": "No additional device commands for M16; previously collected FDT, modules and symbols analyzed offline"
+}
