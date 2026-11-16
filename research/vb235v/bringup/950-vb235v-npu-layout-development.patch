@@ -1,0 +1,219 @@
+From: VB235v research
+Subject: [EXPERIMENTAL] airoha: opt-in V2P NPU driver
+
+SPDX-License-Identifier: GPL-2.0-only
+
+Apply after the pinned PonWrt Airoha target kernel patch stack.
+Keep the development DT node disabled: hardware behavior and firmware
+compatibility have not been tested. See NPU-LAYOUT-PROTOTYPE.md.
+
+---
+diff --git a/drivers/net/ethernet/airoha/airoha_npu.c b/drivers/net/ethernet/airoha/airoha_npu.c
+--- a/drivers/net/ethernet/airoha/airoha_npu.c
++++ b/drivers/net/ethernet/airoha/airoha_npu.c
+@@ -14,6 +14,7 @@
+ #include <linux/regmap.h>
+ 
+ #include "airoha_eth.h"
++#include "airoha_npu_layout.h"
+ 
+ #define NPU_EN7581_FIRMWARE_DATA		"airoha/en7581_npu_data.bin"
+ #define NPU_EN7581_FIRMWARE_RV32		"airoha/en7581_npu_rv32.bin"
+@@ -352,11 +353,31 @@
+ 	struct airoha_npu_core *core = core_instance;
+ 	struct airoha_npu *npu = core->npu;
+ 	int c = core - &npu->cores[0];
++	struct airoha_npu_wdt_regs regs;
++	unsigned long flags;
+ 	u32 val;
+-
+-	regmap_set_bits(npu->regmap, REG_WDT_TIMER_CTRL(c), WDT_INTR_MASK);
+-	if (!regmap_read(npu->regmap, REG_WDT_TIMER_CTRL(c), &val) &&
+-	    FIELD_GET(WDT_EN_MASK, val))
++	int err;
++
++	if (airoha_npu_wdt_regs(npu->hw_layout, c, &regs))
++		return IRQ_NONE;
++
++	if (npu->hw_layout->shared_wdt) {
++		/* Several core IRQs share one control register. Do not write
++		 * unrelated W1C status bits back, and serialize host RMWs.
++		 */
++		spin_lock_irqsave(&npu->wdt_lock, flags);
++		err = regmap_read(npu->regmap, regs.offset, &val);
++		if (!err)
++			err = regmap_write(npu->regmap, regs.offset,
++					   (val & regs.preserve_mask) | regs.irq_mask);
++		spin_unlock_irqrestore(&npu->wdt_lock, flags);
++	} else {
++		/* Preserve the legacy per-core register behavior. */
++		err = regmap_set_bits(npu->regmap, regs.offset, regs.irq_mask);
++		if (!err)
++			err = regmap_read(npu->regmap, regs.offset, &val);
++	}
++	if (!err && (val & regs.enable_mask))
+ 		schedule_work(&core->wdt_work);
+ 
+ 	return IRQ_HANDLED;
+@@ -729,6 +750,7 @@
+ 	struct airoha_npu *npu;
+ 	struct resource res;
+ 	void __iomem *base;
++	const char *layout_name;
+ 	int i, irq, err;
+ 	u32 val;
+ 
+@@ -741,6 +763,22 @@
+ 		return -ENOMEM;
+ 
+ 	npu->dev = dev;
++	npu->hw_layout = &airoha_npu_legacy_layout;
++	if (of_find_property(dev->of_node, "airoha,npu-layout", NULL)) {
++		err = of_property_read_string(dev->of_node, "airoha,npu-layout",
++					      &layout_name);
++		if (err)
++			return dev_err_probe(dev, err, "invalid NPU layout property\n");
++		if (!strcmp(layout_name, "an7583-v2p")) {
++			if (!of_device_is_compatible(dev->of_node, "airoha,an7583-npu"))
++				return dev_err_probe(dev, -EINVAL,
++						     "V2P layout requires AN7583\n");
++			npu->hw_layout = &airoha_npu_v2p_layout;
++		} else if (strcmp(layout_name, "legacy")) {
++			return dev_err_probe(dev, -EINVAL, "unknown NPU layout\n");
++		}
++	}
++	spin_lock_init(&npu->wdt_lock);
+ 	npu->ops.ppe_init = airoha_npu_ppe_init;
+ 	npu->ops.ppe_deinit = airoha_npu_ppe_deinit;
+ 	npu->ops.ppe_init_stats = airoha_npu_ppe_stats_setup;
+@@ -772,7 +810,7 @@
+ 	if (err)
+ 		return err;
+ 
+-	for (i = 0; i < ARRAY_SIZE(npu->cores); i++) {
++	for (i = 0; i < npu->hw_layout->num_cores; i++) {
+ 		struct airoha_npu_core *core = &npu->cores[i];
+ 
+ 		spin_lock_init(&core->lock);
+@@ -795,7 +833,7 @@
+ 
+ 	/* wlan IRQ lines */
+ 	for (i = 0; i < ARRAY_SIZE(npu->irqs); i++) {
+-		irq = platform_get_irq(pdev, i + ARRAY_SIZE(npu->cores) + 1);
++		irq = platform_get_irq(pdev, i + npu->hw_layout->num_cores + 1);
+ 		if (irq < 0)
+ 			return irq;
+ 
+@@ -806,7 +844,7 @@
+ 	if (err)
+ 		return err;
+ 
+-	for (i = 0; i < ARRAY_SIZE(npu->cores); i++) {
++	for (i = 0; i < npu->hw_layout->num_cores; i++) {
+ 		struct airoha_npu_core *core = &npu->cores[i];
+ 
+ 		core->buf = dmam_alloc_coherent(dev, AIROHA_NPU_MBOX_SIZE,
+@@ -821,18 +859,19 @@
+ 
+ 	regmap_write(npu->regmap, REG_CR_NPU_MIB(10),
+ 		     res.start + NPU_EN7581_FIRMWARE_RV32_MAX_SIZE);
+-	regmap_write(npu->regmap, REG_CR_NPU_MIB(11), 0x40000); /* SRAM 256K */
++	regmap_write(npu->regmap, REG_CR_NPU_MIB(11), npu->hw_layout->sram_size);
+ 	regmap_write(npu->regmap, REG_CR_NPU_MIB(12), 0);
+ 	regmap_write(npu->regmap, REG_CR_NPU_MIB(21), 1);
+ 	msleep(100);
+ 
+ 	/* setting booting address */
+-	for (i = 0; i < NPU_NUM_CORES; i++)
++	for (i = 0; i < npu->hw_layout->num_cores; i++)
+ 		regmap_write(npu->regmap, REG_CR_BOOT_BASE(i), res.start);
+ 	usleep_range(1000, 2000);
+ 
+ 	/* enable NPU cores */
+-	regmap_write(npu->regmap, REG_CR_BOOT_CONFIG, 0xff);
++	regmap_write(npu->regmap, REG_CR_BOOT_CONFIG,
++		     airoha_npu_core_mask(npu->hw_layout));
+ 	regmap_write(npu->regmap, REG_CR_BOOT_TRIGGER, 0x1);
+ 	msleep(100);
+ 
+diff --git a/include/linux/soc/airoha/airoha_offload.h b/include/linux/soc/airoha/airoha_offload.h
+--- a/include/linux/soc/airoha/airoha_offload.h
++++ b/include/linux/soc/airoha/airoha_offload.h
+@@ -167,6 +167,8 @@
+ #if (IS_BUILTIN(CONFIG_NET_AIROHA_NPU) || IS_MODULE(CONFIG_NET_AIROHA_NPU))
+ 	struct device *dev;
+ 	struct regmap *regmap;
++	const struct airoha_npu_hw_layout *hw_layout;
++	spinlock_t wdt_lock;
+ 
+ 	struct airoha_npu_core {
+ 		struct airoha_npu *npu;
+diff --git a/drivers/net/ethernet/airoha/airoha_npu_layout.h b/drivers/net/ethernet/airoha/airoha_npu_layout.h
+new file mode 100644
+--- /dev/null
++++ b/drivers/net/ethernet/airoha/airoha_npu_layout.h
+@@ -0,0 +1,64 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++/* Pure layout arithmetic, separated from MMIO for offline regression tests. */
++#ifndef AIROHA_NPU_LAYOUT_H
++#define AIROHA_NPU_LAYOUT_H
++
++#include <linux/bits.h>
++#include <linux/errno.h>
++#include <linux/types.h>
++
++struct airoha_npu_hw_layout {
++	unsigned int num_cores;
++	u32 sram_size;
++	bool shared_wdt;
++};
++
++static const struct airoha_npu_hw_layout airoha_npu_legacy_layout = {
++	.num_cores = 8,
++	.sram_size = 0x40000,
++};
++
++/* Opt-in profile derived from the owner's stock AN7583 V2_P build.
++ * This is not an assertion that every AN7583 board uses this layout.
++ */
++static const struct airoha_npu_hw_layout airoha_npu_v2p_layout = {
++	.num_cores = 6,
++	.sram_size = 0x20000,
++	.shared_wdt = true,
++};
++
++struct airoha_npu_wdt_regs {
++	u32 offset;
++	u32 irq_mask;
++	u32 enable_mask;
++	u32 preserve_mask;
++};
++
++static inline int
++airoha_npu_wdt_regs(const struct airoha_npu_hw_layout *layout,
++		    unsigned int core, struct airoha_npu_wdt_regs *regs)
++{
++	unsigned int lane;
++
++	if (!layout || !regs || !layout->num_cores || layout->num_cores > 8 ||
++	    core >= layout->num_cores ||
++	    (layout->shared_wdt && layout->num_cores != 6))
++		return -EINVAL;
++
++	lane = layout->shared_wdt ? core % 4 : 0;
++	regs->offset = 0x310100;
++	regs->offset += (layout->shared_wdt ? core / 4 : core) * 0x100;
++	regs->irq_mask = BIT(21 + lane);
++	regs->enable_mask = BIT(25 + lane);
++	regs->preserve_mask = layout->shared_wdt ? 0x1e0001ef : 0x02000027;
++	return 0;
++}
++
++static inline u32
++airoha_npu_core_mask(const struct airoha_npu_hw_layout *layout)
++{
++	if (!layout || !layout->num_cores || layout->num_cores > 8)
++		return 0;
++	return BIT(layout->num_cores) - 1;
++}
++#endif

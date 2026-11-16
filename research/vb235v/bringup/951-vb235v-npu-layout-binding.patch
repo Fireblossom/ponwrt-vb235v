@@ -1,0 +1,91 @@
+From: VB235v research
+Subject: [EXPERIMENTAL] airoha: opt-in V2P NPU binding
+
+SPDX-License-Identifier: GPL-2.0-only
+
+Apply after the pinned PonWrt Airoha target kernel patch stack.
+Keep the development DT node disabled: hardware behavior and firmware
+compatibility have not been tested. See NPU-LAYOUT-PROTOTYPE.md.
+
+---
+diff --git a/Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml b/Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml
+--- a/Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml
++++ b/Documentation/devicetree/bindings/net/airoha,en7581-npu.yaml
+@@ -18,27 +18,26 @@
+   compatible:
+     enum:
+       - airoha,en7581-npu
++      - airoha,an7583-npu
+ 
+   reg:
+     maxItems: 1
+ 
+   interrupts:
+-    items:
+-      - description: mbox host irq line
+-      - description: watchdog0 irq line
+-      - description: watchdog1 irq line
+-      - description: watchdog2 irq line
+-      - description: watchdog3 irq line
+-      - description: watchdog4 irq line
+-      - description: watchdog5 irq line
+-      - description: watchdog6 irq line
+-      - description: watchdog7 irq line
+-      - description: wlan irq line0
+-      - description: wlan irq line1
+-      - description: wlan irq line2
+-      - description: wlan irq line3
+-      - description: wlan irq line4
+-      - description: wlan irq line5
++    minItems: 13
++    maxItems: 15
++    description: |
++      Mailbox, active-core watchdogs, then six WLAN IRQs. The legacy layout
++      uses eight watchdogs; the opt-in an7583-v2p layout uses six.
++
++  airoha,npu-layout:
++    $ref: /schemas/types.yaml#/definitions/string
++    enum: [legacy, an7583-v2p]
++    default: legacy
++    description: |
++      Optional hardware layout profile. an7583-v2p selects six active cores,
++      shared watchdog timer registers and 128-KiB local SRAM. Board wiring
++      and the firmware contract must independently match this profile.
+ 
+   memory-region:
+     oneOf:
+@@ -51,11 +50,33 @@
+           - description: NPU wlan offload TX packet identifiers region
+ 
+   memory-region-names:
++    minItems: 1
+     items:
+-      - const: firmware
++      - enum: [firmware, binary]
+       - const: pkt
+       - const: tx-pkt
+       - const: tx-bufid
++
++allOf:
++  - if:
++      properties:
++        airoha,npu-layout:
++          contains:
++            const: an7583-v2p
++      required:
++        - airoha,npu-layout
++    then:
++      properties:
++        compatible:
++          const: airoha,an7583-npu
++        interrupts:
++          minItems: 13
++          maxItems: 13
++    else:
++      properties:
++        interrupts:
++          minItems: 15
++          maxItems: 15
+ 
+ required:
+   - compatible
