@@ -23,7 +23,10 @@ def uncomment(text):
 def function_body(text, name):
     # Strings are left in place; selected functions must have balanced braces.
     text = uncomment(text)
-    matches = list(re.finditer(r'\b'+re.escape(name)+r'\s*\([^;{}]*\)\s*\{', text))
+    literals = r'"(?:\\.|[^"\\])*"|\'(?:\\.|[^\'\\])*\''
+    masked = re.sub(literals, lambda m: re.sub(r'[^\n]', ' ', m[0]), text)
+    matches = list(re.finditer(r'(?:^|[;}\n])\s*[A-Za-z_][A-Za-z0-9_ \t*\n]*?\b'+
+                              re.escape(name)+r'\s*\([^;{}]*\)\s*\{', masked))
     if len(matches) != 1:
         raise ValueError('Function definition not unique: '+name)
     return braced_body(text, matches[0].end())

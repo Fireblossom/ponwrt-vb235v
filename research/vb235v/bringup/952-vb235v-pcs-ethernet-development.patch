@@ -1,0 +1,211 @@
+From: VB235v research
+Subject: [PATCH] net: pcs: airoha: opt-in PON-block Ethernet USXGMII rate profile
+
+SPDX-License-Identifier: GPL-2.0-only
+
+Apply after the pinned target patch stack and M14 development patches.
+Keep the development nodes disabled. Hardware execution and complete
+DSL compatibility have not been validated.
+
+---
+diff --git a/drivers/net/pcs/airoha/pcs-airoha-common.c b/drivers/net/pcs/airoha/pcs-airoha-common.c
+--- a/drivers/net/pcs/airoha/pcs-airoha-common.c
++++ b/drivers/net/pcs/airoha/pcs-airoha-common.c
+@@ -16,8 +16,15 @@
+ #include <linux/platform_device.h>
+ #include <linux/regmap.h>
+ #include <linux/reset.h>
++#include <linux/string.h>
+ 
+ #include "pcs-airoha.h"
++
++static bool airoha_pcs_interface_supported(struct airoha_pcs_priv *priv,
++					   phy_interface_t interface)
++{
++	return !priv->pon_ethernet || interface == PHY_INTERFACE_MODE_USXGMII;
++}
+ 
+ static void airoha_pcs_setup_scu_eth(struct airoha_pcs_priv *priv,
+ 				     phy_interface_t interface)
+@@ -152,6 +159,9 @@
+ 	const struct airoha_pcs_match_data *data = priv->data;
+ 	int ret;
+ 
++	if (!airoha_pcs_interface_supported(priv, interface))
++		return -EINVAL;
++
+ 	ret = reset_control_assert(priv->xfi_rst);
+ 	if (ret)
+ 		return ret;
+@@ -211,7 +221,7 @@
+ 	priv = port->priv;
+ 
+ 	/* DTS and SoC match data provide the AN7581 and AN7583 register windows. */
+-	if (priv->data->port_type != AIROHA_PCS_PON)
++	if (priv->data->port_type != AIROHA_PCS_PON || priv->pon_ethernet)
+ 		return -EOPNOTSUPP;
+ 
+ 	switch (mode) {
+@@ -315,7 +325,7 @@
+ 
+ 	port = to_airoha_pcs_port(pcs);
+ 	priv = port->priv;
+-	if (priv->data->port_type != AIROHA_PCS_PON)
++	if (priv->data->port_type != AIROHA_PCS_PON || priv->pon_ethernet)
+ 		return -EOPNOTSUPP;
+ 
+ 	mode = priv->pon_mode;
+@@ -343,7 +353,7 @@
+ 
+ 	port = to_airoha_pcs_port(pcs);
+ 	priv = port->priv;
+-	if (priv->data->port_type != AIROHA_PCS_PON)
++	if (priv->data->port_type != AIROHA_PCS_PON || priv->pon_ethernet)
+ 		return -EOPNOTSUPP;
+ 
+ 	return priv->data->pon_stop_rx(priv, port->index);
+@@ -363,7 +373,7 @@
+ 
+ 	port = to_airoha_pcs_port(pcs);
+ 	priv = port->priv;
+-	if (priv->data->port_type != AIROHA_PCS_PON)
++	if (priv->data->port_type != AIROHA_PCS_PON || priv->pon_ethernet)
+ 		return -EOPNOTSUPP;
+ 
+ 	/* Read PON state from sigdet while DIG_RESERVE_0 retains the RX rate. */
+@@ -717,6 +727,11 @@
+ 	struct airoha_pcs_port *port = to_airoha_pcs_port(pcs);
+ 	struct airoha_pcs_priv *priv = port->priv;
+ 
++	if (!airoha_pcs_interface_supported(priv, state->interface)) {
++		state->link = false;
++		return;
++	}
++
+ 	switch (state->interface) {
+ 	case PHY_INTERFACE_MODE_SGMII:
+ 	case PHY_INTERFACE_MODE_1000BASEX:
+@@ -748,6 +763,9 @@
+ 	int index = port->index;
+ 	u32 rate_adapt;
+ 	int ret;
++
++	if (!airoha_pcs_interface_supported(priv, interface))
++		return -EINVAL;
+ 
+ 	maps = &priv->maps[port->index];
+ 	port->interface = interface;
+@@ -958,6 +976,9 @@
+ 	struct airoha_pcs_priv *priv = port->priv;
+ 	struct airoha_pcs_maps *maps;
+ 
++	if (!airoha_pcs_interface_supported(priv, port->interface))
++		return;
++
+ 	maps = &priv->maps[port->index];
+ 
+ 	switch (port->interface) {
+@@ -989,6 +1010,9 @@
+ 	struct airoha_pcs_priv *priv = port->priv;
+ 	const struct airoha_pcs_match_data *data;
+ 	struct airoha_pcs_maps *maps;
++
++	if (!airoha_pcs_interface_supported(priv, interface))
++		return;
+ 
+ 	maps = &priv->maps[port->index];
+ 	data = priv->data;
+@@ -1148,6 +1172,9 @@
+ 	struct airoha_pcs_priv *priv = port->priv;
+ 	struct airoha_pcs_maps *maps;
+ 
++	if (!airoha_pcs_interface_supported(priv, port->interface))
++		return;
++
+ 	maps = &priv->maps[port->index];
+ 
+ 	/* MPI MBI disable */
+@@ -1165,6 +1192,9 @@
+ 	struct airoha_pcs_priv *priv = port->priv;
+ 	struct airoha_pcs_maps *maps;
+ 
++	if (!airoha_pcs_interface_supported(priv, interface))
++		return;
++
+ 	maps = &priv->maps[port->index];
+ 
+ 	/* Select HSGMII or USXGMII in SCU regs */
+@@ -1196,6 +1226,9 @@
+ 	struct airoha_pcs_port *port = to_airoha_pcs_port(pcs);
+ 	struct airoha_pcs_priv *priv = port->priv;
+ 	struct airoha_pcs_maps *maps;
++
++	if (!airoha_pcs_interface_supported(priv, interface))
++		return -EINVAL;
+ 
+ 	maps = &priv->maps[port->index];
+ 
+@@ -1218,6 +1251,11 @@
+ static unsigned int airoha_pcs_inband_caps(struct phylink_pcs *pcs,
+ 					   phy_interface_t interface)
+ {
++	struct airoha_pcs_port *port = to_airoha_pcs_port(pcs);
++
++	if (!airoha_pcs_interface_supported(port->priv, interface))
++		return 0;
++
+ 	return LINK_INBAND_ENABLE | LINK_INBAND_DISABLE;
+ }
+ 
+@@ -1482,6 +1520,29 @@
+ 	return 0;
+ }
+ 
++static int airoha_pcs_parse_pon_ethernet(struct airoha_pcs_priv *priv)
++{
++	struct device *dev = priv->dev;
++	const char *mode;
++
++	if (!of_property_present(dev->of_node, "airoha,pon-ethernet-mode"))
++		return 0;
++
++	if (!device_is_compatible(dev, "airoha,an7583-pcs-pon") ||
++	    of_property_count_strings(dev->of_node, "airoha,pon-ethernet-mode") != 1 ||
++	    of_property_read_string(dev->of_node, "airoha,pon-ethernet-mode", &mode) ||
++	    strcmp(mode, "usxgmii"))
++		return dev_err_probe(dev, -EINVAL, "invalid PON Ethernet profile\n");
++
++	/*
++	 * Vendor Ethernet USXGMII uses the symmetric 10.3125G PMA selectors.
++	 * Keep the physical PON maps/trims, but not the optical WAN route/API.
++	 */
++	priv->pon_mode = AIROHA_PCS_PON_MODE_EPON_10G_10G;
++	priv->pon_ethernet = true;
++	return 0;
++}
++
+ static int airoha_pcs_probe(struct platform_device *pdev)
+ {
+ 	const struct airoha_pcs_match_data *data;
+@@ -1503,6 +1564,10 @@
+ 
+ 	priv->dev = dev;
+ 	priv->data = data;
++	ret = airoha_pcs_parse_pon_ethernet(priv);
++	if (ret)
++		return ret;
++
+ 	if (data->init) {
+ 		ret = data->init(priv);
+ 		if (ret)
+diff --git a/drivers/net/pcs/airoha/pcs-airoha.h b/drivers/net/pcs/airoha/pcs-airoha.h
+--- a/drivers/net/pcs/airoha/pcs-airoha.h
++++ b/drivers/net/pcs/airoha/pcs-airoha.h
+@@ -1653,6 +1653,7 @@
+ 	struct device *dev;
+ 	const struct airoha_pcs_match_data *data;
+ 	u8 pon_mode;
++	bool pon_ethernet;
+ 
+ 	struct airoha_pcs_port *ports;
+ 

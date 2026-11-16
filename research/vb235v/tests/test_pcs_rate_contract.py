@@ -72,6 +72,10 @@ class PcsRateContractTest(unittest.TestCase):
         self.assertIn('x++;', body)
         self.assertIn('// literal', body)
 
+    def test_conditional_call_is_not_mistaken_for_a_definition(self):
+        source = 'static bool helper(int n) { return n; }\nvoid caller(void) { if (!helper(1)) { return; } }'
+        self.assertEqual(function_body(source, 'helper').strip(), 'return n;')
+
 
 if __name__ == '__main__':
     unittest.main()

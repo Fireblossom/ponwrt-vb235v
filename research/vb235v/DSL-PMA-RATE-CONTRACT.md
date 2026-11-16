@@ -9,6 +9,10 @@ the wrong routing contract.
 This milestone checks selected numeric source contracts offline. It does not
 implement or validate the complete DSL initialization sequence.
 
+[M18](PCS-ETHERNET-PROTOTYPE.md) subsequently implements the opt-in rate/profile
+boundary with cross-compilation and host-model checks. Full calibration and
+hardware validation remain outstanding.
+
 ## Trace from the Ethernet API to the analog provider
 
 The selected original source

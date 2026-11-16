@@ -1,0 +1,218 @@
+{
+  "milestone": "M18",
+  "base_commit": "abd4a0310d78ec036d1c25b11b3e86a8750b437b",
+  "implementation": {
+    "property": "airoha,pon-ethernet-mode",
+    "accepted_value": "usxgmii",
+    "compatible": "airoha,an7583-pcs-pon",
+    "default_property_absent_behavior": "preserved",
+    "physical_port_type": "PON",
+    "rate_entry": "AIROHA_PCS_PON_MODE_EPON_10G_10G",
+    "rate_tuple": [
+      1,
+      1,
+      1,
+      1,
+      1
+    ],
+    "ethernet_wan_route": "0x12",
+    "optical_apis_on_profile": "EOPNOTSUPP before backend access",
+    "unvalidated": "complete calibration/reset behavior, endpoint lifecycle, wiring, DSL sync and traffic"
+  },
+  "source_files": [
+    {
+      "path": "drivers/net/pcs/airoha/pcs-airoha-common.c",
+      "before": "41f8d86c70b053bb0c18c19898c0a67ab0ba786ef3011d2d181d4df077a53e01",
+      "after": "4821cff95b020c5ed5990894fb644addafdbc7576ea73b549a8afc4d82296971"
+    },
+    {
+      "path": "drivers/net/pcs/airoha/pcs-airoha.h",
+      "before": "198e6a3bef28af75104a6b6fc81277cbd70e0f0cdd2cd71b5043efc8d579c914",
+      "after": "cc58b940119812b389c6487a2bd65d6b88e79ae38766e0e8810bf47dda724bb2"
+    },
+    {
+      "path": "Documentation/devicetree/bindings/net/pcs/airoha,an7583-pcs-pon.yaml",
+      "before": null,
+      "after": "7670fbc488205a7fae0061a8810a6275f49a5e2b3d016abf07654d5f24cd30aa"
+    }
+  ],
+  "development_patches": [
+    {
+      "patch": "952-vb235v-pcs-ethernet-development.patch",
+      "sha256": "0a0e12bb9133f75da53ca89a7cec4f849277feebca5c0dab3f32c7197b6cd0ca",
+      "checkpatch_errors": 0,
+      "checkpatch_warnings": 0,
+      "checkpatch_checks": 0
+    },
+    {
+      "patch": "953-vb235v-pcs-ethernet-binding.patch",
+      "sha256": "4d3bbd75133ef1838769598b0ccf0dfceda987f8fa3bd239fa4ac3535f367678",
+      "checkpatch_errors": 0,
+      "checkpatch_warnings": 1,
+      "checkpatch_checks": 0
+    }
+  ],
+  "patch_reapply": {
+    "fuzz": 0,
+    "all_three_files_match": true
+  },
+  "build": {
+    "kernel": "6.18.60",
+    "compiler": "AArch64 GCC 10.2.1 20210110",
+    "preparation": "complete 764-patch target stack plus M14 and M18 development patches",
+    "targets": [
+      "drivers/net/pcs/airoha/pcs-airoha-common.o",
+      "drivers/net/pcs/airoha/pcs-an7583.o"
+    ],
+    "artifacts": [
+      {
+        "file": "pcs-airoha-common.o",
+        "bytes": 28608,
+        "sha256": "9a9d252e8196af8d77b3bb3156da34bd5a02d436ed45105c126978626428ed33",
+        "elf_machine": 183,
+        "elf_type": "ET_REL"
+      },
+      {
+        "file": "pcs-an7583.o",
+        "bytes": 32776,
+        "sha256": "b96b430a379fad6c8da21839bf715e35475d4971e1e1fd59ad10dceaf95bdcbe",
+        "elf_machine": 183,
+        "elf_type": "ET_REL"
+      },
+      {
+        "file": "kernel.config",
+        "bytes": 52900,
+        "sha256": "282b816331ab797acafeccaf891a27c65ebfeee0121cb781f8a9e54796f8e7fa"
+      }
+    ],
+    "final_log_sha256": "4f0a408b4cd4746327e30fdb42e7be522beed856a7909f7d1861e14ca15bca55",
+    "complete_kernel_linked": false,
+    "boot_image_generated": false
+  },
+  "host_control_flow": {
+    "default_comparisons": 546,
+    "invalid_interface_no_access_cases": 78,
+    "optical_api_no_access_cases": 4,
+    "profile_parse_cases": 8,
+    "valid_profile_entry_cases": 9,
+    "usxgmii_wan_route_checks": 2,
+    "scope": "actual selected functions with host mocks; not hardware or ABI validation",
+    "probe_source_order_verified": true,
+    "kernel_probe_executed": false,
+    "candidate_common_sha256": "4821cff95b020c5ed5990894fb644addafdbc7576ea73b549a8afc4d82296971",
+    "reference_common_sha256": "41f8d86c70b053bb0c18c19898c0a67ab0ba786ef3011d2d181d4df077a53e01",
+    "harness_sha256": "485d2d63617569918e63523524816564b1547fb2de78659985419898c0420879",
+    "all_input_sources_match_reviewed_hashes": true,
+    "control_constants_from_reviewed_kernel_headers": true,
+    "hardware_access": false,
+    "reviewed_source_hashes": {
+      "candidate": "4821cff95b020c5ed5990894fb644addafdbc7576ea73b549a8afc4d82296971",
+      "reference": "41f8d86c70b053bb0c18c19898c0a67ab0ba786ef3011d2d181d4df077a53e01",
+      "private_header": "cc58b940119812b389c6487a2bd65d6b88e79ae38766e0e8810bf47dda724bb2",
+      "pma": "67a7c9c9a6c59c434a4931df3047da45bc6db000ce7ebb5e00b3fc613fdc5aaf",
+      "api": "10195a7891a22c9f3df714331d19bc236021127f3cb0fea62aa753deec7fb260",
+      "phy": "760034201b62d69c1d9fd116eed7beaeaded1a6a7909288a8afbe4f3a64deaf0",
+      "phylink": "27512d25be1d09c7504dacbaa219d907c74ae079fdc91057443f7954d0f41b2b",
+      "ethtool": "8c83076d612c76f2a4f3bcef4ad8de510424ba70951b94bf1173400bf6be1bd6"
+    }
+  },
+  "binding_samples": {
+    "binding_sha256": "7670fbc488205a7fae0061a8810a6275f49a5e2b3d016abf07654d5f24cd30aa",
+    "nvmem_consumer_schema_sha256": "04bfd555c5fc9a008e0c0a34415e27aa1142d68d630e5590793ff2e2a1656f2f",
+    "meta_schema_passed": true,
+    "cases": [
+      {
+        "case": "default_optical",
+        "expected_accepted": true,
+        "observed_accepted": true
+      },
+      {
+        "case": "ethernet_usxgmii",
+        "expected_accepted": true,
+        "observed_accepted": true
+      },
+      {
+        "case": "unsupported_mode",
+        "expected_accepted": false,
+        "observed_accepted": false
+      },
+      {
+        "case": "wrong_soc",
+        "expected_accepted": false,
+        "observed_accepted": false
+      },
+      {
+        "case": "wrong_block",
+        "expected_accepted": false,
+        "observed_accepted": false
+      },
+      {
+        "case": "multiple_strings",
+        "expected_accepted": false,
+        "observed_accepted": false
+      },
+      {
+        "case": "missing_window",
+        "expected_accepted": false,
+        "observed_accepted": false
+      }
+    ],
+    "hardware_access": false
+  },
+  "overlay_check": {
+    "reference_dtsi_sha256": "372c8befa091ad1d725eab2056d767fa304d99f4a7735e6bce503a5c4b9fa227",
+    "overlay_sha256": "b3f774477e6cc385949482df9e642a339d1d5afe0a3dede8df64e505e416fe07",
+    "full_reference_dtb_nodes": 131,
+    "overlay_applied": true,
+    "changed_properties": [
+      {
+        "path": "/soc/ethernet@1fb50000/ethernet@2",
+        "property": "phy-mode"
+      },
+      {
+        "path": "/soc/pcs@1fa08000",
+        "property": "airoha,pon-ethernet-mode"
+      },
+      {
+        "path": "/soc/pcs@1fa08000",
+        "property": "status"
+      }
+    ],
+    "dtc_diagnostic_line_counts": {
+      "base": 4,
+      "profile": 0
+    },
+    "pcs_mac_parent_ethernet_and_npu_disabled": true,
+    "hardware_access": false
+  },
+  "tests": {
+    "unittest_count": 54,
+    "all_passed": true,
+    "host_model_cases": 647
+  },
+  "checkpatch_scope": "--no-tree --strict --no-signoff; binding has generic new-file MAINTAINERS warning; no DCO submission claimed",
+  "hardware_actions": false,
+  "publication": "authored patches, checks, disabled overlay and screened metadata only; vendor artifacts remain private",
+  "check_tools": [
+    {
+      "path": "tools/check_pcs_profile.py",
+      "sha256": "33ae22aba2a7cc30942d3e434f87570be7f9899a8610b4b610d85cc2f2d38fe3"
+    },
+    {
+      "path": "tools/pcs_profile_harness.c",
+      "sha256": "485d2d63617569918e63523524816564b1547fb2de78659985419898c0420879"
+    },
+    {
+      "path": "tools/check_pcs_binding_samples.py",
+      "sha256": "cce7521a72c57155abf26da35e0772704af686a374bc047be72742350120ac75"
+    },
+    {
+      "path": "tools/check_pcs_overlay.py",
+      "sha256": "478bc9c02f8f4dc3eea7fc3a591fd12c49dae4b5a8561dbc0d18d956b208a814"
+    },
+    {
+      "path": "tools/pcs_rate_contract.py",
+      "sha256": "446245536a9c353123e40f16792872a7c60c15eb301b880b287456192244e360"
+    }
+  ]
+}

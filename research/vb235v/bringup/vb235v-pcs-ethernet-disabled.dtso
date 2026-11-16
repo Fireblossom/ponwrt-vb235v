@@ -1,0 +1,22 @@
+/dts-v1/;
+/plugin/;
+
+/* SPDX-License-Identifier: GPL-2.0-only */
+/* Development profile only. All touched hardware nodes remain disabled. */
+/ {
+    fragment@0 {
+        target-path = "/soc/pcs@1fa08000";
+        __overlay__ {
+            airoha,pon-ethernet-mode = "usxgmii";
+            status = "disabled";
+        };
+    };
+
+    fragment@1 {
+        target-path = "/soc/ethernet@1fb50000/ethernet@2";
+        __overlay__ {
+            phy-mode = "usxgmii";
+            status = "disabled";
+        };
+    };
+};
