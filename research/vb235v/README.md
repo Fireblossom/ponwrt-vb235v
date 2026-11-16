@@ -59,3 +59,5 @@ For bounded read-only SSH collection, see [STOCK-MODULE-COVERAGE.md](STOCK-MODUL
 [M15: DSL Ethernet transport](DSL-ETHERNET-TRANSPORT.md) distinguishes the legacy ioctl manager from installed Ethernet control implementations, including the stock kernel's `ae_wan` packet handler. Runtime library mappings and socket metadata are recorded without assuming live DSL use.
 
 [M16: DSL/PCS boundary](DSL-PCS-BOUNDARY.md) decodes the stock DSL/WAN/USXGMII boot selection, traces `ae_wan` provider boundaries, and cross-compiles the existing AN7583 PCS objects. Physical PON PCS location and Ethernet programming still need to be distinguished.
+
+[M17: DSL PMA rate contract](DSL-PMA-RATE-CONTRACT.md) finds matching selected PMA rate vectors but different Ethernet and optical WAN routing selectors. It provides a bounded source-contract checker; the complete reset/calibration sequence remains to be adapted.

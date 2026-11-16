@@ -79,6 +79,10 @@ Ethernet interface-mode switch. Thus using the PON physical block with
 `phy-mode = "usxgmii"` alone does not prove Ethernet-mode initialization.
 The vendor XPON source has separate selector/initialization paths to compare.
 
+[M17](DSL-PMA-RATE-CONTRACT.md) follows that path to the PMA provider: the
+ordinary USXGMII rate tuple matches the symmetric EPON tuple, while its Ethernet
+WAN route differs from the optical configuration API.
+
 ## Compile coverage
 
 The new [`compile-pcs-objects.sh`](bringup/compile-pcs-objects.sh) and

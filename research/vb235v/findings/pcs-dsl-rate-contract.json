@@ -1,0 +1,82 @@
+{
+  "vectors": {
+    "gpon": {
+      "vendor_case": "Async_GPON",
+      "reference_entry": "AIROHA_PCS_PON_MODE_GPON",
+      "vendor": {
+        "txpll": 2,
+        "tx": 5,
+        "rx": 3,
+        "ana": 2,
+        "preset": 3
+      },
+      "reference": {
+        "txpll": 2,
+        "tx": 5,
+        "rx": 3,
+        "ana": 2,
+        "preset": 3
+      },
+      "selectors_equal": true
+    },
+    "dsl_usxgmii_rate": {
+      "vendor_case": "Sync_XEPON",
+      "reference_entry": "AIROHA_PCS_PON_MODE_EPON_10G_10G",
+      "vendor": {
+        "txpll": 1,
+        "tx": 1,
+        "rx": 1,
+        "ana": 1,
+        "preset": 1
+      },
+      "reference": {
+        "txpll": 1,
+        "tx": 1,
+        "rx": 1,
+        "ana": 1,
+        "preset": 1
+      },
+      "selectors_equal": true
+    }
+  },
+  "gpon_vs_dsl_differing_selectors": [
+    "txpll",
+    "tx",
+    "rx",
+    "ana",
+    "preset"
+  ],
+  "vendor_dsl_wan_selector": 18,
+  "vendor_dsl_xsi_selector": 1,
+  "reference_ethernet_usxgmii_wan_selector": 18,
+  "reference_optical_epon_10g10g_wan_selector": 7,
+  "scope": "selected numeric source contract; not complete programming sequence or runtime equivalence",
+  "hardware_access": false,
+  "sources": [
+    {
+      "role": "vendor_pma",
+      "file": "13-pon_pma.c",
+      "sha256": "c7828d2d722f1527c339959a4d8b836c194b000d028e403a314b4ba0ebd19236"
+    },
+    {
+      "role": "vendor_xpon",
+      "file": "air_xpon_xsgmii.c",
+      "sha256": "e59cc3e70bb831b84c9c82b5214c90f4cbbef42252924261cb9b313bc6182d2a"
+    },
+    {
+      "role": "reference_pma",
+      "file": "pcs-an7583.c",
+      "sha256": "67a7c9c9a6c59c434a4931df3047da45bc6db000ce7ebb5e00b3fc613fdc5aaf"
+    },
+    {
+      "role": "reference_common",
+      "file": "pcs-airoha-common.c",
+      "sha256": "41f8d86c70b053bb0c18c19898c0a67ab0ba786ef3011d2d181d4df077a53e01"
+    },
+    {
+      "role": "reference_header",
+      "file": "pcs-airoha.h",
+      "sha256": "198e6a3bef28af75104a6b6fc81277cbd70e0f0cdd2cd71b5043efc8d579c914"
+    }
+  ]
+}
