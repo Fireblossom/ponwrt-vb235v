@@ -1,0 +1,111 @@
+{
+  "milestone": "M24",
+  "upstream_commit": "4b91e112c345b8a4ad4f954775f3f4955f2cafb2",
+  "apply_patches_in_order": [
+    955,
+    956,
+    957
+  ],
+  "corrected_recovery": {
+    "binary_bytes": 516200,
+    "binary_sha256": "4e5474be07e9ca0e30f8f94ddc1336fb89ca3746a9de708a1edc72abb0334954",
+    "compressed_core_bytes": 170639,
+    "fit_bytes": 184652,
+    "fit_sha256": "cd550837fc4f35f3b384390a7e61a49c2791b441e77f40e42c9061de6c5935fe",
+    "fit_subimage_hashes_verified": true,
+    "lzma_roundtrip_verified": true,
+    "fits_in_one_256k_erase_block": true,
+    "hardware_validation": "not evaluated by packaging tool",
+    "flashed": false
+  },
+  "fresh_public_workflow_bit_exact_hardware_recovery": true,
+  "memory_fix": {
+    "old_first_two_mib_reservation_blocked_stock_load_in_ram_before_nand_install": true,
+    "original_board_dt_secure_bytes": 327680,
+    "observed_kernel_load_entry": 2148040704,
+    "observed_kernel_footprint": 13828096,
+    "corrected_lmb_verified_on_hardware": true,
+    "only_recovery_dt_changed": true,
+    "memory_contract_checks": 10,
+    "old_layout_regression_rejected": true
+  },
+  "host_checks": {
+    "storage_cases": 1193,
+    "storage_assertions": 5042,
+    "private_trial_fit_actual_c_validation_cases": 1194,
+    "private_trial_fit_actual_c_validation_assertions": 5047,
+    "web_cases": 28,
+    "web_assertions": 132,
+    "actual_lwip_dhcp_cases": 8,
+    "actual_lwip_dhcp_assertions": 78,
+    "asan_ubsan": true,
+    "existing_unittest_cases": 57,
+    "existing_unittest_skips": 0
+  },
+  "trial_image": {
+    "kernel_byte_exact_original": true,
+    "private_vendor_payload_not_published": true,
+    "fit_bytes": 3766005,
+    "sequence": 1,
+    "kind": "original compressed kernel plus private FDT; primary rootfs reused",
+    "original_bootargs_byte_exact": true,
+    "independent_chosen_trial_identity_used": true,
+    "rootfs_data_upgraded": false
+  },
+  "hardware_gates": {
+    "ram_kernel_boot_and_independent_root_identity_passed": true,
+    "all_baselines_unchanged_before_install": true,
+    "restoration_ram_carrier_and_original_mtd_read_rehearsal_passed": true
+  },
+  "installation": {
+    "actual_web_install_requests": 1,
+    "slot": 1,
+    "logical_start": 96731136,
+    "touched_prefix_bytes": 3932160,
+    "erase_blocks": 15,
+    "calculated_program_pages": 920,
+    "final_web_result": 0,
+    "volatile_selected_slot_after_install": 1,
+    "complete_secondary_expected_hash_passed": true,
+    "nand_reloaded_fit_kernel_boot_passed": true,
+    "independent_root_trial_identity_and_all_expected_hashes_passed": true,
+    "factory_selector_changed": false,
+    "boot_env_calibration_or_primary_changed": false
+  },
+  "incomplete_image_test": {
+    "method": "erase only final installed FIT block using original MTD driver",
+    "slot1_relative_offset": 3670016,
+    "bytes": 262144,
+    "actual_power_cut": false,
+    "exact_corrupted_secondary_hash_passed": true,
+    "cold_scan_rejected_image_selected_factory_slot0": true,
+    "existing_nand_staged_recovery_used": true,
+    "hash_verified_original_uboot_fallback_boot_passed": true,
+    "independent_root_original_dt_identity_and_hashes_passed": true
+  },
+  "restoration": {
+    "original_driver_prefix_erase_and_program_range_bytes": 3932160,
+    "full_prefix_readback_crc_passed": true,
+    "whole_boot_partition_crc_unchanged": true,
+    "independent_original_linux_all_partition_baselines_passed": true,
+    "complete_80mib_download_byte_exact_original": true,
+    "physical_oob_bit_exact_restoration_claimed": false,
+    "ecc_oob_regenerated_by_original_driver": true
+  },
+  "final_state": {
+    "device_original_linux_root_ssh_verified": true,
+    "original_bootargs_and_factory_identity_restored": true,
+    "factory_boot_command_environment_primary_calibration_selector_unchanged": true,
+    "secondary_logical_data_byte_exact_original": true,
+    "nand_staged_recovery_core_unchanged_from_m22": true,
+    "corrected_recovery_written_into_boot_partition": false,
+    "automatic_persistent_recovery_installed": false
+  },
+  "remaining_limits": [
+    "Not a PonWrt/rootfs upgrade",
+    "No actual power-cut or kernel-health acknowledgement test",
+    "Cold valid FIT selection not independently boot-tested; cold incomplete FIT rejection was tested",
+    "Physical DHCP/recovery-button entry unresolved",
+    "Shared code/environment replacement and programmer recovery unverified"
+  ]
+}

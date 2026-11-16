@@ -1,0 +1,24 @@
+diff --git a/arch/arm/dts/an7583-vb235v-recovery.dts b/arch/arm/dts/an7583-vb235v-recovery.dts
+--- a/arch/arm/dts/an7583-vb235v-recovery.dts
++++ b/arch/arm/dts/an7583-vb235v-recovery.dts
+@@ -9,7 +9,7 @@
+ 	aliases { serial0 = &uart1; ethernet0 = &gdm1; };
+ 	chosen {
+ 		stdout-path = "serial0:115200n8";
+-		u-boot,usable-memory-range = <0 0x80200000 0 0x1fe00000>;
++		u-boot,usable-memory-range = <0 0x80050000 0 0x1ffb0000>;
+ 	};
+ 	memory@80000000 {
+ 		device_type = "memory";
+@@ -20,7 +20,10 @@
+ 		#address-cells = <2>;
+ 		#size-cells = <2>;
+ 		ranges;
+-		atf@80000000 { reg = <0 0x80000000 0 0x200000>; no-map; };
++		/* Match the original board DT secure carveout; the observed
++		 * stock kernel entry 0x80088000 must remain loadable.
++		 */
++		atf@80000000 { reg = <0 0x80000000 0 0x50000>; no-map; };
+ 		npu@84000000 { reg = <0 0x84000000 0 0x100000>; no-map; };
+ 		logs@8b000000 { reg = <0 0x8b000000 0 0x200000>; no-map; };
+ 	};
