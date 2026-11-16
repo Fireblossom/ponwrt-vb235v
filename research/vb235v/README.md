@@ -2,7 +2,7 @@
 
 This research branch targets TP-LinkBox 7 (VB235v). It is **not an installable device port**. The goal is to retain DSL, the analog telephone port, and MT7993 Wi-Fi while investigating support in PonWrt.
 
-Current owner priority (2026-11-16): recovery U-Boot first. [M21](UBOOT-FULL-RECOVERY.md) adds mapped NAND/calibration backups, protected inactive-slot FIT installation, a full web backend and original-system chainload. RAM boot, ordinary 1 GbE HTTP/backup/upload, and return to original Linux are hardware-verified. [M22](UBOOT-FIRST-NAND-TEST.md) verifies one blank-block program with the original MTD driver and manual boot of the staged recovery core. Automatic persistent recovery, the new driver's firmware-slot programming and DHCP lease acquisition remain unfinished; DSL/PCS work is deferred. [M20](UBOOT-RAM-RECOVERY.md) records the earlier minimal RAM profiles.
+Current owner priority (2026-11-16): recovery U-Boot first. [M21](UBOOT-FULL-RECOVERY.md) adds mapped NAND/calibration backups, protected inactive-slot FIT installation, a full web backend and original-system chainload. RAM boot, ordinary 1 GbE HTTP/backup/upload, and return to original Linux are hardware-verified. [M22](UBOOT-FIRST-NAND-TEST.md) verifies one blank-block program with the original MTD driver and manual boot of the staged recovery core. [M23](UBOOT-NAND-DRIVER-TEST.md) verifies the new driver's single-block erase/program/ECC/OOB/readback path and complete restoration of the secondary slot. Full firmware installation, automatic persistent recovery and DHCP lease acquisition remain unfinished; DSL/PCS work is deferred. [M20](UBOOT-RAM-RECOVERY.md) records the earlier minimal RAM profiles.
 
 ## Observed hardware
 

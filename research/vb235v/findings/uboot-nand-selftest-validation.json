@@ -1,0 +1,101 @@
+{
+  "milestone": "M23",
+  "upstream_commit": "4b91e112c345b8a4ad4f954775f3f4955f2cafb2",
+  "apply_patches_in_order": [
+    955,
+    956
+  ],
+  "host_checks": {
+    "storage_selftest_cases": 1193,
+    "storage_selftest_assertions": 5042,
+    "asan_ubsan": true,
+    "web_cases": 28,
+    "web_assertions": 132,
+    "actual_lwip_dhcp_cases": 8,
+    "actual_lwip_dhcp_assertions": 78,
+    "existing_unittest_cases": 57,
+    "existing_unittest_skipped": 0
+  },
+  "build": {
+    "fresh_pristine_patch_replay_passed": true,
+    "standard_selftest_config_enabled": false,
+    "standard_selftest_symbol_present": false,
+    "diagnostic_selftest_config_enabled": true,
+    "diagnostic_hardware_ram_booted": true,
+    "diagnostic_public_rebuild_bit_exact_hardware_fit": true,
+    "standard": {
+      "binary_bytes": 516200,
+      "binary_sha256": "d4edd8904d69b7652a92fa48b05ff8163da6016710f12bf96aa60db8f23ce200",
+      "compressed_core_bytes": 170637,
+      "fit_bytes": 184652,
+      "fit_sha256": "ee5ffac2492d3fe8a1047dc7d7ab164fca9b7c61d9ed611679bb74f3624988fe",
+      "fit_subimage_hashes_verified": true,
+      "lzma_roundtrip_verified": true,
+      "fits_in_one_256k_erase_block": true,
+      "hardware_validation": "not evaluated by packaging tool",
+      "flashed": false
+    },
+    "diagnostic": {
+      "binary_bytes": 518088,
+      "binary_sha256": "432e8ec59567af5909e63ed30403fb1fe4be486d2067eec24ece8b82dcf08e92",
+      "compressed_core_bytes": 171598,
+      "fit_bytes": 185612,
+      "fit_sha256": "0402ac3308954021d6435969eb12986668f68695248072111f227c093b528dd7",
+      "fit_subimage_hashes_verified": true,
+      "lzma_roundtrip_verified": true,
+      "fits_in_one_256k_erase_block": true,
+      "hardware_validation": "not evaluated by packaging tool",
+      "flashed": false
+    }
+  },
+  "backup": {
+    "logical_main_ecc_corrected": true,
+    "secondary_slot_bytes": 83886080,
+    "independent_pretest_complete_reads": 2,
+    "pretest_device_and_host_sha256_match": true,
+    "both_pretest_reads_identical": true,
+    "complete_posttest_download_byte_exact_pretest": true,
+    "private_binary_captures_retained": true
+  },
+  "hardware_test": {
+    "logical_offset": 180355072,
+    "physical_offset": 180355072,
+    "physical_block": 688,
+    "bytes": 262144,
+    "active_slot": 0,
+    "test_slot": 1,
+    "all_target_main_and_oob_erased_required_before_write": true,
+    "erase_calls": 2,
+    "program_pages": 64,
+    "page_main_bytes": 4096,
+    "page_oob_bytes": 256,
+    "on_die_ecc_enabled_for_program_and_readback": true,
+    "all_programmed_pages_readback_verified": true,
+    "pattern_sha256": "65d76b0895a4a418d453d43f7666f97721c3eaf3c2c620c72345146cb41dcdf6",
+    "oob_bad_markers_and_indices_verified": true,
+    "raw_entire_target_restored_ff": true,
+    "both_complete_slot_hashes_unchanged": true,
+    "bootloader_environment_art_misc_selector_unchanged": true,
+    "firmware_header_or_sequence_changed": false,
+    "saveenv_or_bootcmd_change": false,
+    "test_image_written_to_boot_partition": false,
+    "new_remap_or_bbt_bmt_rebuild_performed": false
+  },
+  "return_to_original_system": {
+    "interactive_serial_marker_observed": false,
+    "serial_marker_wait_timed_out": true,
+    "original_linux_independently_verified_via_pinned_root_ssh": true,
+    "full_boot_readback_byte_exact_expected": true,
+    "full_secondary_download_byte_exact_original": true,
+    "all_protected_hashes_unchanged": true,
+    "device_currently_running_original_system": true
+  },
+  "remaining_limits": [
+    "No new firmware FIT installed or boot-tested",
+    "No hardware power-interruption or fresh-bad-block injection",
+    "No shared code/environment block replacement",
+    "No automatic persistent recovery hook",
+    "Physical DHCP and recovery button remain unresolved",
+    "Programmer recovery not demonstrated"
+  ]
+}

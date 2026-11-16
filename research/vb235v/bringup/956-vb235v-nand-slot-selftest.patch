@@ -1,0 +1,372 @@
+diff --git a/arch/arm/mach-airoha/Kconfig b/arch/arm/mach-airoha/Kconfig
+--- a/arch/arm/mach-airoha/Kconfig
++++ b/arch/arm/mach-airoha/Kconfig
+@@ -51,6 +51,15 @@
+ 	depends on TARGET_AN7583
+ 	select VB235V_RAM_RECOVERY
+ 
++config VB235V_NAND_SELFTEST
++	bool "VB235v inactive-slot tail erase/program/restore test"
++	depends on VB235V_RECOVERY
++	default n
++	help
++	  Opt-in development command confined to the fully erased final block of
++	  inactive slot 1. Requires full-slot hashes and restores main plus OOB.
++	  There is no web endpoint. Keep disabled in normal recovery builds.
++
+ config AIROHA_HTTP_RECOVERY
+ 	bool "Airoha HTTP recovery"
+ 	default y
+diff --git a/board/airoha/an7583/vb235v-storage.c b/board/airoha/an7583/vb235v-storage.c
+--- a/board/airoha/an7583/vb235v-storage.c
++++ b/board/airoha/an7583/vb235v-storage.c
+@@ -97,13 +97,12 @@
+ 	return 0;
+ }
+ 
+-static int anchor_hash(u32 address, u32 length, const char *expected)
+-{
+-	u8 *buffer, hash[32];
++static int mapped_sha256(u32 address, u32 length, u8 hash[32])
++{
++	u8 *buffer;
+ 	sha256_context ctx;
+-	char hex[65];
+ 	u32 count;
+-	int ret = 0, i;
++	int ret = 0;
+ 
+ 	buffer = malloc(65536);
+ 	if (!buffer)
+@@ -119,9 +118,19 @@
+ 		length -= count;
+ 	}
+ 	free(buffer);
+-	if (ret)
+-		return ret;
+-	sha256_finish(&ctx, hash);
++	if (!ret)
++		sha256_finish(&ctx, hash);
++	return ret;
++}
++
++static int anchor_hash(u32 address, u32 length, const char *expected)
++{
++	u8 hash[32];
++	char hex[65];
++	int i, ret = mapped_sha256(address, length, hash);
++
++	if (ret)
++		return ret;
+ 	for (i = 0; i < 32; i++)
+ 		sprintf(hex + 2 * i, "%02x", hash[i]);
+ 	return strcmp(hex, expected) ? -EBADMSG : 0;
+@@ -369,18 +378,63 @@
+ 	return selected;
+ }
+ 
++/* Shared by the protected FIT installer and opt-in physical-path test. */
++static int erase_mapped_block(u32 logical, u32 *physical)
++{
++	struct erase_info erase;
++	int ret;
++
++	if (logical % VB_ERASE)
++		return -EINVAL;
++	ret = vb_translate(&mapping, logical, physical);
++	if (ret)
++		return ret;
++	memset(&erase, 0, sizeof(erase));
++	erase.addr = *physical;
++	erase.len = VB_ERASE;
++	return mtd_erase(flash, &erase);
++}
++
++static int program_physical_page(u32 physical, const u8 data[VB_PAGE])
++{
++	struct mtd_oob_ops ops;
++	u16 metadata_index = physical / VB_ERASE;
++	u8 metadata[2], verify[VB_PAGE];
++	int i, ret;
++
++	if (physical % VB_PAGE)
++		return -EINVAL;
++	for (i = 0; i < mapping.mapped_count; i++)
++		if (mapping.replacement[i] == metadata_index) {
++			metadata_index = mapping.bad[i];
++			break;
++		}
++	metadata[0] = metadata_index & 255;
++	metadata[1] = metadata_index >> 8;
++	memset(&ops, 0, sizeof(ops));
++	ops.mode = MTD_OPS_PLACE_OOB;
++	ops.len = VB_PAGE;
++	ops.datbuf = (u8 *)data;
++	ops.ooboffs = 2;
++	ops.ooblen = sizeof(metadata);
++	ops.oobbuf = metadata;
++	ret = mtd_write_oob(flash, physical, &ops);
++	if (ret || ops.retlen != VB_PAGE || ops.oobretlen != sizeof(metadata))
++		return ret ? ret : -EIO;
++	ret = physical_read(physical, verify, VB_PAGE);
++	if (ret || memcmp(data, verify, VB_PAGE))
++		return ret ? ret : -EIO;
++	return 0;
++}
++
+ int vb_storage_install(unsigned int slot, const void *image, size_t length,
+ 		       const char *expected)
+ {
+ 	const struct vb_target *target;
+ 	u32 address, physical, page, count;
+-	u16 metadata_index;
+-	u8 metadata[2];
+-	struct mtd_oob_ops ops;
+-	u8 hash[32], verify[VB_PAGE], padded[VB_PAGE];
++	u8 hash[32], padded[VB_PAGE];
+ 	char hex[65];
+ 	int i, ret, active;
+-	struct erase_info erase;
+ 
+ 	if (slot > 1 || !expected || strlen(expected) != 64)
+ 		return -EINVAL;
+@@ -405,40 +459,16 @@
+ 	 * Boot stages, ART, misc, selector and mapping tables stay untouched.
+ 	 */
+ 	for (address = 0; address < length; address += VB_ERASE) {
+-		ret = vb_translate(&mapping, target->offset + address, &physical);
+-		if (ret)
+-			return ret;
+-		memset(&erase, 0, sizeof(erase));
+-		erase.addr = physical;
+-		erase.len = VB_ERASE;
+-		ret = mtd_erase(flash, &erase);
++		ret = erase_mapped_block(target->offset + address, &physical);
+ 		if (ret)
+ 			return ret;
+ 		for (page = 0; page < VB_ERASE && address + page < length; page += VB_PAGE) {
+ 			count = min_t(u32, VB_PAGE, length - address - page);
+ 			memset(padded, 0xff, sizeof(padded));
+ 			memcpy(padded, (const u8 *)image + address + page, count);
+-			metadata_index = physical / VB_ERASE;
+-			for (i = 0; i < mapping.mapped_count; i++)
+-				if (mapping.replacement[i] == metadata_index) {
+-					metadata_index = mapping.bad[i];
+-					break;
+-				}
+-			metadata[0] = metadata_index & 255;
+-			metadata[1] = metadata_index >> 8;
+-			memset(&ops, 0, sizeof(ops));
+-			ops.mode = MTD_OPS_PLACE_OOB;
+-			ops.len = VB_PAGE;
+-			ops.datbuf = padded;
+-			ops.ooboffs = 2;
+-			ops.ooblen = sizeof(metadata);
+-			ops.oobbuf = metadata;
+-			ret = mtd_write_oob(flash, physical + page, &ops);
+-			if (ret || ops.retlen != VB_PAGE || ops.oobretlen != sizeof(metadata))
+-				return ret ? ret : -EIO;
+-			ret = physical_read(physical + page, verify, VB_PAGE);
+-			if (ret || memcmp(padded, verify, VB_PAGE))
+-				return ret ? ret : -EIO;
++			ret = program_physical_page(physical + page, padded);
++			if (ret)
++				return ret;
+ 		}
+ 	}
+ 	ret = anchor_hash(target->offset, length, expected);
+@@ -448,6 +478,167 @@
+ 	}
+ 	return ret;
+ }
++
++#ifdef CONFIG_VB235V_NAND_SELFTEST
++/* This opt-in command has one fixed address, requires both full-slot hashes,
++ * an inactive slot 1, identity mapping and entirely erased main AND raw OOB.
++ * It never creates a bootable FIT or changes the slot's first block.
++ */
++#define VB_TEST_LOGICAL 0x0ac00000U
++static bool bytes_ff(const u8 *data, size_t length)
++{
++	size_t i;
++
++	for (i = 0; i < length; i++)
++		if (data[i] != 0xff)
++			return false;
++	return true;
++}
++
++static int test_raw_erased(u32 physical, u8 *buffer)
++{
++	struct mtd_oob_ops ops;
++	u32 page;
++	int ret;
++
++	for (page = 0; page < VB_ERASE; page += VB_PAGE) {
++		memset(&ops, 0, sizeof(ops));
++		ops.mode = MTD_OPS_RAW;
++		ops.len = VB_PAGE;
++		ops.ooblen = 256;
++		ops.datbuf = buffer;
++		ops.oobbuf = buffer + VB_PAGE;
++		ret = mtd_read_oob(flash, physical + page, &ops);
++		if (ret || ops.retlen != VB_PAGE || ops.oobretlen != 256 ||
++		    !bytes_ff(buffer, VB_PAGE + 256))
++			return ret ? ret : -EBADMSG;
++	}
++	return 0;
++}
++
++static void test_pattern(u8 *buffer, u32 page)
++{
++	u32 state = 0x75832300U ^ page;
++	unsigned int i;
++
++	for (i = 0; i < VB_PAGE; i++) {
++		state ^= state << 13;
++		state ^= state >> 17;
++		state ^= state << 5;
++		buffer[i] = state >> 24;
++	}
++}
++
++static int test_protected_hashes(u8 hashes[4][32])
++{
++	const char *names[] = { "bootloader", "art", "misc", "reserve" };
++	const struct vb_target *target;
++	unsigned int i;
++	int ret;
++
++	for (i = 0; i < ARRAY_SIZE(names); i++) {
++		target = vb_target_find(names[i]);
++		ret = mapped_sha256(target->offset, target->size, hashes[i]);
++		if (ret)
++			return ret;
++	}
++	return 0;
++}
++
++int vb_storage_nand_selftest(const char *secondary_sha, const char *active_sha)
++{
++	u8 before[4][32], after[4][32], *buffer;
++	struct mtd_oob_ops ops;
++	u32 physical, page, restored;
++	int ret, cleanup, active;
++
++	if (!secondary_sha || !active_sha || strlen(secondary_sha) != 64 ||
++	    strlen(active_sha) != 64)
++		return -EINVAL;
++	ret = vb_storage_init();
++	if (ret || !anchors_verified)
++		return ret ? ret : -EXDEV;
++	cached_active = -99;
++	active = vb_active_slot();
++	if (active != 0)
++		return active < 0 ? active : -EPERM;
++	ret = vb_translate(&mapping, VB_TEST_LOGICAL, &physical);
++	if (ret || physical != VB_TEST_LOGICAL)
++		return ret ? ret : -EXDEV;
++	ret = anchor_hash(0x5c40000, 0x5000000, secondary_sha);
++	if (!ret)
++		ret = anchor_hash(0xc40000, 0x5000000, active_sha);
++	if (ret)
++		return ret;
++	buffer = malloc(VB_PAGE + 256);
++	if (!buffer)
++		return -ENOMEM;
++	ret = test_raw_erased(physical, buffer);
++	if (ret)
++		goto out;
++	ret = test_protected_hashes(before);
++	if (ret)
++		goto out;
++	printf("NAND selftest: ONLY inactive slot1 tail logical/physical %08x, size %x\n",
++	       physical, VB_ERASE);
++	ret = erase_mapped_block(VB_TEST_LOGICAL, &physical);
++	if (ret)
++		goto restore;
++	for (page = 0; page < VB_ERASE; page += VB_PAGE) {
++		test_pattern(buffer, page / VB_PAGE);
++		ret = program_physical_page(physical + page, buffer);
++		if (ret)
++			goto restore;
++	}
++	ret = anchor_hash(VB_TEST_LOGICAL, VB_ERASE, "65d76b0895a4a418d453d43f7666f97721c3eaf3c2c620c72345146cb41dcdf6");
++	if (ret)
++		goto restore;
++	for (page = 0; page < VB_ERASE; page += VB_PAGE) {
++		memset(&ops, 0, sizeof(ops));
++		ops.mode = MTD_OPS_PLACE_OOB;
++		ops.ooblen = 256;
++		ops.oobbuf = buffer;
++		ret = mtd_read_oob(flash, physical + page, &ops);
++		if ((ret && !mtd_is_bitflip(ret)) || ops.oobretlen != 256 ||
++		    buffer[0] != 0xff || buffer[1] != 0xff ||
++		    buffer[2] != (physical / VB_ERASE & 255) ||
++		    buffer[3] != (physical / VB_ERASE >> 8)) {
++			ret = -EIO;
++			goto restore;
++		}
++		ret = 0;
++	}
++	printf("NAND selftest: 64 ECC-enabled pages and OOB indices verified; pattern SHA 65d76b0895a4a418d453d43f7666f97721c3eaf3c2c620c72345146cb41dcdf6\n");
++restore:
++	/* Always attempt restoration before returning a programming/readback error. */
++	cleanup = erase_mapped_block(VB_TEST_LOGICAL, &restored);
++	if (!cleanup && restored != physical)
++		cleanup = -EXDEV;
++	if (!cleanup)
++		cleanup = test_raw_erased(physical, buffer);
++	if (cleanup) {
++		printf("NAND selftest: RESTORE FAILED (%d), original result %d\n", cleanup, ret);
++		ret = cleanup;
++		goto out;
++	}
++	printf("NAND selftest: restored entire main+OOB to erased FF\n");
++	cleanup = anchor_hash(0x5c40000, 0x5000000, secondary_sha);
++	if (!cleanup)
++		cleanup = anchor_hash(0xc40000, 0x5000000, active_sha);
++	if (!cleanup)
++		cleanup = test_protected_hashes(after);
++	if (!cleanup && memcmp(before, after, sizeof(before)))
++		cleanup = -EBADMSG;
++	if (cleanup)
++		ret = cleanup;
++	if (!ret)
++		printf("NAND selftest: both full slots and boot/ART/misc/selector unchanged\n");
++out:
++	free(buffer);
++	return ret;
++}
++#endif
++
+ 
+ int vb_boot(void)
+ {
+@@ -489,6 +680,13 @@
+ 
+ 	if (argc < 2)
+ 		return CMD_RET_USAGE;
++#ifdef CONFIG_VB235V_NAND_SELFTEST
++	if (!strcmp(argv[1], "nandtest") && argc == 4) {
++		ret = vb_storage_nand_selftest(argv[2], argv[3]);
++		printf("VB235v NAND selftest result: %d\n", ret);
++		return ret ? CMD_RET_FAILURE : CMD_RET_SUCCESS;
++	}
++#endif
+ 	if (!strcmp(argv[1], "recover") && argc == 2) {
+ 		ret = vb_httpd_window();
+ 	} else if (!strcmp(argv[1], "info") && argc == 2) {
+diff --git a/include/vb235v-recovery.h b/include/vb235v-recovery.h
+--- a/include/vb235v-recovery.h
++++ b/include/vb235v-recovery.h
+@@ -8,6 +8,9 @@
+ int vb_storage_read(const struct vb_target *target, u32 offset, void *buffer, size_t length);
+ int vb_fit_validate(const void *image, size_t length);
+ int vb_storage_install(unsigned int slot, const void *image, size_t length, const char *sha256);
++#ifdef CONFIG_VB235V_NAND_SELFTEST
++int vb_storage_nand_selftest(const char *secondary_sha, const char *active_sha);
++#endif
+ int vb_boot(void);
+ int vb_httpd_window(void);
+ int vb_factory_boot(void);
