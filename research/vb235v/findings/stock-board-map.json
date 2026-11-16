@@ -1,0 +1,2295 @@
+{
+  "classification": "allowlisted resources from the stock boot-provided FDT, not physical wiring validation",
+  "dtb_sha256": "387f309fea8a488c5de92fdea1632a07933316e32fc94013755342e6934c3a4a",
+  "dtb_file_bytes": 20480,
+  "parsed_nodes": 145,
+  "selected_nodes": [
+    {
+      "path": "/",
+      "properties": {
+        "compatible": [
+          "airoha,an7583"
+        ],
+        "interrupt-parent": [
+          1
+        ],
+        "#address-cells": [
+          2
+        ],
+        "#size-cells": [
+          2
+        ]
+      }
+    },
+    {
+      "path": "/reserved-memory",
+      "properties": {
+        "#address-cells": [
+          2
+        ],
+        "#size-cells": [
+          2
+        ],
+        "ranges": []
+      }
+    },
+    {
+      "path": "/reserved-memory/atf-reserved-memory@80000000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-atf-reserved-memory"
+        ],
+        "no-map": true,
+        "reg": [
+          0,
+          2147483648,
+          0,
+          327680
+        ]
+      }
+    },
+    {
+      "path": "/reserved-memory/npu_binary@84000000",
+      "properties": {
+        "no-map": true,
+        "reg": [
+          0,
+          2214592512,
+          0,
+          1048576
+        ],
+        "phandle": [
+          8
+        ]
+      }
+    },
+    {
+      "path": "/reserved-memory/ramoops@8b000000",
+      "properties": {
+        "compatible": [
+          "ramoops"
+        ],
+        "reg": [
+          0,
+          2332033024,
+          0,
+          1048576
+        ]
+      }
+    },
+    {
+      "path": "/reserved-memory/persist_log@8b100000",
+      "properties": {
+        "compatible": [
+          "persist_log"
+        ],
+        "reg": [
+          0,
+          2333081600,
+          0,
+          1048576
+        ]
+      }
+    },
+    {
+      "path": "/opp-table",
+      "properties": {
+        "compatible": [
+          "operating-points-v2"
+        ],
+        "phandle": [
+          6
+        ]
+      }
+    },
+    {
+      "path": "/psci",
+      "properties": {
+        "compatible": [
+          "arm,psci-0.2"
+        ]
+      }
+    },
+    {
+      "path": "/cpus",
+      "properties": {
+        "#address-cells": [
+          1
+        ],
+        "#size-cells": [
+          0
+        ]
+      }
+    },
+    {
+      "path": "/cpus/cpu@0",
+      "properties": {
+        "device_type": [
+          "cpu"
+        ],
+        "compatible": [
+          "arm,cortex-a53"
+        ],
+        "reg": [
+          0
+        ],
+        "clock-frequency": [
+          80000000
+        ],
+        "phandle": [
+          2
+        ]
+      }
+    },
+    {
+      "path": "/cpus/cpu@1",
+      "properties": {
+        "device_type": [
+          "cpu"
+        ],
+        "compatible": [
+          "arm,cortex-a53"
+        ],
+        "reg": [
+          1
+        ],
+        "clock-frequency": [
+          80000000
+        ],
+        "phandle": [
+          3
+        ]
+      }
+    },
+    {
+      "path": "/cpus/cpu@2",
+      "properties": {
+        "device_type": [
+          "cpu"
+        ],
+        "compatible": [
+          "arm,cortex-a53"
+        ],
+        "reg": [
+          2
+        ],
+        "clock-frequency": [
+          80000000
+        ],
+        "phandle": [
+          4
+        ]
+      }
+    },
+    {
+      "path": "/cpus/cpu@3",
+      "properties": {
+        "device_type": [
+          "cpu"
+        ],
+        "compatible": [
+          "arm,cortex-a53"
+        ],
+        "reg": [
+          3
+        ],
+        "clock-frequency": [
+          80000000
+        ],
+        "phandle": [
+          5
+        ]
+      }
+    },
+    {
+      "path": "/cpus/l2-cache0",
+      "properties": {
+        "compatible": [
+          "cache"
+        ],
+        "phandle": [
+          7
+        ]
+      }
+    },
+    {
+      "path": "/interrupt-controller@09000000",
+      "properties": {
+        "compatible": [
+          "arm,gic-v3"
+        ],
+        "interrupt-controller": true,
+        "#interrupt-cells": [
+          3
+        ],
+        "#address-cells": [
+          1
+        ],
+        "#size-cells": [
+          1
+        ],
+        "reg": [
+          0,
+          150994944,
+          0,
+          131072,
+          0,
+          151519232,
+          0,
+          524288
+        ],
+        "interrupts": [
+          1,
+          9,
+          8
+        ],
+        "phandle": [
+          1
+        ]
+      }
+    },
+    {
+      "path": "/interrupt-controller@09000000/gic-its@09020000",
+      "properties": {
+        "compatible": [
+          "arm,gic-v3-its"
+        ],
+        "reg": [
+          0,
+          2418016256,
+          0,
+          131072
+        ]
+      }
+    },
+    {
+      "path": "/timer",
+      "properties": {
+        "compatible": [
+          "arm,armv8-timer"
+        ],
+        "interrupt-parent": [
+          1
+        ],
+        "interrupts": [
+          1,
+          13,
+          3848,
+          1,
+          14,
+          3848,
+          1,
+          11,
+          3848,
+          1,
+          10,
+          3848
+        ],
+        "clock-frequency": [
+          25000000
+        ]
+      }
+    },
+    {
+      "path": "/pmu",
+      "properties": {
+        "compatible": [
+          "arm,cortex-a15-pmu"
+        ],
+        "interrupts": [
+          1,
+          7,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/npu@1e800000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-npu"
+        ],
+        "reg": [
+          0,
+          511705088,
+          0,
+          524288,
+          0,
+          512753664,
+          0,
+          3223552
+        ],
+        "memory-region": [
+          8
+        ],
+        "interrupts": [
+          0,
+          118,
+          4,
+          0,
+          119,
+          4,
+          0,
+          120,
+          4,
+          0,
+          121,
+          4,
+          0,
+          122,
+          4,
+          0,
+          123,
+          4,
+          0,
+          125,
+          4,
+          0,
+          134,
+          4,
+          0,
+          135,
+          4,
+          0,
+          136,
+          4,
+          0,
+          137,
+          4,
+          0,
+          109,
+          4,
+          0,
+          110,
+          4,
+          0,
+          111,
+          4,
+          0,
+          112,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/apb_timer1@1fbf0100",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-timer"
+        ],
+        "reg": [
+          0,
+          532611328,
+          0,
+          96
+        ],
+        "interrupts": [
+          0,
+          20,
+          4,
+          0,
+          21,
+          4,
+          0,
+          22,
+          4,
+          0,
+          25,
+          4,
+          0,
+          16,
+          4,
+          0,
+          17,
+          4,
+          0,
+          29,
+          4,
+          0,
+          213,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/memory@80000000",
+      "properties": {
+        "device_type": [
+          "memory"
+        ],
+        "reg": [
+          0,
+          2147483648,
+          0,
+          536870912
+        ]
+      }
+    },
+    {
+      "path": "/rbus@1fa00000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-rbus"
+        ],
+        "reg": [
+          0,
+          530579456,
+          0,
+          4096
+        ]
+      }
+    },
+    {
+      "path": "/sram@1fa40000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-sram"
+        ],
+        "reg": [
+          0,
+          530841600,
+          0,
+          32768,
+          0,
+          134217728,
+          0,
+          262144,
+          0,
+          519831552,
+          0,
+          262144,
+          0,
+          512229376,
+          0,
+          262144,
+          0,
+          532557824,
+          0,
+          512
+        ]
+      }
+    },
+    {
+      "path": "/scu@1fb00000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-scu"
+        ],
+        "reg": [
+          0,
+          531628032,
+          0,
+          2400,
+          0,
+          530710528,
+          0,
+          864,
+          0,
+          530775856,
+          0,
+          16
+        ],
+        "interrupts": [
+          0,
+          47,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/pcie0@1fc20000",
+      "properties": {
+        "device_type": [
+          "pci"
+        ],
+        "compatible": [
+          "ecnt,pcie0-ecnt"
+        ],
+        "reg": [
+          0,
+          532807680,
+          0,
+          131072
+        ],
+        "reg-names": [
+          "pcie-mac"
+        ],
+        "#address-cells": [
+          3
+        ],
+        "#size-cells": [
+          2
+        ],
+        "interrupts": [
+          0,
+          39,
+          4
+        ],
+        "ranges": [
+          33554432,
+          0,
+          536870912,
+          0,
+          536870912,
+          0,
+          67108864
+        ],
+        "#interrupt-cells": [
+          1
+        ],
+        "interrupt-map": [
+          0,
+          0,
+          0,
+          1,
+          9,
+          1,
+          0,
+          0,
+          0,
+          2,
+          9,
+          2,
+          0,
+          0,
+          0,
+          3,
+          9,
+          3,
+          0,
+          0,
+          0,
+          4,
+          9,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/pcie0@1fc20000/interrupt-controller",
+      "properties": {
+        "interrupt-controller": true,
+        "#address-cells": [
+          0
+        ],
+        "#interrupt-cells": [
+          1
+        ],
+        "phandle": [
+          9
+        ]
+      }
+    },
+    {
+      "path": "/pcie1@1fa92000",
+      "properties": {
+        "device_type": [
+          "pci"
+        ],
+        "compatible": [
+          "ecnt,pcie1-ecnt"
+        ],
+        "reg": [
+          0,
+          531177472,
+          0,
+          4096
+        ],
+        "reg-names": [
+          "pcie-mac"
+        ],
+        "#address-cells": [
+          3
+        ],
+        "#size-cells": [
+          2
+        ],
+        "interrupts": [
+          0,
+          40,
+          4
+        ],
+        "ranges": [
+          33554432,
+          0,
+          603979776,
+          0,
+          603979776,
+          0,
+          67108864
+        ],
+        "#interrupt-cells": [
+          1
+        ],
+        "interrupt-map": [
+          0,
+          0,
+          0,
+          1,
+          10,
+          1,
+          0,
+          0,
+          0,
+          2,
+          10,
+          2,
+          0,
+          0,
+          0,
+          3,
+          10,
+          3,
+          0,
+          0,
+          0,
+          4,
+          10,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/pcie1@1fa92000/interrupt-controller",
+      "properties": {
+        "interrupt-controller": true,
+        "#address-cells": [
+          0
+        ],
+        "#interrupt-cells": [
+          1
+        ],
+        "phandle": [
+          10
+        ]
+      }
+    },
+    {
+      "path": "/wdma",
+      "properties": {
+        "compatible": [
+          "en751221,wdma"
+        ],
+        "reg": [
+          0,
+          530604032,
+          0,
+          1024,
+          0,
+          530605056,
+          0,
+          1024
+        ],
+        "interrupts": [
+          0,
+          69,
+          4,
+          0,
+          70,
+          4,
+          0,
+          71,
+          4,
+          0,
+          72,
+          4,
+          0,
+          73,
+          4,
+          0,
+          74,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/wed",
+      "properties": {
+        "compatible": [
+          "en751221,wed"
+        ],
+        "reg": [
+          0,
+          530587648,
+          0,
+          2816,
+          0,
+          530587648,
+          0,
+          2816
+        ],
+        "interrupts": [
+          0,
+          67,
+          4,
+          0,
+          67,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/wed2",
+      "properties": {
+        "compatible": [
+          "en751221,wed2"
+        ],
+        "reg": [
+          0,
+          530587648,
+          0,
+          2816,
+          0,
+          530591744,
+          0,
+          2816
+        ],
+        "interrupts": [
+          0,
+          67,
+          4,
+          0,
+          68,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/wed_test",
+      "properties": {
+        "compatible": [
+          "en751221,wed_test"
+        ],
+        "reg": [
+          0,
+          530590464,
+          0,
+          256,
+          0,
+          530594560,
+          0,
+          256
+        ]
+      }
+    },
+    {
+      "path": "/gdump@1fbf9000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-gdump"
+        ],
+        "reg": [
+          0,
+          532647936,
+          0,
+          132
+        ]
+      }
+    },
+    {
+      "path": "/trng@1faa1000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-trng"
+        ],
+        "reg": [
+          0,
+          531238912,
+          0,
+          3076
+        ],
+        "interrupts": [
+          0,
+          35,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/gdma@1fb30000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-gdma"
+        ],
+        "reg": [
+          0,
+          531824640,
+          0,
+          688
+        ]
+      }
+    },
+    {
+      "path": "/xsi@1fa04000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-xsi"
+        ],
+        "reg": [
+          0,
+          530612224,
+          0,
+          768,
+          0,
+          530595840,
+          0,
+          768,
+          0,
+          530608128,
+          0,
+          768,
+          0,
+          530599936,
+          0,
+          768,
+          0,
+          530616320,
+          0,
+          768
+        ]
+      }
+    },
+    {
+      "path": "/pbus_monitor@1fbe3400",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-pbus_monitor"
+        ],
+        "reg": [
+          0,
+          532558848,
+          0,
+          252
+        ]
+      }
+    },
+    {
+      "path": "/serial@1fbf0300",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-uart2"
+        ],
+        "reg": [
+          0,
+          532611840,
+          0,
+          48,
+          0,
+          532549632,
+          0,
+          127,
+          0,
+          532612608,
+          0,
+          48,
+          0,
+          532612864,
+          0,
+          48
+        ],
+        "interrupts": [
+          0,
+          32,
+          4,
+          0,
+          54,
+          4,
+          0,
+          61,
+          4,
+          0,
+          62,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/spi_controller@1fa10000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-spi_ctrl"
+        ],
+        "reg": [
+          0,
+          530644992,
+          0,
+          320,
+          0,
+          0,
+          0,
+          4096
+        ],
+        "interrupts": [
+          0,
+          51,
+          4
+        ],
+        "phandle": [
+          11
+        ]
+      }
+    },
+    {
+      "path": "/spi_spi2nfi@1fa11000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-spi2nfi"
+        ],
+        "reg": [
+          0,
+          530649088,
+          0,
+          352
+        ],
+        "phandle": [
+          12
+        ]
+      }
+    },
+    {
+      "path": "/spi_ecc@1fa12000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-spi_ecc"
+        ],
+        "reg": [
+          0,
+          530653184,
+          0,
+          336
+        ],
+        "phandle": [
+          13
+        ]
+      }
+    },
+    {
+      "path": "/frame_engine@1fb50000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-frame_engine"
+        ],
+        "reg": [
+          0,
+          531955712,
+          0,
+          9824,
+          0,
+          531972096,
+          0,
+          16384,
+          0,
+          531988480,
+          0,
+          32768
+        ],
+        "interrupts": [
+          0,
+          37,
+          4,
+          0,
+          55,
+          4,
+          0,
+          56,
+          4,
+          0,
+          57,
+          4,
+          0,
+          38,
+          4,
+          0,
+          58,
+          4,
+          0,
+          59,
+          4,
+          0,
+          60,
+          4,
+          0,
+          49,
+          4,
+          0,
+          64,
+          4,
+          0,
+          203,
+          4,
+          0,
+          204,
+          4,
+          0,
+          205,
+          4,
+          0,
+          206,
+          4,
+          0,
+          207,
+          4,
+          0,
+          208,
+          4,
+          0,
+          209,
+          4,
+          0,
+          210,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/1588v2ptp@1fb5e000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-1588v2ptp"
+        ],
+        "reg": [
+          0,
+          532013056,
+          0,
+          204,
+          0,
+          530617600,
+          0,
+          512,
+          0,
+          530613504,
+          0,
+          512
+        ],
+        "interrupts": [
+          0,
+          31,
+          4,
+          0,
+          65,
+          4,
+          0,
+          147,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/snor",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-snor"
+        ]
+      }
+    },
+    {
+      "path": "/nand@1fa10000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-nand"
+        ]
+      }
+    },
+    {
+      "path": "/dma-controller@1fa01800",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-hsdma"
+        ],
+        "reg": [
+          0,
+          530585600,
+          0,
+          768,
+          1,
+          1610612736,
+          0,
+          2097152,
+          2,
+          805306368,
+          0,
+          2097152
+        ],
+        "interrupts": [
+          0,
+          63,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/cpu_top@1efb0000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-cpu_top"
+        ],
+        "reg": [
+          0,
+          519817216,
+          0,
+          16
+        ]
+      }
+    },
+    {
+      "path": "/xpon@1fb64000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-xpon"
+        ],
+        "reg": [
+          0,
+          532037632,
+          0,
+          1000,
+          0,
+          532045824,
+          0,
+          1796,
+          0,
+          532041728,
+          0,
+          4088
+        ],
+        "interrupts": [
+          0,
+          42,
+          4,
+          0,
+          34,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/xhci@1fab0000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-xhci"
+        ],
+        "reg": [
+          0,
+          531300352,
+          0,
+          15872,
+          0,
+          531316224,
+          0,
+          256
+        ],
+        "interrupts": [
+          0,
+          33,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/pon_phy@1faf0000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-pon_phy"
+        ],
+        "reg": [
+          0,
+          531562496,
+          0,
+          8191,
+          0,
+          530775844,
+          0,
+          4,
+          0,
+          531574784,
+          0,
+          4095,
+          0,
+          531578880,
+          0,
+          4095
+        ]
+      }
+    },
+    {
+      "path": "/pcm@bfbd0000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-pcm"
+        ],
+        "reg": [
+          0,
+          532480000,
+          0,
+          20479
+        ],
+        "interrupts": [
+          0,
+          27,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/pcie_phy",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-pcie_phy"
+        ]
+      }
+    },
+    {
+      "path": "/serdes_common_phy@1fa7e000",
+      "properties": {
+        "compatible": [
+          "airoha,serdes_common_phy"
+        ],
+        "reg": [
+          0,
+          533196800,
+          0,
+          4095,
+          0,
+          533192704,
+          0,
+          4095,
+          0,
+          531099648,
+          0,
+          4095,
+          0,
+          531095552,
+          0,
+          4095,
+          0,
+          531165184,
+          0,
+          4095,
+          0,
+          531161088,
+          0,
+          4095,
+          0,
+          531120128,
+          0,
+          1669,
+          0,
+          530968576,
+          0,
+          255,
+          0,
+          530948096,
+          0,
+          1023,
+          0,
+          530964480,
+          0,
+          2303,
+          0,
+          531034112,
+          0,
+          255,
+          0,
+          531013632,
+          0,
+          1023,
+          0,
+          531030016,
+          0,
+          2303
+        ],
+        "interrupts": [
+          0,
+          43,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/p2l_usxgmii@1fc70000",
+      "properties": {
+        "compatible": [
+          "airoha,air-pcie2l_usxgmii"
+        ],
+        "reg": [
+          0,
+          533158144,
+          0,
+          820,
+          0,
+          533137920,
+          0,
+          360,
+          0,
+          533135360,
+          0,
+          100,
+          0,
+          533159936,
+          0,
+          255,
+          0,
+          533151744,
+          0,
+          1669
+        ],
+        "interrupts": [
+          0,
+          151,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/eth_usxgmii@1fa70000",
+      "properties": {
+        "compatible": [
+          "airoha,air-eth_usxgmii"
+        ],
+        "reg": [
+          0,
+          531060992,
+          0,
+          820,
+          0,
+          531040768,
+          0,
+          360,
+          0,
+          531038208,
+          0,
+          100,
+          0,
+          531062784,
+          0,
+          255,
+          0,
+          531054592,
+          0,
+          1669
+        ],
+        "interrupts": [
+          0,
+          66,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/xpon_usxgmii@1fa80000",
+      "properties": {
+        "compatible": [
+          "airoha,air-xpon_usxgmii"
+        ],
+        "reg": [
+          0,
+          531126528,
+          0,
+          820,
+          0,
+          531106304,
+          0,
+          360,
+          0,
+          531103744,
+          0,
+          100,
+          0,
+          531128320,
+          0,
+          255
+        ]
+      }
+    },
+    {
+      "path": "/sgmii_u0@1fa60000",
+      "properties": {
+        "compatible": [
+          "airoha,air-usb_xgmii"
+        ],
+        "reg": [
+          0,
+          530975232,
+          0,
+          360,
+          0,
+          530972672,
+          0,
+          100,
+          0,
+          530997248,
+          0,
+          868,
+          0,
+          530989056,
+          0,
+          1332
+        ]
+      }
+    },
+    {
+      "path": "/sgmii_p1@1fa50000",
+      "properties": {
+        "compatible": [
+          "airoha,air-pcie1_xgmii"
+        ],
+        "reg": [
+          0,
+          530909696,
+          0,
+          360,
+          0,
+          530907136,
+          0,
+          100,
+          0,
+          530931712,
+          0,
+          868,
+          0,
+          530923520,
+          0,
+          1332
+        ]
+      }
+    },
+    {
+      "path": "/ipsec@1fbfa000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-ipsec"
+        ],
+        "reg": [
+          0,
+          532652032,
+          0,
+          616
+        ],
+        "interrupts": [
+          0,
+          79,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/tod@1fbe2300",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-tod"
+        ],
+        "reg": [
+          0,
+          532554496,
+          0,
+          208
+        ],
+        "interrupts": [
+          0,
+          78,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/usb_phy@1fac0000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-usb_phy"
+        ],
+        "reg": [
+          0,
+          531365888,
+          0,
+          5120
+        ]
+      }
+    },
+    {
+      "path": "/mmc@1fa0e000",
+      "properties": {
+        "compatible": [
+          "mediatek,mt7622-mmc"
+        ],
+        "reg": [
+          0,
+          530636800,
+          0,
+          4096,
+          0,
+          530628608,
+          0,
+          96
+        ],
+        "interrupts": [
+          0,
+          170,
+          4
+        ],
+        "bus-width": [
+          4
+        ]
+      }
+    },
+    {
+      "path": "/mdio-bus",
+      "properties": {
+        "compatible": [
+          "airoha,arht-mdio"
+        ]
+      }
+    },
+    {
+      "path": "/mdio-bus/phy@13",
+      "properties": {
+        "reg": [
+          13
+        ]
+      }
+    },
+    {
+      "path": "/mdio-bus/phy@14",
+      "properties": {
+        "reg": [
+          14
+        ]
+      }
+    },
+    {
+      "path": "/mdio-bus/phy@15",
+      "properties": {
+        "reg": [
+          15
+        ]
+      }
+    },
+    {
+      "path": "/mdio-bus/phy@29",
+      "properties": {
+        "reg": [
+          29
+        ]
+      }
+    },
+    {
+      "path": "/mdio-bus/phy@31",
+      "properties": {
+        "reg": [
+          31
+        ]
+      }
+    },
+    {
+      "path": "/olt_mac@1fbe4000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-olt_mac"
+        ],
+        "reg": [
+          0,
+          532561920,
+          0,
+          1208
+        ],
+        "interrupts": [
+          0,
+          216,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/olt_phy@1fbe5000",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-olt_phy"
+        ],
+        "reg": [
+          0,
+          532566016,
+          0,
+          1792,
+          0,
+          532568064,
+          0,
+          196,
+          0,
+          532568320,
+          0,
+          60
+        ],
+        "interrupts": [
+          0,
+          215,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/avs_phy",
+      "properties": {
+        "compatible": [
+          "airoha,an7583-avs_phy"
+        ]
+      }
+    },
+    {
+      "path": "/npu_freq",
+      "properties": {
+        "compatible": [
+          "airoha,arht-devfreq-npu"
+        ]
+      }
+    },
+    {
+      "path": "/npu_freq/opp-table",
+      "properties": {
+        "compatible": [
+          "operating-points-v2"
+        ],
+        "phandle": [
+          14
+        ]
+      }
+    },
+    {
+      "path": "/fe2x_freq",
+      "properties": {
+        "compatible": [
+          "airoha,arht-devfreq-fe2x"
+        ]
+      }
+    },
+    {
+      "path": "/fe2x_freq/opp-table",
+      "properties": {
+        "compatible": [
+          "operating-points-v2"
+        ],
+        "phandle": [
+          15
+        ]
+      }
+    },
+    {
+      "path": "/bus_freq",
+      "properties": {
+        "compatible": [
+          "airoha,arht-devfreq-bus"
+        ]
+      }
+    },
+    {
+      "path": "/bus_freq/opp-table",
+      "properties": {
+        "compatible": [
+          "operating-points-v2"
+        ],
+        "phandle": [
+          16
+        ]
+      }
+    },
+    {
+      "path": "/emi_freq",
+      "properties": {
+        "compatible": [
+          "airoha,arht-devfreq-emi"
+        ]
+      }
+    },
+    {
+      "path": "/emi_freq/opp-table",
+      "properties": {
+        "compatible": [
+          "operating-points-v2"
+        ],
+        "phandle": [
+          17
+        ]
+      }
+    },
+    {
+      "path": "/soe_freq",
+      "properties": {
+        "compatible": [
+          "airoha,arht-devfreq-soe"
+        ]
+      }
+    },
+    {
+      "path": "/soe_freq/opp-table",
+      "properties": {
+        "compatible": [
+          "operating-points-v2"
+        ],
+        "phandle": [
+          18
+        ]
+      }
+    },
+    {
+      "path": "/tod_freq",
+      "properties": {
+        "compatible": [
+          "airoha,arht-devfreq-tod"
+        ]
+      }
+    },
+    {
+      "path": "/tod_freq/opp-table",
+      "properties": {
+        "compatible": [
+          "operating-points-v2"
+        ],
+        "phandle": [
+          19
+        ]
+      }
+    },
+    {
+      "path": "/aes_freq",
+      "properties": {
+        "compatible": [
+          "airoha,arht-devfreq-aes"
+        ]
+      }
+    },
+    {
+      "path": "/aes_freq/opp-table",
+      "properties": {
+        "compatible": [
+          "operating-points-v2"
+        ],
+        "phandle": [
+          20
+        ]
+      }
+    },
+    {
+      "path": "/gsw2x_freq",
+      "properties": {
+        "compatible": [
+          "airoha,arht-devfreq-gsw2x"
+        ]
+      }
+    },
+    {
+      "path": "/gsw2x_freq/opp-table",
+      "properties": {
+        "compatible": [
+          "operating-points-v2"
+        ],
+        "phandle": [
+          21
+        ]
+      }
+    },
+    {
+      "path": "/gpio@1fbf0200",
+      "properties": {
+        "compatible": [
+          "airoha,airoha-gpio"
+        ],
+        "reg": [
+          0,
+          532611588,
+          0,
+          4,
+          0,
+          532611584,
+          0,
+          4,
+          0,
+          532611616,
+          0,
+          4,
+          0,
+          532611604,
+          0,
+          4
+        ],
+        "gpio-controller": true,
+        "#gpio-cells": [
+          2
+        ],
+        "phandle": [
+          23
+        ]
+      }
+    },
+    {
+      "path": "/gpio@1fbf0270",
+      "properties": {
+        "compatible": [
+          "airoha,airoha-gpio"
+        ],
+        "reg": [
+          0,
+          532611696,
+          0,
+          4,
+          0,
+          532611680,
+          0,
+          4,
+          0,
+          532611684,
+          0,
+          4,
+          0,
+          532611704,
+          0,
+          4
+        ],
+        "gpio-controller": true,
+        "#gpio-cells": [
+          2
+        ],
+        "phandle": [
+          24
+        ]
+      }
+    },
+    {
+      "path": "/pwm@1fbf0234",
+      "properties": {
+        "compatible": [
+          "airoha,airoha-pwm"
+        ],
+        "reg": [
+          0,
+          532611636,
+          0,
+          32,
+          0,
+          532611688,
+          0,
+          4,
+          0,
+          532611736,
+          0,
+          36
+        ]
+      }
+    },
+    {
+      "path": "/gpio@1fbf0224",
+      "properties": {
+        "compatible": [
+          "econet,ecnt-gpio"
+        ],
+        "reg": [
+          0,
+          532611608,
+          0,
+          8,
+          0,
+          532611620,
+          0,
+          16,
+          0,
+          532611636,
+          0,
+          44,
+          0,
+          532611688,
+          0,
+          4,
+          0,
+          532611592,
+          0,
+          12,
+          0,
+          532611708,
+          0,
+          28,
+          0,
+          532611736,
+          0,
+          40
+        ]
+      }
+    },
+    {
+      "path": "/i2c@1fbf8000",
+      "properties": {
+        "compatible": [
+          "airoha,airoha-i2c"
+        ],
+        "reg": [
+          0,
+          532643840,
+          0,
+          101
+        ],
+        "clock-frequency": [
+          400000
+        ]
+      }
+    },
+    {
+      "path": "/i2c1@1fbf8100",
+      "properties": {
+        "compatible": [
+          "airoha,airoha-i2c"
+        ],
+        "reg": [
+          0,
+          532644096,
+          0,
+          101
+        ],
+        "clock-frequency": [
+          400000
+        ]
+      }
+    },
+    {
+      "path": "/airoha_trng@1faa1000",
+      "properties": {
+        "compatible": [
+          "airoha,airoha-trng"
+        ],
+        "reg": [
+          0,
+          531238912,
+          0,
+          3076
+        ],
+        "interrupts": [
+          0,
+          35,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/thermal_phy@1efbd000",
+      "properties": {
+        "compatible": [
+          "airoha,an7583-thermal_phy"
+        ],
+        "reg": [
+          0,
+          519819264,
+          0,
+          4095
+        ],
+        "phandle": [
+          22
+        ]
+      }
+    },
+    {
+      "path": "/serial@1fbf0000",
+      "properties": {
+        "compatible": [
+          "ns8250"
+        ],
+        "reg": [
+          0,
+          532611072,
+          0,
+          48
+        ],
+        "interrupts": [
+          0,
+          18,
+          4
+        ],
+        "clock-frequency": [
+          1843200
+        ],
+        "status": [
+          "okay"
+        ]
+      }
+    },
+    {
+      "path": "/crypto_eip93@1fb70000",
+      "properties": {
+        "compatible": [
+          "airoha,airoha-eip93"
+        ],
+        "reg": [
+          0,
+          532086784,
+          0,
+          2052
+        ],
+        "interrupts": [
+          0,
+          44,
+          4
+        ]
+      }
+    },
+    {
+      "path": "/partitions",
+      "properties": {
+        "compatible": [
+          "fixed-partitions"
+        ],
+        "#address-cells": [
+          1
+        ],
+        "#size-cells": [
+          1
+        ]
+      }
+    },
+    {
+      "path": "/partitions/whole@0",
+      "properties": {
+        "reg": [
+          0,
+          208142336
+        ]
+      }
+    },
+    {
+      "path": "/partitions/bootloader@0",
+      "properties": {
+        "reg": [
+          0,
+          786432
+        ]
+      }
+    },
+    {
+      "path": "/partitions/art@c0000",
+      "properties": {
+        "reg": [
+          786432,
+          3670016
+        ]
+      }
+    },
+    {
+      "path": "/partitions/misc@440000",
+      "properties": {
+        "reg": [
+          4456448,
+          8388608
+        ]
+      }
+    },
+    {
+      "path": "/partitions/kernel@c40000",
+      "properties": {
+        "reg": [
+          12845056,
+          16777216
+        ]
+      }
+    },
+    {
+      "path": "/partitions/rootfs@1c40000",
+      "properties": {
+        "reg": [
+          29622272,
+          67108864
+        ]
+      }
+    },
+    {
+      "path": "/partitions/firmware@c40000",
+      "properties": {
+        "reg": [
+          12845056,
+          83886080
+        ]
+      }
+    },
+    {
+      "path": "/partitions/kernel_slave@5c40000",
+      "properties": {
+        "reg": [
+          96731136,
+          16777216
+        ]
+      }
+    },
+    {
+      "path": "/partitions/rootfs_slave@6c40000",
+      "properties": {
+        "reg": [
+          113508352,
+          67108864
+        ]
+      }
+    },
+    {
+      "path": "/partitions/firmware_slave@5c40000",
+      "properties": {
+        "reg": [
+          96731136,
+          83886080
+        ]
+      }
+    },
+    {
+      "path": "/partitions/reserve@b840000",
+      "properties": {
+        "reg": [
+          193200128,
+          262144
+        ]
+      }
+    },
+    {
+      "path": "/partitions/runtime_data@b880000",
+      "properties": {
+        "reg": [
+          193462272,
+          6291456
+        ]
+      }
+    },
+    {
+      "path": "/partitions/log@be80000",
+      "properties": {
+        "reg": [
+          199753728,
+          8388608
+        ]
+      }
+    },
+    {
+      "path": "/leds",
+      "properties": {
+        "compatible": [
+          "gpio-leds"
+        ]
+      }
+    },
+    {
+      "path": "/leds/phy_tx_power_disable",
+      "properties": {
+        "gpios": [
+          23,
+          15,
+          0
+        ]
+      }
+    },
+    {
+      "path": "/leds/voip_reset",
+      "properties": {
+        "gpios": [
+          24,
+          4,
+          0
+        ]
+      }
+    },
+    {
+      "path": "/gpio-keys-polled",
+      "properties": {
+        "compatible": [
+          "gpio-keys-polled"
+        ]
+      }
+    },
+    {
+      "path": "/gpio-keys-polled/reset_",
+      "properties": {
+        "gpios": [
+          23,
+          0,
+          1
+        ]
+      }
+    }
+  ],
+  "reservation_map": [],
+  "excluded_property_count": 120,
+  "phandles": {
+    "1": "/interrupt-controller@09000000",
+    "2": "/cpus/cpu@0",
+    "3": "/cpus/cpu@1",
+    "4": "/cpus/cpu@2",
+    "5": "/cpus/cpu@3",
+    "6": "/opp-table",
+    "7": "/cpus/l2-cache0",
+    "8": "/reserved-memory/npu_binary@84000000",
+    "9": "/pcie0@1fc20000/interrupt-controller",
+    "10": "/pcie1@1fa92000/interrupt-controller",
+    "11": "/spi_controller@1fa10000",
+    "12": "/spi_spi2nfi@1fa11000",
+    "13": "/spi_ecc@1fa12000",
+    "14": "/npu_freq/opp-table",
+    "15": "/fe2x_freq/opp-table",
+    "16": "/bus_freq/opp-table",
+    "17": "/emi_freq/opp-table",
+    "18": "/soe_freq/opp-table",
+    "19": "/tod_freq/opp-table",
+    "20": "/aes_freq/opp-table",
+    "21": "/gsw2x_freq/opp-table",
+    "22": "/thermal_phy@1efbd000",
+    "23": "/gpio@1fbf0200",
+    "24": "/gpio@1fbf0270"
+  },
+  "limitations": [
+    "Node presence does not establish hardware availability or enabled runtime state.",
+    "Raw cells require the relevant bus binding and driver to interpret.",
+    "No boot arguments, MAC addresses, serial-number values or unknown property payloads are emitted."
+  ],
+  "sysfs_mtd_offsets": [
+    {
+      "index": 0,
+      "offset": 0
+    },
+    {
+      "index": 1,
+      "offset": 0
+    },
+    {
+      "index": 2,
+      "offset": 786432
+    },
+    {
+      "index": 3,
+      "offset": 4456448
+    },
+    {
+      "index": 4,
+      "offset": 12845056
+    },
+    {
+      "index": 5,
+      "offset": 29622272
+    },
+    {
+      "index": 6,
+      "offset": 12845056
+    },
+    {
+      "index": 7,
+      "offset": 96731136
+    },
+    {
+      "index": 8,
+      "offset": 113508352
+    },
+    {
+      "index": 9,
+      "offset": 96731136
+    },
+    {
+      "index": 10,
+      "offset": 193200128
+    },
+    {
+      "index": 11,
+      "offset": 193462272
+    },
+    {
+      "index": 12,
+      "offset": 199753728
+    }
+  ],
+  "partition_offsets_match_sysfs": true,
+  "independent_dtc_version": "1.6.0",
+  "independent_dtc_nodes": 145
+}

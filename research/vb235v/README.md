@@ -47,3 +47,5 @@ For bounded read-only SSH collection, see [STOCK-MODULE-COVERAGE.md](STOCK-MODUL
 [M9: NAND ECC and BMT](NAND-ECC-BMT.md) correlates the reported flash ECC path with vendor source and identifies conditional NAND writes during mapping-table initialization. Audit this path before any RAM-image boot.
 
 [M10: NPU firmware identity](NPU-FIRMWARE-IDENTITY.md) establishes that both stock on-disk NPU files differ from the GPL reference blobs. Executing firmware memory and host-command compatibility remain unverified.
+
+[M11: Stock board map](STOCK-BOARD-MAP.md) records allowlisted boot-provided FDT resources and logical partition offsets. The raw tree stays private; its generic nodes and GPIO control signals require board-specific review before use.
