@@ -55,3 +55,5 @@ For bounded read-only SSH collection, see [STOCK-MODULE-COVERAGE.md](STOCK-MODUL
 [M13: NPU/PonWrt contract](NPU-PONWRT-CONTRACT.md) finds matching selected mailbox fields but different core-count, IRQ, DMA and host API contracts. Six stock watchdogs are observed; the reference driver uses eight core slots as its active bound.
 
 [M14: NPU layout prototype](NPU-LAYOUT-PROTOTYPE.md) implements an opt-in source-derived layout and cross-compiles NPU/Ethernet/PPE objects against the complete target patch stack. Its development overlay keeps the NPU disabled; no runtime acceleration is validated.
+
+[M15: DSL Ethernet transport](DSL-ETHERNET-TRANSPORT.md) distinguishes the legacy ioctl manager from installed Ethernet control implementations, including the stock kernel's `ae_wan` packet handler. Runtime library mappings and socket metadata are recorded without assuming live DSL use.

@@ -1,0 +1,161 @@
+{
+  "milestone": "M15",
+  "artifact_snapshot_utc": "2026-11-16T01:34:25Z",
+  "runtime_metadata_snapshot_utc": "2026-11-16T01:48:03Z",
+  "artifacts": [
+    {
+      "file": "libapi_lib_xdslmgr.so.1.0.0",
+      "bytes": 13944,
+      "sha256": "3cc0f388c4009449a69f46a526edadcaac79b2b8e9eea449b124eb267310227c",
+      "needed": [
+        "libgcc_s.so.1",
+        "libc.so"
+      ],
+      "reviewed_witnesses": []
+    },
+    {
+      "file": "libblapi_xdsl.so",
+      "bytes": 96432,
+      "sha256": "e0aaacc2961e90854efd3a64499da717a9787af5aa6a5332412cebb3d544a78b",
+      "needed": [
+        "libecnt_lib_dbg.so.1",
+        "libecnt_env.so.1",
+        "libapi_lib_utility.so.1",
+        "libpt.so.1",
+        "libgcc_s.so.1",
+        "libc.so"
+      ],
+      "reviewed_witnesses": [
+        {
+          "adrp": "0xa2e0",
+          "load": "0xa2f8",
+          "call": "0xa300",
+          "got_slot": "0x26f50",
+          "symbol": "SRC_blapi",
+          "register_liveness_verified": false,
+          "runtime_use_verified": false
+        }
+      ]
+    },
+    {
+      "file": "xdsl_cmd",
+      "bytes": 10856,
+      "sha256": "f52ae95ccf5b5a2559bec9dcd975716d66e80eaabb7c9894ae7ab095626a89ed",
+      "needed": [
+        "libapi_lib_utility.so.1",
+        "libapi_lib_xdslmgr.so.1",
+        "libecnt_lib_dbg.so.1",
+        "libgcc_s.so.1",
+        "libc.so"
+      ],
+      "reviewed_witnesses": []
+    },
+    {
+      "file": "libpt.so.1.0.0",
+      "bytes": 14048,
+      "sha256": "eb8dc5d2929120e48b58d9bb67a717346a46837e191533f02b957d363f77ff7f",
+      "needed": [
+        "libgcc_s.so.1",
+        "libc.so"
+      ],
+      "reviewed_witnesses": [
+        {
+          "adrp": "0x2104",
+          "load": "0x2110",
+          "call": "0x2134",
+          "got_slot": "0x12e98",
+          "symbol": "pt_fd_open",
+          "register_liveness_verified": false,
+          "runtime_use_verified": false
+        },
+        {
+          "adrp": "0x17b8",
+          "load": "0x17c0",
+          "call": "0x17c4",
+          "got_slot": "0x12fb0",
+          "symbol": "htons",
+          "register_liveness_verified": false,
+          "runtime_use_verified": false
+        },
+        {
+          "adrp": "0x17cc",
+          "load": "0x17d8",
+          "call": "0x17dc",
+          "got_slot": "0x12f20",
+          "symbol": "socket",
+          "register_liveness_verified": false,
+          "runtime_use_verified": false
+        },
+        {
+          "adrp": "0x23b0",
+          "load": "0x23c0",
+          "call": "0x23c4",
+          "got_slot": "0x12fc0",
+          "symbol": "pt_pkt_send",
+          "register_liveness_verified": false,
+          "runtime_use_verified": false
+        },
+        {
+          "adrp": "0x23d0",
+          "load": "0x23dc",
+          "call": "0x23e0",
+          "got_slot": "0x12f40",
+          "symbol": "pt_pkt_recv",
+          "register_liveness_verified": false,
+          "runtime_use_verified": false
+        }
+      ]
+    }
+  ],
+  "client_info": {
+    "file": "client_info.ko",
+    "bytes": 85328,
+    "sha256": "65afe2ba9ee4599c4e67b03ea017e39dae9087f183836cb81478e6077589eb75",
+    "interface_reference": "ae_wan",
+    "packet_type_data_offset": "0x70",
+    "receive_ethertype": "0xbeed",
+    "receive_callback_relocation_offset": "0x80",
+    "receive_callback": "client_proc_skb_recv",
+    "registration": "dev_add_pack",
+    "transmit_function": "client_proc_send_packet",
+    "transmit_ethertype": "0xbeea",
+    "transmit_api": "dev_queue_xmit",
+    "live_function_execution_verified": false
+  },
+  "static_transport_review": {
+    "SRC_blapi_protocol_low16": "0xbeea",
+    "pt_fd_open_socket_domain": 17,
+    "pt_fd_open_socket_type": 3,
+    "pt_fd_open_protocol_argument": "htons(protocol & 0xffff)",
+    "shared_memory_key": "0x1492",
+    "shared_memory_bytes": 40,
+    "interface_name_source": "shared-memory metadata; not read or attached during research",
+    "early_return_gate": "protocol 0xbeea with clear metadata flag bit 0 can return 2 before socket creation",
+    "blapi_command_record_bytes": 192,
+    "blapi_command_offset": 16,
+    "wire_payload_and_companion_identity_verified": false
+  },
+  "runtime_metadata": {
+    "matching_process_count": 47,
+    "processes_mapping_library": {
+      "libpt.so.1.0.0": 47,
+      "libblapi_xdsl.so": 46,
+      "libapi_lib_xdslmgr.so.1.0.0": 0
+    },
+    "absent_device_nodes": [
+      "/dev/xdsl",
+      "/dev/xdsl0",
+      "/dev/bbu",
+      "/dev/mdio"
+    ],
+    "packet_socket_snapshot_unchanged": true,
+    "packet_socket_protocols_beea_and_beed_present": false,
+    "beec_packet_socket_owner_comm": [
+      "hsm"
+    ],
+    "library_mapping_does_not_prove_dsl_calls": true,
+    "packet_socket_table_does_not_enumerate_kernel_packet_type_handlers": true
+  },
+  "device_actions": "read-only regular files and proc/sysfs metadata; no diagnostic proc handlers, ioctl, packet capture, traffic, shared-memory attachment or binary execution",
+  "publication": "authored tools, screened facts and hashes; raw binaries, logs and disassembly remain private"
+}

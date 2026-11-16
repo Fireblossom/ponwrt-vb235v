@@ -2,6 +2,11 @@
 
 ## DSL source interface
 
+[M15 Ethernet transport evidence](DSL-ETHERNET-TRANSPORT.md) identifies additional
+installed user-space and kernel control paths. The legacy device nodes were
+absent in that snapshot; this header must not be assumed to describe the active
+DSL implementation.
+
 The selected GPL header is `linux-5.4.55/include/global_inc/modules/xdsl/xdsl_ioctl.h` (an equivalent copy also exists in the Airoha feed). It declares `/dev/xdsl`, ioctl magic `X`, and 14 selectors for firmware version, link state, mode, annex, TPSTC, channel/performance/line data, attainable rate, uptime, line state, showtime, PMS, and events.
 
 Under the stated ordinary AArch64 C ABI assumptions (4-byte enums/u32, no packing), the largest union member is 288 bytes and `XDSLMGR_IOCTL` is 296 bytes. The source-derived `_IOWR('X', 0, ...)` request is `0xc1285800`.

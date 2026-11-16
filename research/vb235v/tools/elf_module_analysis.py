@@ -7,7 +7,7 @@ import struct
 
 
 class Module:
-    def __init__(self, path):
+    def __init__(self, path, *, elf_types=(1,)):
         self.path = Path(path)
         if self.path.stat().st_size > 64 * 1024 * 1024:
             raise ValueError('Artifact exceeds 64 MiB limit')
@@ -15,8 +15,9 @@ class Module:
         if self.data[:6] != b'\x7fELF\x02\x01':
             raise ValueError('Expected ELF64 little-endian object')
         header = struct.unpack('<16sHHIQQQIHHHHHH', self.slice(0, 64))
-        if header[1] != 1:
-            raise ValueError('Expected ET_REL kernel-module object')
+        if header[1] not in elf_types:
+            raise ValueError('Unexpected ELF type (default requires ET_REL)')
+        self.elf_type = header[1]
         self.machine = header[2]
         if header[11] != 64 or not 0 < header[12] <= 16384 or header[13] >= header[12]:
             raise ValueError('Unsupported ELF section table')
@@ -67,6 +68,8 @@ class Module:
         return self.slice(section['offset'], section['size'])
 
     def relocations(self):
+        if self.elf_type != 1:
+            raise ValueError('Module relocations require ET_REL')
         for section in self.sections:
             if section['type'] != 4:
                 continue
