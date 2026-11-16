@@ -1,0 +1,113 @@
+{
+  "source_contract_only": true,
+  "receiver_clock_fields": [
+    {
+      "field": "RX_PHYCK_DIV",
+      "physical_address_from_vendor_source": "0x1fa8f0d8",
+      "high_bit": 7,
+      "low_bit": 0,
+      "vendor_xfi_value": 66,
+      "reference_pon_rx_rate_1_value": 0,
+      "different": true
+    },
+    {
+      "field": "RX_PHYCK_SEL",
+      "physical_address_from_vendor_source": "0x1fa8f0d8",
+      "high_bit": 9,
+      "low_bit": 8,
+      "vendor_xfi_value": 2,
+      "reference_pon_rx_rate_1_value": 1,
+      "different": true
+    },
+    {
+      "field": "RX_PHYCK_RSTB",
+      "physical_address_from_vendor_source": "0x1fa8f0d8",
+      "high_bit": 16,
+      "low_bit": 16,
+      "vendor_xfi_value": 1,
+      "reference_pon_rx_rate_1_value": 0,
+      "different": true
+    },
+    {
+      "field": "CDR_PR_XFICK_EN",
+      "physical_address_from_vendor_source": "0x1fa8f10c",
+      "high_bit": 2,
+      "low_bit": 2,
+      "vendor_xfi_value": 1,
+      "reference_pon_rx_rate_1_value": 0,
+      "different": true
+    },
+    {
+      "field": "RX_PHY_CK_SEL_FORCE",
+      "physical_address_from_vendor_source": "0x1fa8f0cc",
+      "high_bit": 24,
+      "low_bit": 24,
+      "vendor_xfi_value": 1,
+      "reference_pon_rx_rate_1_value": 0,
+      "different": true
+    },
+    {
+      "field": "RX_PHY_CK_SEL",
+      "physical_address_from_vendor_source": "0x1fa8f0cc",
+      "high_bit": 16,
+      "low_bit": 16,
+      "vendor_xfi_value": 0,
+      "reference_pon_rx_rate_1_value": 0,
+      "different": false
+    }
+  ],
+  "differing_clock_fields": 5,
+  "tdc_sequence": {
+    "vendor_xfi_case_explicit_tdc_off": true,
+    "vendor_xfi_case_explicit_tdc_on": false,
+    "reference_pon_first_plug_explicit_tdc_on": true,
+    "meaning": "direct calls only; nested state transitions are not proven"
+  },
+  "post_calibration_reset": {
+    "vendor_clear_bit_order": [
+      0,
+      6,
+      5,
+      4,
+      2,
+      1,
+      3
+    ],
+    "vendor_delay_us": 10,
+    "vendor_set_bit_order": [
+      5,
+      4,
+      3,
+      0,
+      6,
+      2,
+      1
+    ],
+    "reference_release_helper_has_clear_operations": false,
+    "reference_release_delay_range_us": [
+      100,
+      200
+    ]
+  },
+  "hardware_actions": false,
+  "milestone": "M19",
+  "sources": [
+    {
+      "role": "vendor_pma",
+      "file": "13-pon_pma.c",
+      "sha256": "c7828d2d722f1527c339959a4d8b836c194b000d028e403a314b4ba0ebd19236"
+    },
+    {
+      "role": "vendor_header",
+      "file": "12-an7583_pon_pma.h",
+      "sha256": "349ec7c24207557adf891cf290edec7b17ca6001793eecb04c408c15513cc34e"
+    },
+    {
+      "role": "reference_pma",
+      "file": "pcs-an7583.c",
+      "sha256": "67a7c9c9a6c59c434a4931df3047da45bc6db000ce7ebb5e00b3fc613fdc5aaf"
+    }
+  ],
+  "kernel_patch_added": false,
+  "implementation_followup": "Reconcile Ethernet-profile XFI clock fields, explicit TDC call policy and post-calibration reset pulse; keep hardware disabled."
+}

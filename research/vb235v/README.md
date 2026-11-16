@@ -63,3 +63,5 @@ For bounded read-only SSH collection, see [STOCK-MODULE-COVERAGE.md](STOCK-MODUL
 [M17: DSL PMA rate contract](DSL-PMA-RATE-CONTRACT.md) finds matching selected PMA rate vectors but different Ethernet and optical WAN routing selectors. It provides a bounded source-contract checker; the complete reset/calibration sequence remains to be adapted.
 
 [M18: PCS Ethernet prototype](PCS-ETHERNET-PROTOTYPE.md) implements an explicit USXGMII profile with pre-write interface checks and optical API separation. It cross-compiles and passes host-model/schema/overlay checks; all development hardware nodes remain disabled.
+
+[M19: Receiver gaps](PCS-RECEIVER-GAPS.md) identifies five remaining clock-field differences and distinct direct TDC/reset sequences in the analog backend. Its source checker does not execute C or access hardware.

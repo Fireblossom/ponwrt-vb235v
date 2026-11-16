@@ -104,3 +104,7 @@ The next step is comparison of the vendor XFI first-plug receiver/reset sequence
 with the reference bring-up path. The selected rate tuple and route are only
 part of that contract. The development overlay must stay disabled while that
 work and the endpoint/FE/GDMA investigation continue.
+
+[M19](PCS-RECEIVER-GAPS.md) subsequently records specific receiver-clock,
+TDC-call and post-calibration reset differences that the M18 host model does
+not cover.
