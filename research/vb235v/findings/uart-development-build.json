@@ -1,0 +1,133 @@
+{
+  "classification": "local cross-build and offline artifact checks, not a hardware boot",
+  "config_gate": {
+    "forbidden_subsystems_disabled": [
+      "MODULES",
+      "NET",
+      "PCI",
+      "MTD",
+      "NVMEM",
+      "BLOCK",
+      "SPI",
+      "I2C",
+      "GPIOLIB",
+      "NEW_LEDS",
+      "INPUT",
+      "WATCHDOG",
+      "PINCTRL",
+      "RESET_CONTROLLER",
+      "USB_SUPPORT",
+      "MMC",
+      "SCSI",
+      "ATA",
+      "SOUND",
+      "EFI"
+    ],
+    "required_symbols_enabled": [
+      "ARM64",
+      "OF",
+      "PRINTK",
+      "TTY",
+      "ARM_GIC_V3",
+      "ARM_ARCH_TIMER",
+      "ARM_PSCI_FW",
+      "SERIAL_8250",
+      "SERIAL_8250_CONSOLE",
+      "SERIAL_OF_PLATFORM",
+      "SERIAL_EARLYCON",
+      "BINFMT_ELF",
+      "BLK_DEV_INITRD"
+    ],
+    "embedded_initramfs_configured": true
+  },
+  "dtb_gate": {
+    "exact_uart_only_node_set": true,
+    "nodes": 15,
+    "enabled_cpu_nodes": 1,
+    "stock_resource_ranges_checked": true,
+    "no_storage_network_gpio_nodes": true
+  },
+  "init_elf": {
+    "architecture": "AArch64",
+    "static_executable": true,
+    "entry_in_executable_segment": true
+  },
+  "initramfs": {
+    "entries": {
+      "dev": {
+        "mode": "0o40755",
+        "bytes": 0
+      },
+      "dev/console": {
+        "mode": "0o20600",
+        "bytes": 0
+      },
+      "init": {
+        "mode": "0o100755",
+        "bytes": 1240
+      }
+    },
+    "embedded_init_matches": true,
+    "no_shell_or_other_files": true
+  },
+  "kernel_image": {
+    "file_bytes": 4536328,
+    "text_offset": 0,
+    "image_memory_bytes": 4849664,
+    "flags": 10,
+    "arm64_magic_valid": true
+  },
+  "hardware_boot_performed": false,
+  "files": [
+    {
+      "file": "Image",
+      "bytes": 4536328,
+      "sha256": "03a1176cd9c9e96ace9aeacc40bd67c9e76b8eb8aac12d47612f926041d9b656"
+    },
+    {
+      "file": "init",
+      "bytes": 1240,
+      "sha256": "1b4ca847166a0b2187656625fad91b2ddb7909bedf47008567e8109cc0153330"
+    },
+    {
+      "file": "initramfs_data.cpio",
+      "bytes": 2048,
+      "sha256": "ce85c43b670dbdd4b8ed9b57c231d5d6edc5d7d01d718987ffa0e1736d2951dc"
+    },
+    {
+      "file": "vb235v-uart-only.dtb",
+      "bytes": 1773,
+      "sha256": "4834b82226b2f21f248b88ba512b20a005e56bc7d9d619dc465a1ebba8c73f08"
+    }
+  ],
+  "config_sha256": "e335c644101f3a708aa51fe14835364bab6b29f572c1db4c2ac07e560b2c69f7",
+  "kernel_base": {
+    "url": "https://cdn.kernel.org/pub/linux/kernel/v6.x/linux-6.18.60.tar.xz",
+    "bytes": 154827264,
+    "sha256": "3c2f44ef6acc021a7ad444d9a2e6ec1ef488ff09368793d0004a6080f69d621e",
+    "version": "6.18.60",
+    "source": "target/linux/generic/kernel-6.18 at PonWrt baseline"
+  },
+  "kernel_release": "6.18.60-vb235v-uart-dev",
+  "target_patches_applied": false,
+  "full_ponwrt_build": false,
+  "init_user_mode_smoke": {
+    "own_init_elf_sha256": "1b4ca847166a0b2187656625fad91b2ddb7909bedf47008567e8109cc0153330",
+    "emulator": "qemu-aarch64 version 7.2.22 (Debian 1:7.2+dfsg-7+deb12u18+b3)",
+    "expected_heartbeats": 2,
+    "observed_heartbeats": 2,
+    "elapsed_seconds": 4.53,
+    "bounded_termination": true,
+    "stderr_empty": true,
+    "scope": "user-mode execution of self-authored init only; no kernel or hardware boot"
+  },
+  "regression_tests_in_milestone": 29,
+  "cross_compiler": "GCC 10.2.1 Debian AArch64 cross",
+  "dtc_version": "1.6.0",
+  "authored_source_sha256": {
+    "bringup/vb235v-uart-only.dts": "7abc8374252cd579bf165136d2f9f6b326028118b3fcd5efbb5ebe760cdbe666",
+    "bringup/uart-init.S": "eb7bd20919fac0159b4f79785b4495f07ed3608168c666e80f4faf6225d39a72",
+    "bringup/uart-only.config": "c22a786f2200302291d6a6180910d7bc99f81cc67dd6696315bfd34e2f109088",
+    "bringup/build-uart-only.sh": "febb367dacce57409208fa9ebc9295e4c9c5f90c076943e6ae3a327fa84a3d12"
+  }
+}

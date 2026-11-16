@@ -49,3 +49,5 @@ For bounded read-only SSH collection, see [STOCK-MODULE-COVERAGE.md](STOCK-MODUL
 [M10: NPU firmware identity](NPU-FIRMWARE-IDENTITY.md) establishes that both stock on-disk NPU files differ from the GPL reference blobs. Executing firmware memory and host-command compatibility remain unverified.
 
 [M11: Stock board map](STOCK-BOARD-MAP.md) records allowlisted boot-provided FDT resources and logical partition offsets. The raw tree stays private; its generic nodes and GPIO control signals require board-specific review before use.
+
+[M12: UART development build](UART-DEVELOPMENT-BUILD.md) supplies a compiled minimal ARM64 kernel/DT/initramfs profile with offline admission checks. It excludes normal router subsystems and has not been booted on VB235v.

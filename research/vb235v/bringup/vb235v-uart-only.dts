@@ -1,0 +1,102 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/dts-v1/;
+
+/* Development-only, independently authored from M11 resource facts.
+ * This deliberately does not include the stock/PonWrt peripheral tree.
+ * No boot or physical serial verification has been performed.
+ */
+/ {
+	model = "TP-LinkBox 7 VB235v v1 UART-only development";
+	compatible = "tplink,vb235v-v1", "airoha,an7583";
+	#address-cells = <2>;
+	#size-cells = <2>;
+	interrupt-parent = <&gic>;
+
+	aliases {
+		serial0 = &uart0;
+	};
+
+	chosen {
+		stdout-path = "serial0:115200n8";
+		bootargs = "console=ttyS0,115200n8 earlycon=uart8250,mmio32,0x1fbf0000 rdinit=/init panic=0";
+	};
+
+	memory@80000000 {
+		device_type = "memory";
+		reg = <0 0x80000000 0 0x20000000>;
+	};
+
+	reserved-memory {
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+
+		/* Conservatively retain PonWrt's larger ATF exclusion. */
+		atf@80000000 {
+			reg = <0 0x80000000 0 0x200000>;
+			no-map;
+		};
+
+		/* Retain the stock reservation; no NPU node or driver is enabled. */
+		npu-reserved@84000000 {
+			reg = <0 0x84000000 0 0x100000>;
+			no-map;
+		};
+
+		stock-ramoops@8b000000 {
+			reg = <0 0x8b000000 0 0x100000>;
+			no-map;
+		};
+
+		stock-log@8b100000 {
+			reg = <0 0x8b100000 0 0x100000>;
+			no-map;
+		};
+	};
+
+	/* Only CPU0: do not infer usable topology from four stock DT nodes. */
+	cpus {
+		#address-cells = <1>;
+		#size-cells = <0>;
+
+		cpu@0 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a53";
+			reg = <0>;
+			enable-method = "psci";
+		};
+	};
+
+	psci {
+		compatible = "arm,psci-0.2";
+		method = "smc";
+	};
+
+	gic: interrupt-controller@9000000 {
+		compatible = "arm,gic-v3";
+		#interrupt-cells = <3>;
+		interrupt-controller;
+		#address-cells = <2>;
+		#size-cells = <2>;
+		ranges;
+		reg = <0 0x09000000 0 0x20000>,
+		      <0 0x09080000 0 0x80000>;
+		interrupts = <1 9 8>;
+	};
+
+	timer {
+		compatible = "arm,armv8-timer";
+		interrupts = <1 13 8>, <1 14 8>, <1 11 8>, <1 10 8>;
+		clock-frequency = <25000000>;
+	};
+
+	uart0: serial@1fbf0000 {
+		compatible = "ns16550";
+		reg = <0 0x1fbf0000 0 0x30>;
+		interrupts = <0 18 4>;
+		clock-frequency = <1843200>;
+		reg-shift = <2>;
+		reg-io-width = <4>;
+		status = "okay";
+	};
+};
