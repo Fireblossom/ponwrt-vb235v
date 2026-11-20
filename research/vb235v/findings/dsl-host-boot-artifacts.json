@@ -1,0 +1,44 @@
+{
+  "classification": "offline original firmware artifacts and reviewed static startup/call sites; not hardware boot validation",
+  "original_partition": {
+    "source_partition_sha256": "e101155ea9fb3b29f069180827a7a88524d9f8260bf16e89e9e25c732f94a3c9",
+    "partition_bytes": 83886080,
+    "rootfs_offset": 16777216,
+    "rootfs_bytes_used": 48986819,
+    "rootfs_sha256": "b3beec74107ebe89172bd5e54de1e1cc17bee15dd300f278e2a8d6ef99b50dc5",
+    "source_partition_matches_M54_plan": true,
+    "router_commands_sent": false
+  },
+  "artifacts": [
+    {
+      "name": "hsm",
+      "bytes": 26560,
+      "sha256": "9254ac7fc0fa9699c6266cb4b854d6ed9d9f9d11e128153daa2228baabe4a92a"
+    },
+    {
+      "name": "ddr_cal.bin",
+      "bytes": 22744,
+      "sha256": "7ea80b9b2c30f6687a0b14e1e8bc259f9daaf554b138770b4fb1b1886dfe1404"
+    },
+    {
+      "name": "iNIC.bin",
+      "bytes": 39556,
+      "sha256": "2840bd859eb27dbcc2997abde5223a7059ef3d97e89d047a2854eef664ed341f"
+    },
+    {
+      "name": "tclinux.bin",
+      "bytes": 4214743,
+      "sha256": "c6e0a8d0cbaf282b956a9fd3b9050cb073434947c6a32c9b95976b72eaa2a412"
+    }
+  ],
+  "script_endpoint_label": "EN7517",
+  "script_interface": "ae_wan",
+  "script_reset_argument": 21,
+  "script_mdio_argument": 24,
+  "script_skip_argument": 0,
+  "script_wiring_measured": false,
+  "hsm_shared_metadata_key": 5266,
+  "hsm_shared_metadata_bytes": 40,
+  "endpoint_boot_validated_on_PonWrt": false,
+  "router_commands_sent": false
+}

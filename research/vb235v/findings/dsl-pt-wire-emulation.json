@@ -1,0 +1,61 @@
+{
+  "classification": "actual pinned ARM64 functions with modeled external callbacks",
+  "library_sha256": "eb8dc5d2929120e48b58d9bb67a717346a46837e191533f02b957d363f77ff7f",
+  "emulator": "Unicorn 2.1.4",
+  "entry_function": "SRC_blapi",
+  "instruction_count": 601,
+  "external_callbacks": {
+    "pt_fd_open": 1,
+    "malloc": 3,
+    "memcpy": 3,
+    "htonl": 2,
+    "htons": 3,
+    "sismDbgMsg": 6,
+    "strncpy": 2,
+    "ioctl": 2,
+    "sendto": 1,
+    "free": 3,
+    "recvfrom": 1,
+    "ntohl": 1,
+    "close": 1
+  },
+  "frame_bytes": 218,
+  "ethertype": "0xbeea",
+  "payload_bytes": 204,
+  "payload_magic": "0x75177517",
+  "payload_version": 1,
+  "host_record_bytes": 192,
+  "command_bytes": 160,
+  "command_payload_offset": 28,
+  "tail_payload_offset": 188,
+  "modeled_status_copyback_verified": true,
+  "successful_native_instruction_vectors": 68,
+  "codec_matches_vendor_instruction_output": true,
+  "allocation_failure_cases": [
+    {
+      "allocation": 1,
+      "result_u32": 4294967295,
+      "frames": 0
+    },
+    {
+      "allocation": 2,
+      "result_u32": 4294967295,
+      "frames": 0
+    },
+    {
+      "allocation": 3,
+      "result_u32": 1,
+      "frames": 0
+    }
+  ],
+  "allocation_failure_sends_nothing": true,
+  "endpoint_response_modeled": true,
+  "real_endpoint_compatibility_proven": false,
+  "host_network_operations": false,
+  "router_commands_sent": false,
+  "codec_unittest_cases_passed": 4,
+  "authored_tool_sha256": {
+    "emulate_dsl_libpt.py": "3ec8aa48775737954adb4defce8a4305c7fd557064346b2ad6b1cb91f5adc909",
+    "dsl_pt_wire.py": "b1a75b5e0623ad7ab9677ce363b13a3e3bba35aa122dac08eabc450bbf78e79d"
+  }
+}
