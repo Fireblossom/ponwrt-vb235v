@@ -249,7 +249,7 @@ def main():
               'allocation_failure_sends_nothing': True,
               'endpoint_response_modeled': True, 'real_endpoint_compatibility_proven': False,
               'host_network_operations': False, 'router_commands_sent': False}
-    args.output.write_text(json.dumps(report, indent=2) + '\n')
+    args.output.write_bytes((json.dumps(report, indent=2) + '\n').encode('utf8'))
     print(json.dumps(report, indent=2))
 
 

@@ -136,14 +136,14 @@ def main():
     if args.private_output:
         require(not args.private_output.exists(), 'Private output already exists')
         args.private_output.mkdir(mode=0o700, parents=True)
-        (args.private_output / 'telekom-de.json').write_text(json.dumps(profile, indent=2) + '\n')
+        (args.private_output / 'telekom-de.json').write_bytes((json.dumps(profile, indent=2) + '\n').encode('utf8'))
         secret_path = args.private_output / 'telekom-de-login.json'
-        secret_path.write_text(json.dumps(login, indent=2) + '\n')
+        secret_path.write_bytes((json.dumps(login, indent=2) + '\n').encode('utf8'))
         secret_path.chmod(0o600)
         evidence['factory_preset_exported_locally'] = True
     report = {'profile': profile, 'evidence': evidence}
     if args.report:
-        args.report.write_text(json.dumps(report, indent=2) + '\n')
+        args.report.write_bytes((json.dumps(report, indent=2) + '\n').encode('utf8'))
     print(json.dumps(report, indent=2))
 
 
