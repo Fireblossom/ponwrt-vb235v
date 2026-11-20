@@ -23,3 +23,10 @@ line-based authentication and actual configuration/telephone provisioning;
 verify their original behavior before choosing an implementation. Do not
 replace this requirement with a manual PPPoE setup screen or claim success
 from DSL synchronization alone.
+
+The owner subsequently identified COM3 as the connected TTL console and the
+available Tenda SP3 as the router's actual power supply, authorizing autonomous
+U-Boot entry and flashing through this path without needing the owner to hold
+Reset. This does not count as validation of the physical Reset-button entry.
+The Ethernet test cable is connected to a 1G LAN socket, with the workstation
+using a USB hub. Test traffic must remain on that isolated USB Ethernet path.

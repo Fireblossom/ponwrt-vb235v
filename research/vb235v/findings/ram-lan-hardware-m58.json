@@ -1,0 +1,89 @@
+{
+  "started_utc": "2026-11-20T22:07:43.041568+00:00",
+  "fit_sha256": "93befa6fa4cf2b42865551372b218d91e718d7cee84b9ef06722f440f1df1712",
+  "flash_write_commands_sent": false,
+  "saveenv_sent": false,
+  "complete": true,
+  "hardware_userspace_boot_verified": true,
+  "RAM_upload_sha256_verified": true,
+  "QDMA_handoff_samples": [
+    [
+      {
+        "address": "0x1fb54004",
+        "value": "0x14080070",
+        "TX_RX_enabled_or_busy": false
+      },
+      {
+        "address": "0x1fb56004",
+        "value": "0x1c0800d0",
+        "TX_RX_enabled_or_busy": false
+      }
+    ],
+    [
+      {
+        "address": "0x1fb54004",
+        "value": "0x14080070",
+        "TX_RX_enabled_or_busy": false
+      },
+      {
+        "address": "0x1fb56004",
+        "value": "0x1c0800d0",
+        "TX_RX_enabled_or_busy": false
+      }
+    ]
+  ],
+  "FIT_iminfo_verified": true,
+  "finished_utc": "2026-11-20T22:09:58.373809+00:00",
+  "native_link_Mbps": 100,
+  "native_PHY_identifier": "c0ff0420",
+  "RAM_root_without_MTD_or_UBI": true,
+  "native_LAN_carrier": true,
+  "native_LAN_duplex": "full",
+  "native_LAN_IP": "192.168.235.1/24",
+  "before_transfer_counters": {
+    "rx_packets": 188,
+    "tx_packets": 68,
+    "rx_errors": 0,
+    "tx_errors": 0
+  },
+  "after_transfer_counters": {
+    "rx_packets": 2840,
+    "tx_packets": 5820,
+    "rx_errors": 0,
+    "tx_errors": 0
+  },
+  "wired_data_transfer_verified": true,
+  "native_LAN_TCP_payload_bytes": 8388608,
+  "native_LAN_TCP_payload_SHA256": "be4fe54d37cfc935bbadb6851694655fe8e50230eba14dcc53aefc5b531b246d",
+  "native_LAN_TCP_payload_matches": true,
+  "native_LAN_transfer_seconds": 0.719,
+  "host_DHCP_renew_succeeded": true,
+  "verified_utc": "2026-11-20T22:09:58.373809+00:00",
+  "five_minute_kernel_uptime_verified": true,
+  "observed_uptime_seconds": 355.09,
+  "repeat_native_LAN_payload_SHA256_match": true,
+  "stability_verified_utc": "2026-11-20T22:13:45.898817+00:00",
+  "development_SSH_host_key_verified_from_COM3": true,
+  "development_SSH_root_public_key_auth_verified": true,
+  "native_LAN_upload_bytes": 8388608,
+  "native_LAN_upload_SHA256": "9b4958f7905232eb1ad5bae4826ce37ddf49bfda68a44755b14bfcceacc09e37",
+  "native_LAN_upload_SHA256_match": true,
+  "native_LAN_upload_seconds": 1.14,
+  "native_LAN_errors_after_upload": {
+    "rx": 0,
+    "tx": 0
+  },
+  "initial_boot_verification_finished_utc": "2026-11-20T22:08:20.175722+00:00",
+  "initial_netdev_PHY_sysfs_path_absent": true,
+  "physical_socket_owner_identification": "1G LAN",
+  "host_link": "Realtek USB GbE via USB hub",
+  "one_gigabit_speed_verified": false,
+  "other_ports_verified": false,
+  "IPv6_verified": false,
+  "WAN_NAT_verified": false,
+  "acceleration_verified": false,
+  "WiFi_verified": false,
+  "DSL_verified": false,
+  "voice_verified": false,
+  "persistent_installation_supported": false
+}

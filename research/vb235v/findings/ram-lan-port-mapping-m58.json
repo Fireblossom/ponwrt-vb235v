@@ -1,0 +1,108 @@
+{
+  "schema": 1,
+  "stage": "M58 preparation; no LAN kernel boot yet",
+  "owner_confirmed_router_socket": "1G LAN",
+  "owner_confirmed_host_connection": "USB hub",
+  "host_adapter_description": "Realtek USB GbE Family Controller",
+  "bound_Windows_interface_index": 68,
+  "host_reported_link_Mbps": 100,
+  "host_speed_duplex_setting": "Auto Negotiation",
+  "observed_linked_switch_port": 3,
+  "observed_linked_PHY_address": 11,
+  "PHY_identifier": "c0ff0420",
+  "native_pinned_driver_matching_id": "drivers/net/phy/mediatek/mtk-ge-soc.c: MTK_GPHY_ID_AN7583",
+  "PHY_registers": {
+    "9": {
+      "0": 4160,
+      "1": 31049,
+      "2": 49407,
+      "3": 1056,
+      "4": 3553,
+      "5": 0,
+      "6": 4,
+      "7": 10241,
+      "8": 0,
+      "9": 512,
+      "10": 16384
+    },
+    "10": {
+      "0": 4160,
+      "1": 31049,
+      "2": 49407,
+      "3": 1056,
+      "4": 3553,
+      "5": 0,
+      "6": 4,
+      "7": 10241,
+      "8": 0,
+      "9": 512,
+      "10": 16384
+    },
+    "11": {
+      "0": 4160,
+      "1": 31085,
+      "2": 49407,
+      "3": 1056,
+      "4": 3553,
+      "5": 16865,
+      "6": 5,
+      "7": 8193,
+      "8": 23244,
+      "9": 512,
+      "10": 16384
+    },
+    "12": {
+      "0": 4160,
+      "1": 31049,
+      "2": 49407,
+      "3": 1056,
+      "4": 3553,
+      "5": 0,
+      "6": 4,
+      "7": 10241,
+      "8": 0,
+      "9": 512,
+      "10": 16384
+    }
+  },
+  "switch_port_status": {
+    "0": {
+      "address": "0x1fb5b008",
+      "value": "0xdeadbeef",
+      "meaningful": false
+    },
+    "1": {
+      "address": "0x1fb5b108",
+      "value": "0x0",
+      "meaningful": true
+    },
+    "2": {
+      "address": "0x1fb5b208",
+      "value": "0x0",
+      "meaningful": true
+    },
+    "3": {
+      "address": "0x1fb5b308",
+      "value": "0x7",
+      "meaningful": true
+    },
+    "4": {
+      "address": "0x1fb5b408",
+      "value": "0x0",
+      "meaningful": true
+    },
+    "5": {
+      "address": "0x1fb5b508",
+      "value": "0xdeadbeef",
+      "meaningful": false
+    },
+    "6": {
+      "address": "0x1fb5b608",
+      "value": "0xb",
+      "meaningful": true
+    }
+  },
+  "flash_write_commands_sent": false,
+  "PHY_write_commands_sent": false,
+  "native_LAN_kernel_data_transfer_verified": false
+}

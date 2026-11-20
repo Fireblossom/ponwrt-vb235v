@@ -26,6 +26,10 @@ def cells(*values):
 
 def audit_dtb(dtb):
     nodes, reserved = parse(dtb)
+    return audit_dtb_nodes(nodes, reserved, hashlib.sha256(dtb).hexdigest())
+
+
+def audit_dtb_nodes(nodes, reserved, dtb_sha256):
     expected_paths = {
         '/', '/aliases', '/chosen', '/memory@80000000', '/reserved-memory',
         '/reserved-memory/atf@80000000', '/reserved-memory/npu@84000000',
@@ -82,14 +86,16 @@ def audit_dtb(dtb):
             require(actual[name] == value, 'DT resource mismatch: ' + path + ':' + name)
     return {'board': BOARD, 'dt_nodes': len(nodes),
             'compiler_symbol_metadata': '/__symbols__' in nodes, 'storage_controllers': 0,
-            'ethernet_controllers': 0, 'dtb_sha256': hashlib.sha256(dtb).hexdigest()}
+            'ethernet_controllers': 0, 'dtb_sha256': dtb_sha256}
 
 
-def audit_config(path):
+def audit_config(path, *, allow_native_lan=False):
     config = path.read_text()
     for name in ['MTD_NAND_MTK_BMT', 'MTD_UBI', 'NET_AIROHA', 'NET_AIROHA_NPU',
                  'VB235V_NAND_SCRATCH_TEST', 'VB235V_UBI_NAND_TEST',
                  'VB235V_UBI_RAM_TEST', 'RANDOMIZE_BASE']:
+        if allow_native_lan and name in ('NET_AIROHA', 'NET_AIROHA_NPU'):
+            continue
         require('CONFIG_' + name + '=y' not in config and 'CONFIG_' + name + '=m' not in config,
                 'Unexpected enabled kernel feature: ' + name)
     for name in ['ARM64', 'SERIAL_OF_PLATFORM', 'BLK_DEV_INITRD', 'PROC_FS', 'SYSFS', 'TMPFS']:
@@ -97,7 +103,7 @@ def audit_config(path):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def audit_initramfs(archive):
+def audit_initramfs(archive, *, extra_sources=None):
     require(110 <= len(archive) <= MAX_FIT, 'Initramfs outside its byte budget')
     cursor = 0
     entries = {}
@@ -168,6 +174,10 @@ def audit_initramfs(archive):
     _, upgrade = resolve('lib/upgrade/platform.sh')
     upgrade_source = checker_source.parents[2] / 'lib/upgrade/platform.sh'
     require(upgrade == upgrade_source.read_bytes(), 'Upgrade rejection hooks differ from source')
+    for name, source in (extra_sources or {}).items():
+        item, payload = resolve(name)
+        require(item['mode'] & 0o111 and payload == source.read_bytes(),
+                'Additional initramfs script differs: ' + name)
     return {'entries': len(entries), 'archive_bytes': len(archive),
             'archive_sha256': hashlib.sha256(archive).hexdigest(),
             'required_AArch64_userspace_sha256': verified, 'runtime_checker_matches': True,
@@ -175,7 +185,7 @@ def audit_initramfs(archive):
             'init_sha256': hashlib.sha256(init).hexdigest()}
 
 
-def audit_fit(data, initramfs=None):
+def audit_fit(data, initramfs=None, *, dtb_auditor=audit_dtb, initramfs_extra_sources=None):
     require(40 <= len(data) <= MAX_FIT, 'FIT length outside RAM upload bounds')
     nodes, _ = parse(data, max_bytes=MAX_FIT)
     confs = nodes.get('/configurations', {})
@@ -200,7 +210,7 @@ def audit_fit(data, initramfs=None):
     entry = number(kp.get('entry', kp.get('load')))
     require(load == entry == 0x80200000 and load + memory_bytes <= 0x84000000,
             'Kernel memory overlaps a retained reservation')
-    result = audit_dtb(dtb)
+    result = dtb_auditor(dtb)
     result.update(fit_bytes=len(data), fit_sha256=hashlib.sha256(data).hexdigest(),
                   kernel_uncompressed_bytes=len(kernel), kernel_memory_bytes=memory_bytes,
                   kernel_load=load, fit_payload_hashes_verified=True,
@@ -208,7 +218,7 @@ def audit_fit(data, initramfs=None):
                   persistent_installation_supported=False)
     if initramfs is not None:
         require(kernel.find(initramfs) >= 0, 'Verified initramfs is not embedded in this FIT kernel')
-        result['initramfs'] = audit_initramfs(initramfs)
+        result['initramfs'] = audit_initramfs(initramfs, extra_sources=initramfs_extra_sources)
         result['userspace_contents_verified'] = True
     return result
 

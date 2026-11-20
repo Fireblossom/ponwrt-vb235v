@@ -1,0 +1,46 @@
+{
+  "board": "tplink,vb235v-ram-lan-development",
+  "dt_nodes": 29,
+  "compiler_symbol_metadata": true,
+  "storage_controllers": 0,
+  "ethernet_controllers": 1,
+  "dtb_sha256": "40b96443d2fa3f486f973d82341fa944f54e98820d658d974079b58fe89c8093",
+  "admitted_switch_ports": [
+    3,
+    6
+  ],
+  "test_PHY_address": 11,
+  "PCIe_controllers": 0,
+  "NPU_nodes": 0,
+  "DSL_endpoint_nodes": 0,
+  "GPIO_LED_nodes": 0,
+  "fit_bytes": 8800920,
+  "fit_sha256": "93befa6fa4cf2b42865551372b218d91e718d7cee84b9ef06722f440f1df1712",
+  "kernel_uncompressed_bytes": 28373000,
+  "kernel_memory_bytes": 28770304,
+  "kernel_load": 2149580800,
+  "fit_payload_hashes_verified": true,
+  "userspace_contents_verified": true,
+  "hardware_boot_validated": false,
+  "persistent_installation_supported": false,
+  "initramfs": {
+    "entries": 787,
+    "archive_bytes": 15190016,
+    "archive_sha256": "bcb7f79e51ccb5dd23264b93db4afe327b1a626c67f4d8fa1924e54952749c98",
+    "required_AArch64_userspace_sha256": {
+      "bin/busybox": "fc83e54e8a4345a2f7150474d9310e90df3e4ea0839cec85ce4032ef31df1a89",
+      "sbin/procd": "93b2d1390aaec6f05b057eccf3a0c318346fce8e011718b5438eaf1709270db0",
+      "sbin/ubusd": "c0460ea0c57b593f180547d56d68144413ca6b893979672809b9dbd55e6993d8",
+      "sbin/uci": "e62801ba7d902f791f4fcccf8912106f8eee7d16773e404909de6e5ade6ddf6a",
+      "sbin/netifd": "aeba97b2c20b22885a74bce82c180946e6045283d4a0ebb656bf5b08c72e6a68",
+      "sbin/rpcd": "0ff7d63d50c6f88af8678bfc47a9f91d40c895f4f430d5cbd2cf056a08d0fc14",
+      "usr/sbin/uhttpd": "c44c2c6fa0e9f9a27aa4b9c0c9977c98689e1f029d2fa013eddc24ab84abad06",
+      "usr/sbin/dropbear": "9655589cbc8cc80d70c7603a8f2fd13468f4d22f53b22435578643e4980acbb7"
+    },
+    "runtime_checker_matches": true,
+    "upgrade_rejection_hooks_match": true,
+    "init_sha256": "1d1991b6b702247a2c59bc89b4ec700820339b06a84aefe1a424f7e451017e6b"
+  },
+  "kernel_config_sha256": "814f6cda4378eb150c922a4c067d95b3998ef3a2cf75808ed2c2a534956ab069",
+  "wired_data_transfer_verified": false
+}

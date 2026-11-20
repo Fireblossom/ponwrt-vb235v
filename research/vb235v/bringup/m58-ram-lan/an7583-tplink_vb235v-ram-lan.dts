@@ -1,0 +1,79 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/include/ "an7583-tplink_vb235v-ram.dts"
+
+/* Separate RAM-only experiment: sole connected switch port 3, PHY 0x0b.
+ * Numeric reset IDs and resources match the pinned AN7583 bindings/tree.
+ * No NAND, PCIe, NPU, external MDIO, DSL, GPIO or LED nodes are enabled.
+ */
+/ {
+	model = "TP-LinkBox 7 VB235v PonWrt RAM LAN development";
+	compatible = "tplink,vb235v-ram-lan-development", "airoha,an7583";
+	aliases { ethernet0 = &gdm1; };
+	chip_scu: syscon@1fa20000 {
+		compatible = "airoha,en7581-chip-scu", "syscon", "simple-mfd";
+		reg = <0 0x1fa20000 0 0x388>;
+	};
+	scuclk: system-controller@1fb00000 {
+		compatible = "airoha,an7583-scu", "syscon";
+		reg = <0 0x1fb00000 0 0x970>;
+		#clock-cells = <1>;
+		#reset-cells = <1>;
+		airoha,chip-scu = <&chip_scu>;
+	};
+	ethernet@1fb50000 {
+		compatible = "airoha,an7583-eth";
+		reg = <0 0x1fb50000 0 0x2600>, <0 0x1fb54000 0 0x2000>, <0 0x1fb56000 0 0x2000>;
+		reg-names = "fe", "qdma0", "qdma1";
+		/* FE, PDMA, QDMA, HSI0 MAC, HSI1 MAC, XFP MAC. */
+		resets = <&scuclk 40>, <&scuclk 26>, <&scuclk 27>, <&scuclk 13>, <&scuclk 14>, <&scuclk 22>;
+		reset-names = "fe", "pdma", "qdma", "hsi0-mac", "hsi1-mac", "xfp-mac";
+		interrupts = <0 37 4>, <0 55 4>, <0 56 4>, <0 57 4>, <0 38 4>,
+			     <0 58 4>, <0 59 4>, <0 60 4>, <0 49 4>, <0 64 4>;
+		memory-region = <&{/reserved-memory/qdma0@87000000}>, <&{/reserved-memory/qdma1@89000000}>;
+		memory-region-names = "qdma0-buf", "qdma1-buf";
+		#address-cells = <1>;
+		#size-cells = <0>;
+		gdm1: ethernet@1 {
+			compatible = "airoha,eth-mac";
+			reg = <1>;
+			phy-mode = "internal";
+			fixed-link { speed = <10000>; full-duplex; pause; };
+		};
+	};
+	switch@1fb58000 {
+		compatible = "airoha,an7583-switch";
+		reg = <0 0x1fb58000 0 0x8000>;
+		resets = <&scuclk 42>;
+		interrupt-controller;
+		#interrupt-cells = <1>;
+		interrupt-parent = <&gic>;
+		interrupts = <0 209 4>;
+		#address-cells = <1>;
+		#size-cells = <1>;
+		ports {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			port@3 {
+				reg = <3>;
+				label = "lan-test";
+				phy-mode = "internal";
+				phy-handle = <&lan_phy>;
+			};
+			port@6 {
+				reg = <6>;
+				ethernet = <&gdm1>;
+				phy-mode = "internal";
+				fixed-link { speed = <10000>; full-duplex; pause; };
+			};
+		};
+		mdio {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			lan_phy: ethernet-phy@b {
+				compatible = "ethernet-phy-ieee802.3-c22";
+				reg = <11>;
+				phy-mode = "internal";
+			};
+		};
+	};
+};
