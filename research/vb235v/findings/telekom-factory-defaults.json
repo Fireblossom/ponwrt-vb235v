@@ -1,0 +1,27 @@
+{
+  "schema": 1,
+  "source": "pinned-read-only-original-rootfs",
+  "library_sha256": "467e0faffa63fd8f7b1ccc39e796c673c6a73753d65fd2cdefc5cd6a0e5ef1b8",
+  "ciphertext_sha256": "600b318ba00ff59dc5e122d61774b236983ffe5b74f19de9839b42818cc43275",
+  "algorithm": "AES-128-CBC",
+  "padding": "PKCS#7",
+  "decoded_bytes": 145702,
+  "decoded_sha256": "bafa84bbfdabd15253f36b452b23beed4641f3197a3250a37d4056a764530cba",
+  "ciphertext_roundtrip_verified": true,
+  "xml_root": "DslCpeConfig",
+  "xml_elements": 3818,
+  "vendor_xml_normalization": {
+    "quoted_values": 2746,
+    "quoted_instance_attributes": 916
+  },
+  "management": {
+    "cwmp_enabled": false,
+    "periodic_inform_enabled": false,
+    "acs_url_present": true,
+    "live_configuration_inspected": false,
+    "telekom_acs_verified": false,
+    "personal_account_download_verified": false,
+    "telephone_provisioning_verified": false
+  },
+  "raw_configuration_exported": false
+}

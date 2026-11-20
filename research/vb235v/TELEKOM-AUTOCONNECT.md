@@ -30,8 +30,21 @@ the backend implementation and actual network exchange still need tracing.
 The original `bin/cwmp` exists and depends on the vendor management libraries,
 OpenSSL 1.1 and DSL libraries. Its presence does not prove that a particular
 customer account or telephone setting was downloaded. No ACS URL was inferred
-from placeholder format strings. The encoded `default_config.xml` has not yet
-been decoded or represented as parsed configuration.
+from placeholder format strings. The original `default_config.xml` has now
+been decoded as AES-128-CBC using parameters derived from the pinned
+`libcmm.so` AES-wrapper GOT references and relative relocations. Valid PKCS#7
+padding, a byte-for-byte ciphertext re-encryption check and parsing of all
+3,818 configuration elements verify this result. The vendor XML syntax uses
+unquoted `val`, `instance` and `nextInstance` attributes; the inspector quotes
+these before parsing and rejects DTD/entity declarations.
+
+In this read-only factory template, `ManagementServer.EnableCWMP=0` and
+`PeriodicInformEnable=0`, while an ACS URL field is populated. This does not
+establish the active device's configuration after region selection or setup,
+nor prove Telekom provisioning. The inspector deliberately omits the URL and
+all credentials from its report. The template and the UI/database findings
+remain separate evidence: automatic Internet access is not proof that personal
+credentials were downloaded.
 
 Telekom's [Easy Login explanation](https://www.telekom.de/hilfe/internet-telefonie/internet/easy-login)
 describes automatic recognition of access data and fixed-line numbers through
@@ -88,6 +101,23 @@ is not installed as a working DSL service. VLAN placement between the endpoint
 and native host interface remains unverified: applying VLAN7 at both ends could
 produce the wrong wire format. No manual account-entry fallback is substituted
 for the owner's automatic-connection requirement.
+
+The factory-default inspection is reproducible without accessing the device:
+
+```sh
+python3 research/vb235v/tools/inspect_factory_defaults.py \
+  --library /private/original/lib/libcmm.so \
+  --factory-config /private/original/etc/default_config.xml \
+  --output /private/factory-defaults-report.json
+python3 -B -m unittest discover -s research/vb235v/tests -p test_factory_defaults.py -v
+```
+
+This requires Python `cryptography`; it accepts only the two pinned original
+hashes, never loads the original library, emits only an allowlisted report and
+does not export decoded configuration. Four tests cover vendor XML values,
+padding errors, ambiguous management fields, entity rejection and omission of
+sensitive values. The actual result is recorded in
+`findings/telekom-factory-defaults.json`.
 
 ## Remaining functional acceptance
 
