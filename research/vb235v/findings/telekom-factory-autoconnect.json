@@ -1,0 +1,60 @@
+{
+  "profile": {
+    "schema": 1,
+    "id": "de-telekom-dsl-auto",
+    "country": "DE",
+    "provider": "Telekom",
+    "automatic_connection": true,
+    "manual_credentials_required": false,
+    "credentials_source": "verified-factory-autodetect-preset",
+    "candidates": [
+      {
+        "id": "adsl",
+        "line_modes": [
+          "adsl",
+          "adsl2",
+          "adsl2plus"
+        ],
+        "bearer": "atm",
+        "vpi": 1,
+        "vci": 32,
+        "atm_encapsulation": "llc",
+        "vlan_id": 7,
+        "protocol": "pppoe",
+        "ipv4": true,
+        "ipv6": true
+      },
+      {
+        "id": "vdsl",
+        "line_modes": [
+          "vdsl",
+          "vdsl2"
+        ],
+        "bearer": "ptm",
+        "vlan_id": 7,
+        "protocol": "pppoe",
+        "ipv4": true,
+        "ipv6": true
+      }
+    ],
+    "vlan_placement": "requires-endpoint-host-path-validation",
+    "acs_endpoint": null,
+    "personal_account_download_verified": false,
+    "telephone_provisioning_verified": false,
+    "hardware_connection_verified": false
+  },
+  "evidence": {
+    "profile_sha256": "a1a6db3f7e4810547dee6d68e63931875685bdf633f76b92e40d3d729d6e6ac0",
+    "quick_setup_sha256": "e24a82123335e5989b3250b277cc767b50ab2f3b8aa315a0eb946ad436b178dd",
+    "database_UI_login_preset_equal": true,
+    "explicit_and_automatic_transports_equal": true,
+    "factory_preset_present": true,
+    "customer_saved_credentials_read": false,
+    "backend_object": "DEV2_X_TP_AUTODETECT",
+    "backend_state": "Requested",
+    "acs_contacted": false,
+    "router_commands_sent": false,
+    "factory_preset_exported_locally": true
+  },
+  "unit_tests_passed": 5
+}

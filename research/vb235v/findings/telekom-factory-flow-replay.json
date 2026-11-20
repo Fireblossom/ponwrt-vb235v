@@ -1,0 +1,252 @@
+{
+  "classification": "original pinned quick-setup function with modeled lock/backend callbacks",
+  "quick_setup_sha256": "e24a82123335e5989b3250b277cc767b50ab2f3b8aa315a0eb946ad436b178dd",
+  "provider_database_sha256": "a1a6db3f7e4810547dee6d68e63931875685bdf633f76b92e40d3d729d6e6ac0",
+  "executed_function": "qsTelekomAutoDetect",
+  "cases_passed": 5,
+  "generated_profiles": [
+    {
+      "name": "Telekom_ADSL",
+      "serviceType": "Internet",
+      "accessMode": "ADSL",
+      "vpi": 1,
+      "vci": 32,
+      "connType": "PPPoE",
+      "ATMEncapsulation": "LLC",
+      "vtag": 7
+    },
+    {
+      "name": "Telekom_VDSL",
+      "serviceType": "Internet",
+      "accessMode": "VDSL",
+      "vid": 7,
+      "connType": "PPPoE"
+    }
+  ],
+  "cases": [
+    {
+      "initial_profiles": 0,
+      "callbacks_completed_in_reverse_order": false,
+      "rejected_profile": null,
+      "all_profile_callbacks_precede_request": true,
+      "factory_login_matches_database": true,
+      "autodetect_requested": true,
+      "original_requests_autodetect_after_a_profile_error": false,
+      "events": [
+        {
+          "operation": "list-profiles"
+        },
+        {
+          "operation": "add-profile",
+          "name": "Telekom_ADSL"
+        },
+        {
+          "operation": "add-profile",
+          "name": "Telekom_VDSL"
+        },
+        {
+          "operation": "add-result",
+          "name": "Telekom_ADSL",
+          "success": true
+        },
+        {
+          "operation": "add-result",
+          "name": "Telekom_VDSL",
+          "success": true
+        },
+        {
+          "operation": "request-autodetect",
+          "preset_matches_database": true
+        },
+        {
+          "operation": "next-page",
+          "page": "qsDiag.htm"
+        }
+      ]
+    },
+    {
+      "initial_profiles": 2,
+      "callbacks_completed_in_reverse_order": false,
+      "rejected_profile": null,
+      "all_profile_callbacks_precede_request": true,
+      "factory_login_matches_database": true,
+      "autodetect_requested": true,
+      "original_requests_autodetect_after_a_profile_error": false,
+      "events": [
+        {
+          "operation": "list-profiles"
+        },
+        {
+          "operation": "delete-profile"
+        },
+        {
+          "operation": "delete-profile"
+        },
+        {
+          "operation": "add-profile",
+          "name": "Telekom_ADSL"
+        },
+        {
+          "operation": "add-profile",
+          "name": "Telekom_VDSL"
+        },
+        {
+          "operation": "add-result",
+          "name": "Telekom_ADSL",
+          "success": true
+        },
+        {
+          "operation": "add-result",
+          "name": "Telekom_VDSL",
+          "success": true
+        },
+        {
+          "operation": "request-autodetect",
+          "preset_matches_database": true
+        },
+        {
+          "operation": "next-page",
+          "page": "qsDiag.htm"
+        }
+      ]
+    },
+    {
+      "initial_profiles": 2,
+      "callbacks_completed_in_reverse_order": true,
+      "rejected_profile": null,
+      "all_profile_callbacks_precede_request": true,
+      "factory_login_matches_database": true,
+      "autodetect_requested": true,
+      "original_requests_autodetect_after_a_profile_error": false,
+      "events": [
+        {
+          "operation": "list-profiles"
+        },
+        {
+          "operation": "delete-profile"
+        },
+        {
+          "operation": "delete-profile"
+        },
+        {
+          "operation": "add-profile",
+          "name": "Telekom_ADSL"
+        },
+        {
+          "operation": "add-profile",
+          "name": "Telekom_VDSL"
+        },
+        {
+          "operation": "add-result",
+          "name": "Telekom_VDSL",
+          "success": true
+        },
+        {
+          "operation": "add-result",
+          "name": "Telekom_ADSL",
+          "success": true
+        },
+        {
+          "operation": "request-autodetect",
+          "preset_matches_database": true
+        },
+        {
+          "operation": "next-page",
+          "page": "qsDiag.htm"
+        }
+      ]
+    },
+    {
+      "initial_profiles": 0,
+      "callbacks_completed_in_reverse_order": false,
+      "rejected_profile": "Telekom_ADSL",
+      "all_profile_callbacks_precede_request": true,
+      "factory_login_matches_database": true,
+      "autodetect_requested": true,
+      "original_requests_autodetect_after_a_profile_error": true,
+      "events": [
+        {
+          "operation": "list-profiles"
+        },
+        {
+          "operation": "add-profile",
+          "name": "Telekom_ADSL"
+        },
+        {
+          "operation": "add-profile",
+          "name": "Telekom_VDSL"
+        },
+        {
+          "operation": "add-result",
+          "name": "Telekom_ADSL",
+          "success": false
+        },
+        {
+          "operation": "add-result",
+          "name": "Telekom_VDSL",
+          "success": true
+        },
+        {
+          "operation": "request-autodetect",
+          "preset_matches_database": true
+        },
+        {
+          "operation": "next-page",
+          "page": "qsDiag.htm"
+        }
+      ]
+    },
+    {
+      "initial_profiles": 2,
+      "callbacks_completed_in_reverse_order": true,
+      "rejected_profile": "Telekom_VDSL",
+      "all_profile_callbacks_precede_request": true,
+      "factory_login_matches_database": true,
+      "autodetect_requested": true,
+      "original_requests_autodetect_after_a_profile_error": true,
+      "events": [
+        {
+          "operation": "list-profiles"
+        },
+        {
+          "operation": "delete-profile"
+        },
+        {
+          "operation": "delete-profile"
+        },
+        {
+          "operation": "add-profile",
+          "name": "Telekom_ADSL"
+        },
+        {
+          "operation": "add-profile",
+          "name": "Telekom_VDSL"
+        },
+        {
+          "operation": "add-result",
+          "name": "Telekom_VDSL",
+          "success": false
+        },
+        {
+          "operation": "add-result",
+          "name": "Telekom_ADSL",
+          "success": true
+        },
+        {
+          "operation": "request-autodetect",
+          "preset_matches_database": true
+        },
+        {
+          "operation": "next-page",
+          "page": "qsDiag.htm"
+        }
+      ]
+    }
+  ],
+  "callback_backend_modeled": true,
+  "actual_network_requests": 0,
+  "customer_saved_credentials_read": false,
+  "DSL_sync_verified": false,
+  "PPPoE_login_verified": false,
+  "ACS_provisioning_verified": false
+}
