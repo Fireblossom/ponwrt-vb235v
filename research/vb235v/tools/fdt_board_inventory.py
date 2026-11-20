@@ -28,9 +28,9 @@ def string_at(data, offset):
     return data[offset:end].decode('ascii'), end + 1
 
 
-def parse(data):
-    if not 40 <= len(data) <= 1024 * 1024:
-        raise ValueError('FDT input outside 40-byte to 1-MiB bound')
+def parse(data, *, max_bytes=1024 * 1024):
+    if not 40 <= max_bytes <= 0x5000000 or not 40 <= len(data) <= max_bytes:
+        raise ValueError('FDT input outside its explicit size bound')
     magic, total, off_struct, off_strings, off_reserve, version, compatible, cpu, size_strings, size_struct = struct.unpack('>10I', data[:40])
     if magic != 0xd00dfeed or version < 17 or compatible > 17 or compatible > version or total > len(data):
         raise ValueError('Unsupported/invalid FDT header')
