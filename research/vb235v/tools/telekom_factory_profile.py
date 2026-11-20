@@ -69,6 +69,14 @@ def select_candidate(profile, line_mode):
     return choices[0]
 
 
+def check_explicit_ip_modes(data):
+    for family in ('ipv4', 'ipv6'):
+        settings = data.get(family)
+        require(type(settings) is dict and type(settings.get('wan')) is dict and
+                settings['wan'].get('enable') is True,
+                'Explicit Telekom IP-family enable flag differs: ' + family)
+
+
 def cross_check(config, ui):
     profile = normalize(config)
     user = re.search(r'var\s+telekomUsr\s*=\s*"([^"\r\n]+)"\s*;', ui)
@@ -110,6 +118,7 @@ def inspect_factory(root):
     # Independently check the two explicit presets, not just the Auto_DSL list.
     for name, expected_mode in [('Telekom_ADSL', 'adsl'), ('Telekom_VDSL', 'vdsl')]:
         data = telekom[name]['internet']
+        check_explicit_ip_modes(data)
         require(data['dial_mode_type'] == 'pppoe' and data['vlan_info'] == {'enable': True, 'vlan_id': 7},
                 'Explicit provider preset disagrees with automatic detection')
         require(data['dsl_info']['xdsl_mode_type'] == expected_mode, 'Explicit line mode differs')
@@ -119,6 +128,7 @@ def inspect_factory(root):
     evidence = {
         'profile_sha256': PROFILE_SHA256, 'quick_setup_sha256': UI_SHA256,
         'database_UI_login_preset_equal': True, 'explicit_and_automatic_transports_equal': True,
+        'explicit_ipv4_ipv6_enable_flags_cross_checked': True,
         'factory_preset_present': True, 'customer_saved_credentials_read': False,
         'backend_object': 'DEV2_X_TP_AUTODETECT', 'backend_state': 'Requested',
         'acs_contacted': False, 'router_commands_sent': False,

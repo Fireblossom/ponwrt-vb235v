@@ -5,7 +5,7 @@ import sys
 import unittest
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / 'tools'))
-from telekom_factory_profile import cross_check, normalize, select_candidate, unique_object
+from telekom_factory_profile import check_explicit_ip_modes, cross_check, normalize, select_candidate, unique_object
 
 
 class TelekomFactoryProfileTests(unittest.TestCase):
@@ -52,6 +52,15 @@ class TelekomFactoryProfileTests(unittest.TestCase):
     def test_duplicate_json_key_rejected(self):
         with self.assertRaises(ValueError):
             unique_object([('password', 'one'), ('password', 'two')])
+
+    def test_explicit_dual_stack_flags_must_be_real_true_values(self):
+        valid = {'ipv4': {'wan': {'enable': True}}, 'ipv6': {'wan': {'enable': True}}}
+        check_explicit_ip_modes(valid)
+        for value in (False, 1, 'true', None):
+            invalid = copy.deepcopy(valid)
+            invalid['ipv6']['wan']['enable'] = value
+            with self.assertRaises(ValueError):
+                check_explicit_ip_modes(invalid)
 
 
 if __name__ == '__main__':

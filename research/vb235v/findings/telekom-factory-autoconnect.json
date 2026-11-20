@@ -54,7 +54,8 @@
     "backend_state": "Requested",
     "acs_contacted": false,
     "router_commands_sent": false,
-    "factory_preset_exported_locally": true
+    "factory_preset_exported_locally": true,
+    "explicit_ipv4_ipv6_enable_flags_cross_checked": true
   },
   "unit_tests_passed": 5
 }

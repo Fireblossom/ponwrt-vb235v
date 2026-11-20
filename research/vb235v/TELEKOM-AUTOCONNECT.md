@@ -65,6 +65,12 @@ preset into a local private directory. It never reads saved customer accounts,
 contacts an ACS, starts PPPoE or changes the router. Its default report omits
 the preset username/password.
 
+Both explicit provider presets are also checked for true IPv4 and IPv6 WAN
+enable flags. The tightened extractor passes the pinned factory files and six
+profile tests. M61's [original link-status execution](DSL-LINKSTATUS-LOGIC.md)
+additionally identifies return-value handling needed before selecting a bearer;
+it does not establish live line state or Internet connectivity.
+
 ```sh
 python3 research/vb235v/tools/telekom_factory_profile.py /private/extracted-original-root \
   --private-output /private/new-telekom-profile \

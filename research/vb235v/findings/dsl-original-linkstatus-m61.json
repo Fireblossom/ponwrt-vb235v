@@ -1,0 +1,299 @@
+{
+  "stage": "M61",
+  "library_sha256": "e0aaacc2961e90854efd3a64499da717a9787af5aa6a5332412cebb3d544a78b",
+  "original_ARM64_getter_executed": true,
+  "proc_path": "/proc/tc3162/adsl_stats",
+  "open_flags": "O_RDONLY|O_NONBLOCK (0x800)",
+  "maximum_read_bytes": 127,
+  "caller_text_buffer_bytes": 128,
+  "state_1": "up substring present; PTM substring absent",
+  "state_2": "both up and PTM substrings present",
+  "failure_return": -1,
+  "failure_state_word_untouched": true,
+  "vectors_passed": 17,
+  "vectors": [
+    {
+      "case": "empty",
+      "return": -1,
+      "state": "untouched",
+      "instructions": 67,
+      "modeled_imports": {
+        "open": 1,
+        "memset": 1,
+        "read": 1,
+        "close": 1
+      },
+      "actual_parser_tokens": []
+    },
+    {
+      "case": "down",
+      "return": -1,
+      "state": "untouched",
+      "instructions": 82,
+      "modeled_imports": {
+        "open": 1,
+        "memset": 1,
+        "read": 1,
+        "close": 1,
+        "strncpy": 1,
+        "strstr": 1
+      },
+      "actual_parser_tokens": [
+        "up"
+      ]
+    },
+    {
+      "case": "ATM-label",
+      "return": 0,
+      "state": 1,
+      "instructions": 92,
+      "modeled_imports": {
+        "open": 1,
+        "memset": 1,
+        "read": 1,
+        "close": 1,
+        "strncpy": 1,
+        "strstr": 2
+      },
+      "actual_parser_tokens": [
+        "up",
+        "PTM"
+      ]
+    },
+    {
+      "case": "PTM-label",
+      "return": 0,
+      "state": 2,
+      "instructions": 91,
+      "modeled_imports": {
+        "open": 1,
+        "memset": 1,
+        "read": 1,
+        "close": 1,
+        "strncpy": 1,
+        "strstr": 2
+      },
+      "actual_parser_tokens": [
+        "up",
+        "PTM"
+      ]
+    },
+    {
+      "case": "reversed-tokens",
+      "return": 0,
+      "state": 2,
+      "instructions": 91,
+      "modeled_imports": {
+        "open": 1,
+        "memset": 1,
+        "read": 1,
+        "close": 1,
+        "strncpy": 1,
+        "strstr": 2
+      },
+      "actual_parser_tokens": [
+        "up",
+        "PTM"
+      ]
+    },
+    {
+      "case": "uppercase-UP",
+      "return": -1,
+      "state": "untouched",
+      "instructions": 82,
+      "modeled_imports": {
+        "open": 1,
+        "memset": 1,
+        "read": 1,
+        "close": 1,
+        "strncpy": 1,
+        "strstr": 1
+      },
+      "actual_parser_tokens": [
+        "up"
+      ]
+    },
+    {
+      "case": "lowercase-ptm",
+      "return": 0,
+      "state": 1,
+      "instructions": 92,
+      "modeled_imports": {
+        "open": 1,
+        "memset": 1,
+        "read": 1,
+        "close": 1,
+        "strncpy": 1,
+        "strstr": 2
+      },
+      "actual_parser_tokens": [
+        "up",
+        "PTM"
+      ]
+    },
+    {
+      "case": "startup-substring",
+      "return": 0,
+      "state": 1,
+      "instructions": 92,
+      "modeled_imports": {
+        "open": 1,
+        "memset": 1,
+        "read": 1,
+        "close": 1,
+        "strncpy": 1,
+        "strstr": 2
+      },
+      "actual_parser_tokens": [
+        "up",
+        "PTM"
+      ]
+    },
+    {
+      "case": "backup-substring",
+      "return": 0,
+      "state": 2,
+      "instructions": 91,
+      "modeled_imports": {
+        "open": 1,
+        "memset": 1,
+        "read": 1,
+        "close": 1,
+        "strncpy": 1,
+        "strstr": 2
+      },
+      "actual_parser_tokens": [
+        "up",
+        "PTM"
+      ]
+    },
+    {
+      "case": "NUL-after-up",
+      "return": 0,
+      "state": 1,
+      "instructions": 92,
+      "modeled_imports": {
+        "open": 1,
+        "memset": 1,
+        "read": 1,
+        "close": 1,
+        "strncpy": 1,
+        "strstr": 2
+      },
+      "actual_parser_tokens": [
+        "up",
+        "PTM"
+      ]
+    },
+    {
+      "case": "NUL-before-up",
+      "return": -1,
+      "state": "untouched",
+      "instructions": 82,
+      "modeled_imports": {
+        "open": 1,
+        "memset": 1,
+        "read": 1,
+        "close": 1,
+        "strncpy": 1,
+        "strstr": 1
+      },
+      "actual_parser_tokens": [
+        "up"
+      ]
+    },
+    {
+      "case": "up-at-read-boundary",
+      "return": 0,
+      "state": 1,
+      "instructions": 92,
+      "modeled_imports": {
+        "open": 1,
+        "memset": 1,
+        "read": 1,
+        "close": 1,
+        "strncpy": 1,
+        "strstr": 2
+      },
+      "actual_parser_tokens": [
+        "up",
+        "PTM"
+      ]
+    },
+    {
+      "case": "up-truncated",
+      "return": -1,
+      "state": "untouched",
+      "instructions": 82,
+      "modeled_imports": {
+        "open": 1,
+        "memset": 1,
+        "read": 1,
+        "close": 1,
+        "strncpy": 1,
+        "strstr": 1
+      },
+      "actual_parser_tokens": [
+        "up"
+      ]
+    },
+    {
+      "case": "PTM-at-read-boundary",
+      "return": 0,
+      "state": 2,
+      "instructions": 91,
+      "modeled_imports": {
+        "open": 1,
+        "memset": 1,
+        "read": 1,
+        "close": 1,
+        "strncpy": 1,
+        "strstr": 2
+      },
+      "actual_parser_tokens": [
+        "up",
+        "PTM"
+      ]
+    },
+    {
+      "case": "PTM-truncated",
+      "return": 0,
+      "state": 1,
+      "instructions": 92,
+      "modeled_imports": {
+        "open": 1,
+        "memset": 1,
+        "read": 1,
+        "close": 1,
+        "strncpy": 1,
+        "strstr": 2
+      },
+      "actual_parser_tokens": [
+        "up",
+        "PTM"
+      ]
+    },
+    {
+      "case": "open-failure",
+      "return": -1,
+      "state": "untouched",
+      "modeled_imports": {
+        "open": 1
+      }
+    },
+    {
+      "case": "read-failure",
+      "return": -1,
+      "state": "untouched",
+      "modeled_imports": {
+        "open": 1,
+        "memset": 1,
+        "read": 1,
+        "close": 1
+      }
+    }
+  ],
+  "guest_syscalls_or_unmodeled_imports_allowed": false,
+  "host_device_or_network_backend": false,
+  "actual_DSL_line_or_endpoint_read": false
+}
