@@ -30,3 +30,8 @@ U-Boot entry and flashing through this path without needing the owner to hold
 Reset. This does not count as validation of the physical Reset-button entry.
 The Ethernet test cable is connected to a 1G LAN socket, with the workstation
 using a USB hub. Test traffic must remain on that isolated USB Ethernet path.
+
+The owner also connected the two 2.5G sockets to each other with one cable for
+port-loop testing. As of 2026-11-21 the DSL cable is not connected; remind the
+owner before line synchronization and automatic-dial testing. This does not
+block independent driver, offline logic or isolated port-loop work.

@@ -91,3 +91,7 @@ initial interface/endpoint discovery, firmware/reset sequencing, command
 serialization and the distinction between this user-space channel and the
 kernel proc channel. Actual DSL traffic additionally needs the correctly
 initialized SerDes/PCS, Frame Engine path and endpoint control lifecycle.
+
+[M62](DSL-METADATA-READINESS.md) subsequently executes the original consumer's
+readiness/interface logic and socket setup against memory-only backends. It
+does not establish the producer's complete layout or live endpoint readiness.

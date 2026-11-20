@@ -1,0 +1,1092 @@
+{
+  "stage": "M62",
+  "original_libpt_sha256": "eb8dc5d2929120e48b58d9bb67a717346a46837e191533f02b957d363f77ff7f",
+  "original_ARM64_pt_fd_open_executed": true,
+  "shared_memory_key": 5266,
+  "requested_segment_bytes": 40,
+  "selected_consumer_copies_bytes": 28,
+  "flags_u32_offset": 0,
+  "interface_copy_length_u32_offset": 4,
+  "interface_bytes_offset": 16,
+  "maximum_interface_copy_bytes": 12,
+  "other_metadata_fields_not_assigned_semantics": true,
+  "ready_mask_for_BEEA": 1,
+  "not_ready_return": 2,
+  "socket_failure_return": 1,
+  "socket_mark_from_original_code": 16,
+  "vectors_passed": 20,
+  "vectors": [
+    {
+      "case": "selector-readiness",
+      "flags": 0,
+      "selector": "0xbeea",
+      "outcome": "return",
+      "return": 2,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1
+      },
+      "socket_options": [],
+      "instructions": 90
+    },
+    {
+      "case": "selector-readiness",
+      "flags": 1,
+      "selector": "0xbeea",
+      "outcome": "return",
+      "return": 0,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1,
+        "htons": 1,
+        "socket": 1,
+        "sismDbgMsg": 1,
+        "setsockopt": 4
+      },
+      "socket_options": [
+        {
+          "level": 1,
+          "option": 2,
+          "bytes": 4
+        },
+        {
+          "level": 1,
+          "option": 25,
+          "bytes": 15,
+          "interface_matches_metadata": true
+        },
+        {
+          "level": 1,
+          "option": 20,
+          "bytes": 16,
+          "timeout_seconds": 1
+        },
+        {
+          "level": 1,
+          "option": 36,
+          "bytes": 4,
+          "mark": 16
+        }
+      ],
+      "instructions": 170
+    },
+    {
+      "case": "selector-readiness",
+      "flags": 0,
+      "selector": "0xbeeb",
+      "outcome": "return",
+      "return": 0,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1,
+        "htons": 1,
+        "socket": 1,
+        "sismDbgMsg": 1,
+        "setsockopt": 4
+      },
+      "socket_options": [
+        {
+          "level": 1,
+          "option": 2,
+          "bytes": 4
+        },
+        {
+          "level": 1,
+          "option": 25,
+          "bytes": 15,
+          "interface_matches_metadata": true
+        },
+        {
+          "level": 1,
+          "option": 20,
+          "bytes": 16,
+          "timeout_seconds": 1
+        },
+        {
+          "level": 1,
+          "option": 36,
+          "bytes": 4,
+          "mark": 16
+        }
+      ],
+      "instructions": 168
+    },
+    {
+      "case": "selector-readiness",
+      "flags": 1,
+      "selector": "0xbeeb",
+      "outcome": "return",
+      "return": 0,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1,
+        "htons": 1,
+        "socket": 1,
+        "sismDbgMsg": 1,
+        "setsockopt": 4
+      },
+      "socket_options": [
+        {
+          "level": 1,
+          "option": 2,
+          "bytes": 4
+        },
+        {
+          "level": 1,
+          "option": 25,
+          "bytes": 15,
+          "interface_matches_metadata": true
+        },
+        {
+          "level": 1,
+          "option": 20,
+          "bytes": 16,
+          "timeout_seconds": 1
+        },
+        {
+          "level": 1,
+          "option": 36,
+          "bytes": 4,
+          "mark": 16
+        }
+      ],
+      "instructions": 168
+    },
+    {
+      "case": "selector-readiness",
+      "flags": 0,
+      "selector": "0xbeec",
+      "outcome": "return",
+      "return": 0,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1,
+        "htons": 1,
+        "socket": 1,
+        "sismDbgMsg": 1,
+        "setsockopt": 4
+      },
+      "socket_options": [
+        {
+          "level": 1,
+          "option": 2,
+          "bytes": 4
+        },
+        {
+          "level": 1,
+          "option": 25,
+          "bytes": 15,
+          "interface_matches_metadata": true
+        },
+        {
+          "level": 1,
+          "option": 20,
+          "bytes": 16,
+          "timeout_seconds": 1
+        },
+        {
+          "level": 1,
+          "option": 36,
+          "bytes": 4,
+          "mark": 16
+        }
+      ],
+      "instructions": 168
+    },
+    {
+      "case": "selector-readiness",
+      "flags": 1,
+      "selector": "0xbeec",
+      "outcome": "return",
+      "return": 0,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1,
+        "htons": 1,
+        "socket": 1,
+        "sismDbgMsg": 1,
+        "setsockopt": 4
+      },
+      "socket_options": [
+        {
+          "level": 1,
+          "option": 2,
+          "bytes": 4
+        },
+        {
+          "level": 1,
+          "option": 25,
+          "bytes": 15,
+          "interface_matches_metadata": true
+        },
+        {
+          "level": 1,
+          "option": 20,
+          "bytes": 16,
+          "timeout_seconds": 1
+        },
+        {
+          "level": 1,
+          "option": 36,
+          "bytes": 4,
+          "mark": 16
+        }
+      ],
+      "instructions": 168
+    },
+    {
+      "case": "selector-readiness",
+      "flags": 0,
+      "selector": "0xbeed",
+      "outcome": "return",
+      "return": 0,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1,
+        "htons": 1,
+        "socket": 1,
+        "sismDbgMsg": 1,
+        "setsockopt": 4
+      },
+      "socket_options": [
+        {
+          "level": 1,
+          "option": 2,
+          "bytes": 4
+        },
+        {
+          "level": 1,
+          "option": 25,
+          "bytes": 15,
+          "interface_matches_metadata": true
+        },
+        {
+          "level": 1,
+          "option": 20,
+          "bytes": 16,
+          "timeout_seconds": 1
+        },
+        {
+          "level": 1,
+          "option": 36,
+          "bytes": 4,
+          "mark": 16
+        }
+      ],
+      "instructions": 168
+    },
+    {
+      "case": "selector-readiness",
+      "flags": 1,
+      "selector": "0xbeed",
+      "outcome": "return",
+      "return": 0,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1,
+        "htons": 1,
+        "socket": 1,
+        "sismDbgMsg": 1,
+        "setsockopt": 4
+      },
+      "socket_options": [
+        {
+          "level": 1,
+          "option": 2,
+          "bytes": 4
+        },
+        {
+          "level": 1,
+          "option": 25,
+          "bytes": 15,
+          "interface_matches_metadata": true
+        },
+        {
+          "level": 1,
+          "option": 20,
+          "bytes": 16,
+          "timeout_seconds": 1
+        },
+        {
+          "level": 1,
+          "option": 36,
+          "bytes": 4,
+          "mark": 16
+        }
+      ],
+      "instructions": 168
+    },
+    {
+      "case": "selector-readiness",
+      "flags": 0,
+      "selector": "0xbeef",
+      "outcome": "return",
+      "return": 0,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1,
+        "htons": 1,
+        "socket": 1,
+        "sismDbgMsg": 1,
+        "setsockopt": 4
+      },
+      "socket_options": [
+        {
+          "level": 1,
+          "option": 2,
+          "bytes": 4
+        },
+        {
+          "level": 1,
+          "option": 25,
+          "bytes": 15,
+          "interface_matches_metadata": true
+        },
+        {
+          "level": 1,
+          "option": 20,
+          "bytes": 16,
+          "timeout_seconds": 1
+        },
+        {
+          "level": 1,
+          "option": 36,
+          "bytes": 4,
+          "mark": 16
+        }
+      ],
+      "instructions": 167
+    },
+    {
+      "case": "selector-readiness",
+      "flags": 1,
+      "selector": "0xbeef",
+      "outcome": "return",
+      "return": 0,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1,
+        "htons": 1,
+        "socket": 1,
+        "sismDbgMsg": 1,
+        "setsockopt": 4
+      },
+      "socket_options": [
+        {
+          "level": 1,
+          "option": 2,
+          "bytes": 4
+        },
+        {
+          "level": 1,
+          "option": 25,
+          "bytes": 15,
+          "interface_matches_metadata": true
+        },
+        {
+          "level": 1,
+          "option": 20,
+          "bytes": 16,
+          "timeout_seconds": 1
+        },
+        {
+          "level": 1,
+          "option": 36,
+          "bytes": 4,
+          "mark": 16
+        }
+      ],
+      "instructions": 167
+    },
+    {
+      "case": "readiness-bit-isolation",
+      "flags": 2,
+      "selector": "0xbeea",
+      "outcome": "return",
+      "return": 2,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1
+      },
+      "socket_options": [],
+      "instructions": 90
+    },
+    {
+      "case": "readiness-bit-isolation",
+      "flags": 3,
+      "selector": "0xbeea",
+      "outcome": "return",
+      "return": 0,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1,
+        "htons": 1,
+        "socket": 1,
+        "sismDbgMsg": 1,
+        "setsockopt": 4
+      },
+      "socket_options": [
+        {
+          "level": 1,
+          "option": 2,
+          "bytes": 4
+        },
+        {
+          "level": 1,
+          "option": 25,
+          "bytes": 15,
+          "interface_matches_metadata": true
+        },
+        {
+          "level": 1,
+          "option": 20,
+          "bytes": 16,
+          "timeout_seconds": 1
+        },
+        {
+          "level": 1,
+          "option": 36,
+          "bytes": 4,
+          "mark": 16
+        }
+      ],
+      "instructions": 170
+    },
+    {
+      "case": "readiness-bit-isolation",
+      "flags": 2147483648,
+      "selector": "0xbeea",
+      "outcome": "return",
+      "return": 2,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1
+      },
+      "socket_options": [],
+      "instructions": 90
+    },
+    {
+      "case": "readiness-bit-isolation",
+      "flags": 2147483649,
+      "selector": "0xbeea",
+      "outcome": "return",
+      "return": 0,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1,
+        "htons": 1,
+        "socket": 1,
+        "sismDbgMsg": 1,
+        "setsockopt": 4
+      },
+      "socket_options": [
+        {
+          "level": 1,
+          "option": 2,
+          "bytes": 4
+        },
+        {
+          "level": 1,
+          "option": 25,
+          "bytes": 15,
+          "interface_matches_metadata": true
+        },
+        {
+          "level": 1,
+          "option": 20,
+          "bytes": 16,
+          "timeout_seconds": 1
+        },
+        {
+          "level": 1,
+          "option": 36,
+          "bytes": 4,
+          "mark": 16
+        }
+      ],
+      "instructions": 170
+    },
+    {
+      "case": "interface-length-boundary",
+      "declared_length": 0,
+      "selector": "0xbeea",
+      "outcome": "return",
+      "return": 0,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1,
+        "htons": 1,
+        "socket": 1,
+        "sismDbgMsg": 1,
+        "setsockopt": 4
+      },
+      "socket_options": [
+        {
+          "level": 1,
+          "option": 2,
+          "bytes": 4
+        },
+        {
+          "level": 1,
+          "option": 25,
+          "bytes": 15,
+          "interface_matches_metadata": true
+        },
+        {
+          "level": 1,
+          "option": 20,
+          "bytes": 16,
+          "timeout_seconds": 1
+        },
+        {
+          "level": 1,
+          "option": 36,
+          "bytes": 4,
+          "mark": 16
+        }
+      ],
+      "instructions": 170
+    },
+    {
+      "case": "interface-length-boundary",
+      "declared_length": 12,
+      "selector": "0xbeea",
+      "outcome": "return",
+      "return": 0,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1,
+        "htons": 1,
+        "socket": 1,
+        "sismDbgMsg": 1,
+        "setsockopt": 4
+      },
+      "socket_options": [
+        {
+          "level": 1,
+          "option": 2,
+          "bytes": 4
+        },
+        {
+          "level": 1,
+          "option": 25,
+          "bytes": 15,
+          "interface_matches_metadata": true
+        },
+        {
+          "level": 1,
+          "option": 20,
+          "bytes": 16,
+          "timeout_seconds": 1
+        },
+        {
+          "level": 1,
+          "option": 36,
+          "bytes": 4,
+          "mark": 16
+        }
+      ],
+      "instructions": 170
+    },
+    {
+      "case": "interface-length-boundary",
+      "declared_length": 13,
+      "selector": "0xbeea",
+      "outcome": "guest-brk-1000",
+      "return": null,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1
+      },
+      "socket_options": [],
+      "instructions": 56
+    },
+    {
+      "case": "suffix-not-consumed-by-this-function",
+      "selector": "0xbeea",
+      "outcome": "return",
+      "return": 0,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1,
+        "htons": 1,
+        "socket": 1,
+        "sismDbgMsg": 1,
+        "setsockopt": 4
+      },
+      "socket_options": [
+        {
+          "level": 1,
+          "option": 2,
+          "bytes": 4
+        },
+        {
+          "level": 1,
+          "option": 25,
+          "bytes": 15,
+          "interface_matches_metadata": true
+        },
+        {
+          "level": 1,
+          "option": 20,
+          "bytes": 16,
+          "timeout_seconds": 1
+        },
+        {
+          "level": 1,
+          "option": 36,
+          "bytes": 4,
+          "mark": 16
+        }
+      ],
+      "instructions": 170
+    },
+    {
+      "case": "modeled-socket-failure",
+      "selector": "0xbeea",
+      "outcome": "return",
+      "return": 1,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1,
+        "htons": 1,
+        "socket": 1
+      },
+      "socket_options": [],
+      "instructions": 102
+    },
+    {
+      "case": "modeled-bind-device-failure",
+      "selector": "0xbeea",
+      "outcome": "guest-exit-1",
+      "return": null,
+      "metadata_read_ranges": [
+        [
+          0,
+          8
+        ],
+        [
+          8,
+          8
+        ],
+        [
+          16,
+          8
+        ],
+        [
+          24,
+          4
+        ]
+      ],
+      "modeled_imports": {
+        "shmget": 1,
+        "shmat": 1,
+        "memcpy": 1,
+        "shmdt": 1,
+        "htons": 1,
+        "socket": 1,
+        "sismDbgMsg": 1,
+        "setsockopt": 2,
+        "perror": 1,
+        "close": 1,
+        "exit": 1
+      },
+      "socket_options": [
+        {
+          "level": 1,
+          "option": 2,
+          "bytes": 4
+        },
+        {
+          "level": 1,
+          "option": 25,
+          "bytes": 15,
+          "interface_matches_metadata": true
+        }
+      ],
+      "instructions": 155
+    }
+  ],
+  "sysv_segment_or_network_backend_used": false,
+  "device_operations": false,
+  "endpoint_firmware_loaded": false,
+  "DSL_showtime_verified": false
+}
