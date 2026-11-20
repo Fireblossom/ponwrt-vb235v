@@ -1,0 +1,32 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-only
+# Report boot evidence; never open device nodes or change configuration.
+. /usr/share/libubox/jshn.sh
+
+board=$(cat /tmp/sysinfo/board_name 2>/dev/null)
+pid1=$(cat /proc/1/comm 2>/dev/null)
+storage=0
+for device in /sys/class/mtd/mtd[0-9]*; do
+	[ -d "$device" ] && storage=$((storage + 1))
+done
+ubus_ready=0
+ubus -t 3 list system 2>/dev/null | grep -qx system && ubus_ready=1
+passed=0
+[ "$board" = 'tplink,vb235v-ram-development' ] &&
+	[ "$pid1" = procd ] && [ "$storage" = 0 ] &&
+	[ "$ubus_ready" = 1 ] && passed=1
+
+json_init
+json_add_string board "$board"
+json_add_string kernel "$(uname -r)"
+json_add_string pid1 "$pid1"
+json_add_int mtd_devices "$storage"
+json_add_boolean ubus_system_ready "$ubus_ready"
+json_add_boolean controller_free_userspace_ready "$passed"
+json_add_boolean wired_network_validated 0
+json_add_boolean wifi_validated 0
+json_add_boolean dsl_validated 0
+json_add_boolean telephone_validated 0
+json_add_boolean persistent_installation_supported 0
+json_dump
+[ "$passed" = 1 ]

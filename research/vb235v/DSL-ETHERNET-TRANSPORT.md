@@ -1,5 +1,10 @@
 # M15: distinguish the legacy DSL ioctl from Ethernet control paths
 
+M56 follow-up: [original libpt command-envelope execution](DSL-PT-WIRE.md)
+establishes the 204-byte user-space payload using the actual pinned ARM64
+instructions with modeled external callbacks. It keeps the kernel `0xbeed`
+channel separate and does not establish endpoint lifecycle or DSL operation.
+
 The installed software contains multiple DSL control paths. The M3 header alone
 does not identify the interface to port. Static analysis now connects DSL
 user-space APIs and a loaded kernel module to proprietary Ethernet control

@@ -1,0 +1,36 @@
+{
+  "repository": "https://github.com/openwrt/mt76",
+  "commit": "0936617dc529ff9da0385221d3fa6de732231177",
+  "files": {
+    "mt7996.h": {
+      "bytes": 32980,
+      "sha256": "b56117f31138f5dee807e23e2b1f9343c8fa331b95238ca2ddca217c74223570",
+      "url": "https://raw.githubusercontent.com/openwrt/mt76/0936617dc529ff9da0385221d3fa6de732231177/mt7996/mt7996.h"
+    },
+    "pci.c": {
+      "bytes": 6435,
+      "sha256": "edd35fc75558c5fa85f4b27b6f948a64bfd3d8997441105b724c07a07ed2aed8",
+      "url": "https://raw.githubusercontent.com/openwrt/mt76/0936617dc529ff9da0385221d3fa6de732231177/mt7996/pci.c"
+    },
+    "eeprom.c": {
+      "bytes": 10485,
+      "sha256": "ac6f66ce4eb7dc7357f76b9240e4c92a737fcc14030f9593994e17505d3d3180",
+      "url": "https://raw.githubusercontent.com/openwrt/mt76/0936617dc529ff9da0385221d3fa6de732231177/mt7996/eeprom.c"
+    },
+    "dma.c": {
+      "bytes": 32146,
+      "sha256": "b78f3fc83da48c7ab5d10ed2165b238517e3b784eec7e6ca288b5b20937cac50",
+      "url": "https://raw.githubusercontent.com/openwrt/mt76/0936617dc529ff9da0385221d3fa6de732231177/mt7996/dma.c"
+    }
+  },
+  "classification": "source registration and package candidate; not hardware support validation",
+  "primary_pci_vendor": "14c3",
+  "primary_pci_device": "7993",
+  "native_chip_name": "MT7990",
+  "driver_package": "kmod-mt7996e",
+  "firmware_package": "kmod-mt7990-firmware",
+  "eeprom_bytes": 7680,
+  "hardware_probe_passed": false,
+  "board_calibration_identified": false,
+  "radio_enabled": false
+}

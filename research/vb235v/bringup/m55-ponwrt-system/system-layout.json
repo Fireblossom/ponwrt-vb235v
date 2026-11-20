@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "board": "tplink,vb235v",
+  "address_space": "factory-logical; production requires verified physical identity",
+  "chip_bytes": 536870912,
+  "page_bytes": 4096,
+  "oob_bytes": 256,
+  "erase_bytes": 262144,
+  "ecc_step_bytes": 512,
+  "ecc_strength": 8,
+  "ubi_vid_offset": 4096,
+  "ubi_data_offset": 8192,
+  "ubi_leb_bytes": 253952,
+  "bad_pebs_per_1024": 20,
+  "ubi_fastmap": false,
+  "ubi_layout_pebs": 2,
+  "ubi_wl_reserve_pebs": 1,
+  "ubi_atomic_reserve_pebs": 1,
+  "minimum_overlay_lebs": 24,
+  "protected": [
+    {"name": "early-boot-and-shared-environment", "offset": 0, "bytes": 524288},
+    {"name": "normal-recovery-core", "offset": 524288, "bytes": 262144},
+    {"name": "ART", "offset": 786432, "bytes": 3670016},
+    {"name": "misc", "offset": 4456448, "bytes": 8388608},
+    {"name": "factory-slot0", "offset": 12845056, "bytes": 83886080},
+    {"name": "fixed-rescue", "offset": 96731136, "bytes": 262144},
+    {"name": "selector-and-tail", "offset": 180617216, "bytes": 356253696}
+  ],
+  "system": {"offset": 96993280, "bytes": 83623936, "pebs": 319},
+  "volumes": [
+    {"id": 0, "name": "kernel", "type": "static"},
+    {"id": 1, "name": "rootfs", "type": "dynamic"},
+    {"id": 2, "name": "rootfs_data", "type": "dynamic", "autoresize": true}
+  ],
+  "production_installation_validated": false
+}

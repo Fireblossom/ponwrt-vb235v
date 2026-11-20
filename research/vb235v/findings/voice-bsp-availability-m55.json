@@ -1,0 +1,16 @@
+{
+  "classification": "top-level vendor archive filename inventory, not an assertion about every possible nested archive",
+  "index_sha256": "5103b5b86535ebadaaf018c0ac63fefece0e8faf12a792b32467451cd0e6cef0",
+  "selected_archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/tclinux_phoenix/release_bsp/UNION_AN7583_KITE_LOGAN_KERNEL_5_4_demo/BSP/voip_bsp/",
+  "regular_file_extensions": {
+    ".ko": 19,
+    "(none)": 2,
+    ".so": 1,
+    ".a": 1
+  },
+  "c_cpp_asm_implementation_files": 0,
+  "make_voip_bsp_found_in_selected_directory": false,
+  "voice_named_nested_archives_found_in_top_level_index": 0,
+  "new_kernel_voice_driver_implemented": false,
+  "hardware_functional_test_passed": false
+}
