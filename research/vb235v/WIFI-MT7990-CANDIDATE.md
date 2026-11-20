@@ -37,3 +37,35 @@ path. Wi-Fi traffic, multi-band operation and acceleration remain untested.
 The four inspected upstream files and their hashes are recorded in
 `findings/mt7990-native-candidate.json`. No vendor source or device calibration
 is included in that record.
+
+## M60: native packages actually compiled
+
+The optional fragment was built on the M58 development worktree with the pinned
+PonWrt baseline. Both `kmod-mt7996e` and `kmod-mt7990-firmware` APKs completed.
+The staged `mt7996e.ko` is AArch64, reports `6.18.60 SMP mod_unload aarch64`,
+and includes PCI aliases for both `14c3:7993` and `14c3:799b`. Its dependencies
+are `mt76,mac80211,cfg80211,mt76-connac-lib,hwmon`; no undefined symbol contains
+`npu` or `airoha`. This is an output inspection, not acceleration support or
+proof of full runtime symbol compatibility.
+
+All four firmware files, including WM firmware, are present and byte-identical
+to their build inputs. Both reference EEPROM files are 7,680 bytes. These are
+reference files, not extracted or validated VB235v calibration.
+
+Reproduce after completing an M58 host build:
+
+```sh
+sh research/vb235v/bringup/m55-ponwrt-system/build-wifi-packages.sh /path/to/vb235v-lan 8
+```
+
+The first packaging attempt exposed a missing `drbg.ko`: selecting Wi-Fi adds
+kernel crypto dependencies, so the wrapper explicitly rebuilds kernel modules
+before packaging. The completed build and offline output gate are recorded in
+[M60](findings/mt7990-compile-m60.json). The audit checks the source baseline,
+package selections, architecture, vermagic, PCI aliases, dependency set, staged
+firmware contents and hashes of both APKs.
+
+No package was installed on the running M58 system. Its kernel configuration
+differs from this compile-only configuration; matching version text alone does
+not establish module ABI compatibility. PCIe, firmware loading, calibration,
+radio traffic and NPU Wi-Fi integration remain untested.

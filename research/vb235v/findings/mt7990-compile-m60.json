@@ -1,0 +1,75 @@
+{
+  "milestone": "M60",
+  "scope": "host compile and staged-output audit only",
+  "ponwrt_baseline": "dcf140cb1d5d2c15c1d7c353c95c4c2a56629820",
+  "mt76_version": "2026.10.28~0936617d",
+  "config": {
+    "bytes": 151477,
+    "sha256": "7a2cc1f8f20da7c630217cba565613f205f06181a492e9adb125b007e0864045"
+  },
+  "kernel_config": {
+    "bytes": 121074,
+    "sha256": "cca460db3b6f3f1c19ddb1717e36604e9e920dc535f937e12e881cf496d36c6c"
+  },
+  "module": {
+    "bytes": 1846488,
+    "sha256": "e8c98c716d2707deb111e66708b069800df43b9d753ed5a15c396646357d3e79",
+    "architecture": "aarch64",
+    "modinfo": {
+      "license": [
+        "Dual BSD/GPL"
+      ],
+      "depends": [
+        "mt76,mac80211,cfg80211,mt76-connac-lib,hwmon"
+      ],
+      "name": [
+        "mt7996e"
+      ],
+      "vermagic": [
+        "6.18.60 SMP mod_unload aarch64"
+      ]
+    },
+    "pci_aliases": [
+      "pci:v000014C3d00007990sv*sd*bc*sc*i*",
+      "pci:v000014C3d00007991sv*sd*bc*sc*i*",
+      "pci:v000014C3d00007992sv*sd*bc*sc*i*",
+      "pci:v000014C3d00007993sv*sd*bc*sc*i*",
+      "pci:v000014C3d0000799Asv*sd*bc*sc*i*",
+      "pci:v000014C3d0000799Bsv*sd*bc*sc*i*"
+    ]
+  },
+  "firmware": {
+    "mt7990_eeprom.bin": {
+      "bytes": 7680,
+      "sha256": "efacee4f35bf66787af3578b7f0754f3ecc4c9002c39910e24934373951dc11d"
+    },
+    "mt7990_eeprom_2i5i.bin": {
+      "bytes": 7680,
+      "sha256": "ae8f5fbad39959d0a94df5ad2ce93a41962b948d4d61beb1774acbb27734b799"
+    },
+    "mt7990_rom_patch.bin": {
+      "bytes": 12576,
+      "sha256": "d406140359b085efee0576b94e93a532fcd9edd802d867c99a0bed08abd84fca"
+    },
+    "mt7990_wm.bin": {
+      "bytes": 1262232,
+      "sha256": "e77b2015ea95f656dc6b9343b658fb4c154d1bbe13ef52fdeb7e52f84f95eed5"
+    }
+  },
+  "packages": {
+    "kmod-mt7996e-6.18.60.2026.10.28~0936617d-r2.apk": {
+      "bytes": 91948,
+      "sha256": "d0b6718861cf041a08c1c4f44c5fc2d8ad849f8c1b93b877843d87b5a42ad8e5"
+    },
+    "kmod-mt7990-firmware-6.18.60.2026.10.28~0936617d-r2.apk": {
+      "bytes": 1277234,
+      "sha256": "05f376ae8495137bb8358e706700c253aefc00095ff464ee343475050d1eb81a"
+    }
+  },
+  "npu_undefined_symbols": [],
+  "module_loaded": false,
+  "pcie_enabled": false,
+  "board_calibration_validated": false,
+  "radio_tested": false,
+  "running_M58_module_compatibility_claimed": false
+}
