@@ -1,0 +1,81 @@
+From: VB235v research
+Subject: [PATCH] net: pcs: airoha: match opt-in Ethernet XFI receiver clocks and reset
+
+SPDX-License-Identifier: GPL-2.0-only
+
+Apply after 952. Keep the DSL development nodes disabled. This reconciles
+selected original-source operations, not the whole calibration/endpoint path.
+regmap_write_bits preserves each explicit reset RMW even if its value matches.
+
+---
+--- a/drivers/net/pcs/airoha/pcs-an7583.c
++++ b/drivers/net/pcs/airoha/pcs-an7583.c
+@@ -125,6 +125,31 @@
+ 			AIROHA_PCS_PMA_SW_ALLPCS_RST_N);
+ 
+ 	usleep_range(100, 200);
++}
++
++/* Match the original XFI post-calibration pulse only for the opt-in profile. */
++static void an7583_pcs_pon_eth_dig_reset(struct airoha_pcs_priv *priv,
++					  int index)
++{
++	struct regmap *pcs_pma = priv->pcs_pma[index];
++
++	regmap_write_bits(pcs_pma, AIROHA_PCS_PMA_SW_RST_SET, BIT(0), 0);
++	regmap_write_bits(pcs_pma, AIROHA_PCS_PMA_SW_RST_SET, BIT(6), 0);
++	regmap_write_bits(pcs_pma, AIROHA_PCS_PMA_SW_RST_SET, BIT(5), 0);
++	regmap_write_bits(pcs_pma, AIROHA_PCS_PMA_SW_RST_SET, BIT(4), 0);
++	regmap_write_bits(pcs_pma, AIROHA_PCS_PMA_SW_RST_SET, BIT(2), 0);
++	regmap_write_bits(pcs_pma, AIROHA_PCS_PMA_SW_RST_SET, BIT(1), 0);
++	regmap_write_bits(pcs_pma, AIROHA_PCS_PMA_SW_RST_SET, BIT(3), 0);
++
++	udelay(10);
++
++	regmap_write_bits(pcs_pma, AIROHA_PCS_PMA_SW_RST_SET, BIT(5), BIT(5));
++	regmap_write_bits(pcs_pma, AIROHA_PCS_PMA_SW_RST_SET, BIT(4), BIT(4));
++	regmap_write_bits(pcs_pma, AIROHA_PCS_PMA_SW_RST_SET, BIT(3), BIT(3));
++	regmap_write_bits(pcs_pma, AIROHA_PCS_PMA_SW_RST_SET, BIT(0), BIT(0));
++	regmap_write_bits(pcs_pma, AIROHA_PCS_PMA_SW_RST_SET, BIT(6), BIT(6));
++	regmap_write_bits(pcs_pma, AIROHA_PCS_PMA_SW_RST_SET, BIT(2), BIT(2));
++	regmap_write_bits(pcs_pma, AIROHA_PCS_PMA_SW_RST_SET, BIT(1), BIT(1));
+ }
+ 
+ static void an7583_pcs_common_phya_txpll(struct airoha_pcs_priv *priv,
+@@ -437,6 +462,14 @@
+ 		default:
+ 			return;
+ 		}
++		if (priv->pon_ethernet) {
++			/* Original XFI receiver clocks differ from optical RX rate 1. */
++			phyck_div = 0x42;
++			phyck_sel = 0x2;
++			phyck_rstb = true;
++			cdr_pr_xfick_en = true;
++			phyck_sel_force = true;
++		}
+ 	} else {
+ 		switch (interface) {
+ 		case PHY_INTERFACE_MODE_SGMII:
+@@ -2530,7 +2563,10 @@
+ 	an7583_pcs_common_phya_sdcal(priv, index);
+ 	an7583_pcs_common_phya_phy_status(priv, index);
+ 
+-	an7583_pcs_dig_reset_release(priv, index);
++	if (priv->pon_ethernet)
++		an7583_pcs_pon_eth_dig_reset(priv, index);
++	else
++		an7583_pcs_dig_reset_release(priv, index);
+ 
+ 	if (data->port_type == AIROHA_PCS_PON)
+ 		an7583_pcs_pon_l2d(priv, index);
+@@ -2539,7 +2575,8 @@
+ 
+ 	if (data->port_type == AIROHA_PCS_PON) {
+ 		an7583_pcs_common_phya_eo_scan(priv, index, interface);
+-		an7583_pcs_pon_tdc_on(priv, index);
++		if (!priv->pon_ethernet)
++			an7583_pcs_pon_tdc_on(priv, index);
+ 	}
+ 	an7583_pcs_common_phya_rxrdy(priv, index);
+ 	if (data->port_type == AIROHA_PCS_PON ||

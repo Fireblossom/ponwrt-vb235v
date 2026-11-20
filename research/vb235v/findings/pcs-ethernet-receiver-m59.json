@@ -1,0 +1,55 @@
+{
+  "stage": "M59",
+  "classification": "selected source reconciliation, actual C memory-model traces and isolated AArch64 object compilation; no new hardware activation",
+  "object_compilation": {
+    "stage": "M59",
+    "patch_replay_matches_candidate": true,
+    "compiler": "owned M58 GCC 14.4.0 / Linux 6.18.60 flags",
+    "isolated_objects": [
+      {
+        "file": "pcs-airoha-common.o",
+        "bytes": 123160,
+        "sha256": "24e3de56870a6808e77b0b4bf930f042732cca335a4cd3dbc484b0b9eeef08ed",
+        "ELF_machine": "AArch64",
+        "source_sha256": "4821cff95b020c5ed5990894fb644addafdbc7576ea73b549a8afc4d82296971"
+      },
+      {
+        "file": "pcs-an7583.o",
+        "bytes": 246016,
+        "sha256": "af08fed9b67a12a15604b73dbb02cc1224f3ddb68aed5654c7575bd22b0cc668",
+        "ELF_machine": "AArch64",
+        "source_sha256": "85f05dd453d3d7e3384e4262c9e56131e82afb51db029964e4c872b872c51214"
+      }
+    ],
+    "active_kernel_source_modified": false,
+    "boot_image_built": false,
+    "device_operations": false,
+    "DSL_hardware_validated": false
+  },
+  "host_model": {
+    "default_rx_traces_equal": 1008,
+    "default_first_plug_traces_equal": 1008,
+    "vendor_reset_trace_cases": 3,
+    "ethernet_clock_and_call_policy_cases": 3,
+    "stage": "M59",
+    "reviewed_source_sha256": {
+      "reference": "67a7c9c9a6c59c434a4931df3047da45bc6db000ce7ebb5e00b3fc613fdc5aaf",
+      "candidate": "85f05dd453d3d7e3384e4262c9e56131e82afb51db029964e4c872b872c51214",
+      "header": "cc58b940119812b389c6487a2bd65d6b88e79ae38766e0e8810bf47dda724bb2",
+      "phy": "760034201b62d69c1d9fd116eed7beaeaded1a6a7909288a8afbe4f3a64deaf0",
+      "api": "10195a7891a22c9f3df714331d19bc236021127f3cb0fea62aa753deec7fb260",
+      "vendor": "c7828d2d722f1527c339959a4d8b836c194b000d028e403a314b4ba0ebd19236",
+      "vendor_header": "349ec7c24207557adf891cf290edec7b17ca6001793eecb04c408c15513cc34e"
+    },
+    "native_register_masks_used": true,
+    "vendor_reset_body_executed_with_memory_model": true,
+    "complete_calibration_or_electrical_behavior_verified": false,
+    "device_operations": false
+  },
+  "source_patch": "bringup/984-vb235v-pcs-ethernet-receiver-development.patch",
+  "source_patch_sha256": "058dce8da41946c6dad2841c40c910a78135308bbfe8060be8600307d8ca7f35",
+  "new_boot_image_built": false,
+  "DSL_hardware_validated": false,
+  "M58_running_system_modified": false,
+  "device_operations": false
+}

@@ -1,5 +1,9 @@
 # M19: remaining XFI receiver-clock and reset differences
 
+[M59](PCS-ETHERNET-RECEIVER.md) implements the selected Ethernet-only clock,
+TDC-call and reset differences and checks actual C functions with modeled
+backends. Complete calibration and endpoint hardware validation remain open.
+
 Following the M18 rate/profile implementation, the selected vendor XFI first-plug
 path still differs from the reference PON receiver path. Five of six clock
 field assignments differ, and the direct TDC/reset helper sequences differ.
