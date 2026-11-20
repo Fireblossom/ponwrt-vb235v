@@ -1,0 +1,58 @@
+{
+  "started_utc": "2026-11-20T21:42:38.429078+00:00",
+  "fit_sha256": "61c775d257a532fa2d90f7a536d865c4d00d6c367caa7f410e51bd471091d34d",
+  "flash_write_commands_sent": false,
+  "saveenv_sent": false,
+  "complete": true,
+  "hardware_userspace_boot_verified": true,
+  "RAM_upload_sha256_verified": true,
+  "QDMA_handoff_samples": [
+    [
+      {
+        "address": "0x1fb54004",
+        "value": "0x14080070",
+        "TX_RX_enabled_or_busy": false
+      },
+      {
+        "address": "0x1fb56004",
+        "value": "0x1c0800d0",
+        "TX_RX_enabled_or_busy": false
+      }
+    ],
+    [
+      {
+        "address": "0x1fb54004",
+        "value": "0x14080070",
+        "TX_RX_enabled_or_busy": false
+      },
+      {
+        "address": "0x1fb56004",
+        "value": "0x1c0800d0",
+        "TX_RX_enabled_or_busy": false
+      }
+    ]
+  ],
+  "FIT_iminfo_verified": true,
+  "finished_utc": "2026-11-20T21:43:21.505726+00:00",
+  "runtime_check": {
+    "board": "tplink,vb235v-ram-development",
+    "kernel": "6.18.60",
+    "pid1": "procd",
+    "mtd_devices": 0,
+    "ubus_system_ready": true,
+    "controller_free_userspace_ready": true,
+    "wired_network_validated": false,
+    "wifi_validated": false,
+    "dsl_validated": false,
+    "telephone_validated": false,
+    "persistent_installation_supported": false
+  },
+  "runtime_checker_exit_code": 0,
+  "ubus_system_board_verified": true,
+  "UCI_system_configuration_readable": true,
+  "RAM_root_without_MTD_or_UBI": true,
+  "netifd_rpcd_uhttpd_services_observed": true,
+  "serial_check_retry_reason": "initial burst lost characters during module startup; paced read-only commands passed",
+  "verified_utc": "2026-11-20T21:44:21.239456+00:00",
+  "initial_serial_command_burst_incomplete": true
+}

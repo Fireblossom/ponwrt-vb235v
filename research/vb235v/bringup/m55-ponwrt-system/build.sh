@@ -2,6 +2,10 @@
 # SPDX-License-Identifier: GPL-2.0-only
 # Build host only; no network connection to the board and no flash operations.
 set -eu
+# WSL inherits Windows PATH entries. OpenWrt's make recipes and find -execdir
+# require absolute, whitespace-free components even when the worktree is clean.
+PATH=$(python3 -c "import os; print(':'.join(p for p in os.environ['PATH'].split(':') if p.startswith('/') and not any(c.isspace() for c in p)))")
+export PATH
 if [ "$#" -lt 1 ] || [ "$#" -gt 2 ]; then
  echo 'usage: build.sh PINNED_PONWRT_WORKTREE [JOBS]' >&2
  exit 2

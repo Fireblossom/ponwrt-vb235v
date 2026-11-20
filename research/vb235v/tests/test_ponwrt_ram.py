@@ -23,8 +23,8 @@ class PonWrtRamTests(unittest.TestCase):
             raise unittest.SkipTest('DTC required for compiled device-tree validation')
         cls.source = (BASE / 'bringup/m55-ponwrt-system/overlay/target/linux/airoha/dts/an7583-tplink_vb235v-ram.dts').read_text()
 
-    def compile_dtb(self, source):
-        result = subprocess.run([self.dtc, '-I', 'dts', '-O', 'dtb'], input=source.encode(),
+    def compile_dtb(self, source, symbols=False):
+        result = subprocess.run([self.dtc, *(['-@'] if symbols else []), '-I', 'dts', '-O', 'dtb'], input=source.encode(),
                                 capture_output=True, check=True)
         return result.stdout
 
@@ -32,6 +32,13 @@ class PonWrtRamTests(unittest.TestCase):
         result = audit_dtb(self.compile_dtb(self.source))
         self.assertEqual(result['storage_controllers'], 0)
         self.assertEqual(result['dt_nodes'], 16)
+
+    def test_allow_only_exact_compiler_symbol_metadata(self):
+        result = audit_dtb(self.compile_dtb(self.source, symbols=True))
+        self.assertTrue(result['compiler_symbol_metadata'])
+        self.assertEqual(result['dt_nodes'], 17)
+        with self.assertRaisesRegex(ValueError, 'symbol metadata'):
+            audit_dtb(self.compile_dtb(self.source.replace('uart0:', 'extra: uart0:'), symbols=True))
 
     def test_reject_even_disabled_storage_node(self):
         changed = self.source + '\n/ { nand@1fa10000 { compatible="spi-nand"; status="disabled"; }; };\n'

@@ -1,0 +1,19 @@
+{
+  "schema": 1,
+  "stage": "M55",
+  "COM3_115200_8N1": true,
+  "user_authorized_SP3_router_power": true,
+  "SP3_power_off_seconds": 20,
+  "power_restoration_confirmed": true,
+  "new_original_U_Boot_banner_and_prompt": true,
+  "version_response_verified": true,
+  "installed_M54_normal_core_loaded_from_NAND": true,
+  "normal_core_RAM_CRC32_verified": true,
+  "normal_core_FIT_SHA256_payloads_verified": true,
+  "persistent_web_key_automatically_imported": true,
+  "bootloader_sha256_after_cycle": "42659dd2475afa0824b79882d4cbc74f05fcfb1da1cb34f8da028d037b470354",
+  "flash_write_commands_sent": false,
+  "saveenv_sent": false,
+  "Reset_button_test_verified": false,
+  "new_PonWrt_system_booted": false
+}

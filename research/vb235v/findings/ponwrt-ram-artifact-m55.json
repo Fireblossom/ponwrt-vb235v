@@ -1,0 +1,36 @@
+{
+  "board": "tplink,vb235v-ram-development",
+  "dt_nodes": 17,
+  "compiler_symbol_metadata": true,
+  "storage_controllers": 0,
+  "ethernet_controllers": 0,
+  "dtb_sha256": "0892e8826b8cbd0151119e0191ade5fe0c489c4f0358b6156924da6181ee3aed",
+  "fit_bytes": 8768860,
+  "fit_sha256": "61c775d257a532fa2d90f7a536d865c4d00d6c367caa7f410e51bd471091d34d",
+  "kernel_uncompressed_bytes": 28370952,
+  "kernel_memory_bytes": 28704768,
+  "kernel_load": 2149580800,
+  "fit_payload_hashes_verified": true,
+  "userspace_contents_verified": true,
+  "hardware_boot_validated": false,
+  "persistent_installation_supported": false,
+  "initramfs": {
+    "entries": 786,
+    "archive_bytes": 15188992,
+    "archive_sha256": "a22468f2a3002e3dd8bf4d17eb0eed77d444f387256cc6980c8fd1abb6da9c04",
+    "required_AArch64_userspace_sha256": {
+      "bin/busybox": "fc83e54e8a4345a2f7150474d9310e90df3e4ea0839cec85ce4032ef31df1a89",
+      "sbin/procd": "93b2d1390aaec6f05b057eccf3a0c318346fce8e011718b5438eaf1709270db0",
+      "sbin/ubusd": "c0460ea0c57b593f180547d56d68144413ca6b893979672809b9dbd55e6993d8",
+      "sbin/uci": "e62801ba7d902f791f4fcccf8912106f8eee7d16773e404909de6e5ade6ddf6a",
+      "sbin/netifd": "aeba97b2c20b22885a74bce82c180946e6045283d4a0ebb656bf5b08c72e6a68",
+      "sbin/rpcd": "0ff7d63d50c6f88af8678bfc47a9f91d40c895f4f430d5cbd2cf056a08d0fc14",
+      "usr/sbin/uhttpd": "c44c2c6fa0e9f9a27aa4b9c0c9977c98689e1f029d2fa013eddc24ab84abad06",
+      "usr/sbin/dropbear": "9655589cbc8cc80d70c7603a8f2fd13468f4d22f53b22435578643e4980acbb7"
+    },
+    "runtime_checker_matches": true,
+    "upgrade_rejection_hooks_match": true,
+    "init_sha256": "1d1991b6b702247a2c59bc89b4ec700820339b06a84aefe1a424f7e451017e6b"
+  },
+  "kernel_config_sha256": "342693b02c83ea1650d310a49508f7eab3f1aa5c9f12cbda3a3cc7172320d60a"
+}

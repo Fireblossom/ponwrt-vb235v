@@ -33,6 +33,11 @@ def audit_dtb(dtb):
         '/reserved-memory/logs@8b000000', '/cpus', '/cpus/cpu@0',
         '/psci', '/interrupt-controller@9000000', '/timer', '/serial@1fbf0000',
     }
+    symbols = {'gic': b'/interrupt-controller@9000000\0',
+               'uart0': b'/serial@1fbf0000\0'}
+    if '/__symbols__' in nodes:
+        require(nodes['/__symbols__'] == symbols, 'Unexpected compiler DT symbol metadata')
+        expected_paths.add('/__symbols__')
     require(set(nodes) == expected_paths, 'Unexpected DT node; peripheral review required')
     require(not reserved, 'Unexpected FDT header reservations')
     expected = {
@@ -75,7 +80,8 @@ def audit_dtb(dtb):
         require(set(actual) == set(properties) | extra, 'Unexpected DT properties: ' + path)
         for name, value in properties.items():
             require(actual[name] == value, 'DT resource mismatch: ' + path + ':' + name)
-    return {'board': BOARD, 'dt_nodes': len(nodes), 'storage_controllers': 0,
+    return {'board': BOARD, 'dt_nodes': len(nodes),
+            'compiler_symbol_metadata': '/__symbols__' in nodes, 'storage_controllers': 0,
             'ethernet_controllers': 0, 'dtb_sha256': hashlib.sha256(dtb).hexdigest()}
 
 
@@ -159,10 +165,13 @@ def audit_initramfs(archive):
     item, checker = resolve('usr/sbin/ponwrt-ram-check')
     checker_source = Path(__file__).resolve().parents[1] / 'bringup/m55-ponwrt-system/overlay/target/linux/airoha/vb235v/base-files/usr/sbin/ponwrt-ram-check'
     require(item['mode'] & 0o111 and checker == checker_source.read_bytes(), 'Runtime checker differs from source')
-    resolve('lib/upgrade/platform.sh')
+    _, upgrade = resolve('lib/upgrade/platform.sh')
+    upgrade_source = checker_source.parents[2] / 'lib/upgrade/platform.sh'
+    require(upgrade == upgrade_source.read_bytes(), 'Upgrade rejection hooks differ from source')
     return {'entries': len(entries), 'archive_bytes': len(archive),
             'archive_sha256': hashlib.sha256(archive).hexdigest(),
             'required_AArch64_userspace_sha256': verified, 'runtime_checker_matches': True,
+            'upgrade_rejection_hooks_match': True,
             'init_sha256': hashlib.sha256(init).hexdigest()}
 
 

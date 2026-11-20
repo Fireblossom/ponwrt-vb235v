@@ -31,6 +31,9 @@ The image definition emits no sysupgrade, preloader, FIP or factory artifact.
 Use a case-sensitive Linux filesystem and ordinary OpenWrt build
 prerequisites. The source/output tree must have no spaces; the research
 overlay itself may have spaces in its path.
+The wrapper removes relative and whitespace-containing PATH components, which
+WSL can inherit from Windows. This avoids OpenWrt recipe splitting and GNU
+find's `-execdir` rejection during package installation.
 
 ```sh
 git -C /path/to/ponwrt worktree add --detach /path/to/new-vb235v-tree \
@@ -88,7 +91,14 @@ FIT hashes and kernel placement. The separate
 ubinize tools, checks extracted bytes and every emitted EC/VID header CRC and
 offset. Its synthetic kernel and DT are explicitly offline fixtures.
 
-Next gates remain actual RAM userspace boot, audited wired/PCIe profiles,
+The first actual image passed host FIT, kernel configuration and embedded
+initramfs inspection, then booted on the owner's VB235v through the installed
+M54 recovery core. See [M55 hardware evidence](../../PONWRT-RAM-BOOT.md).
+Compiler-generated `__symbols__` metadata is allowed only when its complete
+contents equal the two expected GIC/UART label paths; peripheral admission
+remains exact.
+
+Next gates remain audited wired/PCIe profiles,
 native NAND/ECC/mapping integration, production UBI mounting and boot,
 protected sysupgrade, trial-boot accounting and failure recovery. Cold Reset
 entry needs a separately captured installed-hardware result. DSL, analog
