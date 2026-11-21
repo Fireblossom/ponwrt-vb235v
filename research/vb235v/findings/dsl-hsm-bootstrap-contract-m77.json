@@ -1,0 +1,917 @@
+{
+  "schema": 1,
+  "milestone": "M77",
+  "review_date": "2026-11-21",
+  "classification": "Exact original HSM static reconstruction plus bounded AArch64 guest execution with modeled imports; implementation contract, not hardware validation",
+  "executive_summary": {
+    "cold_boot_Telekom_success_proven": false,
+    "can_run_original_HSM_directly_on_current_native_kernel": false,
+    "channel_correction": "DDR and iNIC use MDIO mailboxes. ROM/file service uses EtherType0xbeef. EtherType0xbeec is the subsequent heartbeat/event channel, not the firmware-upload channel.",
+    "confirmed_implementation_inputs": [
+      "PHY-parameter24 C22 mailbox bridge: address halves in registers1/2, data halves in3/4, register0 commands0xff(write)/0xf0(read).",
+      "GPIO21 active-low reset with1second asserted; separate original endpoint PLL setup and post-load SGMII check.",
+      "DDR stage uses1fa30000 and WADE/DONE/FWOK/NOCR/CRFL/finish mailbox words;10second alarm.",
+      "iNIC stage uses1fa40000 with0x7800-byte segments, RDIN/INSE/INDN, CRC-disable and20second alarm.",
+      "0xbeef32-byte mixed-endian header,1400-byte file blocks, request/ACK-driven file offsets and ones-complement checksums.",
+      "0xbeec20-byte host heartbeat request, separate endpoint event magic/types and explicit failure/reinitialization path."
+    ],
+    "mandatory_unknowns_before_hardware_boot": [
+      "Actual MDIO bus owner and physical route to PHY24; the old helper is hardwired toeth0 and a vendor pointer ioctl ABI.",
+      "PON PCS/clock/reset/mux ownership versus current eth1/PHY14. Software resource conflict is confirmed; physical circuit routing/external port availability is not fully measured.",
+      "Endpoint meaning of repeated same-address CONF/MAC trailer writes and extra post-data bytes. Guest execution confirms the writes, but silently correcting them would invent a protocol.",
+      "Independent complete OEM cold-start trace and endpoint ACK/integrity timing; successful modeled branches are not endpoint acceptance.",
+      "Actual file service completion/boot readiness, current line state and automatic PPP authentication on the owner line."
+    ],
+    "implementation_priority": "Add a bounded native MDIO/control interface after proving bus/PCS ownership; reproduce the confirmed staging contract with strict errors and independent traces, then file service, heartbeat/fresh status, bearer and PPP."
+  },
+  "scope": {
+    "hardware_access": false,
+    "COM3_access": false,
+    "SP3_access": false,
+    "build_tree_mutation": false,
+    "original_binaries_executed_in_host": false,
+    "guest_instructions_execute_under_Unicorn": true,
+    "all_OS_device_network_IPC_effects_modeled": true,
+    "report_is_only_repository_file_authored_in_M77_by_this_reviewer": true,
+    "full_proprietary_firmware_equivalence_claim": false
+  },
+  "provenance": {
+    "hsm": {
+      "path": "offline-analysis/m56-dsl-original-rootfs/extracted/userfs/bin/hsm",
+      "bytes": 26560,
+      "sha256": "9254ac7fc0fa9699c6266cb4b854d6ed9d9f9d11e128153daa2228baabe4a92a"
+    },
+    "libpt": {
+      "path": "offline-analysis/live-dsl-artifacts/20261116T013425Z/libpt.so.1.0.0",
+      "bytes": 14048,
+      "sha256": "eb8dc5d2929120e48b58d9bb67a717346a46837e191533f02b957d363f77ff7f"
+    },
+    "firmware_manifest_source": "research/vb235v/findings/dsl-host-boot-artifacts.json",
+    "startup_source": {
+      "path": "offline-analysis/m56-dsl-original-rootfs/lifecycle/etc/init.d/rcS.openwrt-21.02.econet",
+      "lines": [
+        170,
+        177,
+        187,
+        205,
+        208,
+        212,
+        213,
+        214,
+        218,
+        220,
+        366
+      ]
+    },
+    "private_model_source": "offline-analysis/m77-hsm/model-private.py",
+    "private_model_results": "offline-analysis/m77-hsm/guest-results-private.json",
+    "note": "Original hsm is from the hash-pinned preserved factory image; libpt is separately pinned from the live snapshot. This does not prove every runtime path was exercised during the earlier original-system observation. Raw firmware, disassembly and private runtime values are not published."
+  },
+  "ABI_compatibility": {
+    "ELF": "ET_EXEC, ELF64 little-endian AArch64",
+    "entry": "0x401778",
+    "interpreter": "/lib/ld-musl-aarch64.so.1",
+    "DT_NEEDED": [
+      "libpt.so.1",
+      "libgcc_s.so.1",
+      "libc.so"
+    ],
+    "version_requirement": "GLIBC_2.0 version node attached to selected libgcc_s frame registration symbols; this does not make the executable glibc-linked",
+    "current_native_root_static_check": {
+      "interpreter_symlink_resolves_to_native_libc": true,
+      "missing_named_imports_HSM_and_libpt_against_original_libpt_native_libc_native_libgcc": [],
+      "native_libc_sha256": "48d043be64738ed23971377828815244aa8bbf3c7f189aca1a236bbf01db0dc6",
+      "native_libgcc_sha256": "55d199204b600a6fe8dd72361f8c74eb53fdc0fa253bc6294967e52e6960826b",
+      "actual_dynamic_loader_execution_verified": false,
+      "symbol_versions_relocation_and_full_runtime_compatibility_proven": false
+    },
+    "kernel_ABI_blocker": {
+      "HSM_setup": "socket(AF_INET=2,SOCK_DGRAM=2,0), fixed interface nameeth0, SIOCGMIIPHY0x8947",
+      "HSM_MII_read_write": "For0x8948/0x8949 the8-byte mii_ioctl_data lives on stack and its pointer is stored at ifreq+16 (ifr_data). This is not the ordinary inline mii_ioctl_data ABI.",
+      "native_driver": {
+        "source_root": "current native linux-6.18.60",
+        "path": "drivers/net/ethernet/airoha/airoha_eth.c",
+        "line": 4117,
+        "note": "airoha_netdev_ops through4129 has no ndo_eth_ioctl handler."
+      },
+      "generic_linux": [
+        {
+          "source_root": "current native linux-6.18.60",
+          "path": "drivers/net/phy/phy.c",
+          "line": 310,
+          "note": "phy_mii_ioctl uses if_mii(ifr)."
+        },
+        {
+          "source_root": "current native linux-6.18.60",
+          "path": "include/linux/mii.h",
+          "line": 51,
+          "note": "if_mii returns pointer to the inline ifr_ifru union, not a dereferenced ifr_data user pointer."
+        }
+      ],
+      "result": "Direct invocation is not a functioning port. Adding only a generic MII ioctl would still misinterpret the old pointer ABI. Introduce a native bounded MDIO service/API or an explicitly reviewed compatibility adapter, with correct bus ownership and locking."
+    },
+    "additional_runtime_dependencies": [
+      "GPIO sysfs export/direction/value/unexport; native GPIO numbering and ownership must be verified rather than assumed.",
+      "Original sys command and /proc/xsgmii control for PCS recovery; these are vendor interfaces absent from a generic native system.",
+      "Original /proc/tc3162 client_info_link_stat, client_info_link_standard and ae_wan_inic_filter writers; native status/filter integration is required.",
+      "System V key0x1492 size40, legacy flags/name limits and fatal helper error behavior documented in M76.",
+      "AF_PACKET raw sockets, current native control interface, privileges and0xbeef/0xbeec filtering. Original ae_wan and proprietary hooks cannot be imported as a5.4.55 kernel module into6.18."
+    ]
+  },
+  "function_map": [
+    {
+      "entry": "0x401200",
+      "role": "main startup/retry loop"
+    },
+    {
+      "entry": "0x401830",
+      "role": "SIGALRM sets timeout word"
+    },
+    {
+      "entry": "0x401850",
+      "role": "selected termination signals clear metadata and exit"
+    },
+    {
+      "entry": "0x401940",
+      "role": "endpoint/host SGMII recovery commands"
+    },
+    {
+      "entry": "0x4019f0",
+      "role": "0xbeec heartbeat and WAN/OAM event receive loop"
+    },
+    {
+      "entry": "0x401f90",
+      "role": "post-load endpoint SGMII status check"
+    },
+    {
+      "entry": "0x4022b0",
+      "role": "MDIO message socket/interface initialization"
+    },
+    {
+      "entry": "0x4023f0",
+      "role": "write32 over PHY C22 registers"
+    },
+    {
+      "entry": "0x402540",
+      "role": "read32 with endpoint gate writes"
+    },
+    {
+      "entry": "0x402720",
+      "role": "conditional endpoint PLL setup"
+    },
+    {
+      "entry": "0x4028c0",
+      "role": "GPIO endpoint reset"
+    },
+    {
+      "entry": "0x402a10",
+      "role": "DDR calibration mailbox transfer"
+    },
+    {
+      "entry": "0x402d50",
+      "role": "reset, PLL and DDR phase wrapper"
+    },
+    {
+      "entry": "0x402da0",
+      "role": "bounded16-bit ones-complement checksum"
+    },
+    {
+      "entry": "0x402e50",
+      "role": "0xbeef frame construction/send"
+    },
+    {
+      "entry": "0x403020",
+      "role": "ACK-driven next file block"
+    },
+    {
+      "entry": "0x403170",
+      "role": "RRQ filename/open/file checksum/first block"
+    },
+    {
+      "entry": "0x4033e0",
+      "role": "iNIC mailbox transfer"
+    },
+    {
+      "entry": "0x403a10",
+      "role": "tclinux header-derived endpoint RAM parameter"
+    },
+    {
+      "entry": "0x403b50",
+      "role": "0xbeef ROM/file server"
+    },
+    {
+      "entry": "0x403ed0",
+      "role": "iNIC phase then ROM server wrapper"
+    }
+  ],
+  "MDIO_bridge_contract": {
+    "evidence": {
+      "artifact": "hsm",
+      "functions": [
+        "0x4022b0",
+        "0x4023f0",
+        "0x402540"
+      ],
+      "guest_confirmed": true
+    },
+    "PHY_parameter_in_original_startup": 24,
+    "access_kind": "Clause22 register transactions to the endpoint bridge; no EN8811 page0x1f sequence and no confirmed Clause45/PBUS address conversion is performed by these HSM functions",
+    "mii_ioctl_data_words": [
+      "u16 phy_id",
+      "u16 reg_num",
+      "u16 val_in",
+      "u16 val_out"
+    ],
+    "write32": [
+      {
+        "op": "C22_write",
+        "register": 1,
+        "value": "address &0xffff"
+      },
+      {
+        "op": "C22_write",
+        "register": 2,
+        "value": "address >>16"
+      },
+      {
+        "op": "C22_write",
+        "register": 3,
+        "value": "value &0xffff"
+      },
+      {
+        "op": "C22_write",
+        "register": 4,
+        "value": "value >>16"
+      },
+      {
+        "op": "C22_write",
+        "register": 0,
+        "value": "0x00ff"
+      }
+    ],
+    "read32": [
+      "write32(0x1fa20160,0)",
+      "C22_write(1,address&0xffff); C22_write(2,address>>16)",
+      "C22_write(0,0x00f0)",
+      "low=C22_read(3); high=C22_read(4); result=low|(high<<16)",
+      "write32(0x1fa20160,0x800)"
+    ],
+    "polling": "These bridge functions do not implement a visible explicit busy-bit poll or retry. Driver-level MDIO controller completion is a separate contract. Boot stages poll an endpoint mailbox through read32.",
+    "original_errors": "Negative ioctl returns produce-1. In read32, the leading/trailing gate write results are not checked. Boot transfer loops also ignore many write32 returns. Native code must not carry stale data through those errors.",
+    "native_requirements": [
+      "Prove the native mii_bus and route to address24 with board ownership established, not from interface name or a guessed external PHY mapping.",
+      "Serialize the entire multi-register bridge transaction across other MDIO users, not merely individual C22 operations.",
+      "Stop at the first failed address/data/command/read, invalidate output, and attempt a controlled gate restore without overwriting the original error.",
+      "Apply bounded controller/stage deadlines and expose the exact failing transaction/stage without publishing device identifiers."
+    ],
+    "synthetic_guest_vectors": {
+      "write_address": "0x12345678",
+      "write_value": "0xabcdef01",
+      "observed_register_value_pairs": [
+        [
+          1,
+          "0x5678"
+        ],
+        [
+          2,
+          "0x1234"
+        ],
+        [
+          3,
+          "0xef01"
+        ],
+        [
+          4,
+          "0xabcd"
+        ],
+        [
+          0,
+          "0xff"
+        ]
+      ],
+      "read_low": "0x1122",
+      "read_high": "0x3344",
+      "read_result": "0x33441122"
+    }
+  },
+  "reset_PLL_and_link_contract": {
+    "GPIO_reset": {
+      "entry": "0x4028c0",
+      "guest_confirmed": true,
+      "pin_argument": 21,
+      "steps": [
+        "export",
+        "direction out",
+        "value0",
+        "sleep1second",
+        "value1",
+        "unexport"
+      ],
+      "original_system_command_results_checked": false
+    },
+    "PLL_setup": {
+      "entry": "0x402720",
+      "classification": "static branch/write reconstruction; not hardware validated",
+      "preconditions": [
+        "MDIO initialization succeeds",
+        "read32(0x1fb0009c) bit0 is set",
+        "read32(0x1fb0005c)==1"
+      ],
+      "branch_selector": "read32(0x1fa20174) bit16",
+      "common_write": "write32(0x1fa20190,0x12)",
+      "bit16_clear": [
+        [
+          "0x1fa2020c",
+          "0x04000000"
+        ],
+        [
+          "0x1fa20204",
+          "0x402"
+        ]
+      ],
+      "bit16_set": [
+        [
+          "0x1fa201f8",
+          "0x05001f08"
+        ],
+        [
+          "0x1fa201f8",
+          "0x05001f0a"
+        ],
+        [
+          "0x1fa201f8",
+          "0x05001f0e"
+        ],
+        [
+          "0x1fa20208",
+          "0x03000000"
+        ],
+        [
+          "0x1fa20204",
+          "0x402"
+        ]
+      ],
+      "limitations": "Internal EN7517 address namespace via the PHY24 bridge, not direct host MMIO. Exact clock meaning, required timing and failed-read handling need independent OEM/endpoint evidence."
+    },
+    "post_load_link_check": {
+      "entry": "0x401f90",
+      "test": "read32(0x1fa70b04)&0x21 ==0x21",
+      "retry_iterations": 25,
+      "sleep_between_failed_checks_us": 200000,
+      "first_failure_action": "Call SGMII recovery once, then continue checking; after25 failed checks return-1 and main restarts full bootstrap.",
+      "limitation": "Original ignores the read return in the selected loop, so native code must explicitly invalidate failed reads and not reuse a previous0x21. This is internal interface readiness, not DSL showtime."
+    },
+    "SGMII_recovery": {
+      "entry": "0x401940",
+      "classification": "static reconstruction; vendor host interface dependencies",
+      "steps": [
+        "If MDIO initialization succeeds, write32(0x1fa70000,0x9140)",
+        "Execute /proc/xsgmii request2/0/253/1/0",
+        "Execute /proc/xsgmii request2/2/0/1/0",
+        "Use vendor sys to clear then set host0x1fa80000 bit12"
+      ],
+      "porting_gate": "Reconstruct the selected vendor SerDes operation and its current native owner before replacing these commands. Do not send these commands to a different board mode or assume GPIO40/PHY14 physical routing."
+    }
+  },
+  "DDR_phase": {
+    "entry": "0x402a10",
+    "wrapper": "0x402d50 resets GPIO, invokes PLL setup then DDR phase",
+    "guest_confirmed": true,
+    "input_path": "/etc/iNIC/ddr_cal.bin",
+    "pinned_bytes": 22744,
+    "deadline": "Clear timeout word, alarm(0), alarm(10); a single10second signal deadline covers the polling path, not a measured native throughput guarantee.",
+    "steps": [
+      "Poll read32(0x1fb00f00) until0x57414445 (WADE); bridge error returns1, timeout returns3.",
+      "Read input4bytes at a time into a native little-endian word and write consecutively from0x1fa30000, address increment4.",
+      "Write total actual bytes read to0x1fb00f10, then write0x444f4e45 (DONE) to0x1fb00f04.",
+      "Poll0x1fb00f00 for0x46574f4b(FWOK) or0x4e4f4352(NOCR): return0.0x4352464c(CRFL) selects return6; timeout3; read error1.",
+      "On both success and CRFL, the old helper writes0x66697368(finish) to0x1fb00f04 before close/return. This handshake is not permission for the native supervisor to mark CRC failure successful."
+    ],
+    "host_CRC_computation": "None observed in this stage; endpoint status words provide the original integrity result. NOCR is accepted by the original code and does not prove a CRC was checked.",
+    "tail_behavior": "Confirmed guest execution: an aligned4byte synthetic file causes an extra stale4byte write at base+4 after the zero-byte EOF read, while announced length remains4. A5byte file writes its final1byte combined with stale upper bytes. Actual ddr_cal length is aligned but the extra EOF word still exists in the old loop.",
+    "native_gate": "Reject unpinned/truncated inputs and fully check writes. Independently determine whether extra writes/padding are endpoint-required or merely tolerated before silently changing or copying that behavior. Never advance after CRFL/read/write/timeout failure.",
+    "write_error_negative_model": "Every modeled write32 returns-1 but the independent status script supplies WADE/FWOK: unchanged DDR handler returns0. This demonstrates ignored write errors under synthetic endpoint input, not a real endpoint accepting a failed transfer."
+  },
+  "iNIC_phase": {
+    "entry": "0x4033e0",
+    "wrapper": "0x403ed0 runs iNIC phase, then ROM server only on return0",
+    "guest_confirmed": true,
+    "input_path": "/etc/iNIC/iNIC.bin",
+    "pinned_bytes": 39556,
+    "segment_bytes": 30720,
+    "segment_hex": "0x7800",
+    "deadline": "One alarm20seconds covers the transfer; normal cleanup cancels the alarm. No measured native transfer timing is established.",
+    "steps": [
+      "Initialize MDIO, open input in rb mode and poll0x1fb00f00 for0x5244494e(RDIN).",
+      "Each segment starts at endpoint window0x1fa40000. Read/write4bytes until the segment reaches0x7800 or input reaches EOF; update cumulative byte count.",
+      "Write0x01000000 (argument supplied by main) to0x1fb00f14; clear0x1fb00f00; write cumulative length to0x1fb00f10.",
+      "For a full0x7800 segment, write0x494e5345(INSE) to0x1fb00f04 and wait for another RDIN before reusing the same window.",
+      "For the final partial segment, add a nominal10byte configuration trailer to the cumulative count; write0x1fb00f0c=1 (original log says CRC disabled), then0x1fb00f04=0x494e444e(INDN).",
+      "Poll forFWOK/NOCR success, CRFL return6, timeout3 or bridge error1. Success and CRFL both write finish to0x1fb00f04 and restore0x1fa20160=0x800 before return."
+    ],
+    "confirmed_trailer_ambiguity": {
+      "observation": "At the same current endpoint address after final firmware bytes, exact guest code issues three write32 calls:0x434f4e46(CONF), first4bytes of configured host identity, then last2identity bytes shifted16. It does not increment that address between these calls, although cumulative announced size increases by10.",
+      "evidence_offsets": [
+        "0x4035b4",
+        "0x4035d8",
+        "0x4035f0",
+        "0x403610"
+      ],
+      "interpretation": "The calls and repeated address are confirmed, not an inferred contiguous trailer format. Endpoint bridge-side semantics or the reason this is tolerated are unknown. No private identity bytes are published.",
+      "porting_gate": "Capture the original complete endpoint transaction and investigate actual memory/FIFO semantics before choosing a compatibility implementation. Do not invent incremented trailer addresses as a fix."
+    },
+    "pinned_size_model_result": "Synthetic data of the real39556byte size produced segments30720+8836; first announced length0x7800, final announced length0x9a8e(39566 including10byte trailer).",
+    "host_CRC_computation": "None observed in this stage; original explicitly disables CRC and accepts NOCR. Hash-pinning host inputs does not prove transfer integrity or endpoint execution.",
+    "write_error_negative_model": "Every modeled write32 returns-1 but the independent status script supplies RDIN/FWOK: unchanged iNIC handler returns0. Native code must fail before trusting any later stale status."
+  },
+  "ROM_file_protocol": {
+    "entries": [
+      "0x402e50",
+      "0x403020",
+      "0x403170",
+      "0x403b50"
+    ],
+    "EtherType": "0xbeef",
+    "transport": "AF_PACKET/SOCK_RAW on the interface supplied through libpt metadata; no host IP or TFTP/UDP layer is used by these selected functions",
+    "socket_receive_timeout_seconds": 2,
+    "MAC_contract": "libpt initial destination is broadcast. It learns the source of the first accepted receive and reuses it as destination; source MAC on transmit is obtained from current interface SIOCGIFHWADDR. This is learned-source behavior, not strict authenticated source binding. Native implementation must pin the intended endpoint/current interface after a verified handshake.",
+    "header_bytes": 32,
+    "fields_relative_to_payload": [
+      {
+        "offset": 0,
+        "bytes": 4,
+        "encoding": "big-endian",
+        "field": "magic",
+        "value": "0x31623162"
+      },
+      {
+        "offset": 4,
+        "bytes": 2,
+        "encoding": "big-endian",
+        "field": "operation"
+      },
+      {
+        "offset": 6,
+        "bytes": 2,
+        "encoding": "big-endian",
+        "field": "builder zero; semantic role unproven"
+      },
+      {
+        "offset": 8,
+        "bytes": 2,
+        "encoding": "big-endian",
+        "field": "data byte length"
+      },
+      {
+        "offset": 10,
+        "bytes": 2,
+        "encoding": "little-endian raw store",
+        "field": "frame ones-complement checksum"
+      },
+      {
+        "offset": 12,
+        "bytes": 2,
+        "encoding": "big-endian",
+        "field": "block index/sequence"
+      },
+      {
+        "offset": 14,
+        "bytes": 2,
+        "encoding": "little-endian raw store",
+        "field": "whole-file ones-complement checksum on DATA"
+      },
+      {
+        "offset": 16,
+        "bytes": 2,
+        "encoding": "big-endian",
+        "field": "builder argument5, zero in observed file responses; semantic role unproven"
+      },
+      {
+        "offset": 18,
+        "bytes": 2,
+        "encoding": "zero",
+        "field": "reserved"
+      },
+      {
+        "offset": 20,
+        "bytes": 4,
+        "encoding": "big-endian",
+        "field": "builder argument6, zero in observed file responses; not a proven load address"
+      },
+      {
+        "offset": 24,
+        "bytes": 4,
+        "encoding": "big-endian",
+        "field": "builder argument7, zero in observed file responses; not a proven execute address"
+      },
+      {
+        "offset": 28,
+        "bytes": 4,
+        "encoding": "zero",
+        "field": "reserved"
+      },
+      {
+        "offset": 32,
+        "bytes": "length",
+        "encoding": "raw",
+        "field": "data/filename"
+      }
+    ],
+    "extra_tail": "Exact builder sends34+data_bytes through pt_pkt_send, although header is32bytes and checksum spans32+data. Therefore two trailing bytes are transmitted outside declared data/checksum. The builder does not explicitly clear these bytes; newly allocated model memory is zero. Do not assert real tail bytes are always zero.",
+    "length_bounds": "Builder checks (u16 length)+46<=1518, permitting1472data bytes; combined with extra2tail and libpt Ethernet14 this would make1520bytes. Actual file service uses1400byte data blocks. Use the demonstrated1400 contract and explicitly reject unsupported sizes instead of treating the upper builder bound as a proven wire MTU.",
+    "checksum": {
+      "entry": "0x402da0",
+      "algorithm": "Sum little-endian16bit words; if odd, add final byte as low byte of a zero-high16bit word; fold carry into16bits twice; bitwise complement and mask0xffff.",
+      "frame_scope": "32byte header with offset10 initially zero plus exactly declared data; excludes the transmitted extra2tail bytes.",
+      "verification": "Old server checks only if received offset10 is nonzero; computes over32+declared length and requires result0. Zero bypasses validation.",
+      "helper_max_input": 8192,
+      "helper_oversized_return": "0xffff, not a distinct error enum",
+      "whole_file": "RRQ path computes a ones-complement sum over file bytes in1024byte reads, then copies resulting16bit value raw little-endian at header14 in every DATA response. This is not CRC32 or a cryptographic digest.",
+      "whole_file_accumulator_precision": "The RRQ loop accumulates into a32-bit AArch64 w register with modulo2^32 wrap, without carry folding per1024-byte read. Final folds use arithmetic right shift. For large files this is not equivalent to a mathematically unbounded standard Internet checksum; preserve the exact verified algorithm when producing the compatibility field.",
+      "whole_file_reference": "acc=u32(sum of LE16 words plus last odd byte); t=u32((acc&0xffff)+(s32(acc)>>16)); t=u32(t+(s32(t)>>16)); checksum=(~t)&0xffff. The checksum helper for <=8192-byte frames cannot substitute an unbounded whole-file implementation without matching these overflow rules."
+    },
+    "operations": [
+      {
+        "code": 1,
+        "role": "Endpoint notify in selected server",
+        "response": "op2, data length6 carrying configured host identity; no private identity is published"
+      },
+      {
+        "code": 2,
+        "role": "Host notify response; incomingop2 ignored by selected server"
+      },
+      {
+        "code": 3,
+        "role": "RRQ",
+        "request": "NUL-terminated filename from payload offset32, concatenated with/etc/iNIC/",
+        "response": "Compute file checksum, reopen input, send first1400bytes or final short block asop5 sequence1"
+      },
+      {
+        "code": 5,
+        "role": "DATA host response",
+        "request": "Not an active incoming dispatch in this server",
+        "response": "32byte header+file block+2extra tail; includes whole-file checksum"
+      },
+      {
+        "code": 6,
+        "role": "Endpoint ACK",
+        "request": "BE16 block index at12",
+        "response": "lseek(index*1400), read up to1400, sendop5 index+1"
+      }
+    ],
+    "file_completion": "If a next-block read returns0 and previous read length was1400, send a zero-length DATA terminator. When read<=0 and previous length is not1400, close input, set done flag and return server success. This is a host file-loop condition, not a separate verified endpoint boot acknowledgement.",
+    "timeout": "11 consecutive modeled recv result3 events return3; no retransmission was observed in this server path. The outer main restarts full bootstrap after nonzero phase2/server return.",
+    "native_validation_requirements": [
+      "Validate exact Ethernet/protocol/header/data bounds, magic and reserved roles before decoding or copying; old selected server converts magic but does not compare it.",
+      "Associate source/interface, operation and block index with one current endpoint generation/transfer; reject stale, duplicate-out-of-window and arbitrary ACK seeks.",
+      "Restrict filenames to the pinned manifest, require bounded NUL termination and reject path traversal; do not reproduce arbitrary prefix concatenation.",
+      "Handle short reads, file changes/read errors, EOF, sequence wrap and partial sends explicitly; verify full intended file length and final endpoint execution readiness before success.",
+      "Preserve required compatibility quirks only after independent endpoint evidence; never let zero checksum or helper return0 alone constitute current trusted readiness."
+    ],
+    "confirmed_negative_guest_observations": [
+      "Bad magic RRQ is still served by unchanged HSM when supplied through modeled accepted receive.",
+      "After first1400bytes of a1500byte synthetic file, ACK100 causes an EOF seek and return0 without transmitting the remaining100bytes.",
+      "Builder data1473 sends nothing and returns the preexisting argument-derived register value rather than a reliable error code."
+    ],
+    "whole_appliance_exposure_claim": false,
+    "old_error_handling_caveat": "Selected server ignores the pt_fd_open result and only treats recv result3 as its timeout count path; other errors can fall through into old buffer parsing. Many send results are ignored. Use an explicit native receive result carrying actual frame length and error, rather than porting the legacy return-only interface.",
+    "endpoint_address_fields_unproven": true
+  },
+  "RAM_parameter_contract": {
+    "entry": "0x403a10",
+    "input": "/etc/iNIC/tclinux.bin",
+    "operation": "Read up to256bytes; compute u32(0x03d44000 - (LE32_at_offset4 + LE32_at_offset136)); write through MDIO bridge to0x1fb00f1c.",
+    "pinned_input_fields": {
+      "LE32_at4": 256,
+      "LE32_at136": 1442176,
+      "computed_register_value": "0x03be3d80"
+    },
+    "errors": "Open/lseek/read<=0 yields7. The old code does not require a full256byte read or bounds-check arithmetic and does not check the final bridge-write result.",
+    "interpretation_boundary": "The offsets and arithmetic are confirmed. Names such as image load address, execute entry or physical RAM size are not inferred from this calculation alone.",
+    "native_requirement": "Pin and validate header/input length, overflow/underflow and expected value; propagate write failure before opening the file server."
+  },
+  "heartbeat_and_event_contract": {
+    "entry": "0x4019f0",
+    "EtherType": "0xbeec",
+    "main_timeout_argument_seconds": 5,
+    "host_request": {
+      "bytes": 20,
+      "offset0": "BE32 0x48424842",
+      "offset4": "BE32 timeout argument5",
+      "remaining12bytes": "Not explicitly initialized by the selected builder; zero only in fresh model buffers"
+    },
+    "endpoint_event": {
+      "offset0": "BE32 magic0x7517beec",
+      "offset4": "u8 type",
+      "offset5": "u8 state for selected events",
+      "offset6": "Type2 WAN standard string, parsed until newline by original unbounded scanset"
+    },
+    "types": [
+      {
+        "type": 1,
+        "behavior": "Heartbeat received: reset timeout counter to0 and stop repeating initial host requests"
+      },
+      {
+        "type": 2,
+        "behavior": "WAN-change event: writes state and standard to original client_info proc nodes; state2or4 disables ae_wan_inic_filter, other observed states enable it. This does not by itself establish current DSL showtime/authenticated Internet."
+      },
+      {
+        "type": 3,
+        "behavior": "OAM ping status change is logged; no success inference"
+      }
+    ],
+    "timeout_recovery": "Initial counter=-4. With no valid heartbeat,19 modeled receive failures reach return3 and four SGMII recovery calls. After one valid type1 event,15 further failures reach return3 with recoveries at counts4/8/12. Main then republishes bootstrap state and restarts full endpoint initialization.",
+    "native_requirements": "Bound string length, authenticate current source/interface/generation, validate exact event length/type and separate transport heartbeat, WAN state, real line showtime, bearer and PPP service. Replace vendor proc/system writers with native state and controlled hardware actions."
+  },
+  "main_and_interrupt_lifecycle": {
+    "entry": "0x401200",
+    "startup": "Parses interface/GPIO/PHY/host identity/skip flag; initializes shared metadata, invokes vendor sys write0x1fa08000=0x77fe2830, then enters skip-or-bootstrap path.",
+    "metadata": "Flags5 are initially published before boot mode decision; bootstrap publishes2; successful post-load SGMII check republishes5 before heartbeat. Bit0 can therefore be transiently set before endpoint verification in the original sequence. Native readiness must only publish after current verified completion.",
+    "normal_path": "GPIO reset -> conditional PLL -> DDR -> iNIC -> tclinux ROM server -> SGMII check -> heartbeat/events.",
+    "failure_path": "Nonzero DDR retries the bootstrap loop; nonzero phase2/server restarts full bootstrap; link-check or heartbeat failure also returns to full bootstrap. The selected loop has no global retry/backoff ceiling.",
+    "termination": "Selected SIGINT/SIGQUIT/SIGTERM handler clears first28metadata bytes, detaches and exits1. SIGALRM sets timeout word. Registering SIGKILL cannot catch it; hard kill/power loss cannot be assumed to clear metadata. The selected handler does not reset endpoint/PCS or prove complete FD/DMA cleanup.",
+    "native_requirements": "Single supervised lifecycle with bounded retries/backoff, explicit owner/generation, stale-state invalidation before any reset, cancellation at every stage and deterministic teardown/rollback to the previous board mode."
+  },
+  "PCS_and_board_mapping": {
+    "confirmed_software_resource_evidence": [
+      {
+        "path": "research/vb235v/bringup/m71-dual-2p5g/an7583-tplink_vb235v-ram-multigig.dts",
+        "line": 6,
+        "note": "pcs_wan at1fa08000; shared SCU/reset/PMA resources;2500base-x profile; gdm2/eth1 with PHY14 at44-49."
+      },
+      {
+        "path": "research/vb235v/bringup/m73-persistent-system/an7583-tplink_vb235v.dts",
+        "line": 2,
+        "note": "Active persistent image inherits that DTS."
+      },
+      {
+        "path": "offline-analysis/m56-dsl-original-rootfs/lifecycle/etc/init.d/rcS.openwrt-21.02.econet",
+        "line": 205,
+        "note": "Original selects SerDes-1 DSL/WAN/USXGMII."
+      },
+      {
+        "artifact": "hsm",
+        "offsets": [
+          "0x4014c4",
+          "0x4014d0",
+          "0x40199c",
+          "0x4019b8"
+        ],
+        "note": "Original programs host PON MAC1fa08000 and toggles host1fa80000 bit12 during recovery."
+      }
+    ],
+    "GPIO40_evidence": "Original rcS187-191 switches pinmux toGPIO40;214-217 drivesGPIO40 high after launching HSM. This proves software sequencing, not whetherGPIO40 is a DSL/PHY14 analog/digital mux or which external connector is selected.",
+    "physical_routing_status": "Unresolved: no reviewed schematic or full measured mux route proves whether endpoint USXGMII and external PHY14 share an exclusive board path, or how both external2.5G ports coexist with DSL.",
+    "conclusion": "One native PON PCS/clock/reset block is currently assigned toeth1; original DSL also programs it. Exclusive software ownership and controlled restoration are mandatory even if physical routing later proves more flexible. Do not convert this confirmed software conflict into an unmeasured claim that a particular external port must be lost.",
+    "required_evidence": "Compare exact original board_cfg/serdes_cfg and switch path, GPIO40 behavior, measured native/endpoint link route and per-mode register ownership before any live takeover. Quiesce queues/NAPI/DMA/IRQs and phylink before reconfiguration."
+  },
+  "release_gates": [
+    "G0: Exact input manifest and native helper image inventory; no HSM direct-execution shortcut.",
+    "G1: Prove MDIO bus/PHY24 and board/PCS ownership, including recovery route; preserve factory/rescue and management.",
+    "G2: Unit/guest comparisons for register/endianness/bounds/error propagation and strict lifecycle; independently resolve trailer/tail ambiguities.",
+    "G3: Original complete cold-start trace then native staged endpoint boot with current ACK/integrity, timing and failure rollback.",
+    "G4: Current source-bound0xbeef transfer reaches full-length endpoint execution;0xbeec heartbeat/status is fresh and truthful.",
+    "G5: Genuine line showtime, verified ATM/PTM/VLAN executor and automatic PPPoE authentication; none is implied by HSM completion.",
+    "G6: Owner-line clean-image cold power-on and repeated failure/reconnect with real LAN IPv4/IPv6/PD/DNS/MTU. Remind owner to attach the disconnected DSL line before physical tests."
+  ],
+  "publication": {
+    "private_identity_values": false,
+    "credentials": false,
+    "MAC_addresses": false,
+    "firmware_bytes": false,
+    "raw_disassembly": false,
+    "calibration_bytes": false,
+    "private_logs": false,
+    "hardware_success_claim": false
+  },
+  "verification": {
+    "actual_pinned_guest_cases": 38,
+    "base_cases": 33,
+    "groups": {
+      "frame_builder": 8,
+      "checksum_boundaries": 7,
+      "MDIO_and_GPIO_wrappers": 4,
+      "MDIO_stages": 6,
+      "ROM_server": 4,
+      "heartbeat_events": 4,
+      "large_file_checksum": 1,
+      "stage_faults": 4
+    },
+    "guest_code_unchanged": true,
+    "external_imports_and_endpoint_replies_modeled": true,
+    "real_IO_or_network_operations": 0,
+    "hardware_end_to_end_acceptance": false,
+    "model_source_sha256": "86e1ee256e02627640a9009eb8525827c997ad491274dfb854a5abd55d119a24"
+  },
+  "synthetic_checksum_vectors": [
+    {
+      "data_bytes": 0,
+      "checksum": 65535
+    },
+    {
+      "data_bytes": 1,
+      "checksum": 65532
+    },
+    {
+      "data_bytes": 2,
+      "checksum": 62972
+    },
+    {
+      "data_bytes": 3,
+      "checksum": 62955
+    },
+    {
+      "data_bytes": 4,
+      "checksum": 56811
+    },
+    {
+      "data_bytes": 8192,
+      "checksum": 63495
+    },
+    {
+      "data_bytes": 8193,
+      "checksum": 65535
+    }
+  ],
+  "synthetic_frame_vectors": [
+    {
+      "data_bytes": 0,
+      "return_u32": 0,
+      "sent": [
+        {
+          "selector": "0xbeef",
+          "length": 34,
+          "hex": "31623162000500000000f124123466557788000011223344aabbccdd000000000000"
+        }
+      ]
+    },
+    {
+      "data_bytes": 1,
+      "return_u32": 0,
+      "sent": [
+        {
+          "selector": "0xbeef",
+          "length": 35,
+          "hex": "31623162000500000001ee23123466557788000011223344aabbccdd00000000030000"
+        }
+      ]
+    },
+    {
+      "data_bytes": 2,
+      "return_u32": 0,
+      "sent": [
+        {
+          "selector": "0xbeef",
+          "length": 36,
+          "hex": "31623162000500000002ee18123466557788000011223344aabbccdd00000000030a0000"
+        }
+      ]
+    },
+    {
+      "data_bytes": 3,
+      "return_u32": 0,
+      "sent": [
+        {
+          "selector": "0xbeef",
+          "length": 37,
+          "hex": "31623162000500000003dd17123466557788000011223344aabbccdd00000000030a110000"
+        }
+      ]
+    },
+    {
+      "data_bytes": 4,
+      "return_u32": 0,
+      "sent": [
+        {
+          "selector": "0xbeef",
+          "length": 38,
+          "hex": "31623162000500000004dcfe123466557788000011223344aabbccdd00000000030a11180000"
+        }
+      ]
+    }
+  ],
+  "synthetic_large_file_checksum_vector": {
+    "classification": "actual pinned HSM RRQ, synthetic file and modeled callbacks",
+    "synthetic_file_bytes": 4214743,
+    "guest_instructions": 8498449,
+    "wall_seconds": 5.78,
+    "accumulator_u32": "0x3e0c540",
+    "checksum_reference": 14047,
+    "checksum_guest": 14047,
+    "equal": true,
+    "reply_bytes": 1434,
+    "data_bytes": 1400,
+    "private_firmware_used": false
+  },
+  "synthetic_stage_fault_vectors": [
+    {
+      "phase": 1,
+      "scenario": "ignored-writes",
+      "return_u32": 0,
+      "write_calls": 5,
+      "poll_calls": 2,
+      "actual_guest_instructions": 175,
+      "no_device_access": true
+    },
+    {
+      "phase": 1,
+      "scenario": "timeout",
+      "return_u32": 3,
+      "write_calls": 0,
+      "poll_calls": 1,
+      "actual_guest_instructions": 72,
+      "no_device_access": true
+    },
+    {
+      "phase": 2,
+      "scenario": "ignored-writes",
+      "return_u32": 0,
+      "write_calls": 11,
+      "poll_calls": 2,
+      "actual_guest_instructions": 316,
+      "no_device_access": true
+    },
+    {
+      "phase": 2,
+      "scenario": "timeout",
+      "return_u32": 3,
+      "write_calls": 0,
+      "poll_calls": 1,
+      "actual_guest_instructions": 138,
+      "no_device_access": true
+    }
+  ],
+  "original_boot_artifacts": [
+    {
+      "name": "hsm",
+      "bytes": 26560,
+      "sha256": "9254ac7fc0fa9699c6266cb4b854d6ed9d9f9d11e128153daa2228baabe4a92a"
+    },
+    {
+      "name": "ddr_cal.bin",
+      "bytes": 22744,
+      "sha256": "7ea80b9b2c30f6687a0b14e1e8bc259f9daaf554b138770b4fb1b1886dfe1404"
+    },
+    {
+      "name": "iNIC.bin",
+      "bytes": 39556,
+      "sha256": "2840bd859eb27dbcc2997abde5223a7059ef3d97e89d047a2854eef664ed341f"
+    },
+    {
+      "name": "tclinux.bin",
+      "bytes": 4214743,
+      "sha256": "c6e0a8d0cbaf282b956a9fd3b9050cb073434947c6a32c9b95976b72eaa2a412"
+    }
+  ],
+  "confirmed_vs_unknown": {
+    "confirmed_by_exact_guest": [
+      "Header layout, mixed endianness, transmitted lengths and selected checksum outputs.",
+      "C22 bridge register ordering and pointer ioctl layout.",
+      "GPIO reset command order and1second assertion.",
+      "DDR/iNIC success/CRC-failure paths, extra/stale DDR word and repeated configuration address.",
+      "ROM normal and bad-magic handling, stale ACK early-success and11-timeout failure.",
+      "Heartbeat request bytes and selected timeout/event paths.",
+      "Large synthetic file checksum matches exact32-bit wrapped arithmetic."
+    ],
+    "static_only_selected_paths": [
+      "PLL register branch/write sequence and post-load SGMII status/recovery loop.",
+      "Main metadata transitions, retry ordering and selected signal handler.",
+      "tclinux header RAM-parameter offsets and pinned input field values."
+    ],
+    "must_not_invent": [
+      "Physical routing or GPIO40 mux meaning without original board control/measurements.",
+      "C45/PBUS transformation absent from the selected HSM C22 wrapper.",
+      "Header20/24 as load or execute addresses; their active meanings are unresolved.",
+      "A corrected contiguous configuration trailer or always-zero two-byte tail.",
+      "CRC32 specification, transfer integrity or endpoint execute acceptance from host hashes/NOCR alone.",
+      "Automatic DSL showtime/authentication or Internet from an HSM/helper return0."
+    ],
+    "remaining_deep_paths": [
+      "Original mdio_arht/eth0 kernel ioctl and MDIO-controller behavior matching the live module.",
+      "Endpoint ROM/iNIC memory, checksum and final execute semantics versus merely accepted host callbacks.",
+      "Complete original board_cfg/serdes_cfg runtime and physical mux/PCS mapping.",
+      "Independent real endpoint capture and failure timing; actual owner line sync/PPPoE/IPv6/PD."
+    ]
+  },
+  "created_utc": "2026-11-21T20:55:10.148538+00:00",
+  "native_source_fingerprints": [
+    {
+      "source_root": "current native linux-6.18.60",
+      "path": "drivers/net/ethernet/airoha/airoha_eth.c",
+      "line": 4117,
+      "sha256": "102f53de286f53e61ca41ba7adaf6b55886b4ea98b86fd83c2cff9b8f1875799"
+    },
+    {
+      "source_root": "current native linux-6.18.60",
+      "path": "drivers/net/phy/phy.c",
+      "line": 310,
+      "sha256": "8572bcf14dac9fc6fbb9f8d5fa4c7aaf7e268dc2b30f4542f227f780c9b37cde"
+    },
+    {
+      "source_root": "current native linux-6.18.60",
+      "path": "include/linux/mii.h",
+      "line": 51,
+      "sha256": "4cd70ccd58c513e660ab36400ecd2e2450cf8386c01245c7fcf113ae6011955a"
+    }
+  ]
+}

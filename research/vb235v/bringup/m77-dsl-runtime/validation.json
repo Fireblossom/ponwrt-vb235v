@@ -1,0 +1,257 @@
+{
+  "schema": 1,
+  "milestone": "M77 native DSL bootstrap development core",
+  "created_utc": "2026-11-21T21:41:46.582842+00:00",
+  "release_state": "BLOCKED: board/PCS owner, iNIC trailer, ROM policy and endpoint execute readiness need original runtime evidence; line/bearer/PPP/Internet providers remain absent",
+  "deliverable": "Actual native C core, daemon, Linux UAPI/provider, strict packet/file session, disabled package staging and original-runtime sampling tools",
+  "scope": {
+    "shared_build_tree_modified": false,
+    "COM3_access": false,
+    "SP3_access": false,
+    "router_commands_sent": false,
+    "real_hardware_writes": false,
+    "original_binaries_executed_on_host": false
+  },
+  "host_core": {
+    "strict_compiler_flags": [
+      "-std=c11",
+      "-Wall",
+      "-Wextra",
+      "-Werror",
+      "-Wformat=2",
+      "-Wshadow",
+      "-Wconversion"
+    ],
+    "assertions_passed": 10036,
+    "asan_ubsan_assertions_passed": 10036,
+    "assertion_count_is_not_a_count_of_independent_hardware_tests": true,
+    "coverage": [
+      "Original guest golden mixed-endian frame",
+      "Original small/large wrapped checksum vectors",
+      "SHA256 empty/abc/million-a vectors",
+      "Every C22 transaction failure position and read gate restore",
+      "Foreign source/EtherType, malformed lengths, wrong magic/checksum and zero checksum rejection",
+      "One-block bounded duplicate ACK replay, stale/out-of-window ACK rejection and unchanged state",
+      "Fresh-output clearing after rejection",
+      "Exclusive-owner gates, GPIO reset and both PLL branches",
+      "DDR data/extra EOF word, CRC reject, immediate write failure, timeout and cancellation",
+      "Confirmed iNIC segments stop before unknown trailer",
+      "Transfer EOF never becomes endpoint execution success"
+    ]
+  },
+  "supervisor_integration": {
+    "environment": "Isolated Linux build host as root with no /dev/ponwrt-dsl; private temporary directory only",
+    "normal_assertions_passed": 345,
+    "sanitized_assertions_passed": 345,
+    "counts_include_repeated_snapshot_invariant_assertions": true,
+    "coverage": [
+      "Current boot_id and BOOTTIME timestamp",
+      "Root0600 atomic file and root0700 state directory",
+      "Generation increments across process restart",
+      "Exclusive daemon lock",
+      "Root0600 Unix datagram socket",
+      "Exact retry command and ACK after persisted generation",
+      "Unknown command rejected",
+      "Non-root SCM_CREDENTIALS rejected even when disposable socket mode is temporarily widened",
+      "Idle freshness refresh",
+      "Graceful stopped state",
+      "Exact three real private input hashes accepted then provider absence blocks",
+      "Same-size firmware tamper rejected before owner stage",
+      "Showtime/auth/IPv4/IPv6 never become true",
+      "Unexpected SCM_RIGHTS rejected and received FDs closed without generation advancement or FD leak"
+    ]
+  },
+  "target_build": {
+    "AArch64_musl_executable_compiled": true,
+    "interpreter": "/lib/ld-musl-aarch64.so.1",
+    "needed": [
+      "libgcc_s.so.1",
+      "libc.so"
+    ],
+    "native_device_execution_verified": false
+  },
+  "kernel_provider": {
+    "compiled_against_actual_native_linux_headers": "6.18.60",
+    "Werror_object_compile_passed": true,
+    "method": "Reuse reviewed compiler flag data, execute compiler directly with every output redirected outside the shared tree; no kernel make invocation",
+    "module_link_verified": false,
+    "module_load_verified": false,
+    "board_owner_registered": false,
+    "DT_node_supplied": false,
+    "GPIO_or_bus_guessed": false,
+    "GPIO_write_at_probe": false,
+    "owner_callbacks_and_verified_DT_profile_required": true,
+    "uses_of_mdio_find_bus_and_real_mdio_bus_lock": true
+  },
+  "package": {
+    "package_stage_passed": true,
+    "default_enabled": false,
+    "firmware_included": false,
+    "shell_syntax_checked": 2,
+    "artifacts": [
+      {
+        "path": "/tmp/ponwrt-m77-target/ponwrt-dsl",
+        "bytes": 136032,
+        "sha256": "62c326a71d992d10f80b6d61476db5cb8b1742077e6446b0603b115f2f7ca97b"
+      },
+      {
+        "path": "/tmp/ponwrt-m77-kernel/provider_kernel.o",
+        "bytes": 95760,
+        "sha256": "8136616296122910ce1b464fba1c2a6f77e344339df1be74bd0383bbb8195e2b"
+      }
+    ]
+  },
+  "diagnostics_contract": {
+    "path": "/tmp/ponwrt/dsl-state.json",
+    "schema": 1,
+    "default_stages": [
+      "inputs",
+      "owner",
+      "endpoint",
+      "line",
+      "ppp",
+      "internet"
+    ],
+    "socket": "/var/run/ponwrt-dsl-control.sock",
+    "retry_command": "retry",
+    "ack": "ACK <new persisted generation>",
+    "state_owner": "root",
+    "state_mode": "0600",
+    "service_default_enabled": false,
+    "credentials_or_IP_MAC_raw_command_logged": false,
+    "showtime_or_internet_success_implemented": false
+  },
+  "specific_stops": [
+    "INPUTS_MISSING_OR_MISMATCH",
+    "OWNER_PROVIDER_UNBOUND",
+    "OWNER_PROFILE_UNVERIFIED",
+    "INIC_TRAILER_UNVERIFIED",
+    "ROM_TAIL_UNVERIFIED",
+    "EXEC_ACK_UNVERIFIED",
+    "OWNER_RELEASE_FAILED"
+  ],
+  "remaining_material_limits": [
+    "Original-controller MDIO timeout and error behavior is not hardware qualified. Native1ms poll backoff and10/20second stage deadlines require original/native timing comparison.",
+    "Local generation is not an invented wire nonce. Drained queues, endpoint reset and current peer/interface plus strict sequence are necessary; complete wire freshness still needs original trace evidence.",
+    "ROM zero-checksum receive policy is deliberately stricter than the old optional-checksum path and needs actual endpoint qualification.",
+    "Unknown configuration trailer, ROM tail and execute acknowledgement are not guessed. Current runtime cannot complete a DSL boot or automatic PPP login.",
+    "Kernel compilation-unit success does not substitute module linking/loading, device ownership or tested teardown/restore."
+  ],
+  "next_sampling": {
+    "readonly_script": "oem-readonly-inventory.sh",
+    "instructions": "OEM-SAMPLING.md",
+    "minimum": [
+      "Exact complete original runtime/HSM and native-vs-original MDIO/PCS/pinmux ownership",
+      "Passive original C22 mailbox trace including each final CONF/identity write address and acknowledgement",
+      "Passive0xbeef capture including tail bytes, last DATA/ACK and any final operation; first fresh0xbeec control response and SGMII check",
+      "Only after those gates, real line and no-manual-credentials Telekom service acceptance"
+    ]
+  },
+  "source_fingerprints": [
+    {
+      "file": "check-kernel-object.py",
+      "bytes": 2557,
+      "sha256": "49f8bc5c08a1c3899570b412b8cd8481475195ccbe5fa8c9fdaac99e232c07be"
+    },
+    {
+      "file": "core.c",
+      "bytes": 10329,
+      "sha256": "e905224ab2c1915793c9ea2bda74c1f71dd62040dcfed59eab569f79f257a7ec"
+    },
+    {
+      "file": "core.h",
+      "bytes": 2939,
+      "sha256": "c096747b7d7bc0de51021399a71fab112dcf22ae50e6e5707d40fd4fd7d82022"
+    },
+    {
+      "file": "host-runtime-test.py",
+      "bytes": 6082,
+      "sha256": "e187e4267260eb0153a71a28c33c58ea901893548a8c2f48b87a3dd2c6213481"
+    },
+    {
+      "file": "host-tests.c",
+      "bytes": 9842,
+      "sha256": "7f9b323e4e361388bd86cc8f1177b4dc1cdd101690aa84c737bf2bf0d59b7956"
+    },
+    {
+      "file": "Kbuild",
+      "bytes": 114,
+      "sha256": "3fb7cd2db8892006db8f28d42699b97cb3e7f89d476e0b045202787ea6365778"
+    },
+    {
+      "file": "Makefile",
+      "bytes": 769,
+      "sha256": "bbe02d9fec3dda17b59ffd892f1d9dd62fa004b23e8112bf2813dda06f162d54"
+    },
+    {
+      "file": "oem-readonly-inventory.sh",
+      "bytes": 2082,
+      "sha256": "1a3adb833379ab0e19eb186dfb86a8ffeb1c991a3763f3fb341e9fb4a51d6d34"
+    },
+    {
+      "file": "OEM-SAMPLING.md",
+      "bytes": 6266,
+      "sha256": "871b3caecd20b676b0b667b45d4c6d27e9647b7e0d1d9086b01579c45d2164ee"
+    },
+    {
+      "file": "openwrt-package.mk",
+      "bytes": 1165,
+      "sha256": "1d1bfd729d86ddec504cefb394533e28d13a9b12880408275303a6efbcb2c117"
+    },
+    {
+      "file": "ponwrt-dsl.config",
+      "bytes": 78,
+      "sha256": "08f97865800a72b56b1c13e78763e9160ecf9f350fe1fd70eb4ae17266bbf0e5"
+    },
+    {
+      "file": "ponwrt-dsl.init",
+      "bytes": 383,
+      "sha256": "e1e8358589da28ca523287d5759ab788e2f555de5a3519fa5bafa4c0853f8834"
+    },
+    {
+      "file": "provider.c",
+      "bytes": 4967,
+      "sha256": "6b0ffb3208ab00f7470e9bbab20482087aec1c2671b8d6c761cd89d26072c171"
+    },
+    {
+      "file": "provider.h",
+      "bytes": 593,
+      "sha256": "406cfc27e35f41954d4c4c0e0ab70bc26a2628d2a8c6113182444b132f3f3df4"
+    },
+    {
+      "file": "provider_kernel.c",
+      "bytes": 9707,
+      "sha256": "ff1495074c3c71c36854237097ec1c5d32acf1effedabacfde5539c46846e40e"
+    },
+    {
+      "file": "provider_owner.h",
+      "bytes": 617,
+      "sha256": "5bd8f2ccb527fe0e414e398f91fbe260b6cf9180f3325f12a3b2088ee14e9db3"
+    },
+    {
+      "file": "provider_uapi.h",
+      "bytes": 1054,
+      "sha256": "ec336718d250abc103bc3e2d9621fdfcf91b9bd6e73f424bc4d9ca5211cdea73"
+    },
+    {
+      "file": "README.md",
+      "bytes": 7129,
+      "sha256": "a0558186b5b875a401c5f11a893e64771f9c60e7b72652b1ace4720f14a0a8ff"
+    },
+    {
+      "file": "runtime.c",
+      "bytes": 13606,
+      "sha256": "fcfeff01989cc2504030a859c77396688cf48ac2a28aacebbae39a76ccce8a96"
+    },
+    {
+      "file": "sha256.c",
+      "bytes": 2113,
+      "sha256": "880214db8c100f4aae2089e687c78207e7a9db54f85e3348b3fd0a44b5861c95"
+    },
+    {
+      "file": "stage-package.py",
+      "bytes": 889,
+      "sha256": "88ad8e9e1373777ce84b88816bdc939db921a1e80ea9a5f7177da4ce37e64310"
+    }
+  ]
+}

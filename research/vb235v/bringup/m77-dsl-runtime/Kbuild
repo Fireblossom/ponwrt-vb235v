@@ -1,0 +1,3 @@
+# SPDX-License-Identifier: GPL-2.0-only
+obj-m += ponwrt_dsl_provider.o
+ponwrt_dsl_provider-y := provider_kernel.o
