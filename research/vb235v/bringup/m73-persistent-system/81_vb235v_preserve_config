@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: GPL-2.0-only
+# Runs after mount_root and backup restoration, before config_generate/defaults.
+vb235v_preserve_existing_config() {
+ [ "$(cat /tmp/sysinfo/board_name 2>/dev/null)" = 'tplink,vb235v' ] || return 0
+ [ -f /overlay/upper/etc/config/network ] || return 0
+ touch /tmp/vb235v-preserve-config
+}
+boot_hook_add preinit_main vb235v_preserve_existing_config

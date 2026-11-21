@@ -1,0 +1,123 @@
+--- a/drivers/mtd/nand/spi/core.c
++++ b/drivers/mtd/nand/spi/core.c
+@@ -21,6 +21,7 @@
+ #include <linux/spi/spi.h>
+ #include <linux/spi/spi-mem.h>
+ #include <linux/mtd/mtk_bmt.h>
++#include "vb235v-system-admit.h"
+ 
+ int spinand_read_reg_op(struct spinand_device *spinand, u8 reg, u8 *val)
+ {
+@@ -374,6 +375,11 @@
+ int spinand_write_enable_op(struct spinand_device *spinand)
+ {
+ 	struct spi_mem_op op = SPINAND_WR_EN_1S_0_0_OP;
++
++	/* RAM audit profile: reject WREN before any flash program/erase. */
++	if (device_property_read_bool(&spinand->spimem->spi->dev,
++				      "tplink,vb235v-read-only-audit"))
++		return -EROFS;
+ 
+ 	return spi_mem_exec_op(spinand->spimem, &op);
+ }
+@@ -680,12 +686,38 @@
+  * Return: 0 or a positive number of bitflips corrected on success.
+  * A negative error code otherwise.
+  */
++static int spinand_vb235v_program_check(struct spinand_device *spinand,
++                                       const struct nand_page_io_req *req)
++{
++ struct nand_device *nand = spinand_to_nand(spinand);
++ u64 from = nanddev_pos_to_offs(nand, &req->pos);
++ const u8 *marker = req->oobbuf.out;
++ if (!spinand->vb235v_hybrid)
++  return 0;
++ if (req->datalen) {
++  if (req->dataoffs || req->datalen != VB_HYBRID_PAGE ||
++      req->mode == MTD_OPS_RAW || req->ooblen)
++   return -EINVAL;
++  return vb_hybrid_check(&spinand->vb235v_policy, VB_HYBRID_PROGRAM,
++                         from, req->datalen);
++ }
++ if (req->pos.page || req->mode != MTD_OPS_RAW || req->ooboffs ||
++     req->ooblen != 2 || !marker || marker[0] != 0xff || marker[1] != 0)
++  return -EINVAL;
++ return vb_hybrid_check(&spinand->vb235v_policy, VB_HYBRID_RETIRE,
++                        from, VB_HYBRID_ERASE);
++}
++
+ int spinand_write_page(struct spinand_device *spinand,
+ 		       const struct nand_page_io_req *req)
+ {
+ 	struct nand_device *nand = spinand_to_nand(spinand);
+ 	u8 status;
+ 	int ret;
++
++	ret = spinand_vb235v_program_check(spinand, req);
++	if (ret)
++		return ret;
+ 
+ 	ret = nand_ecc_prepare_io_req(nand, (struct nand_page_io_req *)req);
+ 	if (ret)
+@@ -1043,6 +1075,13 @@
+ 	};
+ 	int ret;
+ 
++	if (spinand->vb235v_hybrid) {
++		ret = vb_hybrid_runtime_marker(&spinand->vb235v_policy,
++					       nanddev_pos_to_offs(nand, pos), marker);
++		if (ret)
++			return ret;
++	}
++
+ 	ret = spinand_select_target(spinand, pos->target);
+ 	if (ret)
+ 		return ret;
+@@ -1064,6 +1103,13 @@
+ 	struct nand_pos pos;
+ 	int ret;
+ 
++	/* Reject denied retirement before media reads or RAM BBT changes. */
++	if (spinand->vb235v_hybrid) {
++		ret = vb_hybrid_check(&spinand->vb235v_policy, VB_HYBRID_RETIRE,
++				      offs, VB_HYBRID_ERASE);
++		if (ret)
++			return ret;
++	}
+ 	nanddev_offs_to_pos(nand, offs, &pos);
+ 	mutex_lock(&spinand->lock);
+ 	ret = nanddev_markbad(nand, &pos);
+@@ -1077,6 +1123,13 @@
+ 	struct spinand_device *spinand = nand_to_spinand(nand);
+ 	u8 status;
+ 	int ret;
++
++	if (spinand->vb235v_hybrid) {
++		ret = vb_hybrid_check(&spinand->vb235v_policy, VB_HYBRID_ERASE_OP,
++				      nanddev_pos_to_offs(nand, pos), VB_HYBRID_ERASE);
++		if (ret)
++			return ret;
++	}
+ 
+ 	ret = spinand_select_target(spinand, pos->target);
+ 	if (ret)
+@@ -1740,6 +1793,8 @@
+ 		return -ENOMEM;
+ 
+ 	spinand->spimem = mem;
++	spinand->vb235v_hybrid = device_property_read_bool(&mem->spi->dev,
++						     "tplink,vb235v-hybrid-policy");
+ 	spi_mem_set_drvdata(mem, spinand);
+ 	spinand_set_of_node(spinand, mem->spi->dev.of_node);
+ 	mutex_init(&spinand->lock);
+@@ -1749,6 +1804,10 @@
+ 	ret = spinand_init(spinand);
+ 	if (ret)
+ 		return ret;
++
++	ret = vb235v_system_admit(spinand);
++	if (ret)
++		goto err_spinand_cleanup;
+ 
+ 	mtk_bmt_attach(mtd);
+ 	ret = mtd_device_register(mtd, NULL, 0);

@@ -1,0 +1,160 @@
+{
+  "schema": 1,
+  "milestone": "M73",
+  "date": "2026-11-21",
+  "board": "tplink,vb235v",
+  "status": "development image installed; installation and upgrade hardware checks passed",
+  "normal_core": "M73",
+  "independent_fixed_rescue": "M54",
+  "installed_revision": "M73-upgrade-v2",
+  "factory_slot0": {
+    "preserved": true,
+    "read_only": true,
+    "offset": 12845056,
+    "bytes": 83886080,
+    "eraseblocks": 320,
+    "reclamation_authorized": false
+  },
+  "system_partition": {
+    "offset": 96993280,
+    "bytes": 83623936,
+    "eraseblocks": 319,
+    "only_writable_MTD_partition": true
+  },
+  "artifacts": {
+    "installer_sha256": "74291e25994a1ce1683ea517fe81118859edda2085fd5b046de7b9d471d9621c",
+    "sysupgrade_sha256": "7871bda42aea86c9e817dd35a772d73fe720478deeedefc18e1466527b729220",
+    "system_ubi_sha256": "d9026efdd298bd79ec207364fa4228ef36a02f6c29ca798af2edad8376dee02e",
+    "installer_bytes": 12401553,
+    "sysupgrade_bytes": 13107460,
+    "normal_kernel_bytes": 13959176,
+    "installer_kernel_bytes": 37027848,
+    "kernel_config_sha256": "3a820bca9c2fd6ecd71aac89fc95e421955ba68e9622e1c5db2a196d1b65032b"
+  },
+  "normal_core_FIT_sha256": "aef62f12341667a18ed024b6f3299ba2c034801457f666653961dac93138c4e4",
+  "hardware_checks": {
+    "fresh_full_protected_region_and_system_body_backups": true,
+    "initial_ubiformat_and_NAND_volume_readback": true,
+    "normal_kernel_distinct_from_installer_initramfs": true,
+    "normal_core_installed_through_independent_fixed_rescue": true,
+    "installed_v1_cold_boot": true,
+    "standard_sysupgrade_v1_to_v2": true,
+    "exact_NAND_kernel_and_rootfs_hashes_match_v2": true,
+    "read_only_SquashFS_ROM_and_writable_UBIFS_overlay": true,
+    "all_eight_test_configurations_preserved_across_upgrade_and_cold_boot": true,
+    "custom_network_option_and_persistent_marker_preserved": true,
+    "SSH_host_identity_and_authorized_key_preserved": true,
+    "v2_cold_boot_SP3_off_seconds": 20,
+    "SP3_power_restore_confirmed": true,
+    "v2_cold_boot_UART_input_bytes": 0,
+    "online_ARM_CPUs": 2,
+    "management_port_Mbps": 1000,
+    "full_protected_partition_hashes_match_after_upgrade": true,
+    "owned_test_probes_removed_and_seven_original_configs_restored": true
+  },
+  "upgrade_admission_cases": [
+    {
+      "case": "valid",
+      "accepted": true,
+      "exit_status": 0
+    },
+    {
+      "case": "corrupted",
+      "accepted": false,
+      "exit_status": 1
+    },
+    {
+      "case": "truncated",
+      "accepted": false,
+      "exit_status": 1
+    },
+    {
+      "case": "wrong-board",
+      "accepted": false,
+      "exit_status": 1
+    },
+    {
+      "case": "RAM-image",
+      "accepted": false,
+      "exit_status": 1
+    }
+  ],
+  "first_upgrade_attempt": {
+    "result": "stopped before kernel/rootfs writes; returned to v1",
+    "cause": "mktemp missing from stage2 RAMFS_COPY_BIN",
+    "kernel_and_rootfs_volume_hashes_unchanged": true,
+    "fix": "explicit /bin/mktemp dependency",
+    "isolated_actual_stage2_RAMFS_negative_and_positive_regression": true,
+    "corrected_second_attempt_passed": true,
+    "generic_completion_message_alone_is_not_a_success_check": true
+  },
+  "native_write_guard_checks": {
+    "ASAN_UBSAN": true,
+    "assertions": 4106,
+    "physical_blocks_checked": 2048,
+    "writes_limited_to_blocks_inclusive": [
+      370,
+      688
+    ],
+    "reject_before_SPI_selection_or_WREN": true,
+    "default_writes_denied": true,
+    "runtime_bad_block_retirement_enabled": false
+  },
+  "protected_readback_SHA256": {
+    "bootloader": "8025aa854688dac7b0cf484ddf034a675d6148cb68301e295ef617a6dfc85c3e",
+    "art": "b0fbd6ca59927d190aea300734d8aceb41309ee591d3a37d003bf8f3e16a1aa3",
+    "misc": "748a1e6fbb708918676994aa4f438e162e0792afc0d0ed111758b5bac83362e1",
+    "slot0": "e101155ea9fb3b29f069180827a7a88524d9f8260bf16e89e9e25c732f94a3c9",
+    "fixed_rescue": "30e952692bb081a06d4e3777046958e2181e685fbc52d069df6f27de65185759",
+    "protected_tail": "e049f45d067ea1fbcf33eab07252e52317ba53ba3c9c3f0233a4a84261768782"
+  },
+  "post_upgrade_UBI": {
+    "kernel_type": "dynamic",
+    "kernel_LEBs": 18,
+    "rootfs_LEBs": 34,
+    "rootfs_data_LEBs": 222,
+    "provisioning_LEBs": 1,
+    "reserved_bad_PEBs": 40,
+    "LEB_bytes": 253952
+  },
+  "remaining_qualification": [
+    "DSL synchronization and Telekom automatic connection/provisioning; line currently disconnected",
+    "analog voice and provider telephone provisioning",
+    "stable dual-2.5G independent-peer negotiation, frame integrity and throughput",
+    "routed forwarding throughput under the intended topology",
+    "AP operation, WPA modes and MLO",
+    "physical Reset-button cold recovery entry",
+    "persistent boot health acknowledgement, trial counter and automatic rollback",
+    "interrupted-upgrade/power-cut recovery and sustained NAND wear/bad-block retirement",
+    "CPU frequency scaling; current kernel still reports missing CPU OPP clock"
+  ],
+  "privacy": "Firmware, calibration, credentials, configuration contents and raw logs remain private.",
+  "authored_source_SHA256": {
+    "81_vb235v_preserve_config": "c3ca2ec56cba467aefe60e106a1e2d011d916dfd378c999857d2054cfa56d6c7",
+    "99-vb235v-persistent": "71b6076d14320e2d9f38b56ecfcf588231f1bb629671e2b25c2d81634758c8d3",
+    "an7583-tplink_vb235v-install-ram.dts": "88532295bb91b221e148fd3af1aa755ee413f1cc788a4142a9535f255164db03",
+    "an7583-tplink_vb235v.dts": "8019f40a36861ba6f6e779b39b36e0d88639bd9231c2a9abb5009a6d34df92b7",
+    "board-anchors.json": "5b7fe66124f2738d68b90babfb85ef331ae5c4c1965dbde02bd5554b881d2be4",
+    "build-checker.sh": "8b1b99b8a1494df6cf412e8f33ca73933c50062d35d4f07a8111d2fc19279e18",
+    "build.sh": "a34e665a0002d63d947ee8b9825a36a23efe7f6c9b9c3c9edd3a2c4ef0bcbf43",
+    "check_native_hooks.py": "a1a214f2cd3a03b81c25aa0c3e5705ad470ced635f2c3c69b4a503b1c7068f97",
+    "image-check.c": "f1424bc803b44f361856103071dac3ded89d8f1293a6c5ceefa16f7ba537cae9",
+    "image.mk": "ae933235c8ba5225e7375388ab221a00bb5775b1ea8ea384bfacfd4876ad8949",
+    "mkits-vb235v-system.py": "d7c81956dc398f8d8c24a5f4561d3aa7dbb68c99bdd4911957401457783f0a98",
+    "persistent-nand.patch": "38a69827f85d23041f02b10eb8d9bc03242b11dce970dc08c05cff90e08f8526",
+    "platform.sh": "eb0e45bbdce9200c92369b406a3d30e1557d2077484105798d7d108d358d5b31",
+    "prepare.py": "d953493e68eeb86fb5caa37c00cff5b99bc9571c383ed11da364e0d11b6c5074",
+    "source-hashes.json": "9886aea1423ebd695cfcb6d8e20683bb1d3d5e071c95430a52f4410b4e8bb785",
+    "spi-core.patch": "6f0566594e9ce68f08620b9ba553fbb1053d55dd99ef68a34e2fc6b0bab751cc",
+    "spi-header.patch": "8bc6ba8da00ee2fc443b097ab19cbd6602e06f72af1f58ff113a1bc8e870b878",
+    "uboot-persistent-system.patch": "9dc0743551eba62ae25392d65f23a48511570842f0f5a1c0c98e03a8c68f0e9d",
+    "uboot-source-hashes.json": "82b126c67d5c3c260f7918cd29e37c2629c56dca714371869cabc6af640d17c6",
+    "uboot-system-boot.c": "fa6457e968594ae2314c3e96037f01e361dabc014e67444db47dc07021ab020a",
+    "vb235v-hybrid-policy.h": "ba5dc91a4ad4be76b28b092499dd196c8c21e5c94a8ca62a931090d0db14023c",
+    "vb235v-map.c": "6a13bb356f1be7540b7a7395d5bcb3f987703762738b121d47d11d6ac329f3a0",
+    "vb235v-map.h": "ebab67c04c9f555351a7476869870c314d58edc4f90183fa9e06c80c8885d30c",
+    "vb235v-system-admit.h": "2bcb77f10ffd167f3d90f5610fb12ea903366bcfe4a7e96e7f1b46dc4d64dc9d",
+    "vb235v-system-anchors.h": "82d38c447c8dd757dca8282ac1d9357329b7d794ab5bfdb34f6f0105197db8bc",
+    "vb235v-sysupgrade-envelope.h": "81f1e5321112f1077c2bc353de119e6881ab20c2acfa0fb2ac7d7b49c794d8e9"
+  }
+}

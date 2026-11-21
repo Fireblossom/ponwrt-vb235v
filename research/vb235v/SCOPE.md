@@ -55,3 +55,12 @@ test until a later session. Keep the existing wiring and retain independent
 peer negotiation, physical data integrity and 2.5G throughput as pending.
 Do not interpret this deferral as cancellation of driver development or as
 validation of either external port.
+
+The owner then explicitly requested formal installation and upgrade tests
+on this device. This authorizes development-system writes in the post-rescue
+319-PEB body and a separately validated normal-core update for system boot.
+Retain fresh backups, factory slot0, the fixed rescue block, calibration,
+factory mapping tables and the first two boot blocks/environment. Preserve
+the original-kernel RAM diagnostics and return-to-factory boot path. This does
+not authorize reclaiming factory slot0. DSL, voice and stable dual-2.5G remain
+unfinished; installation tests do not qualify a complete replacement release.

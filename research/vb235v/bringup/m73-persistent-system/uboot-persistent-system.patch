@@ -1,0 +1,65 @@
+--- a/include/vb235v-core-role.h
++++ b/include/vb235v-core-role.h
+@@ -1,7 +1,7 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+ #ifndef VB235V_CORE_ROLE_H
+ #define VB235V_CORE_ROLE_H
+-#define VB235V_CORE_REVISION "M54"
++#define VB235V_CORE_REVISION "M73"
+ #ifdef CONFIG_VB235V_BOOTSTRAP_LOADER
+ #define VB235V_CORE_ROLE "bootstrap"
+ #define VB235V_CORE_UI_ROLE "固定救援入口"
+--- a/include/vb235v-recovery.h
++++ b/include/vb235v-recovery.h
+@@ -12,6 +12,7 @@
+ int vb_storage_nand_selftest(const char *secondary_sha, const char *active_sha);
+ #endif
+ int vb_boot(void);
++int vb_boot_system(void);
+ int vb_core_boot(void);
+ int vb_core_web_boot(void);
+ int vb_core_web_ready(void);
+--- a/board/airoha/an7583/Makefile
++++ b/board/airoha/an7583/Makefile
+@@ -11,4 +11,4 @@
+ 
+ obj-$(CONFIG_VB235V_RECOVERY) += vb235v-bootstrap.o
+ 
+-obj-$(CONFIG_VB235V_RECOVERY) += vb235v-core.o
++obj-$(CONFIG_VB235V_RECOVERY) += vb235v-core.o vb235v-system-boot.o
+--- a/board/airoha/an7583/vb235v-core.c
++++ b/board/airoha/an7583/vb235v-core.c
+@@ -195,8 +195,8 @@
+   puts("One-shot core web request consumed; factory handoff deferred for this session\n");
+   return uboot_httpd_start(true);
+  }
+- ret = vb_factory_boot();
+- printf("Normal core retained after factory/start result: %d\n", ret);
++ ret = vb_boot();
++ printf("Normal core retained after system/factory result: %d\n", ret);
+  return uboot_httpd_start(true);
+ #endif
+ }
+--- a/board/airoha/an7583/vb235v-storage.c
++++ b/board/airoha/an7583/vb235v-storage.c
+@@ -742,6 +742,11 @@
+ 
+ int vb_boot(void)
+ {
++ if (!IS_ENABLED(CONFIG_VB235V_BOOTSTRAP_LOADER)) {
++  int ret = vb_boot_system();
++  if (!ret) return 0;
++  printf("Persistent system unavailable (%d); retaining factory fallback\n", ret);
++ }
+  int active = vb_active_slot();
+  if (active < 0)
+   active = 0;
+@@ -890,6 +895,8 @@
+ 		if (strcmp(argv[2], "0") && strcmp(argv[2], "1"))
+ 			return CMD_RET_USAGE;
+ 		ret = vb_boot_slot(argv[2][0] - '0');
++	} else if (!strcmp(argv[1], "boot-system") && argc == 2) {
++		ret = vb_boot_system();
+ 	} else if (!strcmp(argv[1], "boot-factory") && argc == 2) {
+ 		ret = vb_factory_boot();
+ 	} else if (!strcmp(argv[1], "boot") && argc == 2) {

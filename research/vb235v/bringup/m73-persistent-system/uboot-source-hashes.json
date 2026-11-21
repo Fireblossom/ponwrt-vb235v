@@ -1,0 +1,22 @@
+{
+  "include/vb235v-core-role.h": {
+    "baseline": "63a20f9940c792d5b372b1339c4945fad91409762312871e9ebb786345491d36",
+    "candidate": "4d067a52fd87b811eea64d8b9589efe40aa92f3b4f109084d3726c1460979ec2"
+  },
+  "include/vb235v-recovery.h": {
+    "baseline": "329725279b8cde6af3ed18c8779b11126acacee7078a99f4a214af59770e9a00",
+    "candidate": "75d7bb193c57c7feb9e9552a0092edea25129e6c801020511d8640ac5026b239"
+  },
+  "board/airoha/an7583/Makefile": {
+    "baseline": "fbbc2abf9a8a529625306f424b157b31ad46f3a657a6571b83aff0ac2a8bd5c4",
+    "candidate": "95dd2c5376614b3d75cf9a881a7a3faf8970c375a107a503556c35ab807eb6da"
+  },
+  "board/airoha/an7583/vb235v-core.c": {
+    "baseline": "b9d789c53da70576872309ff63e26b1a622ffc61d8b77fc5338d838b71b13457",
+    "candidate": "e8c427c8b3c2cd09e47be84af8f2fde2c6d49da3a559a3a9f9556b6e956f9a33"
+  },
+  "board/airoha/an7583/vb235v-storage.c": {
+    "baseline": "99b18affb97926da46c7d863d0937492c5a37d1a6eee6440194331f44a158a5a",
+    "candidate": "e048b1730f7c35964c73cf39a9e7b088be2bd5fba03d1753c593a0819b5d67cb"
+  }
+}

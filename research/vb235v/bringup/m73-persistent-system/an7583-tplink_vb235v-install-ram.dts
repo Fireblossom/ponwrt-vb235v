@@ -1,0 +1,6 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/include/ "an7583-tplink_vb235v.dts"
+/ {
+ model = "TP-LinkBox 7 VB235v installation RAM environment";
+ chosen { bootargs = "console=ttyS0,115200n8 earlycon=uart8250,mmio32,0x1fbf0000,115200n8 rdinit=/init loglevel=7 panic=0"; };
+};

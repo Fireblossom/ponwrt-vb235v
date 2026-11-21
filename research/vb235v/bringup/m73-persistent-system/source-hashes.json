@@ -1,0 +1,10 @@
+{
+  "drivers/mtd/nand/spi/core.c": {
+    "baseline": "f4cc20ab12c5492caf7006323608b7a1b21f7050f2b9a9d4179b335971c2b513",
+    "candidate": "ee6110e3ab62c5fac185a43a93d01e4545099c4f37e9dac04ea26e290808eeaa"
+  },
+  "include/linux/mtd/spinand.h": {
+    "baseline": "30c893bc707db538eedb381d649aea17e824b929a6fe98256fcad74fe8d4e40f",
+    "candidate": "14aaee718631cbfc40de38060a57cfda4c3e387f300f22697cc694815a58e48d"
+  }
+}

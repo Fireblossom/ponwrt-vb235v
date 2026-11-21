@@ -1,0 +1,30 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/include/ "an7583-tplink_vb235v-ram-multigig.dts"
+/ {
+ model = "TP-LinkBox 7 VB235v persistent system development";
+ compatible = "tplink,vb235v", "tplink,vb235v-ram-multigig-development", "tplink,vb235v-ram-accel-development", "tplink,vb235v-ram-npu-development", "tplink,vb235v-ram-smp-development", "tplink,vb235v-ram-dual-pcie-development", "tplink,vb235v-ram-pcie-development", "airoha,an7583";
+ chosen {
+  bootargs = "console=ttyS0,115200n8 earlycon=uart8250,mmio32,0x1fbf0000,115200n8 root=/dev/ubiblock0_1 rootfstype=squashfs ubi.mtd=vb235v-system ubi.block=0,rootfs ro loglevel=7 panic=10";
+ };
+ system_spi_clock: system-spi-clock { compatible = "fixed-clock"; #clock-cells = <0>; clock-frequency = <25000000>; };
+ spi@1fa10000 {
+  compatible = "airoha,en7581-snand";
+  reg = <0 0x1fa10000 0 0x140>, <0 0x1fa11000 0 0x160>;
+  clocks = <&system_spi_clock>; clock-names = "spi";
+  #address-cells = <1>; #size-cells = <0>;
+  nand@0 {
+   compatible = "spi-nand"; reg = <0>; spi-max-frequency = <25000000>;
+   spi-rx-bus-width = <1>; spi-tx-bus-width = <1>;
+   tplink,vb235v-hybrid-policy; tplink,vb235v-system-install;
+   partitions { compatible = "fixed-partitions"; #address-cells = <1>; #size-cells = <1>;
+    partition@0 { label = "bootloader-protected"; reg = <0 0xc0000>; read-only; };
+    partition@c0000 { label = "art-protected"; reg = <0xc0000 0x380000>; read-only; };
+    partition@440000 { label = "misc-protected"; reg = <0x440000 0x800000>; read-only; };
+    partition@c40000 { label = "factory-slot0-protected"; reg = <0xc40000 0x5000000>; read-only; };
+    partition@5c40000 { label = "fixed-rescue-protected"; reg = <0x5c40000 0x40000>; read-only; };
+    partition@5c80000 { label = "vb235v-system"; reg = <0x5c80000 0x4fc0000>; };
+    partition@ac40000 { label = "tail-and-mapping-protected"; reg = <0xac40000 0x153c0000>; read-only; };
+   };
+  };
+ };
+};
