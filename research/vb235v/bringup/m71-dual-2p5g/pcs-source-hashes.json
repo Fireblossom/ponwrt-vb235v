@@ -1,0 +1,12 @@
+{
+  "original": {
+    "pcs-an7583.c": "67a7c9c9a6c59c434a4931df3047da45bc6db000ce7ebb5e00b3fc613fdc5aaf",
+    "pcs-airoha-common.c": "41f8d86c70b053bb0c18c19898c0a67ab0ba786ef3011d2d181d4df077a53e01",
+    "pcs-airoha.h": "198e6a3bef28af75104a6b6fc81277cbd70e0f0cdd2cd71b5043efc8d579c914"
+  },
+  "candidate": {
+    "pcs-airoha.h": "cc58b940119812b389c6487a2bd65d6b88e79ae38766e0e8810bf47dda724bb2",
+    "pcs-an7583.c": "85f05dd453d3d7e3384e4262c9e56131e82afb51db029964e4c872b872c51214",
+    "pcs-airoha-common.c": "4821cff95b020c5ed5990894fb644addafdbc7576ea73b549a8afc4d82296971"
+  }
+}

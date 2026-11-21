@@ -1,0 +1,18 @@
+{
+  "drivers/net/ethernet/airoha/airoha_eth.c": {
+    "baseline": "98fb7e95f70d90ca40ca39ebbabc2a2d8fd6a861db1a5de01bca843a90a22c5b",
+    "candidate": "102f53de286f53e61ca41ba7adaf6b55886b4ea98b86fd83c2cff9b8f1875799"
+  },
+  "drivers/net/pcs/airoha/pcs-airoha-common.c": {
+    "baseline": "4821cff95b020c5ed5990894fb644addafdbc7576ea73b549a8afc4d82296971",
+    "candidate": "acfacd708bf0bff53fa501cb8cbe44f316755037a830e31eddf14bce39788b42"
+  },
+  "drivers/net/pcs/airoha/pcs-airoha.h": {
+    "baseline": "cc58b940119812b389c6487a2bd65d6b88e79ae38766e0e8810bf47dda724bb2",
+    "candidate": "208535910d34df527d71c687326cf98ab6db4ab987cde03a762e7b03be053335"
+  },
+  "drivers/net/pcs/airoha/pcs-an7583.c": {
+    "baseline": "85f05dd453d3d7e3384e4262c9e56131e82afb51db029964e4c872b872c51214",
+    "candidate": "bc66b6e01e6e36859f623eeda79de1f2167857e3248efd9ea06084a3b5482935"
+  }
+}

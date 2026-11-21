@@ -1,0 +1,37 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-only
+# This rootfs is ephemeral. Configure only the single isolated test socket.
+[ "$(cat /tmp/sysinfo/board_name)" = 'tplink,vb235v-ram-multigig-development' ] || exit 0
+uci -q batch <<'EOF'
+delete network.lan
+delete network.wan
+delete network.wan6
+set network.lan=interface
+set network.lan.device='lan-test'
+set network.lan.proto='static'
+set network.lan.ipaddr='192.168.235.1'
+set network.lan.netmask='255.255.255.0'
+set dhcp.lan=dhcp
+set dhcp.lan.interface='lan'
+set dhcp.lan.start='2'
+set dhcp.lan.limit='1'
+set dhcp.lan.leasetime='1h'
+delete dhcp.lan.dhcp_option
+add_list dhcp.lan.dhcp_option='3'
+add_list dhcp.lan.dhcp_option='6'
+commit network
+commit dhcp
+set firewall.@defaults[0].flow_offloading='1'
+set firewall.@defaults[0].flow_offloading_hw='1'
+commit firewall
+delete dropbear.@dropbear[0].DirectInterface
+set dropbear.@dropbear[0].Interface='lan'
+set dropbear.@dropbear[0].PasswordAuth='off'
+set dropbear.@dropbear[0].RootPasswordAuth='off'
+commit dropbear
+delete uhttpd.main.listen_http
+add_list uhttpd.main.listen_http='192.168.235.1:80'
+delete uhttpd.main.listen_https
+commit uhttpd
+EOF
+exit 0

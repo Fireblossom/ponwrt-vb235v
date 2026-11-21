@@ -1,0 +1,224 @@
+--- a/drivers/net/ethernet/airoha/airoha_eth.c
++++ b/drivers/net/ethernet/airoha/airoha_eth.c
+@@ -4596,6 +4596,19 @@
+ 			return err;
+ 
+ 		eth_hw_addr_random(netdev);
++		/* The RAM board has no factory MAC reader. GDM1 and GDM3
++		 * share LAN address MSBs in hardware; retain that constraint.
++		 */
++		if (of_machine_is_compatible("tplink,vb235v-ram-multigig-development") &&
++		    port->id == AIROHA_GDM3_IDX && !nbq && eth->ports[0] &&
++		    eth->ports[0]->devs[0]) {
++			struct net_device *lan = netdev_from_priv(eth->ports[0]->devs[0]);
++			u8 addr[ETH_ALEN] __aligned(2);
++
++			ether_addr_copy(addr, lan->dev_addr);
++			addr[ETH_ALEN - 1] ^= 2;
++			eth_hw_addr_set(netdev, addr);
++		}
+ 		dev_info(eth->dev, "generated random MAC address %pM\n",
+ 			 netdev->dev_addr);
+ 	}
+--- a/drivers/net/pcs/airoha/pcs-airoha-common.c
++++ b/drivers/net/pcs/airoha/pcs-airoha-common.c
+@@ -23,7 +23,7 @@
+ static bool airoha_pcs_interface_supported(struct airoha_pcs_priv *priv,
+ 					   phy_interface_t interface)
+ {
+-	return !priv->pon_ethernet || interface == PHY_INTERFACE_MODE_USXGMII;
++	return !priv->pon_ethernet || interface == priv->pon_ethernet_interface;
+ }
+ 
+ static void airoha_pcs_setup_scu_eth(struct airoha_pcs_priv *priv,
+@@ -1531,7 +1531,7 @@
+ 	if (!device_is_compatible(dev, "airoha,an7583-pcs-pon") ||
+ 	    of_property_count_strings(dev->of_node, "airoha,pon-ethernet-mode") != 1 ||
+ 	    of_property_read_string(dev->of_node, "airoha,pon-ethernet-mode", &mode) ||
+-	    strcmp(mode, "usxgmii"))
++	    (strcmp(mode, "usxgmii") && strcmp(mode, "2500base-x")))
+ 		return dev_err_probe(dev, -EINVAL, "invalid PON Ethernet profile\n");
+ 
+ 	/*
+@@ -1540,6 +1540,8 @@
+ 	 */
+ 	priv->pon_mode = AIROHA_PCS_PON_MODE_EPON_10G_10G;
+ 	priv->pon_ethernet = true;
++	priv->pon_ethernet_interface = !strcmp(mode, "2500base-x") ?
++		PHY_INTERFACE_MODE_2500BASEX : PHY_INTERFACE_MODE_USXGMII;
+ 	return 0;
+ }
+ 
+--- a/drivers/net/pcs/airoha/pcs-airoha.h
++++ b/drivers/net/pcs/airoha/pcs-airoha.h
+@@ -1654,6 +1654,7 @@
+ 	const struct airoha_pcs_match_data *data;
+ 	u8 pon_mode;
+ 	bool pon_ethernet;
++	phy_interface_t pon_ethernet_interface;
+ 
+ 	struct airoha_pcs_port *ports;
+ 
+--- a/drivers/net/pcs/airoha/pcs-an7583.c
++++ b/drivers/net/pcs/airoha/pcs-an7583.c
+@@ -12,6 +12,13 @@
+ #include "pcs-airoha.h"
+ 
+ /* AN7583 PON line selectors for TXPLL, TX, RX, analog PLL and presets. */
++static bool an7583_pcs_optical_profile(struct airoha_pcs_priv *priv)
++{
++	return priv->data->port_type == AIROHA_PCS_PON &&
++	       !(priv->pon_ethernet &&
++	         priv->pon_ethernet_interface == PHY_INTERFACE_MODE_2500BASEX);
++}
++
+ struct an7583_pcs_pon_rate {
+ 	u8 txpll;
+ 	u8 tx;
+@@ -155,11 +162,10 @@
+ static void an7583_pcs_common_phya_txpll(struct airoha_pcs_priv *priv,
+ 					 int index, phy_interface_t interface)
+ {
+-	const struct airoha_pcs_match_data *data = priv->data;
+ 	struct regmap *pcs_pma = priv->pcs_pma[index];
+ 	u32 pcw, tdc_pcw;
+ 
+-	if (data->port_type == AIROHA_PCS_PON) {
++	if (an7583_pcs_optical_profile(priv)) {
+ 		/* Match the PON TXPLL selector used by pon_WanSelInit(). */
+ 		switch (an7583_pcs_pon_rate(priv)->txpll) {
+ 		case 1:
+@@ -220,7 +226,6 @@
+ static void an7583_pcs_common_phya_tx(struct airoha_pcs_priv *priv,
+ 				      int index, phy_interface_t interface)
+ {
+-	const struct airoha_pcs_match_data *data = priv->data;
+ 	struct regmap *pcs_pma = priv->pcs_pma[index];
+ 	u32 fir_cn1, fir_c0b, fir_c1, fir_c2;
+ 	u32 tx_ben_exten_ftune;
+@@ -229,7 +234,7 @@
+ 	u32 ckin_divisor;
+ 	u32 tx_rate_ctrl;
+ 
+-	if (data->port_type == AIROHA_PCS_PON) {
++	if (an7583_pcs_optical_profile(priv)) {
+ 		/* Select the upstream rate, bus width and burst timing. */
+ 		switch (an7583_pcs_pon_rate(priv)->tx) {
+ 		case 1:
+@@ -383,7 +388,7 @@
+ 			   AIROHA_PCS_PMA_TX_BEN_EXTEN_FTUNE,
+ 			   FIELD_PREP(AIROHA_PCS_PMA_TX_BEN_EXTEN_FTUNE, tx_ben_exten_ftune));
+ 
+-	if (data->port_type == AIROHA_PCS_PON) {
++	if (an7583_pcs_optical_profile(priv)) {
+ 		regmap_update_bits(pcs_pma, AIROHA_PCS_PMA_TX_DLY_CTRL,
+ 				   AIROHA_PCS_PMA_TX_DLY_BEN_FTUNE |
+ 				   AIROHA_PCS_PMA_TX_DLY_DATA_FTUNE,
+@@ -422,7 +427,7 @@
+ 	bool phyck_sel_force;
+ 	bool phyck_rstb;
+ 
+-	if (data->port_type == AIROHA_PCS_PON) {
++	if (an7583_pcs_optical_profile(priv)) {
+ 		/* Select the downstream CDR, sample rate and RX bus width. */
+ 		switch (an7583_pcs_pon_rate(priv)->rx) {
+ 		case 1:
+@@ -669,7 +674,7 @@
+ 	bool vcodiv;
+ 	bool postdiv_d256;
+ 
+-	if (data->port_type == AIROHA_PCS_PON) {
++	if (an7583_pcs_optical_profile(priv)) {
+ 		/* Select the 10.3125G or 9.95328G VCO parameters. */
+ 		switch (an7583_pcs_pon_rate(priv)->ana) {
+ 		case 1:
+@@ -746,7 +751,7 @@
+ 		}
+ 	}
+ 
+-	if (data->port_type == AIROHA_PCS_PON ||
++	if (an7583_pcs_optical_profile(priv) ||
+ 	    data->port_type == AIROHA_PCS_PCIE)
+ 		/* XPON TDC */
+ 		regmap_set_bits(priv->pcs_ana, AIROHA_PCS_ANA_PXP_PLL_MONCLK_SEL,
+@@ -766,7 +771,7 @@
+ 			   AIROHA_PCS_ANA_TXPLL_VTP_EN);
+ 
+ 	if (data->port_type == AIROHA_PCS_ETH ||
+-	    data->port_type == AIROHA_PCS_PON)
++	    an7583_pcs_optical_profile(priv))
+ 		regmap_update_bits(priv->pcs_ana, AIROHA_PCS_ANA_PXP_TDC_SYNC_CK_SEL,
+ 				AIROHA_PCS_ANA_PLL_LDO_CKDRV_VSEL |
+ 				AIROHA_PCS_ANA_PLL_LDO_CKDRV_EN,
+@@ -974,7 +979,7 @@
+ 			   AIROHA_PCS_PMA_FORCE_DA_TXPLL_EN,
+ 			   AIROHA_PCS_PMA_FORCE_SEL_DA_TXPLL_EN);
+ 
+-	if (data->port_type == AIROHA_PCS_PON ||
++	if (an7583_pcs_optical_profile(priv) ||
+ 	    data->port_type == AIROHA_PCS_PCIE) {
+ 		/* TDC */
+ 		regmap_update_bits(pcs_pma, AIROHA_PCS_PMA_LCPLL_TDC_FLT_3,
+@@ -1280,7 +1285,7 @@
+ 	struct regmap *pcs_pma = priv->pcs_pma[index];
+ 	u32 xfi_tx_term_sel = 0x1;
+ 
+-	if (priv->data->port_type == AIROHA_PCS_PON &&
++	if (an7583_pcs_optical_profile(priv) &&
+ 	    priv->pon_impedance_valid && priv->pon_tx_term_sel)
+ 		xfi_tx_term_sel = priv->pon_tx_term_sel;
+ 
+@@ -1313,7 +1318,7 @@
+ 	u32 cdr_pr_buf_in_sr;
+ 	bool cdr_pr_cap_en;
+ 
+-	if (data->port_type == AIROHA_PCS_PON) {
++	if (an7583_pcs_optical_profile(priv)) {
+ 		/* All PON modes use the same CDR input slew-rate preset. */
+ 		cdr_pr_cap_en = false;
+ 		cdr_pr_buf_in_sr = 0x7;
+@@ -2488,7 +2493,7 @@
+ 	struct regmap *pcs_pma = priv->pcs_pma[index];
+ 	u32 xfi_rx_term_sel = 0x1;
+ 
+-	if (priv->data->port_type == AIROHA_PCS_PON &&
++	if (an7583_pcs_optical_profile(priv) &&
+ 	    priv->pon_impedance_valid && priv->pon_rx_term_sel)
+ 		xfi_rx_term_sel = priv->pon_rx_term_sel;
+ 
+@@ -2542,11 +2547,11 @@
+ 	struct regmap *pcs_pma = priv->pcs_pma[index];
+ 
+ 	an7583_pcs_common_phya_rx_preset(priv, index, interface);
+-	if (data->port_type == AIROHA_PCS_PON ||
++	if (an7583_pcs_optical_profile(priv) ||
+ 	    data->port_type == AIROHA_PCS_PCIE)
+ 		an7583_pcs_common_phya_tdc_off(priv, index);
+ 	an7583_pcs_common_phya_rx_on(priv, index);
+-	if (data->port_type == AIROHA_PCS_PON)
++	if (an7583_pcs_optical_profile(priv))
+ 		an7583_pcs_pon_l2r(priv, index);
+ 	else
+ 		an7583_pcs_common_phya_l2d(priv, index);
+@@ -2568,18 +2573,18 @@
+ 	else
+ 		an7583_pcs_dig_reset_release(priv, index);
+ 
+-	if (data->port_type == AIROHA_PCS_PON)
++	if (an7583_pcs_optical_profile(priv))
+ 		an7583_pcs_pon_l2d(priv, index);
+ 	else
+ 		an7583_pcs_common_phya_l2d(priv, index);
+ 
+-	if (data->port_type == AIROHA_PCS_PON) {
++	if (an7583_pcs_optical_profile(priv)) {
+ 		an7583_pcs_common_phya_eo_scan(priv, index, interface);
+ 		if (!priv->pon_ethernet)
+ 			an7583_pcs_pon_tdc_on(priv, index);
+ 	}
+ 	an7583_pcs_common_phya_rxrdy(priv, index);
+-	if (data->port_type == AIROHA_PCS_PON ||
++	if (an7583_pcs_optical_profile(priv) ||
+ 	    data->port_type == AIROHA_PCS_PCIE)
+ 		an7583_pcs_common_phya_bist_setting(priv, index);
+ 

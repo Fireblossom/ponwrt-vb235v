@@ -1,0 +1,59 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/include/ "an7583-tplink_vb235v-ram-accel.dts"
+/ {
+	model = "TP-LinkBox 7 VB235v dual 2.5G RAM development";
+	compatible = "tplink,vb235v-ram-multigig-development", "tplink,vb235v-ram-accel-development", "tplink,vb235v-ram-npu-development", "tplink,vb235v-ram-smp-development", "tplink,vb235v-ram-dual-pcie-development", "tplink,vb235v-ram-pcie-development", "airoha,an7583";
+	pcs_wan: pcs@1fa08000 {
+		compatible = "airoha,an7583-pcs-pon";
+		reg = <0 0x1fa08000 0 0x1000>, <0 0x1fa80000 0 0x60>,
+			<0 0x1fa80a00 0 0x164>, <0 0x1fa84000 0 0x450>,
+			<0 0x1fa85900 0 0x338>, <0 0x1fa86000 0 0x300>,
+			<0 0x1fa8f000 0 0x1000>, <0 0x1fa8e000 0 0x1000>;
+		reg-names = "pcs_mac", "hsgmii_an", "hsgmii_pcs", "multi_sgmii", "usxgmii", "hsgmii_rate_adp", "pcs_ana", "pcs_pma";
+		resets = <&scuclk 48>, <&scuclk 0>, <&scuclk 15>;
+		reset-names = "mac", "phy", "xfi";
+		airoha,scu = <&scuclk>;
+		airoha,pon-ethernet-mode = "2500base-x";
+		nvmem-cells = <&pon_valid>, <&pon_tx_term>, <&pon_rx_imp>;
+		nvmem-cell-names = "pon-impedance-valid", "pon-tx-term", "pon-rx-impedance";
+		#pcs-cells = <0>;
+	};
+	pcs_lan: pcs@1fa09000 {
+		compatible = "airoha,an7583-pcs-eth";
+		reg = <0 0x1fa09000 0 0x1000>, <0 0x1fa70000 0 0x60>,
+			<0 0x1fa70a00 0 0x164>, <0 0x1fa74000 0 0x450>,
+			<0 0x1fa75900 0 0x338>, <0 0x1fa76000 0 0x300>,
+			<0 0x1fa7f000 0 0x1000>, <0 0x1fa7e000 0 0x1000>;
+		reg-names = "pcs_mac", "hsgmii_an", "hsgmii_pcs", "multi_sgmii", "usxgmii", "hsgmii_rate_adp", "pcs_ana", "pcs_pma";
+		resets = <&scuclk 7>, <&scuclk 8>;
+		reset-names = "mac", "phy";
+		airoha,scu = <&scuclk>;
+		#pcs-cells = <0>;
+	};
+};
+&{/efuse/nvmem-layout} {
+	pon_valid: pon-impedance-valid@4 { reg = <4 1>; bits = <5 1>; };
+	pon_tx_term: pon-tx-term@f { reg = <15 1>; bits = <5 2>; };
+	pon_rx_imp: pon-rx-impedance@f { reg = <15 2>; bits = <7 2>; };
+};
+&mdio0 {
+	phy_wan: ethernet-phy@e { compatible = "ethernet-phy-ieee802.3-c22"; reg = <14>; max-speed = <2500>; };
+	phy_lan: ethernet-phy@f { compatible = "ethernet-phy-ieee802.3-c22"; reg = <15>; max-speed = <2500>; };
+};
+&{/ethernet@1fb50000} {
+	gdm2: ethernet@2 {
+		compatible = "airoha,eth-mac";
+		reg = <2>;
+		phy-mode = "2500base-x";
+		pcs-handle = <&pcs_wan>;
+		phy-handle = <&phy_wan>;
+	};
+	gdm3: ethernet@3 {
+		compatible = "airoha,eth-mac";
+		reg = <3>;
+		phy-mode = "2500base-x";
+		pcs-handle = <&pcs_lan>;
+		phy-handle = <&phy_lan>;
+		airoha,gdm-srcport = <0x16>;
+	};
+};

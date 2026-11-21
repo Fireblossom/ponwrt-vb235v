@@ -2,12 +2,15 @@
 # SPDX-License-Identifier: GPL-2.0-only
 """Prepare integrated RAM acceleration after verified M68; private blobs stay local."""
 import argparse,hashlib,json,re,subprocess
+from preserve_pcie import preserve_pcie
 from pathlib import Path
 HERE=Path(__file__).resolve().parent
 
 def install(source,dest,execute=False):
     data=source.read_bytes();dest.parent.mkdir(parents=True,exist_ok=True)
-    if dest.exists():assert dest.read_bytes()==data,'Different existing file: '+str(dest)
+    if dest.exists():
+        assert dest.read_bytes()==data,'Different existing file: '+str(dest)
+        return
     dest.write_bytes(data);dest.chmod(0o755 if execute else 0o644)
 
 def main():
@@ -16,6 +19,7 @@ def main():
     a=p.parse_args();tree=a.tree.resolve(strict=True)
     assert subprocess.check_output(['git','-C',str(tree),'rev-parse','HEAD'],text=True).strip()=='dcf140cb1d5d2c15c1d7c353c95c4c2a56629820'
     kernel=tree/'build_dir/target-aarch64_cortex-a53_musl/linux-airoha_vb235v/linux-6.18.60'
+    preserve_pcie(tree,kernel)
     for name,expect in json.loads((HERE.parent/'m68-npu/source-hashes.json').read_text()).items():
         assert hashlib.sha256((kernel/name).read_bytes()).hexdigest()==expect['candidate'],'M68 NPU prerequisite missing'
     source=kernel/'net/netfilter/nf_flow_table_offload.c'

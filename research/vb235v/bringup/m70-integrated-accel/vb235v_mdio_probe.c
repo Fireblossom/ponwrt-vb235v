@@ -15,9 +15,10 @@ static int __init vb235v_mdio_probe_init(void)
 		int id1=mdiobus_read(bus,addr,MII_PHYSID1),id2=mdiobus_read(bus,addr,MII_PHYSID2);
 		if(id1<0||id2<0){pr_info("M70_MDIO addr=%u read_error=%d,%d\n",addr,id1,id2);continue;}
 		if((id1==0xffff&&id2==0xffff)||(id1==0&&id2==0))continue;
-		pr_info("M70_MDIO addr=%u id=%04x%04x bmcr=%04x bmsr=%04x adv=%04x lp=%04x aux=%04x\n",addr,id1,id2,
+		pr_info("M70_MDIO addr=%u id=%04x%04x bmcr=%04x bmsr=%04x adv=%04x lp=%04x aux=%04x ctrl1000=%04x stat1000=%04x\n",addr,id1,id2,
 			mdiobus_read(bus,addr,MII_BMCR),mdiobus_read(bus,addr,MII_BMSR),
-			mdiobus_read(bus,addr,MII_ADVERTISE),mdiobus_read(bus,addr,MII_LPA),mdiobus_read(bus,addr,0x1d));
+			mdiobus_read(bus,addr,MII_ADVERTISE),mdiobus_read(bus,addr,MII_LPA),mdiobus_read(bus,addr,0x1d),
+			mdiobus_read(bus,addr,MII_CTRL1000),mdiobus_read(bus,addr,MII_STAT1000));
 	}
 	put_device(&bus->dev);return 0;
 }

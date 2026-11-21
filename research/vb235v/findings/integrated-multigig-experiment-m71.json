@@ -1,0 +1,418 @@
+{
+  "milestone": "M71",
+  "complete": false,
+  "scope": "Integrated storage-free RAM image and gigabit management validated; two external 2.5G data paths remain unverified.",
+  "flash_write_commands_sent": false,
+  "saveenv_sent": false,
+  "artifact": {
+    "fit_sha256": "50c945b59c447222bdce38e211e312ead8f94307effe73b73cd58597814ffea4",
+    "fit_bytes": 12220400,
+    "kernel_memory_bytes": 36765696,
+    "kernel_config_sha256": "2651e9ef83d84777f7d3189702cb3c2d9523a549023f5e2704a342e458e10214",
+    "storage_controllers": 0,
+    "CPU_count": 2,
+    "NPU_processing_cores": 6,
+    "external_PHY_nodes": 2,
+    "PCS_nodes": 2,
+    "wired_MAC_devices": 3
+  },
+  "integration": {
+    "cold_boot_verified": true,
+    "private_firmware_and_calibration_embedded": true,
+    "NPU_6_cores_GET_INFO_verified": true,
+    "EIP93_auto_loaded": true,
+    "WiFi_auto_loaded": true,
+    "no_AP_by_default": true,
+    "PCIe_QPHY_sources_preserved_across_kernel_recreation": true,
+    "source_hashes_verified": 14,
+    "temporary_MAC_shared_prefix_constraint_fixed": true,
+    "factory_identity_integration_complete": false
+  },
+  "gigabit": {
+    "cold_boot_Mbps": 1000,
+    "duplex": "full",
+    "three_renegotiations": [
+      {
+        "cycle": 1,
+        "carrier": 1,
+        "speed_Mbps": 1000,
+        "duplex": "full"
+      },
+      {
+        "cycle": 2,
+        "carrier": 1,
+        "speed_Mbps": 1000,
+        "duplex": "full"
+      },
+      {
+        "cycle": 3,
+        "carrier": 1,
+        "speed_Mbps": 1000,
+        "duplex": "full"
+      }
+    ],
+    "transfers": {
+      "complete": true,
+      "flash_write_commands_sent": false,
+      "download_runs": [
+        {
+          "bytes": 33554432,
+          "SHA256_matched": true,
+          "seconds": 0.829,
+          "payload_Mbps": 323.81
+        },
+        {
+          "bytes": 33554432,
+          "SHA256_matched": true,
+          "seconds": 0.828,
+          "payload_Mbps": 324.2
+        },
+        {
+          "bytes": 33554432,
+          "SHA256_matched": true,
+          "seconds": 0.843,
+          "payload_Mbps": 318.43
+        }
+      ],
+      "SSH_upload": {
+        "bytes": 33554432,
+        "SHA256_matched": true,
+        "seconds": 4.875,
+        "payload_Mbps": 55.06
+      },
+      "link_Mbps": 1000,
+      "full_duplex": true,
+      "counters_before": {
+        "rx_bytes": 536175928,
+        "tx_bytes": 535774912,
+        "rx_errors": 0,
+        "tx_errors": 0,
+        "rx_crc_errors": 0
+      },
+      "counters_after": {
+        "rx_bytes": 573356898,
+        "tx_bytes": 644441678,
+        "rx_errors": 0,
+        "tx_errors": 0,
+        "rx_crc_errors": 0
+      },
+      "error_counters_unchanged": true
+    },
+    "owner_changed_or_reseated_workstation_cables": true,
+    "firmware_unchanged_between_prior_100M_and_current_1000M": true,
+    "earlier_100M_root_cause_isolated": false,
+    "same_wiring_full_original_Linux_comparison_completed": false,
+    "maximum_throughput_claimed": false
+  },
+  "NAT_cases": [
+    {
+      "case": "udp-software",
+      "offload_requested": false,
+      "CPU_ingress_counter_packets": [
+        2000,
+        2001
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": false,
+      "live_bound_PPE_entries": 0,
+      "live_NPU_attached": false,
+      "UDP_echo_packets": 2000,
+      "UDP_payload_bytes": 2376000,
+      "every_datagram_verified": true
+    },
+    {
+      "case": "udp-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        32,
+        33
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "UDP_echo_packets": 2000,
+      "UDP_payload_bytes": 2376000,
+      "every_datagram_verified": true
+    },
+    {
+      "case": "tcp-download-software",
+      "offload_requested": false,
+      "CPU_ingress_counter_packets": [
+        15696,
+        49221
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": false,
+      "live_bound_PPE_entries": 0,
+      "live_NPU_attached": true,
+      "TCP_download_bytes": 33554432,
+      "TCP_download_SHA256_matched": true
+    },
+    {
+      "case": "tcp-download-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        31,
+        29
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_download_bytes": 33554432,
+      "TCP_download_SHA256_matched": true
+    },
+    {
+      "case": "tcp-upload-software",
+      "offload_requested": false,
+      "CPU_ingress_counter_packets": [
+        20516,
+        7658
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": false,
+      "live_bound_PPE_entries": 0,
+      "live_NPU_attached": true,
+      "TCP_upload_bytes": 33554432,
+      "TCP_upload_SHA256_matched": true
+    },
+    {
+      "case": "tcp-upload-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        31,
+        34
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_upload_bytes": 33554432,
+      "TCP_upload_SHA256_matched": true
+    },
+    {
+      "case": "repeat-1-upload-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        30,
+        34
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_upload_bytes": 33554432,
+      "TCP_upload_SHA256_matched": true
+    },
+    {
+      "case": "repeat-1-download-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        34,
+        28
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_download_bytes": 33554432,
+      "TCP_download_SHA256_matched": true
+    },
+    {
+      "case": "repeat-2-upload-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        30,
+        35
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_upload_bytes": 33554432,
+      "TCP_upload_SHA256_matched": true
+    },
+    {
+      "case": "repeat-2-download-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        33,
+        28
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_download_bytes": 33554432,
+      "TCP_download_SHA256_matched": true
+    },
+    {
+      "case": "repeat-3-upload-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        29,
+        35
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_upload_bytes": 33554432,
+      "TCP_upload_SHA256_matched": true
+    },
+    {
+      "case": "repeat-3-download-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        31,
+        29
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_download_bytes": 33554432,
+      "TCP_download_SHA256_matched": true
+    },
+    {
+      "case": "repeat-4-upload-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        30,
+        34
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_upload_bytes": 33554432,
+      "TCP_upload_SHA256_matched": true
+    },
+    {
+      "case": "repeat-4-download-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        31,
+        32
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_download_bytes": 33554432,
+      "TCP_download_SHA256_matched": true
+    },
+    {
+      "case": "fw4-upload-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        27,
+        37
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_upload_bytes": 33554432,
+      "TCP_upload_SHA256_matched": true
+    },
+    {
+      "case": "fw4-download-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        33,
+        29
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_download_bytes": 33554432,
+      "TCP_download_SHA256_matched": true
+    }
+  ],
+  "crypto": {
+    "passed_cases": 34,
+    "tampered_AAD_ciphertext_tag_rejections": 48,
+    "authenc_provider": "generic authenc using hardware AES/HMAC primitives",
+    "native_combined_AEAD_disabled_on_this_board": true,
+    "interrupts_before": 84667,
+    "interrupts_after": 91326,
+    "throughput_claimed": false
+  },
+  "concurrent": {
+    "two_ARM_CPUs_verified": true,
+    "SMP_runs": 12,
+    "SMP_checksums_matched": true,
+    "crypto_rounds": 40,
+    "cases_per_round": 34,
+    "tamper_rejections_per_round": 48,
+    "fw4_wire_upload_and_download_passed": true
+  },
+  "WiFi_station": {
+    "native_netifd_and_wpad": true,
+    "bands": [
+      {
+        "band": "2g",
+        "authenticated": true,
+        "DHCP_address_obtained": true,
+        "TCP_download_bytes": 8388608,
+        "TCP_upload_bytes": 8388608,
+        "both_SHA256_matched": true
+      },
+      {
+        "band": "5g",
+        "authenticated": true,
+        "DHCP_address_obtained": true,
+        "TCP_download_bytes": 8388608,
+        "TCP_upload_bytes": 8388608,
+        "both_SHA256_matched": true
+      }
+    ],
+    "credentials_published": false,
+    "interfaces_restored_down": true
+  },
+  "external_2p5G": {
+    "owner_cable_connects_two_sockets_to_each_other": true,
+    "bridge_created": false,
+    "IP_addresses_assigned": false,
+    "PHY_IDs": [
+      "03a2a411",
+      "03a2a411"
+    ],
+    "MDIO_addresses": [
+      14,
+      15
+    ],
+    "MAC_PHY_interface": "2500base-x",
+    "native_DSP_version": "25062302",
+    "original_DSP_version": "25080112",
+    "DM_firmware_identical": true,
+    "both_DSP_versions_stable_pair_test_passed": false,
+    "original_and_native_default_polarity_low_bits": 1,
+    "polarity_inversion_overrides_present": false,
+    "one_earlier_cold_up_observed_2500_and_unknown_speed": true,
+    "latest_cold_up_stable_2500_pair": false,
+    "raw_frame_round_trip_validated": false,
+    "driver_clock_no_restart_valid_speed_trials_resolved_link": false,
+    "forced_master_slave_trials_resolved_link": false,
+    "native_firmware_and_module_restored_after_trials": true
+  },
+  "retired_artifacts": {
+    "incorrect_polarity_override_candidate": "abbfbc902d9668eb0757de026b1dde8e3388f4d7810581df8e1bfcdbbfd4e07d"
+  },
+  "validation": {
+    "test_cases": 37,
+    "skipped": 3,
+    "skip_reason": "Legacy M55 mkimage unavailable in that test environment"
+  },
+  "remaining": [
+    "Stable external PHY negotiation and port reopen; 10000 full frame paired wire round trips",
+    "2.5G forwarding and hardware offload qualification",
+    "Persistent Linux/UBI/sysupgrade integration",
+    "DSL driver and German Telekom automatic connection/provisioning; line currently disconnected",
+    "Analog telephone and remaining board peripherals",
+    "Cold-power physical Reset entry"
+  ]
+}
