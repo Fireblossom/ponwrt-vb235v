@@ -1,0 +1,442 @@
+{
+  "milestone": "M69",
+  "complete": true,
+  "flash_write_commands_sent": false,
+  "fit_unchanged_from_M68": true,
+  "integration": "Replacement nf_flow_table.ko loaded into M68 RAM root; complete integrated image not yet tested.",
+  "build": {
+    "kernel_config_sha256": "f68e59297d06445a0bb9ee4db5aa0c9f65e74d8b51745e30699da5030f6219e7",
+    "original_offload_source_sha256": "f4a24675d8199ee0a60f044e28a1d1e2bc95d4f48965d881181f7995377b165f",
+    "patched_offload_source_sha256": "7454aebaffb09952e24decf95003af62d3ebacf807a68fa42c4f0592f1a93770",
+    "module_sha256": "c9edb786e8f7bb11ea3aa5283da9d36b664d7d532d801a39dd3c8f72687e6a5a",
+    "device_commands_sent": false
+  },
+  "regression_suites": [
+    {
+      "suite": "release-suite",
+      "cases": [
+        {
+          "case": "udp-software",
+          "offload_requested": false,
+          "UDP_echo_packets": 2000,
+          "UDP_payload_bytes": 2376000,
+          "every_datagram_verified": true,
+          "CPU_ingress_counter_packets": [
+            2000,
+            2001
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": false,
+          "live_bound_PPE_entries": 0,
+          "live_NPU_attached": true
+        },
+        {
+          "case": "udp-hardware",
+          "offload_requested": true,
+          "UDP_echo_packets": 2000,
+          "UDP_payload_bytes": 2376000,
+          "every_datagram_verified": true,
+          "CPU_ingress_counter_packets": [
+            31,
+            31
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": true,
+          "live_bound_PPE_entries": 2,
+          "live_NPU_attached": true
+        },
+        {
+          "case": "tcp-download-software",
+          "offload_requested": false,
+          "TCP_download_bytes": 33554432,
+          "TCP_download_SHA256_matched": true,
+          "CPU_ingress_counter_packets": [
+            15738,
+            56451
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": false,
+          "live_bound_PPE_entries": 0,
+          "live_NPU_attached": true
+        },
+        {
+          "case": "tcp-download-hardware",
+          "offload_requested": true,
+          "TCP_download_bytes": 33554432,
+          "TCP_download_SHA256_matched": true,
+          "CPU_ingress_counter_packets": [
+            33,
+            29
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": true,
+          "live_bound_PPE_entries": 2,
+          "live_NPU_attached": true
+        },
+        {
+          "case": "tcp-upload-software",
+          "offload_requested": false,
+          "TCP_upload_bytes": 33554432,
+          "TCP_upload_SHA256_matched": true,
+          "CPU_ingress_counter_packets": [
+            22793,
+            4880
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": false,
+          "live_bound_PPE_entries": 0,
+          "live_NPU_attached": true
+        },
+        {
+          "case": "tcp-upload-hardware",
+          "offload_requested": true,
+          "TCP_upload_bytes": 33554432,
+          "TCP_upload_SHA256_matched": true,
+          "CPU_ingress_counter_packets": [
+            32,
+            34
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": true,
+          "live_bound_PPE_entries": 2,
+          "live_NPU_attached": true
+        },
+        {
+          "case": "repeat-1-upload-hardware",
+          "offload_requested": true,
+          "TCP_upload_bytes": 33554432,
+          "TCP_upload_SHA256_matched": true,
+          "CPU_ingress_counter_packets": [
+            32,
+            37
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": true,
+          "live_bound_PPE_entries": 2,
+          "live_NPU_attached": true
+        },
+        {
+          "case": "repeat-1-download-hardware",
+          "offload_requested": true,
+          "TCP_download_bytes": 33554432,
+          "TCP_download_SHA256_matched": true,
+          "CPU_ingress_counter_packets": [
+            33,
+            23
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": true,
+          "live_bound_PPE_entries": 2,
+          "live_NPU_attached": true
+        },
+        {
+          "case": "repeat-2-upload-hardware",
+          "offload_requested": true,
+          "TCP_upload_bytes": 33554432,
+          "TCP_upload_SHA256_matched": true,
+          "CPU_ingress_counter_packets": [
+            32,
+            33
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": true,
+          "live_bound_PPE_entries": 2,
+          "live_NPU_attached": true
+        },
+        {
+          "case": "repeat-2-download-hardware",
+          "offload_requested": true,
+          "TCP_download_bytes": 33554432,
+          "TCP_download_SHA256_matched": true,
+          "CPU_ingress_counter_packets": [
+            32,
+            28
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": true,
+          "live_bound_PPE_entries": 2,
+          "live_NPU_attached": true
+        },
+        {
+          "case": "repeat-3-upload-hardware",
+          "offload_requested": true,
+          "TCP_upload_bytes": 33554432,
+          "TCP_upload_SHA256_matched": true,
+          "CPU_ingress_counter_packets": [
+            32,
+            37
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": true,
+          "live_bound_PPE_entries": 2,
+          "live_NPU_attached": true
+        },
+        {
+          "case": "repeat-3-download-hardware",
+          "offload_requested": true,
+          "TCP_download_bytes": 33554432,
+          "TCP_download_SHA256_matched": true,
+          "CPU_ingress_counter_packets": [
+            33,
+            23
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": true,
+          "live_bound_PPE_entries": 2,
+          "live_NPU_attached": true
+        },
+        {
+          "case": "repeat-4-upload-hardware",
+          "offload_requested": true,
+          "TCP_upload_bytes": 33554432,
+          "TCP_upload_SHA256_matched": true,
+          "CPU_ingress_counter_packets": [
+            32,
+            37
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": true,
+          "live_bound_PPE_entries": 2,
+          "live_NPU_attached": true
+        },
+        {
+          "case": "repeat-4-download-hardware",
+          "offload_requested": true,
+          "TCP_download_bytes": 33554432,
+          "TCP_download_SHA256_matched": true,
+          "CPU_ingress_counter_packets": [
+            34,
+            25
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": true,
+          "live_bound_PPE_entries": 2,
+          "live_NPU_attached": true
+        }
+      ]
+    },
+    {
+      "suite": "fw4-suite",
+      "cases": [
+        {
+          "case": "fw4-upload-hardware",
+          "offload_requested": true,
+          "TCP_upload_bytes": 33554432,
+          "TCP_upload_SHA256_matched": true,
+          "CPU_ingress_counter_packets": [
+            32,
+            37
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": true,
+          "live_bound_PPE_entries": 2,
+          "live_NPU_attached": true,
+          "default_fw4_flowtable": true
+        },
+        {
+          "case": "fw4-download-hardware",
+          "offload_requested": true,
+          "TCP_download_bytes": 33554432,
+          "TCP_download_SHA256_matched": true,
+          "CPU_ingress_counter_packets": [
+            33,
+            26
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": true,
+          "live_bound_PPE_entries": 2,
+          "live_NPU_attached": true,
+          "default_fw4_flowtable": true
+        }
+      ]
+    },
+    {
+      "suite": "smp-concurrent-fw4-suite",
+      "cases": [
+        {
+          "case": "fw4-upload-hardware",
+          "offload_requested": true,
+          "TCP_upload_bytes": 33554432,
+          "TCP_upload_SHA256_matched": true,
+          "CPU_ingress_counter_packets": [
+            13,
+            42
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": true,
+          "live_bound_PPE_entries": 2,
+          "live_NPU_attached": true,
+          "default_fw4_flowtable": true
+        },
+        {
+          "case": "fw4-download-hardware",
+          "offload_requested": true,
+          "TCP_download_bytes": 33554432,
+          "TCP_download_SHA256_matched": true,
+          "CPU_ingress_counter_packets": [
+            33,
+            23
+          ],
+          "fixture_PPE_entries_cleared_after_delete": true,
+          "live_HW_OFFLOAD_observed": true,
+          "live_bound_PPE_entries": 2,
+          "live_NPU_attached": true,
+          "default_fw4_flowtable": true
+        }
+      ]
+    }
+  ],
+  "concurrent_SMP": {
+    "complete": true,
+    "runs": [
+      {
+        "threads": 2,
+        "rounds": 1024,
+        "barrier_phases": 2048,
+        "shared_words_checked": 134217728,
+        "cpu_mask": 3,
+        "errors": 0,
+        "checksum": "3fd3420cdc24990e",
+        "seconds": 2.046
+      },
+      {
+        "threads": 2,
+        "rounds": 1024,
+        "barrier_phases": 2048,
+        "shared_words_checked": 134217728,
+        "cpu_mask": 3,
+        "errors": 0,
+        "checksum": "3fd3420cdc24990e",
+        "seconds": 1.98
+      },
+      {
+        "threads": 2,
+        "rounds": 1024,
+        "barrier_phases": 2048,
+        "shared_words_checked": 134217728,
+        "cpu_mask": 3,
+        "errors": 0,
+        "checksum": "3fd3420cdc24990e",
+        "seconds": 1.738
+      },
+      {
+        "threads": 2,
+        "rounds": 1024,
+        "barrier_phases": 2048,
+        "shared_words_checked": 134217728,
+        "cpu_mask": 3,
+        "errors": 0,
+        "checksum": "3fd3420cdc24990e",
+        "seconds": 1.877
+      },
+      {
+        "threads": 2,
+        "rounds": 1024,
+        "barrier_phases": 2048,
+        "shared_words_checked": 134217728,
+        "cpu_mask": 3,
+        "errors": 0,
+        "checksum": "3fd3420cdc24990e",
+        "seconds": 2.388
+      },
+      {
+        "threads": 2,
+        "rounds": 1024,
+        "barrier_phases": 2048,
+        "shared_words_checked": 134217728,
+        "cpu_mask": 3,
+        "errors": 0,
+        "checksum": "3fd3420cdc24990e",
+        "seconds": 2.28
+      },
+      {
+        "threads": 2,
+        "rounds": 1024,
+        "barrier_phases": 2048,
+        "shared_words_checked": 134217728,
+        "cpu_mask": 3,
+        "errors": 0,
+        "checksum": "3fd3420cdc24990e",
+        "seconds": 1.68
+      },
+      {
+        "threads": 2,
+        "rounds": 1024,
+        "barrier_phases": 2048,
+        "shared_words_checked": 134217728,
+        "cpu_mask": 3,
+        "errors": 0,
+        "checksum": "3fd3420cdc24990e",
+        "seconds": 1.71
+      },
+      {
+        "threads": 2,
+        "rounds": 1024,
+        "barrier_phases": 2048,
+        "shared_words_checked": 134217728,
+        "cpu_mask": 3,
+        "errors": 0,
+        "checksum": "3fd3420cdc24990e",
+        "seconds": 1.731
+      },
+      {
+        "threads": 2,
+        "rounds": 1024,
+        "barrier_phases": 2048,
+        "shared_words_checked": 134217728,
+        "cpu_mask": 3,
+        "errors": 0,
+        "checksum": "3fd3420cdc24990e",
+        "seconds": 2.513
+      },
+      {
+        "threads": 2,
+        "rounds": 1024,
+        "barrier_phases": 2048,
+        "shared_words_checked": 134217728,
+        "cpu_mask": 3,
+        "errors": 0,
+        "checksum": "3fd3420cdc24990e",
+        "seconds": 1.708
+      },
+      {
+        "threads": 2,
+        "rounds": 1024,
+        "barrier_phases": 2048,
+        "shared_words_checked": 134217728,
+        "cpu_mask": 3,
+        "errors": 0,
+        "checksum": "3fd3420cdc24990e",
+        "seconds": 1.646
+      }
+    ],
+    "both_CPUs_online_after_tests": true
+  },
+  "root_cause": "Hardware callbacks removed before device-scoped flow cleanup, leaving stale driver cookies.",
+  "fix": "Flush matching flows before FLOW_BLOCK_UNBIND while driver callback remains reachable.",
+  "admission_warmup_workaround_used": false,
+  "PPE_per_entry_packet_byte_stats_enabled": false,
+  "observed_link_Mbps": 100,
+  "QDMA_handoff": {
+    "gate_refused_busy_handoff": true,
+    "installed_M54_unchanged": true,
+    "recovered_by_console_only_FE_PDMA_QDMA_reset_pulse": true,
+    "reset_register": "0x1fb00834",
+    "reset_bits": [
+      21,
+      1,
+      2
+    ],
+    "both_QDMA_idle_verified_before_boot": true,
+    "permanent_recovery_shutdown_fix_pending": true
+  },
+  "limits": [
+    "short functional tests only",
+    "gigabit and 2.5G not verified",
+    "IPv6 and PPPoE offload not verified",
+    "wireless NPU ABI not verified",
+    "crypto engine not yet implemented",
+    "DSL cable absent",
+    "persistent Linux image not installed"
+  ]
+}
