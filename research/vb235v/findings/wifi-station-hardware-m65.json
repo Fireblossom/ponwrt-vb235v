@@ -1,0 +1,58 @@
+{
+  "started_utc": "2026-11-21T01:15:25.679346+00:00",
+  "flash_write_commands_sent": false,
+  "role": "station only, no bridge",
+  "credentials_published": false,
+  "networks": [
+    {
+      "band": "5g",
+      "authenticated": true,
+      "frequency_MHz": 5765,
+      "key_management": "WPA2-PSK",
+      "pairwise_cipher": "CCMP",
+      "DHCP_address_obtained": true,
+      "gateway_ping_passed": true,
+      "TCP_download_bytes": 8388608,
+      "TCP_download_SHA256_matched": true,
+      "TCP_download_seconds": 0.469,
+      "station_RX_bytes_increased": 9234179,
+      "TCP_upload_bytes": 8388608,
+      "TCP_upload_SHA256_matched": true,
+      "TCP_upload_seconds": 1.14,
+      "station_TX_bytes_increased": 8758959,
+      "observed_TX_bitrate": "6.0 MBit/s"
+    },
+    {
+      "band": "2g",
+      "authenticated": true,
+      "frequency_MHz": 2442,
+      "key_management": "WPA2-PSK",
+      "pairwise_cipher": "CCMP",
+      "DHCP_address_obtained": true,
+      "gateway_ping_passed": true,
+      "TCP_download_bytes": 8388608,
+      "TCP_download_SHA256_matched": true,
+      "TCP_download_seconds": 0.61,
+      "station_RX_bytes_increased": 9234179,
+      "TCP_upload_bytes": 8388608,
+      "TCP_upload_SHA256_matched": true,
+      "TCP_upload_seconds": 1.515,
+      "station_TX_bytes_increased": 8759013,
+      "observed_TX_bitrate": "6.0 MBit/s"
+    }
+  ],
+  "PCIe_after_station_tests": [
+    {
+      "address": "0000:01:00.0",
+      "speed": "5.0 GT/s PCIe",
+      "width": 1
+    },
+    {
+      "address": "0001:01:00.0",
+      "speed": "5.0 GT/s PCIe",
+      "width": 1
+    }
+  ],
+  "complete": true,
+  "finished_utc": "2026-11-21T01:16:02.353914+00:00"
+}

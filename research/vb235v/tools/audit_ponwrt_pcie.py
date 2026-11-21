@@ -16,6 +16,10 @@ SOURCE = Path(__file__).resolve().parents[1] / 'bringup/m63-ram-pcie'
 
 def audit_pcie_dtb(data):
     nodes, reserved = parse(data)
+    return audit_pcie_dtb_nodes(nodes, reserved, hashlib.sha256(data).hexdigest())
+
+
+def audit_pcie_dtb_nodes(nodes, reserved, dtb_sha256):
 
     def h(path):
         value = nodes.get(path, {}).get('phandle')
@@ -58,7 +62,7 @@ def audit_pcie_dtb(data):
     if '/__symbols__' in base:
         for name, path in {'pbus':pbus, 'pciephy':phy, 'pcie0':mac, 'pcie_intc':intc}.items():
             require(base['/__symbols__'].pop(name, None) == (path + '\0').encode(), 'Incorrect PCIe symbol metadata')
-    result = audit_lan_dtb_nodes(base, reserved, hashlib.sha256(data).hexdigest())
+    result = audit_lan_dtb_nodes(base, reserved, dtb_sha256)
     result.update(board=PCIE_BOARD, dt_nodes=len(nodes), PCIe_controllers=1, PCIe_lanes=1,
                   PCIe_host_base='0x1fc20000', PCIe_outbound_window='0x20000000+0x4000000',
                   WLAN_endpoint_nodes=0, radio_tested=False)

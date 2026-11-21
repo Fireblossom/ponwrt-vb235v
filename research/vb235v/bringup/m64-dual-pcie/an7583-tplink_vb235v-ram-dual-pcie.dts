@@ -1,0 +1,54 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/include/ "an7583-tplink_vb235v-ram-pcie.dts"
+
+/ {
+	model = "TP-LinkBox 7 VB235v PonWrt RAM dual PCIe development";
+	compatible = "tplink,vb235v-ram-dual-pcie-development", "tplink,vb235v-ram-pcie-development", "airoha,an7583";
+	efuse {
+		compatible = "airoha,an7583-efuse";
+		nvmem-layout {
+			compatible = "fixed-layout";
+			#address-cells = <1>;
+			#size-cells = <1>;
+			qp_valid: pcie-valid@4 { reg = <4 1>; bits = <0 1>; };
+			qp_tx_term: tx-term@8 { reg = <8 1>; bits = <3 2>; };
+			qp_rx_imp: rx-impedance@8 { reg = <8 2>; bits = <5 5>; };
+		};
+	};
+	qphy: phy@1fa5f000 {
+		compatible = "tplink,vb235v-qp-pcie-development";
+		reg = <0 0x1fa5f000 0 0x1000>, <0 0x1fa5a000 0 0x1000>, <0 0x1fa5e000 0 0x1000>;
+		reg-names = "ana", "dig", "pma";
+		#phy-cells = <0>;
+		airoha,scu = <&scuclk>;
+		nvmem-cells = <&qp_valid>, <&qp_tx_term>, <&qp_rx_imp>;
+		nvmem-cell-names = "pcie-valid", "tx-term", "rx-impedance";
+	};
+	pcie1: pcie@1fa92000 {
+		compatible = "airoha,an7583-pcie1-development";
+		device_type = "pci";
+		linux,pci-domain = <1>;
+		#address-cells = <3>;
+		#size-cells = <2>;
+		reg = <0 0x1fa92000 0 0x1000>;
+		reg-names = "port1";
+		clocks = <&scuclk 7>;
+		clock-names = "sys_ck1";
+		phys = <&qphy>;
+		phy-names = "pcie-phy1";
+		airoha,pbus = <&pbus>;
+		ranges = <0x02000000 0 0x24000000 0 0x24000000 0 0x4000000>;
+		bus-range = <0 255>;
+		interrupts = <0 40 4>;
+		interrupt-names = "pcie_irq";
+		#interrupt-cells = <1>;
+		interrupt-map-mask = <0 0 0 7>;
+		interrupt-map = <0 0 0 1 &pcie1_intc 0>, <0 0 0 2 &pcie1_intc 1>,
+				<0 0 0 3 &pcie1_intc 2>, <0 0 0 4 &pcie1_intc 3>;
+		pcie1_intc: interrupt-controller {
+			interrupt-controller;
+			#address-cells = <0>;
+			#interrupt-cells = <1>;
+		};
+	};
+};

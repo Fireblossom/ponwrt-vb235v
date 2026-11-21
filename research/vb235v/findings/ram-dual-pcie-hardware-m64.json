@@ -1,0 +1,70 @@
+{
+  "started_utc": "2026-11-21T00:26:36.057562+00:00",
+  "fit_sha256": "0edf8e72dde4c3069ecb08e78377c00aa79116e9a96300c0d9ee10a5cd4544ec",
+  "flash_write_commands_sent": false,
+  "saveenv_sent": false,
+  "complete": true,
+  "hardware_userspace_boot_verified": true,
+  "RAM_upload_sha256_verified": true,
+  "QDMA_handoff_samples": [
+    [
+      {
+        "address": "0x1fb54004",
+        "value": "0x14080070",
+        "TX_RX_enabled_or_busy": false
+      },
+      {
+        "address": "0x1fb56004",
+        "value": "0x1c0800d0",
+        "TX_RX_enabled_or_busy": false
+      }
+    ],
+    [
+      {
+        "address": "0x1fb54004",
+        "value": "0x14080070",
+        "TX_RX_enabled_or_busy": false
+      },
+      {
+        "address": "0x1fb56004",
+        "value": "0x1c0800d0",
+        "TX_RX_enabled_or_busy": false
+      }
+    ]
+  ],
+  "native_link_Mbps": 100,
+  "native_PHY_id": "c0ff0420",
+  "native_full_duplex": true,
+  "RAM_root_verified": true,
+  "native_LAN_TCP_payload_bytes": 8388608,
+  "native_LAN_TCP_payload_matches": true,
+  "native_LAN_transfer_seconds": 0.719,
+  "native_LAN_upload_bytes": 8388608,
+  "native_LAN_upload_SHA256_match": true,
+  "native_LAN_upload_seconds": 1.218,
+  "native_LAN_errors_after_upload": {
+    "rx": 0,
+    "tx": 0
+  },
+  "PCIe_endpoints": [
+    {
+      "address": "0000:01:00.0",
+      "vendor": "0x14c3",
+      "device": "0x799b",
+      "current_link_speed": "5.0 GT/s PCIe",
+      "current_link_width": 1
+    },
+    {
+      "address": "0001:01:00.0",
+      "vendor": "0x14c3",
+      "device": "0x7993",
+      "current_link_speed": "5.0 GT/s PCIe",
+      "current_link_width": 1
+    }
+  ],
+  "native_QPHY_initialization_completed": true,
+  "QPHY_efuse_read_through_native_provider": true,
+  "radio_tested": false,
+  "root_port_BAR0_allocation_warning_observed": true,
+  "PCIe_verified_utc": "2026-11-21T00:29:19.376104+00:00"
+}

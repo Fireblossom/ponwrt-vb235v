@@ -1,0 +1,40 @@
+{
+  "input_files": [
+    {
+      "file": "pcie_ecnt_phy.h",
+      "sha256": "5a0b2a610e70641c7ecc2c5309f8d7f695380be028176c489b291e9d19644442"
+    },
+    {
+      "file": "qp_ana_csr_c_header.h",
+      "sha256": "d8d05f82e97d8831a9c9260fa53a452ee17f134fc353d609f510c904137c3441"
+    },
+    {
+      "file": "qp_dig_csr_c_header.h",
+      "sha256": "96a9c6c14e0ef45983c6821e0979a06b4e639fc96968b9f2fd6228273ae47f13"
+    },
+    {
+      "file": "qp_pma_top_c_header.h",
+      "sha256": "56cb350fca9279a7a9da0f2a576efbf35e8fda90fba627bf639082a28ecb9d84"
+    },
+    {
+      "file": "pcie-ecnt-phy_7583.c",
+      "sha256": "ab66e9990a41d05f4bf1d96187ebb1ab94ca10aea9007575f13b7d96b43806aa"
+    }
+  ],
+  "selected_functions": [
+    "PCIe_QPhy_Load_Efuse",
+    "pcie_QPhy_init_original",
+    "PCIe_QPhy_check_kband",
+    "tx_pll_disable",
+    "tx_pll_enable",
+    "PCIe_QPhy_pll_kband_flow",
+    "pcie_QPhy_init"
+  ],
+  "register_structs": 44,
+  "register_addresses": 44,
+  "adaptations": [
+    "explicit INTF_CTRL_7 read before write",
+    "return ETIMEDOUT after 50 unsuccessful retries",
+    "instance pointer and device debug logging"
+  ]
+}

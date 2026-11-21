@@ -1,0 +1,73 @@
+{
+  "milestone": "M66",
+  "verified_UTC_date": "2026-11-21",
+  "comparison_complete": true,
+  "scope": "Original kernel and vendor Wi-Fi driver initialization in a minimal private RAM diagnostic; native PonWrt station tests.",
+  "original_Linux": "5.4.55",
+  "original_kernel_SHA256": "17230050718d0e494227aea2af9da6299bf9b72557c145ad73ca28ca3bc4f02a",
+  "original_kernel_byte_exact": true,
+  "original_modules_loaded": [
+    "compat",
+    "cfg80211",
+    "mt_wifi_osal",
+    "ecnt_legacy_api",
+    "mt_wifi",
+    "mtk_hwifi",
+    "connac_if",
+    "mtk_pci",
+    "en_npu",
+    "mt7993",
+    "mt799b"
+  ],
+  "both_original_chip_drivers_bound": true,
+  "original_WM_firmware_build": "20260421124444",
+  "original_WM_firmware_state": 3,
+  "original_post_driver_PCIe_config": [
+    {
+      "BDF": "0000:01:00.0",
+      "device": "14c3:799b",
+      "PCIe_capability_offset": "0x80",
+      "Link_Status": "0x1012",
+      "speed_encoding": 2,
+      "width": 1,
+      "current_link_GT_s": 5.0
+    },
+    {
+      "BDF": "0001:01:00.0",
+      "device": "14c3:7993",
+      "PCIe_capability_offset": "0x80",
+      "Link_Status": "0x1012",
+      "speed_encoding": 2,
+      "width": 1,
+      "current_link_GT_s": 5.0
+    }
+  ],
+  "original_post_driver_sysfs_all_four_RC_and_EP": "5 GT/s x1",
+  "PonWrt_Linux": "6.18.60",
+  "PonWrt_post_station_PCIe": [
+    {
+      "address": "0000:01:00.0",
+      "speed": "5.0 GT/s PCIe",
+      "width": 1
+    },
+    {
+      "address": "0001:01:00.0",
+      "speed": "5.0 GT/s PCIe",
+      "width": 1
+    }
+  ],
+  "post_driver_rates_match": true,
+  "flash_write_commands_sent": false,
+  "saveenv_sent": false,
+  "diagnostic_storage_nodes_removed": true,
+  "diagnostic_flash_initcall_blacklisted": "airoha_mtd_init",
+  "diagnostic_NAND_mounts": false,
+  "diagnostic_LAN_bridges_created": false,
+  "limitations": [
+    "Minimal RAM diagnostic, not a normal complete factory userspace boot.",
+    "NPU firmware was not started; the original offload adapter logged mailbox timeouts. No NPU functionality is claimed.",
+    "No AP data traffic, DSL, voice or maximum wireless throughput was tested on the original diagnostic.",
+    "An initial diagnostic boot hit a flash-init null pointer; the later byte-exact-kernel diagnostic explicitly skipped that initcall."
+  ],
+  "private_serial_log_SHA256": "5d496b8218edcacf0d7cc7034ecfb01134cc2e78baeaf7743ac75bc1a34cfd0f"
+}
