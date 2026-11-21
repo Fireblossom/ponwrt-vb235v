@@ -1,0 +1,59 @@
+    1234:	a94153f3 	ldp	x19, x20, [sp, #16]
+    1238:	a9425bf5 	ldp	x21, x22, [sp, #32]
+    123c:	a8c37bfd 	ldp	x29, x30, [sp], #48
+    1240:	d65f03c0 	ret
+    1244:	f944e280 	ldr	x0, [x20, #2496]
+    1248:	94000000 	bl	0 <pci_free_irq_vectors>
+			1248: R_AARCH64_CALL26	pci_free_irq_vectors
+    124c:	17fffff9 	b	1230 <pci_dma_rx_poll-0xd00>
+    1250:	f9401e80 	ldr	x0, [x20, #56]
+    1254:	90000002 	adrp	x2, 0 <pci_dma_rx_poll-0x1f30>
+			1254: R_AARCH64_ADR_PREL_PG_HI21	.rodata+0x18
+    1258:	91000042 	add	x2, x2, #0x0
+			1258: R_AARCH64_ADD_ABS_LO12_NC	.rodata+0x18
+    125c:	90000001 	adrp	x1, 0 <pci_dma_rx_poll-0x1f30>
+			125c: R_AARCH64_ADR_PREL_PG_HI21	.rodata.str1.8+0x3f8
+    2274:	2a1403e1 	mov	w1, w20
+    2278:	11000694 	add	w20, w20, #0x1
+    227c:	94000000 	bl	0 <pci_irq_vector>
+			227c: R_AARCH64_CALL26	pci_irq_vector
+    2280:	aa1503e1 	mov	x1, x21
+    2284:	94000000 	bl	0 <free_irq>
+			2284: R_AARCH64_CALL26	free_irq
+    2288:	395cfec0 	ldrb	w0, [x22, #1855]
+    228c:	910102b5 	add	x21, x21, #0x40
+    2290:	6b00029f 	cmp	w20, w0
+    2294:	54fffeeb 	b.lt	2270 <pci_dma_rx_poll+0x340>  // b.tstop
+    2298:	f944e260 	ldr	x0, [x19, #2496]
+    229c:	94000000 	bl	0 <pci_free_irq_vectors>
+			229c: R_AARCH64_CALL26	pci_free_irq_vectors
+    22a0:	39709a76 	ldrb	w22, [x19, #3110]
+    22a4:	34000556 	cbz	w22, 234c <pci_dma_rx_poll+0x41c>
+    22a8:	d37e1ec0 	ubfiz	x0, x22, #2, #8
+    22ac:	d2800015 	mov	x21, #0x0                   	// #0
+    22b0:	8b360016 	add	x22, x0, w22, uxtb
+    22b4:	a90363f7 	stp	x23, x24, [sp, #48]
+    22b8:	52800417 	mov	w23, #0x20                  	// #32
+    22bc:	d379e2d6 	lsl	x22, x22, #7
+    4574:	2a1703e1 	mov	w1, w23
+    4578:	110006f7 	add	w23, w23, #0x1
+    457c:	94000000 	bl	0 <pci_irq_vector>
+			457c: R_AARCH64_CALL26	pci_irq_vector
+    4580:	aa1503e1 	mov	x1, x21
+    4584:	94000000 	bl	0 <free_irq>
+			4584: R_AARCH64_CALL26	free_irq
+    4588:	910102b5 	add	x21, x21, #0x40
+    458c:	6b1802ff 	cmp	w23, w24
+    4590:	54ffff01 	b.ne	4570 <pci_dma_queue_napi_init+0x440>  // b.any
+    4594:	f944e260 	ldr	x0, [x19, #2496]
+    4598:	128002b7 	mov	w23, #0xffffffea            	// #-22
+    459c:	94000000 	bl	0 <pci_free_irq_vectors>
+			459c: R_AARCH64_CALL26	pci_free_irq_vectors
+    45a0:	f9401e60 	ldr	x0, [x19, #56]
+    45a4:	2a1403e3 	mov	w3, w20
+    45a8:	9102e2c2 	add	x2, x22, #0xb8
+    45ac:	90000001 	adrp	x1, 0 <pci_dma_rx_poll-0x1f30>
+			45ac: R_AARCH64_ADR_PREL_PG_HI21	.rodata.str1.8+0x5f8
+    45b0:	91000021 	add	x1, x1, #0x0
+			45b0: R_AARCH64_ADD_ABS_LO12_NC	.rodata.str1.8+0x5f8
+    45b4:	94000000 	bl	0 <_dev_err>

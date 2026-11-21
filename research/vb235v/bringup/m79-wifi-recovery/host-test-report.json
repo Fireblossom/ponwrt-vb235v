@@ -1,0 +1,40 @@
+{
+  "status": "passed",
+  "stdout": "PASS: 1440 actual-source probe/unwind/unbind/rebind scenarios; all IRQ/vector/ref/work ordering assertions held.",
+  "compiler": [
+    "gcc",
+    "-std=gnu11",
+    "-g",
+    "-O1",
+    "-Wall",
+    "-Wextra",
+    "-Werror",
+    "-Wno-sign-compare",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer",
+    "/home/duanx/m79-wifi-recovery/host-test/actual-source-lifecycle.c",
+    "-o",
+    "/home/duanx/m79-wifi-recovery/host-test/lifecycle"
+  ],
+  "extracted_functions_sha256": "5aa75884e2e706f612b83144bc9388bc6830754b4a3864b382d5dd2fd154d85a",
+  "regression_mutations": {
+    "hif2-vector-leak": {
+      "detected": true,
+      "returncode": -6,
+      "stderr_tail": "mutation-hif2-vector-leak: /home/duanx/m79-wifi-recovery/host-test/mutation-hif2-vector-leak.c:120: mt76_free_device: Assertion `d==&current->mt76&&!primary.handlers&&!secondary.handlers&&!primary.vectors&&!secondary.vectors&&refs==0&&d->irq_tasklet.killed' failed.\n"
+    },
+    "handler-after-free": {
+      "detected": true,
+      "returncode": -6,
+      "stderr_tail": "mutation-handler-after-free: /home/duanx/m79-wifi-recovery/host-test/mutation-handler-after-free.c:108: pci_free_irq_vectors: Assertion `!p->handlers&&p->vectors==1' failed.\n"
+    },
+    "reset-work-after-free": {
+      "detected": true,
+      "returncode": -6,
+      "stderr_tail": "mutation-reset-work-after-free: /home/duanx/m79-wifi-recovery/host-test/mutation-reset-work-after-free.c:121: mt76_free_device: Assertion `!current->init_work.pending&&!current->dump_work.pending&&!current->reset_work.pending&&!current->rc_work.pending&&!current->wed_rro.work.pending' failed.\n"
+    }
+  },
+  "limitations": [
+    "Mock kernel contracts; no hardware timings, PCI core device-link actions, or firmware validated."
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "status": "passed",
+  "stdout": "PASS: 94 unchanged-loader size/header/config/error cases; no out-of-bounds or destination writes on reject.",
+  "synthetic_data_only": true,
+  "loader_sha256": "e2070188d0f736c0d7595ddf8bca65b0cefd6f7d39fa990743d63b7fab06b329",
+  "limitations": [
+    "Valid header/config does not authenticate RF tables; private full-file hash remains an image/input integrity check."
+  ]
+}

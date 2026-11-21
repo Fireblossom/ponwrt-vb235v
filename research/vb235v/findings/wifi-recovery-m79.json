@@ -1,0 +1,140 @@
+{
+  "schema": 1,
+  "milestone": "M79",
+  "frozen_utc": "2026-11-21T21:18:02.043441+00:00",
+  "classification": "confirmed-resource-lifecycle-defects-repaired-offline; hardware-regression-pending",
+  "security_claim": "No demonstrated remote exploit or assigned CVE; not a complete Wi-Fi security audit.",
+  "baseline": {
+    "mt76_commit": "0936617dc529ff9da0385221d3fa6de732231177",
+    "linux": "6.18.60",
+    "installed_parent_baseline": "M75-phy-page-v1",
+    "repo_baseline_head": "94f34fb6",
+    "linux_msi_source_sha256": "c68235b3bda27258905524b854ed5aa671d9e3de1fb88bf58b15e5a4e2a24cc8",
+    "linux_device_link_source_sha256": "7ae246d292699fb28d4f363532eff9ce75b1a83dce966e8a54e80c5f226b2440"
+  },
+  "confirmed_findings": [
+    {
+      "id": "HIF2-MSI-owner",
+      "evidence": "Primary-only removal leaves secondary-owned pcim MSI action unreleased; rebind log says MSI already enabled.",
+      "repair": "Explicit native-vector ledger for both devices, released by the primary after both handlers stop."
+    },
+    {
+      "id": "IRQ-device-lifetime",
+      "evidence": "Pinned remove frees mt76 device while primary-owned devm IRQ callbacks still reference it.",
+      "repair": "Mask, synchronize IRQs, drain tasklet, mask again and free handlers before DMA/device memory; never infer vector ownership from post-detach WED active state."
+    },
+    {
+      "id": "failed-register-unwind",
+      "evidence": "DMA and firmware initialize before guarded EEPROM rejection; failed registration previously only freed mt76 device.",
+      "repair": "Stage-aware unregister for errors, MCU exit with service still available, NAPI/worker stop, complete resource cleanup."
+    },
+    {
+      "id": "async-work-lifetime",
+      "evidence": "Normal remove did not cancel init_work or close recovery admission; observed reset/scan warning is consistent with teardown work, but not a unique root cause proof.",
+      "repair": "Removal admission gate plus reset/dump worker entry guards; cancel init/dump/reset/RRO/RC work and drain after IRQ quiescence."
+    },
+    {
+      "id": "secondary-lifetime",
+      "evidence": "get_device pins device object, not secondary devm HIF/BAR memory.",
+      "repair": "Managed supplier link before HIF lookup, require CONSUMER_PROBE state, defer unavailable supplier, filter linked supplier in HIF list and lock list deletion."
+    },
+    {
+      "id": "partial-error-cleanup",
+      "repair": "Initialize RRO list heads before init failures; tolerate uncreated NAPI and clear dummy-netdev pointer after allocation failure; coredump unregister tolerates NULL."
+    }
+  ],
+  "calibration": {
+    "changed": false,
+    "private_guard_patch_sha256": "753ddae900ba240fd7116f95b23f7c7395099ce6ca67237b2a4ead15980d0dae",
+    "source_sha256": "f2b5559f47256ad8e001d4b912f44b82b4fea87043681d882cb1f396b73f61aa",
+    "size_gate_bytes": 7680,
+    "rejects_missing_wrong_size_chip_or_capabilities": true,
+    "reference_fallback_enabled": false,
+    "synthetic_boundary_cases": 94,
+    "limitation": "Header/config checks are not cryptographic/full-RF-table authentication; preserve private full-file integrity gates."
+  },
+  "vendor_comparison": {
+    "exact_live_binary_sha256": {
+      "mtk_pci.ko": "237719af024e52fe52b7cfcfc835f57d97809ec300ece6aa0162e16257a7a519",
+      "mt_wifi.ko": "790b6aa17345929bb6a658125136d3ddfcd97eefba33675bfbcdf80f5234edf1",
+      "mt7993.ko": "02eb2c0cd52364e5f00932008a275a4c5c102b0b5b69798f05ca2a0e50c7ae3a"
+    },
+    "live_irq_evidence": "mtk_pci text relocations free_irq@0x2284 -> pci_free_irq_vectors@0x229c and @0x4584 -> @0x459c; local function names stripped.",
+    "gpl_bsp_pci_dma_c_sha256": "8d39d1bf6dc1015472aff28bccb2030d58702bf3721d234b62c585d4234367a5",
+    "gpl_bsp_vs_live": "Function-level source corroboration only, not proven byte-identical.",
+    "original_WM_build": "20260421124444",
+    "native_negative_test_WM_build": "20260720165918",
+    "post_driver_link_rates": "Both measured 5 GT/s x1 by M66."
+  },
+  "validation": {
+    "host_actual_source_scenarios": 1440,
+    "host_sanitizers": [
+      "ASan",
+      "UBSan"
+    ],
+    "regression_mutations_detected": [
+      "HIF2-vector-leak",
+      "handler-after-free",
+      "reset-work-after-free"
+    ],
+    "compile_units": 30,
+    "linked_modules": {
+      "mt76.ko": {
+        "path": "/home/duanx/m79-wifi-recovery/mt76/mt76.ko",
+        "sha256": "0b408dc203d0838a4bc11b4f74f83c3a3d1f25cc7621dd5fecc9dc765f155bd7",
+        "vermagic": "6.18.60 SMP mod_unload aarch64",
+        "installable_release": false
+      },
+      "mt76-connac-lib.ko": {
+        "path": "/home/duanx/m79-wifi-recovery/mt76/mt76-connac-lib.ko",
+        "sha256": "976a99601fc401425036d354425949e00152a708e2c2de24c7dd46063017cea1",
+        "vermagic": "6.18.60 SMP mod_unload aarch64",
+        "installable_release": false
+      },
+      "mt7996/mt7996e.ko": {
+        "path": "/home/duanx/m79-wifi-recovery/mt76/mt7996/mt7996e.ko",
+        "sha256": "79897c96ebaf678cb548d9a0b072ecc9a4dd17b8f8f0a4a7f538e4b4e13d1a50",
+        "vermagic": "6.18.60 SMP mod_unload aarch64",
+        "installable_release": false
+      }
+    },
+    "optional_compile": "12 changed-unit builds across WED, NPU, WED+NPU synthetic configs passed; no optional backend qualification.",
+    "fresh_patch_fixture_and_prepared_hashes": "passed",
+    "prepare_idempotence_and_fail_closed_prerequisite": "passed",
+    "checkpatch": "0 errors / 0 warnings / 0 checks; --strict --no-signoff",
+    "limitations": [
+      "Prepared exact .cmd flags and mod.c metadata replayed; no new modpost. Kernel .module-common.o reused.",
+      "No module installed or loaded. Full image build and live tests required.",
+      "Mock kernel/firmware/DMA contracts; no live module unload, PCI-core supplier actions, hardware timings or complete partial-DMA fault injection."
+    ]
+  },
+  "hardware": {
+    "performed": false,
+    "COM3_SP3_SSH_used": false,
+    "modules_installed": false,
+    "NAND_written": false,
+    "acceptance_plan": "bringup/m79-wifi-recovery/README.md#parent-only-hardware-acceptance-sequence"
+  },
+  "remaining": [
+    "Parent must build final integrated image with fresh modpost; compile-check modules are not release artifacts.",
+    "Primary-only unbind/rebind, invalid-input rejection then valid recovery, full stack unload, secondary-only supplier unbind and reverse probe order need real tests.",
+    "STA 5 GHz / 2.4 GHz reconnect and bidirectional integrity after reload remain parent hardware validation; credentials stay private.",
+    "MT7990 fresh-probe wfsys_reset skips hardware reset unless hw_full_reset is set; no register changes guessed; valid rebind firmware state remains acceptance requirement.",
+    "Shared root-port reset/QPHY ordering is unchanged and still needs independent qualification.",
+    "Wi-Fi WED/NPU callback, DMA concurrency and actual offload must be tested only with a complete matching enabled backend.",
+    "No complete audit of radio firmware binaries, over-the-air parsing, multi-adapter hif_idx concurrency, WPA/hostapd/wpa_supplicant or all optional backends is claimed."
+  ],
+  "patch": {
+    "path": "bringup/m79-wifi-recovery/121-vb235v-mt7996-pci-recovery.patch",
+    "sha256": "44bd5ca699dd63a24c88cb5f3f6f88f14b60581be2e3f741018e0f1805ac81f6",
+    "touches": [
+      "mt7996/pci.c",
+      "mt7996/init.c",
+      "mt7996/mt7996.h",
+      "mt7996/mac.c",
+      "mt7996/coredump.c",
+      "dma.c"
+    ]
+  },
+  "delivery_status": "frozen-for-parent-integration-no-commit-no-push"
+}

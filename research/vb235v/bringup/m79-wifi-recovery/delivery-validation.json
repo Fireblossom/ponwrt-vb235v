@@ -1,0 +1,12 @@
+{
+  "status": "passed",
+  "baseline_source_hashes_unchanged": true,
+  "patch_applied_to_fresh_fixture": true,
+  "prepared_source_hashes_match": true,
+  "prepare_idempotent": true,
+  "calibration_prerequisite_preserved": true,
+  "changed_calibration_prerequisite_rejected": true,
+  "checkpatch": "total: 0 errors, 0 warnings, 0 checks, 411 lines checked\n\n/mnt/c/Users/duan changxu/Desktop/TP/ponwrt-vb235v/research/vb235v/bringup/m79-wifi-recovery/121-vb235v-mt7996-pci-recovery.patch has no obvious style problems and is ready for submission.",
+  "patch_sha256": "44bd5ca699dd63a24c88cb5f3f6f88f14b60581be2e3f741018e0f1805ac81f6",
+  "fixture": "/home/duanx/m79-wifi-recovery/delivery-test/patch-fixture-brmlp1s4"
+}
