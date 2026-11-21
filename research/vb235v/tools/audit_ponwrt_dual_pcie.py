@@ -17,6 +17,10 @@ SOURCE = Path(__file__).resolve().parents[1] / 'bringup/m64-dual-pcie'
 
 def audit_dual_dtb(data):
     nodes, reserved = parse(data)
+    return audit_dual_dtb_nodes(nodes, reserved, hashlib.sha256(data).hexdigest())
+
+
+def audit_dual_dtb_nodes(nodes, reserved, dtb_sha256):
 
     def h(path):
         v = nodes.get(path, {}).get('phandle')
@@ -63,7 +67,7 @@ def audit_dual_dtb(data):
     if '/__symbols__' in base:
         for name,path in {'qp_valid':valid,'qp_tx_term':term,'qp_rx_imp':imp,'qphy':phy,'pcie1':host,'pcie1_intc':intc}.items():
             require(base['/__symbols__'].pop(name,None)==(path+'\0').encode(),'Incorrect dual PCIe symbol metadata')
-    result=audit_pcie_dtb_nodes(base,reserved,hashlib.sha256(data).hexdigest())
+    result=audit_pcie_dtb_nodes(base,reserved,dtb_sha256)
     result.update(board=DUAL_BOARD,dt_nodes=len(nodes),PCIe_controllers=2,QPHY_efuse_cells=3,
                   PCIe_primary_host_base='0x1fa92000',radio_tested=False)
     return result

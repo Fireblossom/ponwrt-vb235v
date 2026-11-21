@@ -1,0 +1,214 @@
+{
+  "started_utc": "2026-11-21T09:54:07.209270+00:00",
+  "flash_write_commands_sent": false,
+  "complete": true,
+  "possible": "0-1",
+  "present": "0-1",
+  "online": "0-1",
+  "initial_shared_memory_probe": {
+    "threads": 2,
+    "rounds": 1024,
+    "barrier_phases": 2048,
+    "shared_words_checked": 134217728,
+    "cpu_mask": 3,
+    "errors": 0,
+    "checksum": "3fd3420cdc24990e",
+    "seconds": 1.621
+  },
+  "per_CPU_user_ticks": {
+    "cpu0": 162,
+    "cpu1": 162
+  },
+  "CPU1_hotplug": [
+    {
+      "cycle": 1,
+      "offline_then_online_verified": true,
+      "probe_after_online": {
+        "threads": 2,
+        "rounds": 1024,
+        "barrier_phases": 2048,
+        "shared_words_checked": 134217728,
+        "cpu_mask": 3,
+        "errors": 0,
+        "checksum": "3fd3420cdc24990e",
+        "seconds": 1.622
+      }
+    },
+    {
+      "cycle": 2,
+      "offline_then_online_verified": true,
+      "probe_after_online": {
+        "threads": 2,
+        "rounds": 1024,
+        "barrier_phases": 2048,
+        "shared_words_checked": 134217728,
+        "cpu_mask": 3,
+        "errors": 0,
+        "checksum": "3fd3420cdc24990e",
+        "seconds": 1.622
+      }
+    }
+  ],
+  "native_LAN_carrier_after_hotplug": true,
+  "online_after_tests": "0-1",
+  "finished_utc": "2026-11-21T09:59:21.813691+00:00",
+  "concurrent_shared_memory_runs": [
+    {
+      "threads": 2,
+      "rounds": 1024,
+      "barrier_phases": 2048,
+      "shared_words_checked": 134217728,
+      "cpu_mask": 3,
+      "errors": 0,
+      "checksum": "3fd3420cdc24990e",
+      "seconds": 1.754
+    },
+    {
+      "threads": 2,
+      "rounds": 1024,
+      "barrier_phases": 2048,
+      "shared_words_checked": 134217728,
+      "cpu_mask": 3,
+      "errors": 0,
+      "checksum": "3fd3420cdc24990e",
+      "seconds": 1.891
+    },
+    {
+      "threads": 2,
+      "rounds": 1024,
+      "barrier_phases": 2048,
+      "shared_words_checked": 134217728,
+      "cpu_mask": 3,
+      "errors": 0,
+      "checksum": "3fd3420cdc24990e",
+      "seconds": 1.659
+    },
+    {
+      "threads": 2,
+      "rounds": 1024,
+      "barrier_phases": 2048,
+      "shared_words_checked": 134217728,
+      "cpu_mask": 3,
+      "errors": 0,
+      "checksum": "3fd3420cdc24990e",
+      "seconds": 1.833
+    },
+    {
+      "threads": 2,
+      "rounds": 1024,
+      "barrier_phases": 2048,
+      "shared_words_checked": 134217728,
+      "cpu_mask": 3,
+      "errors": 0,
+      "checksum": "3fd3420cdc24990e",
+      "seconds": 1.678
+    },
+    {
+      "threads": 2,
+      "rounds": 1024,
+      "barrier_phases": 2048,
+      "shared_words_checked": 134217728,
+      "cpu_mask": 3,
+      "errors": 0,
+      "checksum": "3fd3420cdc24990e",
+      "seconds": 2.235
+    },
+    {
+      "threads": 2,
+      "rounds": 1024,
+      "barrier_phases": 2048,
+      "shared_words_checked": 134217728,
+      "cpu_mask": 3,
+      "errors": 0,
+      "checksum": "3fd3420cdc24990e",
+      "seconds": 2.266
+    },
+    {
+      "threads": 2,
+      "rounds": 1024,
+      "barrier_phases": 2048,
+      "shared_words_checked": 134217728,
+      "cpu_mask": 3,
+      "errors": 0,
+      "checksum": "3fd3420cdc24990e",
+      "seconds": 1.727
+    },
+    {
+      "threads": 2,
+      "rounds": 1024,
+      "barrier_phases": 2048,
+      "shared_words_checked": 134217728,
+      "cpu_mask": 3,
+      "errors": 0,
+      "checksum": "3fd3420cdc24990e",
+      "seconds": 1.65
+    },
+    {
+      "threads": 2,
+      "rounds": 1024,
+      "barrier_phases": 2048,
+      "shared_words_checked": 134217728,
+      "cpu_mask": 3,
+      "errors": 0,
+      "checksum": "3fd3420cdc24990e",
+      "seconds": 1.7
+    }
+  ],
+  "concurrent_probe_completed": true,
+  "wifi_station_tests": [
+    {
+      "band": "5g",
+      "authenticated": true,
+      "frequency_MHz": 5765,
+      "key_management": "WPA2-PSK",
+      "pairwise_cipher": "CCMP",
+      "DHCP_address_obtained": true,
+      "gateway_ping_passed": true,
+      "TCP_download_bytes": 8388608,
+      "TCP_download_SHA256_matched": true,
+      "TCP_download_seconds": 0.766,
+      "station_RX_bytes_increased": 9235359,
+      "TCP_upload_bytes": 8388608,
+      "TCP_upload_SHA256_matched": true,
+      "TCP_upload_seconds": 1.5,
+      "station_TX_bytes_increased": 8758959,
+      "observed_TX_bitrate": "6.0 MBit/s"
+    },
+    {
+      "band": "2g",
+      "authenticated": true,
+      "frequency_MHz": 2442,
+      "key_management": "WPA2-PSK",
+      "pairwise_cipher": "CCMP",
+      "DHCP_address_obtained": true,
+      "gateway_ping_passed": true,
+      "TCP_download_bytes": 8388608,
+      "TCP_download_SHA256_matched": true,
+      "TCP_download_seconds": 0.61,
+      "station_RX_bytes_increased": 9235943,
+      "TCP_upload_bytes": 8388608,
+      "TCP_upload_SHA256_matched": true,
+      "TCP_upload_seconds": 1.422,
+      "station_TX_bytes_increased": 8759013,
+      "observed_TX_bitrate": "6.0 MBit/s"
+    }
+  ],
+  "PCIe_after_tests": [
+    {
+      "address": "0000:01:00.0",
+      "speed": "5.0 GT/s PCIe",
+      "width": 1
+    },
+    {
+      "address": "0001:01:00.0",
+      "speed": "5.0 GT/s PCIe",
+      "width": 1
+    }
+  ],
+  "native_LAN_download_8MiB_SHA256_matched": true,
+  "native_LAN_upload_8MiB_SHA256_matched": true,
+  "native_LAN_speed_Mbps": 100,
+  "kernel_maximum_slots": 4,
+  "detected_usable_ARM_CPUs": 2,
+  "installed_new_Linux": false
+}

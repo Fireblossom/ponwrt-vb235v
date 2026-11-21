@@ -1,0 +1,24 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/include/ "an7583-tplink_vb235v-ram-dual-pcie.dts"
+
+/ {
+	model = "TP-LinkBox 7 VB235v PonWrt dual-core RAM development";
+	compatible = "tplink,vb235v-ram-smp-development", "tplink,vb235v-ram-dual-pcie-development", "tplink,vb235v-ram-pcie-development", "airoha,an7583";
+	cpus {
+		cpu-map {
+			cluster0 {
+				core0 { cpu = <&cpu0>; };
+				core1 { cpu = <&cpu1>; };
+			};
+		};
+		cpu0: cpu@0 { next-level-cache = <&l2>; };
+		cpu1: cpu@1 {
+			device_type = "cpu";
+			compatible = "arm,cortex-a53";
+			reg = <1>;
+			enable-method = "psci";
+			next-level-cache = <&l2>;
+		};
+		l2: l2-cache { compatible = "cache"; cache-level = <2>; cache-unified; };
+	};
+};

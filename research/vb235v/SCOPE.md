@@ -35,3 +35,11 @@ The owner also connected the two 2.5G sockets to each other with one cable for
 port-loop testing. As of 2026-11-21 the DSL cable is not connected; remind the
 owner before line synchronization and automatic-dial testing. This does not
 block independent driver, offline logic or isolated port-loop work.
+
+On 2026-11-21 the owner explicitly prioritized wired Ethernet and hardware
+acceleration, and requested multicore bring-up first. Validate the additional
+usable ARM CPU(s) with execution and shared-memory tests, then proceed with
+the wired data path and actual hardware offload. Generic four-node stock DT
+templates do not establish four usable ARM cores: the captured original live
+cpuinfo and ATF expose processors 0 and 1. Keep NPU processing-core counts
+separate from the Linux ARM CPU topology.
