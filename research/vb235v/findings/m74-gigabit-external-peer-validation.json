@@ -1,0 +1,41 @@
+{
+  "schema": 1,
+  "milestone": "M74",
+  "date": "2026-11-21",
+  "board": "tplink,vb235v",
+  "installed_revision": "M73-upgrade-v2",
+  "test": "One external 2.5G socket connected directly to Windows Realtek USB GbE adapter",
+  "router_interface": "eth2",
+  "PHY_address": 15,
+  "Windows_adapter_link_Mbps": 1000,
+  "copper_gigabit_negotiation_confirmed": true,
+  "PHY_observation": {
+    "BMSR": "0x416d",
+    "link_up": true,
+    "autonegotiation_complete": true,
+    "1000BASE_T_status": "0x7800",
+    "link_partner_1000_full_advertisement": true,
+    "vendor_AUX_status": "0x0000",
+    "Linux_reported_speed": -1,
+    "Linux_reported_duplex": "full"
+  },
+  "linux_carrier_samples": 4,
+  "all_samples_carrier_up": true,
+  "limitation": "Linux vendor-speed decoder reports Unknown for AUX=0; copper negotiation does not qualify MAC/PCS frame integrity or forwarding throughput.",
+  "other_external_port": {
+    "interface": "eth1",
+    "PHY_address": 14,
+    "carrier": false,
+    "qualification": "No independent peer connected; not tested"
+  },
+  "flash_write_commands_sent": false,
+  "bridges_or_IP_configuration_added": false,
+  "original_port_administrative_states_restored": true,
+  "diagnostic_module_unloaded": true,
+  "pending": [
+    "Fix and validate speed reporting for the observed firmware/register behavior",
+    "Bidirectional MAC/PCS frame integrity on this 1G external-peer link",
+    "Other external socket with independent peer",
+    "Actual 2.5G peer and throughput"
+  ]
+}
