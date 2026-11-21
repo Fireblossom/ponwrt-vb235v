@@ -23,8 +23,13 @@
 #include <time.h>
 #include <unistd.h>
 
+#ifndef RUN
 #define RUN "/tmp/ponwrt"
+#endif
 #define SAVE "/etc/ponwrt/diagnostics"
+#ifndef DSL_CONTROL
+#define DSL_CONTROL "/var/run/ponwrt-dsl-control.sock"
+#endif
 #define LIMIT (128*1024)
 static volatile sig_atomic_t running=1;
 static void stop_handler(int sig){(void)sig;running=0;}
@@ -110,7 +115,7 @@ static const char *string_field(json_object *o,const char *key)
 }
 static const char *safe_state(json_object *o)
 {
- const char *s=string_field(o,"state");const char *states[]={"done","running","failed","blocked","pending","unknown","unavailable","online","offline","unsupported"};
+ const char *s=string_field(o,"state");const char *states[]={"done","running","failed","error","stopped","blocked","pending","unknown","unavailable","online","offline","unsupported"};
  for(size_t i=0;i<sizeof(states)/sizeof(states[0]);i++)if(!strcmp(s,states[i]))return s;
  return "unknown";
 }
@@ -136,7 +141,7 @@ static json_object *project_dsl(json_object *raw,long long generation)
   if(i==5)internet_done=source&&!strcmp(safe_state(source),"done");
  }
  json_object_object_add(out,"stages",public_stages);json_object *public_events=json_object_new_array();json_object_object_get_ex(raw,"events",&events);
- if(events&&json_object_is_type(events,json_type_array)){size_t count=json_object_array_length(events),start=count>64?count-64:0;for(size_t i=start;i<count;i++){json_object *v=json_object_array_get_idx(events,i),*e=json_object_new_object(),*t=NULL;safe_text(e,v,"code",128);safe_text(e,v,"stage",64);safe_text(e,v,"detail",768);add_s(e,"state",safe_state(v));if(json_object_object_get_ex(v,"uptime_s",&t)&&json_object_is_type(t,json_type_double)&&isfinite(json_object_get_double(t)))json_object_object_add(e,"uptime_s",json_object_get(t));json_object_array_add(public_events,e);}}
+ if(events&&json_object_is_type(events,json_type_array)){size_t count=json_object_array_length(events),start=count>64?count-64:0;for(size_t i=start;i<count;i++){json_object *v=json_object_array_get_idx(events,i),*e=json_object_new_object(),*t=NULL;safe_text(e,v,"code",128);safe_text(e,v,"stage",64);safe_text(e,v,"detail",768);add_s(e,"state",safe_state(v));if(json_object_object_get_ex(v,"uptime_s",&t)&&(json_object_is_type(t,json_type_double)||json_object_is_type(t,json_type_int))&&isfinite(json_object_get_double(t)))json_object_object_add(e,"uptime_s",json_object_get(t));json_object_array_add(public_events,e);}}
  json_object_object_add(out,"events",public_events);
  json_object_object_get_ex(raw,"internet",&proof);json_object *pg=NULL;bool same=proof&&json_object_object_get_ex(proof,"generation",&pg)&&json_object_is_type(pg,json_type_int)&&json_object_get_int64(pg)==generation;
  bool authenticated=same&&true_field(line,"showtime")&&ppp_done&&internet_done&&true_field(proof,"authenticated");
@@ -198,8 +203,9 @@ static json_object *status_snapshot(void)
 {
  json_object *o=read_json(RUN"/status.json"),*system=NULL,*stamp=NULL;char *boot=read_file("/proc/sys/kernel/random/boot_id",128);trim(boot);
  bool valid=o&&boot&&json_object_object_get_ex(o,"system",&system)&&!strcmp(string_field(system,"boot_id"),boot)&&json_object_object_get_ex(system,"uptime_s",&stamp);
- double age=valid?uptime_s()-json_object_get_double(stamp):1e9;free(boot);
- if(valid&&isfinite(age)&&age>=0&&age<=30)return o;
+ double age=valid?uptime_s()-json_object_get_double(stamp):1e9;
+ if(valid&&isfinite(age)&&age>=0&&age<=30){json_object *dsl=current_dsl(boot,uptime_s()),*internet=NULL;json_object_object_add(o,"dsl",dsl);if(json_object_object_get_ex(dsl,"internet",&internet))json_object_object_add(o,"internet",json_object_get(internet));else{internet=json_object_new_object();add_s(internet,"state","offline");add_b(internet,"authenticated",false);add_b(internet,"ipv4",false);add_b(internet,"ipv6",false);add_s(internet,"detail","DSL 会话证据缺失或已经过期");json_object_object_add(o,"internet",internet);}free(boot);return o;}
+ free(boot);
  if(o)json_object_put(o);
  o=json_object_new_object();add_s(o,"error","DIAGNOSTICS_STALE");return o;
 }
@@ -219,6 +225,36 @@ static int daemon_main(void)
  json_object *record=read_json(SAVE"/current.json");if(record){add_b(record,"clean_shutdown",true);atomic_json(SAVE"/current.json",record);json_object_put(record);}if(snapshot)json_object_put(snapshot);if(logs)json_object_put(logs);free(previous_stage);close(lock);return 0;
 }
 static json_object *input_json(void){char b[4097];size_t n=fread(b,1,sizeof(b)-1,stdin);b[n]=0;return json_tokener_parse(b);}
+static json_object *retry_dsl(void)
+{
+ json_object *o=json_object_new_object();bool accepted=false;long long generation=0;
+ int fd=-1;char dir[]=RUN"/diag-retry.XXXXXX";bool directory=false;struct sockaddr_un local={.sun_family=AF_UNIX},peer={.sun_family=AF_UNIX};struct stat st;
+ if(lstat(DSL_CONTROL,&st)||!S_ISSOCK(st.st_mode)||st.st_uid!=0||(st.st_mode&077))goto done;
+ if(!mkdtemp(dir))goto done;
+ directory=true;fd=socket(AF_UNIX,SOCK_DGRAM|SOCK_CLOEXEC,0);if(fd<0)goto done;
+ snprintf(local.sun_path,sizeof(local.sun_path),"%s/client",dir);strcpy(peer.sun_path,DSL_CONTROL);
+ int one=1;if(setsockopt(fd,SOL_SOCKET,SO_PASSCRED,&one,sizeof(one)))goto done;
+ mode_t old=umask(077);int rc=bind(fd,(struct sockaddr *)&local,sizeof(local));umask(old);if(rc||chmod(local.sun_path,0600))goto done;
+ if(connect(fd,(struct sockaddr *)&peer,sizeof(peer))||send(fd,"retry",5,0)!=5)goto done;
+ struct pollfd poller={.fd=fd,.events=POLLIN};if(poll(&poller,1,2000)!=1)goto done;
+ char response[80]={0};union {struct cmsghdr align;char bytes[CMSG_SPACE(sizeof(struct ucred))+CMSG_SPACE(8*sizeof(int))];} ancillary;struct iovec iov={.iov_base=response,.iov_len=sizeof(response)-1};
+ struct msghdr msg={.msg_iov=&iov,.msg_iovlen=1,.msg_control=ancillary.bytes,.msg_controllen=sizeof(ancillary.bytes)};
+ ssize_t n=recvmsg(fd,&msg,MSG_DONTWAIT|MSG_CMSG_CLOEXEC);if(n<=0)goto done;
+ bool root=false,bad=(msg.msg_flags&(MSG_TRUNC|MSG_CTRUNC))!=0;
+ for(struct cmsghdr *c=CMSG_FIRSTHDR(&msg);c;c=CMSG_NXTHDR(&msg,c)){
+  if(c->cmsg_level==SOL_SOCKET&&c->cmsg_type==SCM_CREDENTIALS&&c->cmsg_len==CMSG_LEN(sizeof(struct ucred))){struct ucred cred;memcpy(&cred,CMSG_DATA(c),sizeof(cred));root=cred.uid==0;}
+  else{bad=true;if(c->cmsg_level==SOL_SOCKET&&c->cmsg_type==SCM_RIGHTS){size_t bytes=c->cmsg_len>=CMSG_LEN(0)?c->cmsg_len-CMSG_LEN(0):0;int *fds=(int *)CMSG_DATA(c);for(size_t i=0;i<bytes/sizeof(int);i++)close(fds[i]);}}
+ }
+ if(!root||bad||n<5||memcmp(response,"ACK ",4)||(size_t)n!=strlen(response))goto done;
+ for(ssize_t i=4;i<n;i++)if(response[i]<'0'||response[i]>'9')goto done;
+ char *end=NULL;errno=0;generation=strtoll(response+4,&end,10);
+ if(errno||generation<=0||!end||*end)goto done;
+ accepted=true;add_i(o,"generation",generation);
+done:
+ if(fd>=0)close(fd);
+ if(directory){if(local.sun_path[0])unlink(local.sun_path);rmdir(dir);}
+ add_b(o,"accepted",accepted);add_s(o,"detail",accepted?"DSL 服务已确认新一轮启动，请核对阶段进度":"DSL 服务未确认重试，请检查服务状态与日志");return o;
+}
 static json_object *rpc_call(const char *method)
 {
  if(!strcmp(method,"status"))return status_snapshot();
@@ -228,7 +264,7 @@ static json_object *rpc_call(const char *method)
   else{if(strcmp(name,"system")&&strcmp(name,"kernel")&&strcmp(name,"dsl"))name="system";if(logs)json_object_object_get_ex(logs,name,&lines);json_object_object_add(out,"lines",lines?json_object_get(lines):json_object_new_array());}
   add_s(out,"detail","已脱敏；日志与阶段证据需结合阅读");if(args)json_object_put(args);if(logs)json_object_put(logs);return out;}
  if(!strcmp(method,"support")){json_object *out=json_object_new_object();add_i(out,"schema",1);add_b(out,"redacted",true);json_object_object_add(out,"status",status_snapshot());json_object_object_add(out,"logs",empty_object(read_json(RUN"/logs.json")));json_object *history=read_json(SAVE"/history.json");json_object_object_add(out,"history",history?history:json_object_new_array());return out;}
- if(!strcmp(method,"retry")){json_object *o=json_object_new_object();int fd=socket(AF_UNIX,SOCK_DGRAM|SOCK_CLOEXEC,0);struct sockaddr_un address={.sun_family=AF_UNIX};strcpy(address.sun_path,"/var/run/ponwrt-dsl-control.sock");bool ok=fd>=0&&sendto(fd,"retry",5,0,(struct sockaddr *)&address,sizeof(address))==5;if(fd>=0)close(fd);add_b(o,"accepted",ok);add_s(o,"detail",ok?"重试请求已提交，请核对阶段进度":"DSL 控制服务未运行，无法提交重试");return o;}
+ if(!strcmp(method,"retry"))return retry_dsl();
  json_object *error=json_object_new_object();add_s(error,"error","unknown_method");return error;
 }
 int main(int argc,char **argv)

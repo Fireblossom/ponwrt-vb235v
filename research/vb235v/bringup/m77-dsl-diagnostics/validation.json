@@ -1,7 +1,7 @@
 {
   "schema": 1,
   "milestone": "M77-device-diagnostics",
-  "status": "device API and host evidence checks passed; visual browser acceptance and final-image integration pending",
+  "status": "device API, host evidence/client checks and OpenWrt package build passed; visual browser acceptance and final-image boot/upgrade pending",
   "live_api_checks": [
     "HTTPS setup discovery contains no token",
     "HTTP redirects to HTTPS",
@@ -33,19 +33,32 @@
     "UBSan"
   ],
   "cross_compile": "exact AArch64 musl image libraries; -Wall -Wextra -Werror",
+  "retry_cache_contract_checks": 16,
+  "retry_cache_sanitizers": [
+    "ASan",
+    "UBSan"
+  ],
+  "package_build": {
+    "completed": true,
+    "sha256": "0f9ea9eac49fbca96e8896fd28b9c48de0e8d591687e5410c971c7079eeed1a6"
+  },
   "cold_boot": "M79 module test cold-r2 retained diagnostics collector and configuration; API readable afterward",
   "browser_visual": "not completed: browser access host unavailable",
   "final_image_integrated": false,
   "dsl_connected": false,
   "source_sha256": {
-    "diagnostics.c": "2a7aede8afc63118e9e69065a73d9a629a8920844c903ae739ea4a1342cb6ff5",
+    "diagnostics.c": "5005499988c248bbf7fbb39ca837ea835af3d35bc8be399bfb69f368350d6a66",
     "overlay/etc/init.d/ponwrt-diagnostics": "d6fe7a0d1b1a806cb000aabfe7632790cfd27c275904d67c6248017a4231732a",
+    "overlay/etc/uci-defaults/99-ponwrt-diagnostics": "4dab7cdefabad2f03f019d5f7e04a55fa71b7457f449eabe9ed9061dec707da3",
     "overlay/usr/share/rpcd/acl.d/ponwrt-diagnostics.json": "aa7580cf4021f3d7d5b45b59a4fb078ad178b60f1a5e9a5546b956858c04942f",
-    "README.md": "25da24d695a393b32abfecd21f443f362797db502bd1cfe13174861c14afe691",
+    "package.Makefile": "ada0f498c08623528718ea476dfa3c39e7358cd93749197c485e055da14a7653",
+    "prepare.py": "15e6567f11106882ee5596d42f186549aac49fc9c71901bae853fb914c820827",
+    "README.md": "ca8eb64d6c3323816df51192b5a92e4894bfee549d075cc43308662ea2d5a281",
     "setup.c": "f1db2ea9351452882119a15972ee8cdd5b3d204aeac5007b60b88b3d9005a036",
-    "test-evidence.c": "6c8f27a4914d91e5f6b9bff0d4af3926613313af7b8477b65f376daa6a483cdc",
+    "test-evidence.c": "14a9dd402ab51e4f0f4ec511bb6a065aac34fdd90468dff9809dc8635138b3cc",
+    "test-retry.py": "ddee7b41246cd628b6640122411be6c7d67c83b74815b565416bb51b38276c17",
     "www/assets/diagnostics.css": "4e10e54288224af2ea42f0a183bb3ee9ee4124c1e3f3919240b2d2365d080dfa",
-    "www/assets/diagnostics.js": "f5fbcd59ea3957ae39061b5fd2336484adc2bf157bb4256bd87d9e363655bd16",
+    "www/assets/diagnostics.js": "5b6375545f303862918ef840c6c5969ea550acd492eaf020a7d3440e18084629",
     "www/index.html": "c03a9a4d6b442a9831e6ae47b3200893a9c071b04592563cb4f576af50f66abe"
   }
 }

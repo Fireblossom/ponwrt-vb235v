@@ -8,7 +8,7 @@
     logs: ['诊断日志', '按模块查找故障，保留错误代码和发生顺序。'],
     history: ['启动历史', '查看本次与之前启动停留的阶段。']
   };
-  const stateNames = {done:'已完成',running:'进行中',failed:'失败',blocked:'受阻',pending:'等待前序',unknown:'尚未确认',unavailable:'不可用',online:'已连接',offline:'未连接',unsupported:'尚未接入'};
+  const stateNames = {done:'已完成',running:'进行中',failed:'失败',error:'错误',stopped:'已停止',blocked:'受阻',pending:'等待前序',unknown:'尚未确认',unavailable:'不可用',online:'已连接',offline:'未连接',unsupported:'尚未接入'};
   let sid = null, requestId = 0, activeView = 'overview', source = 'system';
   let lastStatus = null, lastReceived = 0, setup = false, loading = false, loggedIn = false, logLines = [];
   const text = (id, value) => { $(id).textContent = value == null || value === '' ? '—' : String(value); };
@@ -82,7 +82,7 @@
     stages.forEach((stage, index) => {
       const status = stateNames[stage.state] || '未知状态';
       const row = node('div', `stage ${stage.state || 'unknown'}`);
-      row.append(node('span','stage-icon',stage.state === 'done' ? '✓' : stage.state === 'failed' || stage.state === 'blocked' ? '!' : String(index + 1)));
+      row.append(node('span','stage-icon',stage.state === 'done' ? '✓' : stage.state === 'failed' || stage.state === 'error' || stage.state === 'blocked' ? '!' : String(index + 1)));
       const body = node('div'); body.append(node('div','stage-title',stage.title || stage.id),node('p','stage-description',stage.detail || '尚无当前阶段证据'));
       row.append(body,node('span','stage-status',status)); $('stage-list').append(row);
       const detail = node('div','detail-step');

@@ -1,0 +1,16 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-only
+# Only migrate this profile's unmodified default listener. Preserve custom UCI.
+if [ "$(uci -q get uhttpd.main.home)" = /www ] &&
+   [ "$(uci -q get uhttpd.main.listen_http)" = '192.168.235.1:80' ] &&
+   [ -z "$(uci -q get uhttpd.main.listen_https)" ]; then
+    uci add_list uhttpd.main.listen_https='192.168.235.1:443' || exit 1
+    uci set uhttpd.main.redirect_https=1 || exit 1
+    uci set uhttpd.main.no_dirlists=1 || exit 1
+    uci set uhttpd.main.no_symlinks=1 || exit 1
+    uci commit uhttpd || exit 1
+fi
+for path in /etc/ponwrt/ /etc/uhttpd.crt /etc/uhttpd.key; do
+    grep -qxF "$path" /etc/sysupgrade.conf || printf '%s\n' "$path" >> /etc/sysupgrade.conf
+done
+exit 0

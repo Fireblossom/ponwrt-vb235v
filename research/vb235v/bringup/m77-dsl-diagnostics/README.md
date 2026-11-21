@@ -1,8 +1,9 @@
 # M77 device diagnostics
 
 The device-hosted Chinese dashboard and native collector have been deployed on
-the M75 development system. The live HTTPS/API checks pass. Browser visual
-acceptance and reproducible final-image packaging are still pending; this is
+the M75 development system. The live HTTPS/API checks and reproducible OpenWrt
+package build pass. Browser visual acceptance and full-image boot/upgrade
+validation are still pending; this is
 not yet a completed installation or DSL connection milestone.
 
 The frontend covers startup progress, six DSL stages, physical port state,
@@ -42,6 +43,16 @@ completed PPP and internet stages, boolean authentication and boolean IPv4 or
 IPv6 readiness. Merely setting the top-level state to `online` cannot satisfy
 these gates. The current DSL runtime has not established those proofs.
 
+Retry uses a named root-owned mode-0600 Unix socket and requires a root-sent
+`ACK <generation>` from the DSL supervisor after its running-state publication.
+A successful send alone is not confirmation. Malformed/NACK replies, unexpected
+descriptors and missing acknowledgements fail confirmation. A timeout is an
+uncertain result; the client does not resend automatically. Sixteen isolated
+client/cache contract checks pass, including the actual supervisor and
+ASan/UBSan runs. Integer event timestamps and `error/stopped` states are retained.
+RPC status also rechecks the underlying DSL proof so a fresh collector cache
+cannot extend expired session evidence.
+
 The collector saves stage-code changes and periodic snapshots at most every
 120 seconds, retains eight previous boots, and distinguishes same-boot service
 restarts from a new boot. All logs are bounded. Credential-related lines and
@@ -70,9 +81,15 @@ was restored byte-for-byte, and a fresh first-use token was issued. No owner
 password was chosen. Private credentials and raw live reports stay outside the
 repository.
 
+`prepare.py BUILD_TREE` stages `package.Makefile`, sources, web assets and
+startup/ACL/default scripts as `package/ponwrt/diagnostics`. It selects the package
+without changing physical networking roles. The package builds with fresh
+metadata and includes its TLS generator dependency. Its defaults migrate only
+this profile's unchanged HTTP listener; custom listener settings are preserved.
+
 Remaining acceptance: browser layout/navigation/accessibility; reboot and
 upgrade preservation; recovery management reachability on the physical LAN;
-final package/image integration; real DSL controller and line/session evidence.
+full image integration; real DSL controller and line/session evidence.
 The current live test's link-local listener/firewall rule is a temporary
 development fixture and must not be mistaken for the final network migration.
 A kernel hang or power loss can also stop this web service; history helps
