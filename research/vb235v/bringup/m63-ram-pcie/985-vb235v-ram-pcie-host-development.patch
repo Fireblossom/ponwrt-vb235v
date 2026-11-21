@@ -1,0 +1,118 @@
+--- a/drivers/pci/controller/pcie-mediatek-gen3.c
++++ b/drivers/pci/controller/pcie-mediatek-gen3.c
+@@ -1117,6 +1117,101 @@
+ 	return err;
+ }
+ 
++
++/* RAM-only port-0 experiment. SCU sequence cross-checked against the
++ * VB235v GPL controller/pcie-ecnt.c mt7512_pcie_reset0().
++ * This deliberately does not admit an AN7583 production compatible.
++ */
++static int mtk_pcie_an7583_development_power_up(struct mtk_gen3_pcie *pcie)
++{
++	struct device *dev = pcie->dev;
++	struct regmap *scu, *pbus, *chip;
++	int err;
++
++	if (!of_machine_is_compatible("tplink,vb235v-ram-pcie-development") ||
++	    pcie->reg_base != 0x1fc20000 || pcie->num_lanes != 1 || !pcie->phy)
++		return -EINVAL;
++	scu = syscon_regmap_lookup_by_phandle(dev->of_node, "airoha,scu");
++	if (IS_ERR(scu))
++		return PTR_ERR(scu);
++	pbus = syscon_regmap_lookup_by_phandle(dev->of_node, "airoha,pbus");
++	if (IS_ERR(pbus))
++		return PTR_ERR(pbus);
++	chip = syscon_regmap_lookup_by_phandle(dev->of_node, "airoha,chip-scu");
++	if (IS_ERR(chip))
++		return PTR_ERR(chip);
++
++	/* One 64-MiB outbound aperture, identical to the original port-0 map. */
++	err = regmap_write(pbus, 0x0, 0x20000000);
++	if (err)
++		return err;
++	err = regmap_write(pbus, 0x4, 0xfc000000);
++	if (err)
++		return err;
++	err = regmap_set_bits(chip, 0x18c, BIT(0));
++	if (err)
++		return err;
++	/* Host bridge pulse; the second PCIe controller has no DT node. */
++	err = regmap_set_bits(scu, 0x834, BIT(29));
++	if (err)
++		return err;
++	msleep(100);
++	err = regmap_clear_bits(scu, 0x834, BIT(29));
++	if (err)
++		return err;
++	msleep(100);
++	err = reset_control_assert(pcie->mac_reset);
++	if (err)
++		return err;
++	msleep(100);
++	err = regmap_clear_bits(scu, 0x88, BIT(29));
++	if (err)
++		return err;
++	usleep_range(1000, 2000);
++	pm_runtime_enable(dev);
++	err = pm_runtime_resume_and_get(dev);
++	if (err < 0) {
++		pm_runtime_disable(dev);
++		return err;
++	}
++	err = clk_bulk_prepare_enable(pcie->num_clks, pcie->clks);
++	if (err)
++		goto err_pm;
++	err = phy_init(pcie->phy);
++	if (err)
++		goto err_clk;
++	err = phy_power_on(pcie->phy);
++	if (err)
++		goto err_phy;
++	msleep(30);
++	err = reset_control_deassert(pcie->mac_reset);
++	if (err)
++		goto err_power;
++	writel(readl(pcie->base + 0x33c) & ~BIT(0), pcie->base + 0x33c);
++	writel(0x50500032, pcie->base + 0x100);
++	writel(0x1018020f, pcie->base + 0x338);
++	usleep_range(1000, 2000);
++	err = regmap_set_bits(scu, 0x88, BIT(29));
++	if (err)
++		goto err_reset;
++	msleep(400);
++	dev_info(dev, "VB235v port-0 RAM development sequence completed\n");
++	return 0;
++
++err_reset:
++	reset_control_assert(pcie->mac_reset);
++err_power:
++	phy_power_off(pcie->phy);
++err_phy:
++	phy_exit(pcie->phy);
++err_clk:
++	clk_bulk_disable_unprepare(pcie->num_clks, pcie->clks);
++err_pm:
++	pm_runtime_put_sync(dev);
++	pm_runtime_disable(dev);
++	return err;
++}
++
+ static int mtk_pcie_power_up(struct mtk_gen3_pcie *pcie)
+ {
+ 	struct device *dev = pcie->dev;
+@@ -1438,7 +1533,13 @@
+ 	.flags = SKIP_PCIE_RSTB,
+ };
+ 
++static const struct mtk_gen3_pcie_pdata mtk_pcie_soc_an7583_development = {
++	.power_up = mtk_pcie_an7583_development_power_up,
++	.flags = SKIP_PCIE_RSTB,
++};
++
+ static const struct of_device_id mtk_pcie_of_match[] = {
++	{ .compatible = "airoha,an7583-pcie-development", .data = &mtk_pcie_soc_an7583_development },
+ 	{ .compatible = "airoha,en7581-pcie", .data = &mtk_pcie_soc_en7581 },
+ 	{ .compatible = "mediatek,mt8192-pcie", .data = &mtk_pcie_soc_mt8192 },
+ 	{ .compatible = "mediatek,mt8196-pcie", .data = &mtk_pcie_soc_mt8196 },

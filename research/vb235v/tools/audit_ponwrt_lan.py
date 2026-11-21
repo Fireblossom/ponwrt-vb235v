@@ -18,6 +18,10 @@ GSW = '/switch@1fb58000'
 
 def audit_lan_dtb(data):
     nodes, reserved = parse(data)
+    return audit_lan_dtb_nodes(nodes, reserved, hashlib.sha256(data).hexdigest())
+
+
+def audit_lan_dtb_nodes(nodes, reserved, dtb_sha256):
 
     def handle(path):
         value = nodes.get(path, {}).get('phandle')
@@ -68,7 +72,7 @@ def audit_lan_dtb(data):
         for name, path in {'chip_scu': '/syscon@1fa20000', 'scuclk': '/system-controller@1fb00000',
                            'gdm1': ETH + '/ethernet@1', 'lan_phy': GSW + '/mdio/ethernet-phy@b'}.items():
             require(base['/__symbols__'].pop(name, None) == (path + '\0').encode(), 'Incorrect LAN symbol metadata')
-    result = audit_dtb_nodes(base, reserved, hashlib.sha256(data).hexdigest())
+    result = audit_dtb_nodes(base, reserved, dtb_sha256)
     result.update(board=LAN_BOARD, dt_nodes=len(nodes), ethernet_controllers=1,
                   admitted_switch_ports=[3, 6], test_PHY_address=11,
                   storage_controllers=0, PCIe_controllers=0, NPU_nodes=0,

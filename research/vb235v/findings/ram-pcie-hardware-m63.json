@@ -1,0 +1,79 @@
+{
+  "started_utc": "2026-11-21T00:06:23.513040+00:00",
+  "fit_sha256": "7e4c571d1475d6b6ee1f7abad14806d6cd5ef3668a0e7316e579a86c45f5634a",
+  "flash_write_commands_sent": false,
+  "saveenv_sent": false,
+  "complete": true,
+  "hardware_userspace_boot_verified": true,
+  "RAM_upload_sha256_verified": true,
+  "QDMA_handoff_samples": [
+    [
+      {
+        "address": "0x1fb54004",
+        "value": "0x14080070",
+        "TX_RX_enabled_or_busy": false
+      },
+      {
+        "address": "0x1fb56004",
+        "value": "0x1c0800d0",
+        "TX_RX_enabled_or_busy": false
+      }
+    ],
+    [
+      {
+        "address": "0x1fb54004",
+        "value": "0x14080070",
+        "TX_RX_enabled_or_busy": false
+      },
+      {
+        "address": "0x1fb56004",
+        "value": "0x1c0800d0",
+        "TX_RX_enabled_or_busy": false
+      }
+    ]
+  ],
+  "FIT_iminfo_verified": true,
+  "finished_utc": "2026-11-21T00:07:01.944530+00:00",
+  "native_PCIe_endpoint": "14c3:799b",
+  "native_PCIe_address": "0000:01:00.0",
+  "native_PCIe_width": 1,
+  "native_PCIe_speed_8GTs": false,
+  "WLAN_driver_loaded": false,
+  "radio_tested": false,
+  "native_link_Mbps": 100,
+  "native_PHY_identifier": "c0ff0420",
+  "RAM_root_without_MTD_or_UBI": true,
+  "native_LAN_carrier": true,
+  "native_LAN_duplex": "full",
+  "native_LAN_IP": "192.168.235.1/24",
+  "before_transfer_counters": {
+    "rx_packets": 133,
+    "tx_packets": 40,
+    "rx_errors": 0,
+    "tx_errors": 0
+  },
+  "after_transfer_counters": {
+    "rx_packets": 3040,
+    "tx_packets": 6019,
+    "rx_errors": 0,
+    "tx_errors": 0
+  },
+  "wired_data_transfer_verified": true,
+  "native_LAN_TCP_payload_bytes": 8388608,
+  "native_LAN_TCP_payload_SHA256": "9a356d7d291146df485964e6ae5b60d4c95c884a00d7224f3e03cdc24d0daaec",
+  "native_LAN_TCP_payload_matches": true,
+  "native_LAN_transfer_seconds": 0.766,
+  "host_DHCP_renew_succeeded": true,
+  "verified_utc": "2026-11-21T00:08:05.485149+00:00",
+  "initial_verification_error": "Native PCIe endpoint 14c3:7993 not enumerated",
+  "development_SSH_host_key_verified_from_COM3": true,
+  "development_SSH_root_public_key_auth_verified": true,
+  "native_LAN_upload_bytes": 8388608,
+  "native_LAN_upload_SHA256": "f0eb8a3c327f4bc0be74c06c3f77a0d9a482c2c473cac8717f2943853bb9bf07",
+  "native_LAN_upload_SHA256_match": true,
+  "native_LAN_upload_seconds": 1.125,
+  "native_LAN_errors_after_upload": {
+    "rx": 0,
+    "tx": 0
+  }
+}

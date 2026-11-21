@@ -1,0 +1,53 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/include/ "an7583-tplink_vb235v-ram-lan.dts"
+
+/* First PCIe experiment: one port and one lane, without a WLAN driver.
+ * No storage, external MDIO, DSL, GPIO controller or second PCIe port.
+ */
+/ {
+	model = "TP-LinkBox 7 VB235v PonWrt RAM PCIe development";
+	compatible = "tplink,vb235v-ram-pcie-development", "airoha,an7583";
+	pbus: syscon@1fbe3400 {
+		compatible = "airoha,en7581-pbus-csr", "syscon";
+		reg = <0 0x1fbe3400 0 0x100>;
+	};
+	pciephy: phy@1fc7f000 {
+		compatible = "airoha,an7583-pcie-gen3-phy";
+		reg = <0 0x1fc7f000 0 0x1000>, <0 0x1fc7e000 0 0x1000>,
+		      <0 0x1fc30044 0 4>, <0 0x1fc35030 0 4>;
+		reg-names = "g3-ana", "g3-pma", "xr-dtime", "rx-aeq";
+		#phy-cells = <0>;
+	};
+	pcie0: pcie@1fc20000 {
+		compatible = "airoha,an7583-pcie-development";
+		device_type = "pci";
+		linux,pci-domain = <0>;
+		#address-cells = <3>;
+		#size-cells = <2>;
+		reg = <0 0x1fc20000 0 0x2000>;
+		reg-names = "pcie-mac";
+		clocks = <&scuclk 7>;
+		clock-names = "sys-ck";
+		resets = <&scuclk 44>;
+		reset-names = "mac";
+		phys = <&pciephy>;
+		phy-names = "pcie-phy";
+		airoha,scu = <&scuclk>;
+		airoha,chip-scu = <&chip_scu>;
+		airoha,pbus = <&pbus>;
+		num-lanes = <1>;
+		max-link-speed = <3>;
+		ranges = <0x02000000 0 0x20000000 0 0x20000000 0 0x4000000>;
+		bus-range = <0 255>;
+		interrupts = <0 39 4>;
+		#interrupt-cells = <1>;
+		interrupt-map-mask = <0 0 0 7>;
+		interrupt-map = <0 0 0 1 &pcie_intc 0>, <0 0 0 2 &pcie_intc 1>,
+				<0 0 0 3 &pcie_intc 2>, <0 0 0 4 &pcie_intc 3>;
+		pcie_intc: interrupt-controller {
+			interrupt-controller;
+			#address-cells = <0>;
+			#interrupt-cells = <1>;
+		};
+	};
+};
