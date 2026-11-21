@@ -1,0 +1,51 @@
+{
+  "schema": 1,
+  "milestone": "M77-device-diagnostics",
+  "status": "device API and host evidence checks passed; visual browser acceptance and final-image integration pending",
+  "live_api_checks": [
+    "HTTPS setup discovery contains no token",
+    "HTTP redirects to HTTPS",
+    "unauthenticated diagnostic access denied",
+    "cross-origin setup denied",
+    "wrong initialization token denied",
+    "weak setup password denied",
+    "malformed setup JSON denied",
+    "administrator setup succeeds over pinned TLS",
+    "initialization is single use",
+    "used initialization token removed",
+    "incorrect administrator password denied",
+    "administrator login succeeds",
+    "authenticated status has no setup credentials",
+    "authenticated history has no setup credentials",
+    "authenticated support has no setup credentials",
+    "log source traversal falls back to fixed source",
+    "diagnostic account lacks system.reboot permission",
+    "diagnostic account lacks file.read permission",
+    "diagnostic account lacks uci.get permission",
+    "missing DSL runtime reports retry rejected",
+    "stopped collector cannot return stale current status",
+    "support export identifies expired current status",
+    "logout invalidates server-side session"
+  ],
+  "temporary_test_admin_removed": true,
+  "host_evidence_projection_sanitizers": [
+    "ASan",
+    "UBSan"
+  ],
+  "cross_compile": "exact AArch64 musl image libraries; -Wall -Wextra -Werror",
+  "cold_boot": "M79 module test cold-r2 retained diagnostics collector and configuration; API readable afterward",
+  "browser_visual": "not completed: browser access host unavailable",
+  "final_image_integrated": false,
+  "dsl_connected": false,
+  "source_sha256": {
+    "diagnostics.c": "2a7aede8afc63118e9e69065a73d9a629a8920844c903ae739ea4a1342cb6ff5",
+    "overlay/etc/init.d/ponwrt-diagnostics": "d6fe7a0d1b1a806cb000aabfe7632790cfd27c275904d67c6248017a4231732a",
+    "overlay/usr/share/rpcd/acl.d/ponwrt-diagnostics.json": "aa7580cf4021f3d7d5b45b59a4fb078ad178b60f1a5e9a5546b956858c04942f",
+    "README.md": "25da24d695a393b32abfecd21f443f362797db502bd1cfe13174861c14afe691",
+    "setup.c": "f1db2ea9351452882119a15972ee8cdd5b3d204aeac5007b60b88b3d9005a036",
+    "test-evidence.c": "6c8f27a4914d91e5f6b9bff0d4af3926613313af7b8477b65f376daa6a483cdc",
+    "www/assets/diagnostics.css": "4e10e54288224af2ea42f0a183bb3ee9ee4124c1e3f3919240b2d2365d080dfa",
+    "www/assets/diagnostics.js": "f5fbcd59ea3957ae39061b5fd2336484adc2bf157bb4256bd87d9e363655bd16",
+    "www/index.html": "c03a9a4d6b442a9831e6ae47b3200893a9c071b04592563cb4f576af50f66abe"
+  }
+}

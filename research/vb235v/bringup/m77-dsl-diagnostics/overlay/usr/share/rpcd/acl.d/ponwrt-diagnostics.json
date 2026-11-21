@@ -1,0 +1,7 @@
+{
+  "ponwrt-diagnostics": {
+    "description": "Authenticated PonWrt device diagnostics and bounded DSL recovery",
+    "read": {"ubus": {"ponwrt.diagnostics": ["status", "logs", "history", "support"], "session": ["access"]}},
+    "write": {"ubus": {"ponwrt.diagnostics": ["retry"], "session": ["destroy"]}}
+  }
+}

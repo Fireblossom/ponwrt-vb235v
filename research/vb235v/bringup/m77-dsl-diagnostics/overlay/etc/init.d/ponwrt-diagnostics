@@ -1,0 +1,16 @@
+#!/bin/sh /etc/rc.common
+# SPDX-License-Identifier: GPL-2.0-only
+START=90
+STOP=10
+USE_PROCD=1
+
+start_service() {
+    umask 077
+    /usr/sbin/ponwrt-setup --init || return 1
+    procd_open_instance
+    procd_set_param command /usr/libexec/rpcd/ponwrt.diagnostics daemon
+    procd_set_param respawn 60 5 5
+    procd_set_param stdout 0
+    procd_set_param stderr 1
+    procd_close_instance
+}

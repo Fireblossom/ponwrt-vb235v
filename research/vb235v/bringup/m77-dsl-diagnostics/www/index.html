@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="referrer" content="no-referrer"><meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' data:; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'"><meta name="color-scheme" content="light"><title>PonWrt · 设备诊断</title><link rel="stylesheet" href="/assets/diagnostics.css"><script src="/assets/diagnostics.js" defer></script></head>
+<body>
+<section id="auth" class="auth-shell">
+ <div class="auth-intro"><span class="brandmark">P<span>W</span></span><p class="eyebrow">PONWRT / LOCAL CONTROL</p><h1>了解设备<br>正在发生什么。</h1><p>线路、连接、硬件与启动记录，集中在这台设备上。</p><span class="local-tag">本地管理 · 无需云账号</span></div>
+ <form id="login-form" class="auth-card"><p class="eyebrow">设备管理</p><h2 id="auth-title">登录 PonWrt</h2><p id="auth-description">使用设备管理员密码查看运行状态。</p>
+ <label id="setup-label" hidden>设备初始化码<input id="setup-code" autocomplete="off" spellcheck="false" maxlength="64" placeholder="安装记录或串口中提供的初始化码"></label>
+ <label>管理员<input value="admin" autocomplete="username" readonly aria-label="管理员账号"></label>
+ <label>密码<input id="password" type="password" autocomplete="current-password" required maxlength="128" placeholder="输入管理员密码"></label>
+ <label id="confirm-label" hidden>确认密码<input id="password-confirm" type="password" autocomplete="new-password" maxlength="128" placeholder="再次输入密码"></label>
+ <p id="auth-error" class="error-text" role="alert"></p><button id="login-button" type="submit">登录设备 <span>↗</span></button><p class="auth-note" id="auth-note">连接状态将在登录后显示。密码不会包含在诊断导出中。</p>
+ </form><footer>TP-LinkBox 7 / VB235v <span>PonWrt Diagnostics</span></footer>
+</section>
+<div id="app" class="app-shell" hidden>
+ <aside><a href="#overview" class="brand"><span class="brandmark small">P<span>W</span></span><span>PonWrt<small>设备诊断中心</small></span></a><p class="nav-label">工作空间</p><nav aria-label="主导航"><button class="nav-item selected" data-view="overview">◈ <span>运行概览</span></button><button class="nav-item" data-view="dsl">⌁ <span>DSL 启动链路</span></button><button class="nav-item" data-view="hardware">▦ <span>网络与硬件</span></button><button class="nav-item" data-view="logs">≡ <span>诊断日志</span></button><button class="nav-item" data-view="history">◷ <span>启动历史</span></button></nav><div class="sidebar-bottom"><span class="device-dot"></span><div>TP-LinkBox 7<small id="revision">正在读取固件版本</small></div></div></aside>
+ <main><header><div class="breadcrumb">设备 / <span id="view-name">运行概览</span></div><div class="header-actions"><span id="connection" class="badge neutral">连接中</span><button class="text-button" id="refresh">刷新</button><button class="text-button" id="logout">退出</button></div></header>
+ <div id="connection-error" class="connection-error" role="alert" hidden></div>
+ <section class="page-title"><div><p class="eyebrow">DEVICE OBSERVABILITY</p><h1 id="page-title">运行概览</h1><p id="page-description">从启动到联网，查看当前进度与需要处理的问题。</p></div><button class="secondary-button" id="export">↓ 导出诊断</button></section>
+ <section id="overview" class="view">
+  <div class="summary-grid"><article class="summary-card"><span class="metric-label">DSL 线路</span><strong id="dsl-summary">正在读取</strong><p id="dsl-summary-note">等待设备响应</p></article><article class="summary-card"><span class="metric-label">Telekom 连接</span><strong id="internet-summary">尚未确认</strong><p id="internet-note">需要当前会话证据</p></article><article class="summary-card"><span class="metric-label">管理网口</span><strong id="port-summary">—</strong><p id="port-note">正在核对链路</p></article><article class="summary-card"><span class="metric-label">本次运行时间</span><strong id="uptime">—</strong><p id="boot-id">启动标识待获取</p></article></div>
+  <div class="overview-grid"><article class="panel chain-panel"><div class="panel-heading"><div><p class="eyebrow">CONNECTION JOURNEY</p><h2>DSL 启动与连接</h2></div><span id="chain-badge" class="badge neutral">未知</span></div><div id="stage-list" class="stage-list"></div><div class="panel-foot"><span id="last-updated">尚无设备快照</span><button class="text-button" data-go="dsl">查看详细过程 →</button></div></article>
+  <div class="right-column"><article id="issue-panel" class="panel issue-panel"><p class="eyebrow">需要关注</p><h2 id="issue-title">等待诊断结果</h2><p id="issue-detail">正在读取设备的当前状态。不会根据历史数据推断本次连接成功。</p><div id="issue-code" class="code-tag">—</div><div id="additional-issues"></div><button class="secondary-button" data-go="logs">查看相关日志 →</button></article><article class="panel hardware-mini"><div class="panel-heading"><h2>硬件摘要</h2><button class="text-button" data-go="hardware">详情 ↗</button></div><dl id="hardware-summary"></dl><p class="muted">不支持或未就绪的指标会明确标记。</p></article></div></div>
+ </section>
+ <section id="dsl" class="view" hidden><article class="panel"><div class="panel-heading"><div><h2>当前启动代次的真实进度</h2><p class="muted">硬件准备、固件握手、线路同步与认证分别记录。</p></div><button id="retry-dsl" class="secondary-button" disabled>重新尝试 DSL</button></div><div id="dsl-detail"></div></article><article class="panel spaced"><h2>阶段事件</h2><div id="dsl-events" class="event-list"></div></article></section>
+ <section id="hardware" class="view" hidden><div id="hardware-panels" class="hardware-panels"></div></section>
+ <section id="logs" class="view" hidden><article class="panel"><div class="panel-heading"><div><h2>诊断日志</h2><p class="muted">日志中的账号、密码与设备标识会被脱敏。</p></div><label class="toggle"><input id="auto-refresh" type="checkbox" checked> 自动刷新</label></div><div class="log-toolbar"><div class="segmented" id="log-tabs"><button data-source="system" class="active">系统</button><button data-source="kernel">内核</button><button data-source="dsl">DSL</button><button data-source="previous">上次启动</button></div><input id="log-search" placeholder="筛选日志 / 错误代码" aria-label="筛选日志"></div><pre id="log-output" class="log-output" tabindex="0">正在读取日志…</pre><p id="log-state" class="muted"></p></article></section>
+ <section id="history" class="view" hidden><article class="panel"><h2>启动历史</h2><p class="muted">保留最近的启动阶段与故障记录。未记录正常关机不等同于已确认的内核故障。</p><div id="history-list" class="event-list"></div></article></section>
+ <footer class="main-footer"><span>状态来自本机 · <span id="backend-state">诊断服务连接中</span></span><span id="footer-revision">PonWrt</span></footer>
+ </main>
+</div>
+<dialog id="detail-dialog"><button id="close-dialog" class="text-button">关闭 ×</button><h2 id="dialog-title"></h2><pre id="dialog-content"></pre></dialog>
+</body></html>
