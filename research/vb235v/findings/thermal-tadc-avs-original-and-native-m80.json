@@ -1,0 +1,348 @@
+{
+  "milestone": "M80",
+  "scope": "Read-only OEM thermal/TADC/AVS research, exact-binary proof, offline models and minimum observation proposal",
+  "status": "research-complete; no hardware or kernel/build-tree changes; native sampling/hardening not implemented by M80",
+  "main_findings": [
+    "Exact original cpu-thermal reports BGP bandgap mux0, not CPU-die mux6",
+    "Original AN7583 path explicitly uses fixed manufacturer coefficients and thermal_efuse_valid=0",
+    "Meaningful degrees require coherent Zero/D0/D1 measurements; one raw ADC register is insufficient",
+    "Prepared native6.18 already has AN7583 thermal support; VB235v DT lacks sensor/zone instantiation",
+    "Native thermal key handling shares protection state with secure CPU PLL changes: no concurrent M78 switching before ownership/serialization is resolved",
+    "EFUSE read ABI is 0x82000001/op0x44414552, not the PHY-load0x82000303 service"
+  ],
+  "evidence": {
+    "kernel_sha256": "1cdf83a09fd62d4b46c0a89ed1a422bdf1a783addab5c30c3d72862cd189f5de",
+    "kernel_virtual_base": "0xffffffc010088000",
+    "kernel_text_offset": "0x88000",
+    "functions": {
+      "ThermalGetT_7583": "0xffffffc010577eb0",
+      "an7583_thermal_init": "0xffffffc010577fe0",
+      "airoha_read_temp": "0xffffffc010578070",
+      "thermal_TADC_mode": "0xffffffc0100c9260",
+      "get_thermal_ADC": "0xffffffc0100c95c0",
+      "read_TADC": "0xffffffc0100c94d0",
+      "AVS_Get_Vcore": "0xffffffc0100c9980",
+      "get_avs_EF_K": "0xffffffc0100c9854",
+      "get_phy_efuse": "0xffffffc0100cc040",
+      "readout_efuse": "0xffffffc0100c8b70"
+    },
+    "exact_temperature_config": {
+      "address": "0xffffffc010c4aff8",
+      "num_banks": 1,
+      "num_sensors": 3,
+      "bank0_sensor_count": 1,
+      "sensor_array_address": "0xffffffc010859e10",
+      "sensor_array": [
+        0,
+        5,
+        6
+      ],
+      "active_sensor_index": 0,
+      "thermal_efuse_valid": 0
+    },
+    "exact_coefficients_address": "0xffffffc010859970",
+    "exact_gains_address": "0xffffffc010859980",
+    "stock_dt": {
+      "compatible": "airoha,an7583-thermal_phy",
+      "resource": "0x1efbd000+0xfff",
+      "thermal_zone": "cpu-thermal",
+      "polling_ms": 1000,
+      "passive_polling_ms": 200,
+      "passive_trip_mC": 125000,
+      "trip_is_not_board_safety_specification": true
+    },
+    "gpl_sources": [
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/target/linux/airoha/files_orig/drivers/thermal/airoha_thermal.c",
+        "file": "airoha_thermal.c",
+        "sha256": "c6891dc29a6b58cba783a65564b39b18d877123fead8428c3bb03e312c0a6688",
+        "bytes": 18516
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/target/linux/airoha/files_orig/arch/arm64/mach-econet/ecnt_thermal.c",
+        "file": "ecnt_thermal.c",
+        "sha256": "68c435810da22770c219c44ac11bffe67efd4c70dc5e39617ac8b4f20058ce4b",
+        "bytes": 9666
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/target/linux/airoha/files_orig/include/ecnt_hook/ecnt_hook_thermal.h",
+        "file": "ecnt_hook_thermal.h",
+        "sha256": "5b457270c7b06c8d0344d07e5c069f996fc096c67ad4f87df9496828020fd355",
+        "bytes": 3021
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/target/linux/airoha/files_orig/arch/arm64/mach-econet/combo_phy/an7583/phy_efuse_def.h",
+        "file": "phy_efuse_def.h",
+        "sha256": "b4a345caba3a5e94c09eb8a94747611921c2e1ea441684b231d456c0f5790abf",
+        "bytes": 32704
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/target/linux/airoha/files_orig/arch/arm64/mach-econet/combo_phy/an7583/ecnt_serdes_common_phy.c",
+        "file": "ecnt_serdes_common_phy.c",
+        "sha256": "996c1d75de0bb61260483886e086476fe4e53c5690c0d5178af140f70cc1972c",
+        "bytes": 13982
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/target/linux/airoha/files_orig/include/global_inc/modules/avs/avs.h",
+        "file": "avs.h",
+        "sha256": "ffbec27aa4ed9091c6d3fda5b10808bb3e3c65b71b0d30c0a2f065e077e4b935",
+        "bytes": 605
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/target/linux/airoha/files_orig/arch/arm64/mach-econet/thermal_avs/an7583/ecnt_thermal_avs.h",
+        "file": "ecnt_thermal_avs.h",
+        "bytes": 515,
+        "sha256": "bdd47386d2ed5ee8f7476e5f2c0d241ec49fb95c374a3bea51d6fd64a9ad3aa9"
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/target/linux/airoha/files_orig/arch/arm64/mach-econet/thermal_avs/an7583/ecnt_scu_phy.c",
+        "file": "ecnt_scu_phy.c",
+        "bytes": 6560,
+        "sha256": "f0dcdd4577d81b77ba6698f6a1e816347ee2356f8a7cefa7d60cb65d5cd9c4a7"
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/target/linux/airoha/files_orig/arch/arm64/mach-econet/thermal_avs/an7583/ecnt_avs.c",
+        "file": "ecnt_avs.c",
+        "bytes": 23367,
+        "sha256": "9c535902893691a315eadb08f4cb4d3e245d90e3bb9c677f0e38485fecc1b159"
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/target/linux/airoha/files_orig/arch/arm64/mach-econet/thermal_avs/an7583/ecnt_thermal.c",
+        "file": "ecnt_thermal.c",
+        "bytes": 7656,
+        "sha256": "f1841a106e178b940b187af0da90d883741eb67371884ec57c92546577643bf8"
+      }
+    ],
+    "native_driver_sha256": "f3a6fbd810e3779c41684b9f868ed65d804ffa2c5529bec3fc6588e5bd6618f6",
+    "native_patch_queue": [
+      {
+        "file": "402-01-thermal-airoha-convert-to-regmap-API.patch",
+        "sha256": "b01b9c46b166ba30ec0c9d662500e885a82329809d9a32e6a743975a6f317c3c"
+      },
+      {
+        "file": "402-02-thermal-drivers-airoha-Generalize-probe-function.patch",
+        "sha256": "f5eb932572067e57505df85fa2aac9fea46644a79e7bf6c0667d2d4c1808ca49"
+      },
+      {
+        "file": "402-03-thermal-drivers-airoha-generalize-get_thermal_ADC-an.patch",
+        "sha256": "7d47879d28fb9b2db11f001f10b3e1849bb8a0cf9f79f374fb25ca12791cb0d0"
+      },
+      {
+        "file": "402-05-thermal-drivers-airoha-Add-support-for-AN7583.patch",
+        "sha256": "6f683479ffc182de2b46e408257c6e743b4360d6e95daf2a9cfdd2aba4f70851"
+      },
+      {
+        "file": "402-06-thermal-drivers-airoha-serialise-access-to-the-shared-ADC.patch",
+        "sha256": "c31d679b3bbb2e03a2f2ad0bf2c4ad0a3f3648710785b675db5f9f00133750ea"
+      },
+      {
+        "file": "402-07-thermal-drivers-airoha-read-all-three-AN7583-sensors.patch",
+        "sha256": "5093bdb4dcc384ed8348f33b249402822d544d2eb52965097d715dc960e7bb85"
+      }
+    ],
+    "native_patch_measurements": "Patch descriptions report Nokia XG-040G-MF/AN7583 measurements and ADC-reader race; not validation of this VB235v",
+    "private_evidence_location": "offline-analysis/m80-thermal/; firmware slices and full disassembly stay private"
+  },
+  "temperature_contract": {
+    "unit": "millidegrees Celsius",
+    "calibration": "OEM fixed manufacturer coefficients, not proven per-die calibration",
+    "sensor_rows": [
+      {
+        "logical_index": 0,
+        "mux": 0,
+        "name": "BGP",
+        "coefficient_x100": 973,
+        "gain": 7440,
+        "offset_C": 294
+      },
+      {
+        "logical_index": 1,
+        "mux": 5,
+        "name": "GBE",
+        "coefficient_x100": 995,
+        "gain": 7620,
+        "offset_C": 298
+      },
+      {
+        "logical_index": 2,
+        "mux": 6,
+        "name": "CPU die",
+        "coefficient_x100": 1035,
+        "gain": 8390,
+        "offset_C": 344
+      }
+    ],
+    "active_original_row": 0,
+    "diode_order": [
+      {
+        "name": "Zero",
+        "selector": 1
+      },
+      {
+        "name": "D0",
+        "selector": 0
+      },
+      {
+        "name": "D1",
+        "selector": 2
+      }
+    ],
+    "formula": [
+      "delta = D1-D0",
+      "denominator = trunc(delta * coefficient_x100 / 100) + Zero-D1",
+      "temp_x10 = trunc(gain * delta * 10 / denominator) - offset_C * 10",
+      "temperature_mC = temp_x10 * 100"
+    ],
+    "rounding": "C integer division toward zero",
+    "per_switch_settle_ms": 10,
+    "typical_transaction_ms": 30,
+    "stale_gpl_array_hazard": "Sensor array0/5/6 is used as a three-entry coefficient-array index, and nonzero sensor adds4 for physical mux; only active row0 is safe. Do not merely increase bank count.",
+    "temperature_fuse_formula": "Not established. Active AN7583 path ignores those fuse fields; names alone do not define a corrected per-die algorithm."
+  },
+  "registers": [
+    {
+      "address": "0x1fa20268",
+      "name": "PLLRG_PROTECT",
+      "access": "observation:read only; sampling:control key0x80",
+      "shared_with": "retained-BL31 CPU PLL switch"
+    },
+    {
+      "address": "0x1fa202a0",
+      "name": "MUX_SENSOR / AVS_OUT_EN",
+      "diode_bits": "3:2",
+      "voltage_output_enable_bit": 0,
+      "constraint": "Read-modify-write only diode bits; preserve AVS output enable"
+    },
+    {
+      "address": "0x1fa202e4",
+      "name": "MUX_TADC",
+      "source_bits": "3:1",
+      "reset_bit": 4,
+      "mode_mask": "0x1ffff",
+      "thermal_init_mode": "0x33bc",
+      "avs_init_mode": "0x33b0"
+    },
+    {
+      "address": "0x1fa202f0",
+      "name": "DOUT_TADC",
+      "meaning": "selected-channel ADC result, not Celsius"
+    },
+    {
+      "address": "0x1fa202e0",
+      "name": "AVS DAC",
+      "code_bits": "9:0",
+      "strobe_bit": 16,
+      "constraint": "Never write during observation"
+    },
+    {
+      "address": "0x1efbd000",
+      "name": "PTP thermal block",
+      "constraint": "Do not assume this block contains already converted AN7583 Celsius"
+    }
+  ],
+  "native_candidate_assessment": {
+    "driver": "AIROHA_THERMAL already compiled in prepared6.18.60; no new driver needed",
+    "dt_missing": "chip_scu exists in VB235v RAM-LAN base DT; thermal child and thermal-zones are absent",
+    "already_present": [
+      "whole-triplet thermal mutex",
+      "10-11ms sleeping settle",
+      "sparse arrays safely indexed by physical mux",
+      "three optional thermal zones",
+      "post-sample source and diode readback",
+      "at most3 complete retries after mux mismatch",
+      "zero-denominator rejection"
+    ],
+    "must_resolve_before_relying_on_it": [
+      "propagate regmap read/write errors; current ADC accessor can return undefined value on error",
+      "check protection-key restoration and fail closed if it fails",
+      "s64 checked arithmetic and sample plausibility",
+      "determine cold-boot TADC initialization guarantees",
+      "serialize shared SCU protection/ADC ownership with AVS and secure frequency changes"
+    ],
+    "not_required_for_minimum_observation": [
+      "thermal IRQ",
+      "cooling device",
+      "trips/automatic shutdown",
+      "AVS voltage changes",
+      "all3 sensors enabled at once"
+    ]
+  },
+  "avs_read_contract": {
+    "efuse_smc": "0x82000001",
+    "efuse_operation": "0x44414552",
+    "x2": "32-bit DMA physical output buffer",
+    "x3": 256,
+    "efuse_image_bits": 2048,
+    "slice_bit_order": "little-endian bit extraction",
+    "do_not_substitute_smc": "0x82000303 is different PHY-load service",
+    "voltage_field": {
+      "start_bit": 841,
+      "length": 32,
+      "low_code": "low16>>4",
+      "high_code": "high16>>4"
+    },
+    "voltage_formula": [
+      "slope = ((1000000 / (high-low)) + 5) / 10",
+      "adc = raw_vcore_adc >> 4",
+      "voltage_mV = ((adc-low)*slope + 50000+50)/100"
+    ],
+    "vcore_adc_mux": 2,
+    "get_vcore_not_mmio_read_only": "May switch ADC mux and wait10ms; calibration globals must be initialized",
+    "invalid_calibration": [
+      "zero/all-ones fuse word",
+      "high<=low",
+      "low==0",
+      "slope==0"
+    ],
+    "oem_uncalibrated_fallback": {
+      "low_code": 1536,
+      "slope": 97,
+      "EF_OK_flag": 0,
+      "must_not_be_labeled_calibrated": true
+    },
+    "porting_gate": "OEM get_phy_efuse uses DMA_TO_DEVICE for secure output; verify DMA/cache contract, alignment, output bounds and below4GiB address before any native reader implementation",
+    "no_efuse_smc_or_avs_api_executed": true
+  },
+  "minimum_observation_recommendation": {
+    "original_system": "Read existing thermal-zone type/temp; label original cpu-thermal as BGP and record timestamp",
+    "native_initial_state": "Frontend null/unavailable until a complete valid measurement exists; never turn missing data into0C",
+    "native_first_stage": "Harden existing driver then instantiate BGP zone0 only, polling0, no trips/cooling/AVS; disabled DTS review example supplied, not applied",
+    "hardware_sampling_is_not_pure_read": "Fresh Zero/D0/D1 requires selector/protection writes; enabling/registering a zone may sample even before a user temp read",
+    "first_hardware_gate": "Keep M78 allow_transitions=N, inspect initial state, compare coherent BGP tuple and estimate with original stable boot, validate warmup/load/concurrent-reader/network behavior",
+    "later_gate": "GBE/CPU zones only after mux verification; shared SCU ownership before simultaneous temperature/frequency/voltage changes",
+    "safety_limits": "No board-calibrated temperature accuracy or safe trip temperatures established"
+  },
+  "deliverables": {
+    "files": [
+      {
+        "file": "bgp-observation-disabled.dtsi.example",
+        "sha256": "459367a6c0a89b8ad73ad6081281ee17fc66c69c9ffc272b450628d2911ed2ab"
+      },
+      {
+        "file": "README.md",
+        "sha256": "c926cf6ba860bcdd7e37311a026986043133185e57b190b3ffe88e21b157b1d4"
+      },
+      {
+        "file": "temperature-model.py",
+        "sha256": "0c8273929067871f926495c4052cef90f074d42379c49cfe0caf62ce0a54dc71"
+      },
+      {
+        "file": "test-model.py",
+        "sha256": "82f117c6e129bc1c5447c949a461c6f80c17e991d7839c5668d5042e16ee0237"
+      },
+      {
+        "file": "verify-evidence.py",
+        "sha256": "01b10fdf90a1129b40738fe3e73b0086d99a8d9f1f773cf926ceef09957a7977"
+      }
+    ],
+    "native_patch_or_prepare": "none, intentionally research-only"
+  },
+  "validation": {
+    "offline_model": "PASS6 tests: arithmetic/rounding, real0C, invalid/truncated/inconsistent samples, no raw-mux index, invalid calibration and voltage conversion",
+    "exact_kernel_evidence": "PASS opcode/table/config and EFUSE ABI assertions",
+    "M78_frozen_sources": "PASS all10 source SHA256 unchanged",
+    "hardware": "not accessed",
+    "shared_build_tree": "read only",
+    "commit_push": "not performed"
+  }
+}

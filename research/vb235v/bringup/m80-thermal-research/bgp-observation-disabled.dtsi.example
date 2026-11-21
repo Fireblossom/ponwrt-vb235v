@@ -1,0 +1,22 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/* REVIEW EXAMPLE ONLY: do not include or enable during M78 switching tests.
+ * Native AN7583 temperature reads necessarily write ADC mux/protection regs.
+ * Current VB235v RAM-LAN DT already defines chip_scu. The coordinating agent
+ * must resolve the native error-handling/SCU-serialization gates first.
+ */
+&chip_scu {
+ m80_thermal: thermal {
+  compatible = "airoha,an7583-thermal";
+  #thermal-sensor-cells = <1>;
+  status = "disabled";
+ };
+};
+/ {
+ thermal-zones {
+  bgp_observe: bgp-observe {
+   polling-delay-passive = <0>;
+   polling-delay = <0>;
+   thermal-sensors = <&m80_thermal 0>;
+  };
+ };
+};

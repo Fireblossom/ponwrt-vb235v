@@ -1,0 +1,10 @@
+{
+  "drivers/cpufreq/Kconfig.arm": {
+    "baseline": "1189250ef0370b0d51552c5f5b794b3032d72abd319a4fca1453dac43eb3358f",
+    "candidate": "5f69af2b32f307368b2dc0170426a3bba7097ccd3be4821d7ce6bf9ebe1344bf"
+  },
+  "drivers/cpufreq/Makefile": {
+    "baseline": "caf346892387b4f23df885cb0193daae9dea699cbab4c491cafc23bcd64869ed",
+    "candidate": "87329b4d24001f4b1f24548f57f329ad200f1cbd85a995033c280d3d133a7c30"
+  }
+}

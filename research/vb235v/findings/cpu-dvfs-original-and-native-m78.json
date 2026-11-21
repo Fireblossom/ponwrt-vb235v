@@ -1,0 +1,314 @@
+{
+  "milestone": "M78",
+  "scope": "VB235v CPU frequency at retained boot voltage, default read-only; OEM comparison and candidate integration",
+  "status": "implemented-and-host-checked; hardware query/transition/full-image validation pending",
+  "does_not_claim": [
+    "OEM AVS voltage scaling",
+    "thermal sensor or automatic thermal protection",
+    "production DVFS readiness",
+    "successful hardware transitions",
+    "full image build/boot validation"
+  ],
+  "baseline": {
+    "ponwrt_git": "dcf140cb1d5d2c15c1d7c353c95c4c2a56629820",
+    "kernel": "6.18.60",
+    "required_prerequisite": "M75 EN8811H candidate PHY hashes",
+    "actual_linux_cpus": 2,
+    "separate_npu_cpus": 6,
+    "native_failure": "CPU clock missing, no policy; adding a fixed clock would be false control"
+  },
+  "evidence": {
+    "stock_kernel": {
+      "private_file": "offline-analysis/kernel@1-decompressed.bin",
+      "sha256": "1cdf83a09fd62d4b46c0a89ed1a422bdf1a783addab5c30c3d72862cd189f5de",
+      "text_offset": "0x88000",
+      "virtual_image_base": "0xffffffc010088000",
+      "live_symbols": "offline-analysis/live-driver-evidence/20261115T235533Z/kallsyms.txt",
+      "crosschecked_symbols": {
+        "airoha_freq_get_cpu_frequency": "0xffffffc010584614",
+        "airoha_freq_target": "0xffffffc010584670",
+        "SET_AVS": "0xffffffc0100ca254"
+      },
+      "disassembly": "private analysis only, no firmware slices published"
+    },
+    "stock_dtb": {
+      "private_file": "offline-analysis/live-board-evidence/20261116T002156Z/stock.dtb",
+      "sha256": "387f309fea8a488c5de92fdea1632a07933316e32fc94013755342e6934c3a4a",
+      "opp_hz": [
+        500000000,
+        1200000000
+      ],
+      "opp_shared": true,
+      "misleading_node_name": "opp-12000000000",
+      "stale_cpu_clock_frequency_hz": 80000000,
+      "template_cpu_nodes": 4,
+      "template_not_hardware_core_count": true
+    },
+    "retained_bl31": {
+      "original_bootloader_file": "offline-analysis/m29-hardware/bootloader-before.bin",
+      "bootloader_sha256": "775d71e22ae10197e11493f71c99f92ec3470b9e1bccbcb1e046404d141af441",
+      "fip_payload_offset": 137216,
+      "fip_payload_bytes": 56846,
+      "fip_payload_sha256": "c112e98822aef6334f8861212a1da5fa3158c0e3ac60fa09e403abccd754728f",
+      "compression": "LZMA alone",
+      "decompressed_bytes": 136793,
+      "decompressed_sha256": "b14982e68559230f2bf4bf65a5ffa6ec36e8c17eb99d2519f5d38fe666d5b15f",
+      "handler_offset": "0x4e2c",
+      "set_branch_offsets": [
+        "0x4ef0: mov w0,w21",
+        "0x4ef4: bl 0x43e4",
+        "0x4ef8: mov x0,-2",
+        "0x4efc: return via epilogue"
+      ],
+      "set_status_contract": "PLL routine return discarded; legacy -2 is untrusted ACK and cannot alone prove failure or success"
+    },
+    "gpl_linux_sources": [
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/target/linux/airoha/files_orig/drivers/cpufreq/cpufreq_arht.c",
+        "file": "cpufreq_arht.c",
+        "bytes": 19379,
+        "sha256": "4347c48870c88c5e0f57bc4654afa9e3203030b4c9e77bba337121ec92c4c099"
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/target/linux/airoha/files_orig/drivers/cpufreq/airoha_cpufreq.c",
+        "file": "airoha_cpufreq.c",
+        "bytes": 7438,
+        "sha256": "24150175424d10fb197333d0c4fab2173d91d2c47b73b210db82d3d3154e0c7b"
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/target/linux/airoha/files_orig/arch/arm64/mach-econet/thermal_avs/an7583/ecnt_thermal_avs.h",
+        "file": "ecnt_thermal_avs.h",
+        "bytes": 515,
+        "sha256": "bdd47386d2ed5ee8f7476e5f2c0d241ec49fb95c374a3bea51d6fd64a9ad3aa9"
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/target/linux/airoha/files_orig/arch/arm64/mach-econet/thermal_avs/an7583/ecnt_scu_phy.c",
+        "file": "ecnt_scu_phy.c",
+        "bytes": 6560,
+        "sha256": "f0dcdd4577d81b77ba6698f6a1e816347ee2356f8a7cefa7d60cb65d5cd9c4a7"
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/target/linux/airoha/files_orig/arch/arm64/mach-econet/thermal_avs/an7583/ecnt_avs.c",
+        "file": "ecnt_avs.c",
+        "bytes": 23367,
+        "sha256": "9c535902893691a315eadb08f4cb4d3e245d90e3bb9c677f0e38485fecc1b159"
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/openwrt-21.02/openwrt-21.02.1_dev/feeds/airoha/target/linux/airoha/files_orig/arch/arm64/mach-econet/thermal_avs/an7583/ecnt_thermal.c",
+        "file": "ecnt_thermal.c",
+        "bytes": 7656,
+        "sha256": "f1841a106e178b940b187af0da90d883741eb67371884ec57c92546577643bf8"
+      }
+    ],
+    "gpl_atf_sources": [
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/tclinux_phoenix/bootloader/ATF/atf-airoha/plat/ecnt/en7523/ecnt_cpufreq.c",
+        "file": "en7523/ecnt_cpufreq.c",
+        "bytes": 17631,
+        "sha256": "754e0594a31d96f758edc30f18bdc51f16f51f72d022959aab521269447272a8"
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/tclinux_phoenix/bootloader/ATF/atf-airoha/plat/ecnt/en7523/include/ecnt_cpufreq.h",
+        "file": "en7523/include/ecnt_cpufreq.h",
+        "bytes": 1086,
+        "sha256": "a9b2747f613f9172e07c7651c26d1f3c48322f1f73d96c7ef75d5996b8b32d4a"
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/tclinux_phoenix/bootloader/ATF/atf-airoha/plat/ecnt/common/drivers/avs/an7583/ecnt_avs.c",
+        "file": "common/drivers/avs/an7583/ecnt_avs.c",
+        "bytes": 18228,
+        "sha256": "eab4283743a71c997bf2be824fa3448ace6066bf3376acae136a37068cd0852d"
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/tclinux_phoenix/bootloader/ATF/atf-airoha/plat/ecnt/common/ecnt_sip_svc.c",
+        "file": "common/ecnt_sip_svc.c",
+        "bytes": 5561,
+        "sha256": "6782088e20b68461c16ba1b138a58318dc294717ed6932893a047927dabda7fa"
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/tclinux_phoenix/bootloader/ATF/atf-airoha/plat/ecnt/common/ecnt_plat_common.h",
+        "file": "common/ecnt_plat_common.h",
+        "bytes": 3136,
+        "sha256": "a5c0cc4325d520b3ee6882113f56db6b57a9e266fb10784467f0e3c4ed949017"
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/tclinux_phoenix/bootloader/ATF/atf-airoha/plat/ecnt/common/ecnt_sip_svc.h",
+        "file": "common/ecnt_sip_svc.h",
+        "bytes": 1909,
+        "sha256": "2a29a38cd36de5ecb43f00c25270b2d9441fafa601e92d9f8a697c7357d4e993"
+      },
+      {
+        "archive_path": "VB235v_GPL/bba_3_0_platform/sdk/an7551/tclinux_phoenix/bootloader/ATF/atf-airoha/plat/ecnt/common/ecnt_plat_common.c",
+        "file": "common/ecnt_plat_common.c",
+        "bytes": 15834,
+        "sha256": "66719917f9b8def370cc32569b2301e9b4c3b83e7ae02325627cf3770c644949"
+      }
+    ],
+    "oem_active_config": {
+      "default_governor": "userspace",
+      "ARHT_governor_built_in": true,
+      "ARHT_runtime_selection": "not established; built-in does not prove active"
+    }
+  },
+  "confirmed_contract": {
+    "smc_function": "0x82000301",
+    "get_op": "0xddddddd2",
+    "get_return_unit": "ARMPLL MHz, not final mux/divider clock",
+    "set_op": "0xddddddd1",
+    "set_argument_register": "x3",
+    "set_formula": "(frequency_Hz - 500000000) / 50000000",
+    "allowed_mapping": {
+      "500000_kHz": 0,
+      "1200000_kHz": 14
+    },
+    "oem_linux_voltage_order": {
+      "above_700MHz": "SET_AVS(0) nominal 1000mV before SMC",
+      "at_or_below_700MHz": "SMC before SET_AVS(1), 900mV with valid calibration or 925mV fallback",
+      "warning": "source voltage targets are not measurements of this board"
+    },
+    "avs_dependencies": [
+      "TADC initialization",
+      "EFUSE calibration and default-voltage bounds",
+      "SCU protected writes",
+      "ADC/DAC serialization and bounded settling loop",
+      "shared supply dependencies not fully identified"
+    ],
+    "bl31_sequence": [
+      "switch CPU mux to PLL2 intermediate source",
+      "disable PLL write protection with key",
+      "program PCW/POSDIV and toggle PCW-change",
+      "udelay(1), source comment requires at least 0.5us",
+      "switch to ARMPLL and verify mux",
+      "gate intermediate PLL2",
+      "restore write protection",
+      "confirm configured PLL registers"
+    ],
+    "bl31_lock_bit_or_irq_completion": "not established; register confirmation and fixed settling retained in BL31, no speculative Linux PLL port",
+    "final_clock_readback": {
+      "address": "0x1efbe7c0",
+      "register": "MCUCFG CR_BUS_PLL_DIV",
+      "source_bits": "10:9",
+      "required_source": 1,
+      "divider_bits": "21:17",
+      "required_encoding": 0,
+      "divider_ratio": "1:1",
+      "access": "readl only; nonsecure accessibility pending first RAM observation"
+    },
+    "ddr_bus_dependencies": "No change to DDR/EMI/bus/FE/NPU/AES domain frequencies or self-refresh SMCs; full supply/thermal coupling remains unvalidated",
+    "smp_serialization": "One cpufreq policy for actual possible CPUs, driver mutex serializes GET/SET. No fast-switch path. Original Linux does not park a CPU with stop_machine."
+  },
+  "implementation": {
+    "files": [
+      "check.sh",
+      "cpu-build.patch",
+      "prepare.py",
+      "README.md",
+      "source-hashes.json",
+      "test-contract.c",
+      "test-prepare.py",
+      "vb235v-cpufreq-contract.h",
+      "vb235v-cpufreq.c",
+      "verify-evidence.py"
+    ],
+    "no_fake_clock": true,
+    "real_smc_get_and_set": true,
+    "ccf_provider": "not needed by this direct cpufreq driver; none fabricated",
+    "dt": "Opt-in root tplink,m78-boot-voltage-cpufreq on persistent board; install RAM inherits it",
+    "driver": "ARM_VB235V_BOOT_VOLTAGE_CPUFREQ=y; ARM_AIROHA_SOC_CPUFREQ disabled in this profile",
+    "admission": [
+      "root compatibles tplink,vb235v and airoha,an7583",
+      "exactly 2 possible CPUs",
+      "explicit DT opt-in",
+      "CPU mux ARMPLL and divider 1:1",
+      "SMC reports boot 1200 MHz"
+    ],
+    "first_set_identity_gate": [
+      "MTD named bootloader-protected",
+      "MTD read-only flag and exact size 0xc0000",
+      "complete 56846-byte read at offset0x21800; corrected ECC accepted",
+      "SHA256 compressed retained BL31 payload matches exact known value"
+    ],
+    "default_governor": "performance",
+    "default_allow_transitions": false,
+    "dynamic_governors": "refused via CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING",
+    "transition_latency": "0 = unspecified, no invented measurement",
+    "set_verification": [
+      "preflight GET recognized and mux/divider valid",
+      "target exactly500/1200MHz",
+      "manual root enable required",
+      "exact BL31 identity established",
+      "only status0 or proven legacy -2 eligible",
+      "strict independent target GET after SET",
+      "CPU mux/divider independently valid after SET"
+    ],
+    "legacy_minus2": "Both zero-extended SMC32 0xfffffffe and sign-extended -2 counted; never alone success",
+    "failure_behavior": "Record raw status and actual last MHz; latch all SETs off until reboot. No retry, no speculative rollback. Physical clock may remain at500MHz or intermediate source on error.",
+    "suspend": "Latches transitions off until reboot: voltage retention across sleep is unproved",
+    "diagnostic_module_parameters": [
+      "boot_frequency_mhz",
+      "allow_transitions",
+      "retained_bl31_verified",
+      "faulted",
+      "legacy_ack",
+      "last_status",
+      "last_mhz"
+    ],
+    "voltage_or_direct_pll_writes": false,
+    "source_sha256": {
+      "check.sh": "e36aaa0b2c21bd9289a0ec3607067ac492f1c4e35a54a4f3d5f8b860ee2fd340",
+      "cpu-build.patch": "17803fcbd6fff87685951c54df9c2f0f7c77e7602c5ead2172046fa9a8449d8e",
+      "prepare.py": "57af422a11edf2ef754989b051fa0d867dd6f2b459b42059c7cd1eabf5e51c4e",
+      "README.md": "7aa700c6bf55ed1c6c1502bfeefb19f741e61ae03da40024da73a3d34b525bef",
+      "source-hashes.json": "08e9d328bf4ee7d2ca9b01e90c6615ac1e0999b0be8753f8c5fba99322affb02",
+      "test-contract.c": "18877bc1cadcaf1ef96995090f67afb4375f1c84ee25861f3d2a45156c496508",
+      "test-prepare.py": "fbbb325502edd1f41133e8a8491346416ce7b2baff4f02f3898eabded61a5eb0",
+      "vb235v-cpufreq-contract.h": "6ec0a43584a1adbd47b5bebfbc32749274f94ae1da75ebc412e078af359dc34d",
+      "vb235v-cpufreq.c": "c9b6a5ed4e94814bff3330c9df2d9f82ec6cd1cfb3614f701e124f91fe259cbc",
+      "verify-evidence.py": "987b08f9093c72429f467d262175884c7fefc1c442cfa236d77993772d18e5f8"
+    }
+  },
+  "validation": {
+    "host_production_contract": "PASS, UBSan and -Wall -Wextra -Werror",
+    "negative_cases": [
+      "unknown/low/incorrect-unit boot",
+      "disabled transition emits no SET",
+      "unsupported frequency",
+      "unknown preflight GET",
+      "wrong BL31 identity",
+      "unrecognized status",
+      "legacy -2 with wrong readback",
+      "unknown post-SET GET",
+      "correct PLL GET with invalid CPU mux/divider",
+      "latched fault blocks further writes"
+    ],
+    "positive_cases": [
+      "same-frequency performance request emits no SET",
+      "state0 for500MHz",
+      "state14 for1200MHz",
+      "zero and both-width legacy-2 ACKs require actual readback"
+    ],
+    "arm64_module": "PASS exact Linux6.18.60 external module link, no unresolved symbols; not loaded",
+    "module_metadata_warning": "OpenWrt MODULE_INFO_STRIP removes MODULE_DESCRIPTION, modpost warns missing MODULE_DESCRIPTION despite declaration; not an unresolved symbol",
+    "prepare_fixture": "PASS real patch/SHA gates, two-pass byte-identical idempotence, config/DT integration and bad-PHY rejection in disposable fixture",
+    "exact_oem_proof_chain": "PASS verify-evidence.py: bootloader→compressed BL31→decompressed BL31 opcode proof, exact kernel fingerprint and actual DT opp-hz",
+    "hardware": "NOT RUN; parent coordinates first read-only RAM boot and subsequent supervised transitions",
+    "shared_build_tree": "not mutated; external module outputs /home/duanx/m78-cpu-dvfs-check"
+  },
+  "remaining_gates": [
+    "RAM read-only boot and nonsecure MCUCFG accessibility",
+    "Confirm retained current boot-prefix identity and policy membership0-1",
+    "Baseline dual-core/network/NPU/PCIe behavior",
+    "Supervised single500/1200 transition pair with independent GET/mux and both-core/network checks",
+    "Repeated cold starts and recovery-at-error tests",
+    "Independent timing/frequency/voltage/temperature measurements",
+    "Calibrated Linux AVS regulator implementation and fail-safe ordering",
+    "Thermal sensor/cooling policy implementation and validation",
+    "Final integrated image build/boot/upgrade verification"
+  ],
+  "safety_preservation": [
+    "No COM3, SP3, SSH, flash or hardware-clock operation by this agent",
+    "No commits/pushes",
+    "No changes outside M78 public directory/report; private evidence extraction only",
+    "Original slot0, ART, BBT, rescue, NPU and existing drivers untouched"
+  ]
+}

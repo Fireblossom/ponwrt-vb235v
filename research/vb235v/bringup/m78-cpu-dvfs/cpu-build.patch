@@ -1,0 +1,25 @@
+--- a/drivers/cpufreq/Kconfig.arm
++++ b/drivers/cpufreq/Kconfig.arm
+@@ -278,3 +278,14 @@
+ 	  This add the CPUFreq driver support for Intel PXA2xx SOCs.
+ 
+ 	  If in doubt, say N.
++
++config ARM_VB235V_BOOT_VOLTAGE_CPUFREQ
++	bool "VB235v retained-BL31 boot voltage cpufreq development"
++	depends on ARM64 && ARCH_AIROHA && CPU_FREQ && MTD
++	select CRYPTO_LIB_SHA256
++	help
++	  Read the actual CPU frequency via the retained OEM BL31 SMC.
++	  Opt-in VB235v boards only; requires two CPUs and boot at 1200 MHz.
++	  Supervised 500/1200 MHz transitions remain disabled by default.
++	  No AVS or thermal control is provided. Do not enable both this and
++	  ARM_AIROHA_SOC_CPUFREQ for this board.
+--- a/drivers/cpufreq/Makefile
++++ b/drivers/cpufreq/Makefile
+@@ -107,3 +107,5 @@
+ obj-$(CONFIG_SH_CPU_FREQ)		+= sh-cpufreq.o
+ obj-$(CONFIG_SPARC_US2E_CPUFREQ)	+= sparc-us2e-cpufreq.o
+ obj-$(CONFIG_SPARC_US3_CPUFREQ)		+= sparc-us3-cpufreq.o
++
++obj-$(CONFIG_ARM_VB235V_BOOT_VOLTAGE_CPUFREQ) += vb235v-cpufreq.o
