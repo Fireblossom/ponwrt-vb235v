@@ -1,0 +1,14 @@
+{
+  "drivers/net/ethernet/airoha/airoha_npu.c": {
+    "baseline": "b313531fab9fc87ff65b656b032a44bc452bf0aef25e1daba5a943372e1e40d5",
+    "candidate": "62263992b643caa4b3bdbeb3ffc2f2d172823b843e42536ca0d41f8e130c77a5"
+  },
+  "include/linux/soc/airoha/airoha_offload.h": {
+    "baseline": "f5da81e31395bde119bcb564503bd747e1c8c245c720b8cbf5de2f8e4182c5a4",
+    "candidate": "df63aa528595ce1fc9bb81bd5bf3ad71e23974ff801be520c59a7e9bfe62825f"
+  },
+  "drivers/net/ethernet/airoha/airoha_npu_layout.h": {
+    "baseline": null,
+    "candidate": "e871e234d3bba52d3787fe2f7ae4f3d07be1c1b082b2a3d8fa9ca33980b8fb29"
+  }
+}

@@ -1,0 +1,29 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/include/ "an7583-tplink_vb235v-ram-smp.dts"
+
+/ {
+	model = "TP-LinkBox 7 VB235v PonWrt NPU RAM development";
+	compatible = "tplink,vb235v-ram-npu-development", "tplink,vb235v-ram-smp-development", "tplink,vb235v-ram-dual-pcie-development", "tplink,vb235v-ram-pcie-development", "airoha,an7583";
+	reserved-memory {
+		/* Native loader uses a 2 MiB code boundary and a following heap.
+		 * Retain the native AN7583 10 MiB carveout; no overlap with QDMA.
+		 */
+		npu_binary: npu@84000000 { reg = <0 0x84000000 0 0xa00000>; };
+	};
+	npu: npu@1e900000 {
+		compatible = "airoha,an7583-npu";
+		reg = <0 0x1e900000 0 0x313000>;
+		airoha,npu-layout = "an7583-v2p";
+		interrupts = <0 125 4>,
+			<0 134 4>, <0 135 4>, <0 136 4>, <0 137 4>, <0 109 4>, <0 110 4>,
+			<0 118 4>, <0 119 4>, <0 120 4>, <0 121 4>, <0 122 4>, <0 123 4>;
+		memory-region = <&npu_binary>;
+		memory-region-names = "binary";
+		/* Private owner-supplied originals, uploaded after RAM userspace.
+		 * Their absence must not select unrelated reference firmware.
+		 */
+		firmware-name = "vb235v/stock-npu-rv32.bin", "vb235v/stock-npu-data.bin";
+	};
+};
+
+&{/ethernet@1fb50000} { airoha,npu = <&npu>; };

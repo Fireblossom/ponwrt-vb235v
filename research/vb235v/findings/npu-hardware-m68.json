@@ -1,0 +1,71 @@
+{
+  "milestone": "M68",
+  "board": "tplink,vb235v-ram-npu-development",
+  "fit_sha256": "01a257c7030525b22f71fb1ec13ab7b08bebf26c488f28f803557df5452a07e4",
+  "kernel_config_sha256": "f68e59297d06445a0bb9ee4db5aa0c9f65e74d8b51745e30699da5030f6219e7",
+  "persistent_installation_supported": false,
+  "flash_write_commands_sent": false,
+  "Linux_ARM_CPUs_online": "0-1",
+  "NPU_processing_cores": 6,
+  "NPU_boot_mask": "0x3f",
+  "all_six_PCs_in_loaded_code": true,
+  "GET_INFO_return": 0,
+  "GET_INFO_mailbox_status": "0x7",
+  "GET_VERSION_supported": false,
+  "private_firmware_inputs": [
+    {
+      "name": "stock-npu-rv32.bin",
+      "bytes": 121132,
+      "sha256": "d2ae9338e1391ced12fefef79a90d60c3108c16bc589584463047fe19a299bf9"
+    },
+    {
+      "name": "stock-npu-data.bin",
+      "bytes": 3220,
+      "sha256": "a8e61916d4261fec3da18c6f5461e06e54acfd18f1a4ed23d3f971176e2ba221"
+    }
+  ],
+  "NPU_reserved_bytes": 10485760,
+  "native_LAN_link_Mbps": 100,
+  "full_duplex": true,
+  "verified_scope": [
+    "NPU original firmware execution",
+    "successful mailbox GET_INFO",
+    "real-wire IPv4 UDP NAT",
+    "real-wire IPv4 TCP NAT integrity"
+  ],
+  "initial_hardware_path_evidence": {
+    "UDP_echoes": 2000,
+    "UDP_payload_bytes_each_direction": 2376000,
+    "software_CPU_ingress_packets": [
+      2000,
+      2001
+    ],
+    "hardware_CPU_ingress_packets": [
+      31,
+      31
+    ],
+    "TCP_bytes_per_direction": 33554432,
+    "TCP_SHA256_verified": true,
+    "matching_bound_PPE_entries": 2,
+    "conntrack_HW_OFFLOAD_seen": true,
+    "CPU_counter_hook_priority": -100,
+    "flowtable_priority": -10
+  },
+  "known_failure": {
+    "repeated_flowtable_replacement_reliable": false,
+    "driver_callback_error": "EEXIST (-17)",
+    "symptom": "After a flowtable is deleted, a later TCP flow can remain in software; independent CPU counter detects this.",
+    "followup": "M69 tests cleanup before hardware callback unbind."
+  },
+  "not_verified": [
+    "gigabit and 2.5G operation",
+    "peak throughput",
+    "IPv6 offload",
+    "PPPoE offload",
+    "Wi-Fi NPU ABI",
+    "crypto engine",
+    "DSL line",
+    "persistent image",
+    "long-term stability"
+  ]
+}
