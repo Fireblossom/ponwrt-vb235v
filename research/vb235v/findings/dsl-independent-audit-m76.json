@@ -1,0 +1,1030 @@
+{
+  "schema": 1,
+  "milestone": "M76",
+  "review_role": "Independent DSL audit by one reviewer; offline and read-only hardware scope",
+  "review_date": "2026-11-21",
+  "release_verdict": "BLOCKED: native endpoint/control/bearer/automatic PPPoE runtime is absent and no real DSL line path has been verified",
+  "executive_summary": {
+    "can_meet_user_cold_power_on_Telekom_success_now": false,
+    "reason": "Existing work is reverse-engineering evidence and offline contracts, not a running native DSL service. Final cold-power-on Telekom authentication and LAN Internet cannot currently be promised.",
+    "P0_release_blockers": [
+      {
+        "id": "M76-02",
+        "required": "Exclusive PON PCS/board ownership: resolve eth1/PHY14 2500base-x versus original DSL USXGMII before either can take over."
+      },
+      {
+        "id": "M76-03",
+        "required": "Native ordered endpoint reset/MDIO/DDR/iNIC/tclinux bootstrap with verified ready and recovery."
+      },
+      {
+        "id": "M76-01",
+        "required": "Native management/data path, fresh metadata/status provider, service packaging and netifd integration."
+      },
+      {
+        "id": "M76-10",
+        "required": "Program/read back the actual ADSL ATM or VDSL PTM service with verified VLAN/MTU boundary."
+      },
+      {
+        "id": "M76-12",
+        "required": "Automatic PPPoE line authentication, IPv4/IPv6/PD and real LAN client connectivity without manual credentials."
+      }
+    ],
+    "minimum_order": "Freeze inputs/image -> exclusive PCS owner -> endpoint bootstrap -> current native control/status -> bearer/VLAN -> automatic PPPoE -> IPv4/IPv6/PD/LAN -> failure/retry -> repeated clean-image cold acceptance.",
+    "must_compare_with_complete_original_runtime": [
+      "Actual cold endpoint startup and DDR/iNIC/tclinux transfer/execute ACKs, lengths, addresses, CRC/endianness, timing and readiness publication.",
+      "Board mux/clock/reset/SerDes routing and actual relationship of DSL, eth1/PHY14 and both external2.5G ports.",
+      "Proprietary backend service commands/readbacks, line-status tokens and netifd control-device lifecycle.",
+      "Actual PPP discovery/authentication/provisioning sequence to distinguish static preset/line authentication from personal account or ACS/phone downloads."
+    ],
+    "must_use_real_owner_line": [
+      "Actual synchronization/modulation/annex/bearer and valid current status.",
+      "Accepted fresh PPPoE authentication using the intended no-manual-credentials flow.",
+      "IPv4/IPv6, delegated LAN prefix/routes/DNS and verified client traffic.",
+      "Line unplug/replug, retraining, endpoint/helper death, reload and repeated full cold-power recovery."
+    ],
+    "no_test_promotion": "32 host tests,105 original-code vectors,3 allocation failures,5 UI replays and14 additional guest cases are offline evidence; they are not endpoint or line acceptance.",
+    "coverage_boundary": "One independent reviewer inspected the complete known native DSL-related tool/bringup surface and selected exact OEM functions/sources. This is not a claim of complete proprietary firmware equivalence."
+  },
+  "absolute_completeness_or_equivalence_claim": false,
+  "scope": {
+    "hardware_actions": false,
+    "COM3_access": false,
+    "SP3_access": false,
+    "router_access": false,
+    "build_mutations": false,
+    "DSL_line_attached": false,
+    "original_factory_slot0_preserved": true,
+    "public_report_is_the_only_repository_file_authored_by_this_auditor": true
+  },
+  "evidence_limits": [
+    "Selected exact original ELF functions ran under ARM64 emulation; OS, endpoint, network, IPC and proc inputs were modeled.",
+    "The complete proprietary HSM/backend/endpoint firmware and every outer caller were not reconstructed.",
+    "Acceptance of a synthetic malformed packet by a helper is a native-port contract risk, not proof of an exploitable whole-appliance flaw.",
+    "Selected GPL/BSP sources do not automatically correspond exactly to the running original modules.",
+    "No native DSL initialization, line synchronization, PPP authentication, IPv6 PD or line recovery was tested.",
+    "Source citations identify the audited snapshot. Binary witnesses use offsets rather than invented source lines."
+  ],
+  "severity_definition": {
+    "P0": "Missing mandatory runtime or conflicting ownership; blocks cold-boot automatic DSL Internet.",
+    "P1": "Contract, recovery or evidence gate to resolve before DSL release; not necessarily an observed native runtime defect.",
+    "P2": "Bounded compatibility hazard requiring an explicit implementation constraint."
+  },
+  "reviewed_domains": [
+    "Exact live libpt/libblapi provenance versus legacy GPL/BSP xdsl interfaces and ae_wan hooks.",
+    "HSM, DDR calibration, iNIC and tclinux artifacts, startup order, image integrity/addressing and execute handshake.",
+    "GPIO21 reset, MDIO24, GPIO40 mux, clock/SerDes/PMA/PCS initialization and ownership.",
+    "M71/M72 PON PCS ownership by gdm2/eth1/PHY14 and M73/M75 inheritance.",
+    "Wire framing, length, endianness, operation fields, socket filtering and response correlation.",
+    "Shared-memory layout, readiness, ownership/generation, producer limits, errors and cleanup.",
+    "Current line showtime/modulation/annex/bearer, stale status and failure handling.",
+    "ADSL ATM VPI/VCI/LLC versus VDSL PTM and endpoint-to-host Ethernet boundaries.",
+    "VLAN7 placement, PCP, MTU/MRU and DMA/cache/checksum/offload boundaries.",
+    "PPPoE discovery/session/authentication, retry and stale-session handling.",
+    "Pinned Telekom provider database/UI replay and asynchronous partial failures.",
+    "EasyLogin/line authentication versus factory preset, account download, TR069/ACS and telephone provisioning.",
+    "IPv4 IPCP, IPv6CP, DHCPv6 PD, routes, DNS and LAN client service.",
+    "Cold/warm boot, line loss, helper/endpoint crash, partial failure, PCS restore and observability.",
+    "Native image integration, mock self-confirmation limits and actual end-to-end release gates."
+  ],
+  "current_build_read_only_scan": {
+    "roots": [
+      "files",
+      "target/linux/airoha",
+      "package"
+    ],
+    "method": "Read through WSL from current ponwrt-system-m55; regular text files <=2MiB, symlinks skipped",
+    "text_files_scanned": 3403,
+    "needles": [
+      "ae_wan",
+      "ddr_cal.bin",
+      "DEV2_X_TP_AUTODETECT",
+      "Telekom_ADSL"
+    ],
+    "matches": 0,
+    "limitation": "Supporting evidence alongside implementation/image inspection; absence of strings alone cannot prove arbitrary binary behavior."
+  },
+  "verification": {
+    "host_unit_tests": {
+      "tests": 32,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0,
+      "patterns": [
+        "test_dsl_pt_wire.py",
+        "test_telekom_factory_profile.py",
+        "test_factory_defaults.py",
+        "test_serdes_boot.py",
+        "test_pcs_rate_contract.py",
+        "test_pcs_receiver_contract.py",
+        "test_kernel_providers.py"
+      ],
+      "scope": "Offline Python contracts only"
+    },
+    "original_ARM64_transaction": {
+      "successful_vectors": 68,
+      "allocation_failure_cases": 3,
+      "external_callbacks_modeled": true
+    },
+    "original_ARM64_metadata": {
+      "vectors": 20,
+      "IPC_and_sockets_modeled": true
+    },
+    "original_ARM64_status": {
+      "vectors": 17,
+      "proc_reads_modeled": true
+    },
+    "original_pinned_UI_replay": {
+      "cases": 5,
+      "backend_callbacks_modeled": true,
+      "network_requests": 0
+    },
+    "provider_cross_check": {
+      "exact_hashes_verified": true,
+      "explicit_and_automatic_transport_equal": true,
+      "explicit_ipv4_ipv6_flags_checked": true,
+      "private_credentials_exported": false
+    },
+    "additional_cases": {
+      "reply_cases": 8,
+      "reply_control_cases": 1,
+      "reply_negative_cases": 7,
+      "IPC_socket_negative_cases": 6,
+      "total_additional_cases": 14,
+      "total_negative_cases": 13,
+      "actual_pinned_guest_instructions": true,
+      "device_operations": false
+    }
+  },
+  "findings": [
+    {
+      "id": "M76-01",
+      "severity": "P0",
+      "classification": "confirmed_missing_runtime",
+      "title": "Current persistent image has no native DSL-to-Internet implementation",
+      "trigger": "Clean installation or cold boot expecting automatic Telekom Internet.",
+      "evidence": [
+        {
+          "path": "research/vb235v/tools/dsl_pt_wire.py",
+          "line": 5,
+          "note": "No socket or device operations."
+        },
+        {
+          "path": "research/vb235v/tools/telekom_factory_profile.py",
+          "line": 7,
+          "note": "Does not configure modem or start PPPoE."
+        },
+        {
+          "path": "research/vb235v/bringup/m73-persistent-system/99-vb235v-persistent",
+          "line": 8,
+          "note": "Removes wan and wan6; line11 selects isolated lan-test."
+        }
+      ],
+      "impact": "No native endpoint loader, live management/data path, status provider, bearer executor or automatic PPPoE supervisor consumes the offline contracts. Passing models cannot create Internet service.",
+      "fix": "Implement/package the dependency stages below and connect service startup to netifd. Expose truthful stage states; keep DSL release blocked until the complete path is accepted.",
+      "offline_regression": "Image inventory must require all executables, private firmware manifest, init services, native providers and network protocols; deliberately omitted components must reject readiness.",
+      "real_acceptance": "Final flashed image, clean overlay, full power-off/on and attached owner line must create fresh DSL and PPP sessions without shell setup or manual credentials."
+    },
+    {
+      "id": "M76-02",
+      "severity": "P0",
+      "classification": "confirmed_configuration_conflict_requires_board_mapping_validation",
+      "title": "Native eth1 occupies the PON PCS selected by original DSL startup",
+      "trigger": "Enabling DSL/USXGMII while M71/M72/M73/M75 gdm2/eth1/PHY14 remains active.",
+      "evidence": [
+        {
+          "path": "research/vb235v/bringup/m71-dual-2p5g/an7583-tplink_vb235v-ram-multigig.dts",
+          "line": 6,
+          "note": "pcs@1fa08000; shared SCU/reset/PMA windows; line13 resets48/0/15; line16 2500base-x; lines44-49 gdm2/PHY14 consumer."
+        },
+        {
+          "path": "research/vb235v/bringup/m73-persistent-system/an7583-tplink_vb235v.dts",
+          "line": 2,
+          "note": "Inherits the active multigig DTS."
+        },
+        {
+          "path": "offline-analysis/m56-dsl-original-rootfs/lifecycle/etc/init.d/rcS.openwrt-21.02.econet",
+          "line": 205,
+          "note": "Original sys serdes0/2/2/7 selects DSL/WAN/USXGMII."
+        },
+        {
+          "path": "research/vb235v/tools/pcs_rate_contract.py",
+          "line": 121,
+          "note": "Numeric selectors alone do not prove full programming/runtime equivalence."
+        },
+        {
+          "path": "research/vb235v/bringup/m71-dual-2p5g/ethernet-integration.patch",
+          "line": 39,
+          "note": "Native PON Ethernet profile accepts usxgmii or2500base-x and records interface type at47-48;2500 profile changes optical-rate handling."
+        },
+        {
+          "path": "research/vb235v/bringup/m72-phy-reset-receiver/pcs-ethernet-receiver.patch",
+          "line": 18,
+          "note": "Electrical receiver programming includes non-optical PON Ethernet2500 case; no DSL ownership/recovery integration is supplied by this correction."
+        }
+      ],
+      "impact": "One hardware block has incompatible owners/modes: current Ethernet2500base-x versus original DSL USXGMII. Independently enabling both can disrupt Ethernet, endpoint DMA, IRQs or recovery. Physical routing/mux and possible simultaneous port availability are not fully established.",
+      "fix": "Use a single exclusive board-mode owner. Stop netdev queues/NAPI/DMA/IRQs and detach phylink/PCS before takeover; verify the complete DSL clocks/resets/SerDes sequence. Unwind partial failures and restore prior Ethernet mode. Measure routing/mux before deciding which external port is unavailable.",
+      "offline_regression": "Reject concurrent consumers; inject each takeover failure and prove quiescence, cleanup and restoration. Compare complete register ordering and delays, not only constants.",
+      "real_acceptance": "Capture OEM/native cold mode evidence and exercise Ethernet-to-DSL-to-Ethernet plus cold recovery without stale carrier, DMA or IRQ state. Do not claim two2.5G ports plus DSL without measured routing evidence."
+    },
+    {
+      "id": "M76-03",
+      "severity": "P0",
+      "classification": "confirmed_missing_runtime",
+      "title": "Ordered HSM/endpoint bootstrap has no native implementation",
+      "trigger": "Endpoint cold reset, power loss or previous interrupted download.",
+      "evidence": [
+        {
+          "path": "offline-analysis/m56-dsl-original-rootfs/lifecycle/etc/init.d/rcS.openwrt-21.02.econet",
+          "line": 170,
+          "note": "GPIO21 reset low at172-175, MDIO support177-184, GPIO40 mux187-191, chardevs200-201, SerDes205, ae_wan208, register write212, HSM213, client_info218, ae_wan up366."
+        },
+        {
+          "path": "research/vb235v/findings/dsl-host-boot-artifacts.json",
+          "line": 1,
+          "note": "Artifact identities and script arguments, not native boot validation."
+        }
+      ],
+      "impact": "Extracting HSM/ddr_cal/iNIC/tclinux does not initialize the endpoint on the native kernel. GPIO21 polarity/timing, MDIO24 reachability, mux and staged startup remain required implementation and measurement work.",
+      "fix": "Reconstruct stage preconditions, acknowledgements, deadlines and rollback. Preserve exact private inputs and validate each stage; copy no raw register write without ownership and compatibility checks.",
+      "offline_regression": "Missing/malformed input, absent MDIO, link timeout, interrupted stage and endpoint reset must prevent success and produce bounded stage-specific recovery.",
+      "real_acceptance": "Cold/warm/interrupted starts converge on verified endpoint readiness. Absent endpoint times out safely and management remains reachable."
+    },
+    {
+      "id": "M76-04",
+      "severity": "P1",
+      "classification": "unresolved_binary_contract_release_gate",
+      "title": "Input identity is known but full image-transfer/execute contract is not",
+      "trigger": "Writing a native downloader or reusing HSM on a different kernel.",
+      "evidence": [
+        {
+          "path": "research/vb235v/findings/dsl-host-boot-artifacts.json",
+          "line": 1
+        },
+        {
+          "path": "research/vb235v/tools/dsl_pt_wire.py",
+          "line": 6,
+          "note": "Operation semantics/safety unresolved."
+        },
+        {
+          "path": "research/vb235v/tools/emulate_dsl_libpt.py",
+          "line": 250,
+          "note": "Real endpoint compatibility explicitly unproven."
+        }
+      ],
+      "impact": "Hashes/sizes do not prove load-address limits, container headers, segment/chunk lengths, CRC/endian handling, DDR calibration handoff, iNIC-to-tclinux transition or verified execute readiness.",
+      "fix": "Decode exact HSM transfer state transitions and specify address/length overflow rules, integrity, current-stage ACK, execute entry, retry limits and safe reset. Reject mismatched private inputs.",
+      "offline_regression": "Corrupt/truncated/oversized images, wrong CRC/endian/address, stale/wrong-stage ACK, reset and timeout must fail before execute/ready. Golden traces must be independent OEM evidence.",
+      "real_acceptance": "Compare native/OEM download/execute exchanges on the same endpoint and recover after every forced partial-stage failure."
+    },
+    {
+      "id": "M76-05",
+      "severity": "P1",
+      "classification": "confirmed_original_helper_behavior_and_native_port_contract_risk",
+      "title": "Original libpt helper accepts malformed modeled replies without payload identity validation",
+      "trigger": "Using SRC_blapi return0 as proof of a fresh valid response in a native port.",
+      "evidence": [
+        {
+          "path": "offline-analysis/live-dsl-artifacts/20261116T013425Z/libpt.so.1.0.0",
+          "symbol": "pt_pkt_recv",
+          "offsets": [
+            "0x1fa8",
+            "0x2024",
+            "0x2028",
+            "0x207c",
+            "0x2088",
+            "0x20f8"
+          ],
+          "note": "Nonpositive receive length rejects; <=218 bypasses the upper-size branch; first source is learned rather than strictly matched."
+        },
+        {
+          "path": "offline-analysis/live-dsl-artifacts/20261116T013425Z/libpt.so.1.0.0",
+          "symbol": "SRC_blapi",
+          "offsets": [
+            "0x2378",
+            "0x237c",
+            "0x23ec",
+            "0x23f0",
+            "0x23f4"
+          ],
+          "note": "Selected comparison uses the original request word saved on stack, not received transaction identity."
+        },
+        {
+          "path": "research/vb235v/tools/dsl_pt_wire.py",
+          "line": 37,
+          "note": "Offline decoder checks exact payload length/magic/version, but no native receiver exists."
+        }
+      ],
+      "impact": "Actual pinned ARM64 code with synthetic replies returns0 and copies synthetic status0x11223344 for wrong magic/version/operation/suboperation/source and a32-byte frame. A13-byte frame returns0/status0 due fresh zeroed model memory; a real allocator could retain stale bytes. This does not establish a vulnerability in the complete OEM appliance.",
+      "fix": "Native receiver must validate framing/length, protocol/version, expected interface/source, response role, current operation/transaction/generation before output. Discard unmatched/stale packets within a bounded deadline. Document trusted-link preconditions instead of assuming them.",
+      "offline_regression": "Keep one valid control and seven mutations; add duplicate/reordered/old-generation replies, multiple sources, VLAN/padding and poisoned reuse buffers. Rejections cannot refresh status or produce success.",
+      "real_acceptance": "Prove real responses belong to the current request/endpoint generation; timeout/replay/reconnect cannot report stale synchronization or Internet."
+    },
+    {
+      "id": "M76-06",
+      "severity": "P1",
+      "classification": "confirmed_original_helper_behavior_and_missing_native_error_contract",
+      "title": "Metadata/socket setup has positive errors and fatal process paths",
+      "trigger": "Caller checks only ret<0, embeds old libpt into a long-lived controller or retries after IPC/socket failure.",
+      "evidence": [
+        {
+          "path": "research/vb235v/tools/emulate_dsl_metadata.py",
+          "line": 179,
+          "note": "Not-ready2, socket-failure1."
+        },
+        {
+          "path": "research/vb235v/tools/emulate_dsl_metadata.py",
+          "line": 94,
+          "note": "Guest exit(1) captured rather than killing host."
+        }
+      ],
+      "impact": "All four injected option failures and shmget failure request exit(1); shmat=-1 reaches an unmapped read. A negative-only check can treat failure as success; embedding fatal legacy errors can kill the controller.",
+      "fix": "Use a native explicit error contract with checked shmget/shmat and cleanup. If reusing legacy code, isolate/supervise it and map positive errors, exits and signals to bounded retries with readiness invalidation; never embed fatal behavior in netifd.",
+      "offline_regression": "Six new failures plus socket failure, permission loss, disappearing device and IPC removal must leave no FD/IPC leak or stale-ready survivor.",
+      "real_acceptance": "Helper/endpoint death during setup leaves management responsive and state unavailable; controlled retry recovers without power-cycle dependence."
+    },
+    {
+      "id": "M76-07",
+      "severity": "P1",
+      "classification": "unresolved_producer_lifecycle_and_missing_native_component",
+      "title": "Metadata bit0 is transport readiness with unresolved ownership/freshness",
+      "trigger": "Producer/consumer startup races, HSM crash/restart, stale segment or endpoint reset.",
+      "evidence": [
+        {
+          "path": "research/vb235v/tools/emulate_dsl_metadata.py",
+          "line": 55,
+          "note": "Key0x1492,40bytes,IPC_CREAT|0666; selected consumer copies28bytes."
+        },
+        {
+          "path": "research/vb235v/DSL-METADATA-READINESS.md",
+          "line": 1,
+          "note": "Only bit0 gates BEEA; other tested selectors bypass this gate."
+        },
+        {
+          "path": "offline-analysis/m56-dsl-original-rootfs/extracted/userfs/bin/hsm",
+          "offsets": [
+            "0x4018e0",
+            "0x4018e8",
+            "0x4018f0"
+          ],
+          "note": "Selected signal handler clears first28bytes; intermediate flag values5/2 observed, full producer semantics unresolved."
+        }
+      ],
+      "impact": "Complete atomic publication, remaining fields, generation, owner death and cleanup are unproven. Readiness is not showtime, valid bearer or a PPP session; stale data can cross a restart.",
+      "fix": "Single-owner metadata with endpoint/boot generation and atomic publish only after verified completion. Invalidate before reset/reload/shutdown; require current owner/freshness. Reconstruct compatibility fields before legacy interoperation.",
+      "offline_regression": "Torn publication, stale segment, wrong owner/permissions, clean signal versus SIGKILL and consumer racing reset must not preserve ready.",
+      "real_acceptance": "No old endpoint/line/session state survives process restart, endpoint reset or power cycle; timestamped transitions show current generation."
+    },
+    {
+      "id": "M76-08",
+      "severity": "P2",
+      "classification": "confirmed_original_name_bound_compatibility_risk",
+      "title": "HSM/libpt interface-name limits are shorter than Linux IFNAMSIZ",
+      "trigger": "Long native compatibility names or VLAN-style names on the legacy control path.",
+      "evidence": [
+        {
+          "path": "offline-analysis/m56-dsl-original-rootfs/extracted/userfs/bin/hsm",
+          "offsets": [
+            "0x4013fc",
+            "0x401430"
+          ],
+          "note": "Producer clamps copied length to9bytes."
+        },
+        {
+          "path": "research/vb235v/tools/emulate_dsl_metadata.py",
+          "line": 158,
+          "note": "Consumer permits12bytes; declared13 triggers BRK#1000."
+        }
+      ],
+      "impact": "Linux-accepted names may truncate at the producer or trap in the consumer; original ae_wan fits.",
+      "fix": "Use a deliberately bounded compatibility name; reject overlong/malformed names before publication and require exact current name-to-ifindex match after recreation.",
+      "offline_regression": "Lengths8/9/10/12/13, missing/embedded NUL and declared-length mismatch must not silently truncate, bind another device or trap.",
+      "real_acceptance": "Real control socket binds only the intended current interface before and after recreation; rejected names give a clear error."
+    },
+    {
+      "id": "M76-09",
+      "severity": "P1",
+      "classification": "confirmed_original_parser_behavior_and_missing_native_provider",
+      "title": "Line status needs independent validity and freshness",
+      "trigger": "Read failure after previous up, unexpected token or endpoint generation change.",
+      "evidence": [
+        {
+          "path": "research/vb235v/tools/emulate_dsl_linkstatus.py",
+          "line": 201,
+          "note": "Failure=-1; caller state word untouched."
+        },
+        {
+          "path": "research/vb235v/findings/dsl-original-linkstatus-m61.json",
+          "line": 1,
+          "note": "17 exact guest vectors with modeled proc strings; substring up/PTM behavior."
+        }
+      ],
+      "impact": "Using stale caller state can start PPP over a down/wrong bearer. Parser quirks with synthetic strings do not prove the OEM emits malformed status. Native live provider is absent.",
+      "fix": "Real bounded provider must return validity, generation/time, showtime/modulation/annex/bearer and explicit unknown/down. Invalidate on read/error/restart and map only verified endpoint tokens; do not infer up from fixtures or metadata.",
+      "offline_regression": "17 guest vectors plus stale-up-after-failure, truncation, unknown mode, mixed tokens and generation change; invalid showtime stops a native session.",
+      "real_acceptance": "Compare actual status to OEM on the same line; unplug/replug and endpoint reset clear old up state."
+    },
+    {
+      "id": "M76-10",
+      "severity": "P0",
+      "classification": "confirmed_missing_runtime",
+      "title": "ADSL ATM and VDSL PTM service executor is absent",
+      "trigger": "Real synchronization completes and the correct Telekom service must be programmed.",
+      "evidence": [
+        {
+          "path": "research/vb235v/tools/telekom_factory_profile.py",
+          "line": 38,
+          "note": "Pinned ADSL ATM VPI1/VCI32 LLC VLAN7 PPPoE; VDSL PTM VLAN7 PPPoE."
+        },
+        {
+          "path": "research/vb235v/tools/telekom_factory_profile.py",
+          "line": 64,
+          "note": "Candidate selection returns a dict, not endpoint programming."
+        },
+        {
+          "path": "research/vb235v/findings/dsl-ethernet-transport.json",
+          "line": 1,
+          "note": "Selected ae_wan/control evidence does not implement a bearer."
+        }
+      ],
+      "impact": "No PVC/PTM setup, service readback or native data attachment exists. Host Ethernet to an endpoint does not prove ADSL ATM/PTM service creation.",
+      "fix": "Reverse the backend command/readback contract and implement idempotent service setup based on current showtime; reconcile/rollback partial services before PPP. Explicitly gate unsupported annex/modulation/multibearer/vectoring requirements.",
+      "offline_regression": "ADSL/ADSL2/ADSL2+/VDSL2, unknown/no-showtime, wrong PVC, endpoint rejection, readback mismatch, retrain and duplicate startup. Independent OEM evidence must validate expected results.",
+      "real_acceptance": "Read back actual bearer/PVC/encapsulation and show bidirectional PPPoE discovery on the owner line; retraining selects/rebuilds the correct service."
+    },
+    {
+      "id": "M76-11",
+      "severity": "P1",
+      "classification": "unresolved_transport_boundary_release_gate",
+      "title": "VLAN7 placement, PCP and effective MTU lack end-to-end proof",
+      "trigger": "Joining native Ethernet, endpoint ATM/PTM and PPPoE, particularly with offload enabled.",
+      "evidence": [
+        {
+          "path": "research/vb235v/tools/telekom_factory_profile.py",
+          "line": 58,
+          "note": "VLAN placement explicitly requires endpoint/host validation."
+        },
+        {
+          "path": "research/vb235v/tools/dsl_pt_wire.py",
+          "line": 64,
+          "note": "Offline VLAN parsing is not a runtime placement policy."
+        },
+        {
+          "path": "research/vb235v/DSL-ETHERNET-TRANSPORT.md",
+          "line": 1
+        }
+      ],
+      "impact": "Parsing one/two tags proves byte parsing only. Host-side versus endpoint-side tagging, management/data separation, PCP, padding, ATM/PTM overhead and PPP MTU/MRU are not verified. Double tagging or altered control frames can silently prevent service.",
+      "fix": "Trace independent OEM control/data boundaries and readbacks; choose one verified VLAN/PCP/MTU policy. Verify DMA metadata, checksum/GSO and PPPoE/VLAN fallback separately from basic service.",
+      "offline_regression": "Tagged/untagged management/data, duplicate tags, PCP/endian mutation, minimum frames, MTU boundaries and unsupported layouts; tolerant parsing cannot silently define production policy.",
+      "real_acceptance": "Observe PADI/PADO/PADR/PADS on intended service/interface; IPv4 DF and IPv6 PMTU/client traffic work at negotiated MTU. Qualify baseline without acceleration before separate offload validation."
+    },
+    {
+      "id": "M76-12",
+      "severity": "P0",
+      "classification": "confirmed_missing_runtime_and_unverified_line_authentication",
+      "title": "Factory profile replay is not a native automatic PPPoE service",
+      "trigger": "Expecting no manual account entry and automatic Telekom line login.",
+      "evidence": [
+        {
+          "path": "research/vb235v/tools/telekom_factory_profile.py",
+          "line": 49,
+          "note": "Automatic/no-manual is a profile declaration."
+        },
+        {
+          "path": "research/vb235v/tools/telekom_factory_profile.py",
+          "line": 98,
+          "note": "Static factory provider preset, not saved customer account."
+        },
+        {
+          "path": "research/vb235v/tools/check_telekom_factory_flow.js",
+          "line": 123,
+          "note": "Backend modeled; no real network; line124 DSL/PPPoE/ACS false."
+        }
+      ],
+      "impact": "UI/database equality proves static preset identity and Requested action only. No native PPPoE discovery/session/auth/IPCP controller consumes it. No real line test proves acceptance or personal account download; a preset/placeholder cannot be labeled a verified account.",
+      "fix": "Implement supervised automatic connection after real bearer readiness using the verified applicable factory/line-auth mechanism. Keep secrets private and out of logs; report auth rejection precisely. Manual credentials are not a substitute for the requested automatic behavior.",
+      "offline_regression": "Independent discovery/session/auth-reject/timeout/backoff/stale-session/process-restart tests, with modeled authentication labeled explicitly.",
+      "real_acceptance": "Actual owner Telekom line accepts a new cold-boot session with clean overlay, no preexisting session and no manual credentials. Record sanitized stages/network state only."
+    },
+    {
+      "id": "M76-13",
+      "severity": "P1",
+      "classification": "source_behavior_difference_requires_lifecycle_design",
+      "title": "OEM netifd exempts ae_wan from ordinary teardown",
+      "trigger": "ifdown/reload, PPP reconnect, endpoint restart or PCS mode switch.",
+      "evidence": [
+        {
+          "path": "offline-analysis/dsl-platform-source/netifd/023-ae-wan.patch",
+          "line": 3,
+          "note": "Original source line966 skips flag handling for ae_wan."
+        },
+        {
+          "path": "offline-analysis/dsl-platform-source/netifd/024-ae-wan.patch",
+          "line": 3,
+          "note": "Original source line1156 skips device-state clearing for ae_wan."
+        }
+      ],
+      "impact": "Exact live netifd correspondence is not proved. Generic teardown may destroy endpoint control needed for recovery; blindly copying exemptions may leave active DMA/queues across a mode change.",
+      "fix": "Define separate control-device, bearer and PPP ownership/lifetimes. Trace exact OEM callers; explicitly retain the required control plane during reconnect and fully quiesce resources for endpoint reset/PCS takeover.",
+      "offline_regression": "Concurrent reload, ifdown/up, PPP/endpoint crash and mode transitions: neither accidental control loss nor leaked active resources.",
+      "real_acceptance": "Repeated live reload/reconnect works without power-cycle dependency; teardown/restore stays bounded and management reachable."
+    },
+    {
+      "id": "M76-14",
+      "severity": "P1",
+      "classification": "confirmed_original_UI_partial_failure_behavior_native_policy_required",
+      "title": "OEM UI requests autodetect even after a profile-add callback fails",
+      "trigger": "One candidate add fails or callbacks finish in reverse order.",
+      "evidence": [
+        {
+          "path": "research/vb235v/tools/check_telekom_factory_flow.js",
+          "line": 76,
+          "note": "Modeled callback invokes fail/success."
+        },
+        {
+          "path": "research/vb235v/tools/check_telekom_factory_flow.js",
+          "line": 111,
+          "note": "Recorded original partial-failure behavior; five cases at116-117."
+        }
+      ],
+      "impact": "Exact pinned UI reaches Requested after both callbacks, including rejected adds. This confirms UI flow with modeled backend callbacks; it does not prove proprietary backend accepts invalid service or claims a connected session.",
+      "fix": "Native executor must distinguish completed callbacks from success, verify readback and reconcile/rollback partial profiles before starting the selected valid candidate.",
+      "offline_regression": "Each delete/add/set/readback failure and callback reorder/duplicate produces deterministic reconciliation, never connected/ready merely from callback completion.",
+      "real_acceptance": "A forced recoverable native profile rejection reports its stage, clears stale state and recovers without duplicate services after correction."
+    },
+    {
+      "id": "M76-15",
+      "severity": "P1",
+      "classification": "unimplemented_end_to_end_network_configuration",
+      "title": "IPv4, IPv6 and delegated LAN service remain unverified declarations",
+      "trigger": "PPP appears up but LAN clients require Internet service.",
+      "evidence": [
+        {
+          "path": "research/vb235v/tools/telekom_factory_profile.py",
+          "line": 54,
+          "note": "IPv4/IPv6 intent, not negotiated runtime."
+        },
+        {
+          "path": "research/vb235v/tools/telekom_factory_profile.py",
+          "line": 72,
+          "note": "Explicit OEM enable flags only."
+        },
+        {
+          "path": "research/vb235v/bringup/m73-persistent-system/99-vb235v-persistent",
+          "line": 9,
+          "note": "wan6 removed; isolated LAN omits router/DNS DHCP advertisements at21-22."
+        }
+      ],
+      "impact": "No IPCP/routes/DNS, IPv6CP, DHCPv6-PD, LAN RA/prefix or renewal/reconnect behavior exists on the native DSL path. A process PID, metadata-ready or Requested cannot prove usable Internet.",
+      "fix": "Implement full netifd IPv4/IPv6 lifecycle with routes, DNS, firewall/NAT as applicable, LAN RA/prefix and invalidation/renewal. Keep address-family outcomes separate from optional phone/ACS/offload.",
+      "offline_regression": "IPCP/IPv6CP rejection, absent/expired/changed PD, DNS/route replacement, WAN reconnect and stale-state removal.",
+      "real_acceptance": "LAN client resolves names and verifies IPv4/IPv6 traffic; delegated prefix/routes/DNS handle renewal and reconnect without stale data."
+    },
+    {
+      "id": "M76-16",
+      "severity": "P1",
+      "classification": "evidence_gap_in_provisioning_boundary",
+      "title": "EasyLogin, account download and phone/ACS provisioning are separate claims",
+      "trigger": "Explaining original plug-and-play behavior or implementing provisioning.",
+      "evidence": [
+        {
+          "path": "research/vb235v/tools/telekom_factory_profile.py",
+          "line": 59,
+          "note": "Personal-account download, phone and hardware verification are false."
+        },
+        {
+          "path": "research/vb235v/TELEKOM-AUTOCONNECT.md",
+          "line": 1
+        },
+        {
+          "url": "https://www.telekom.de/hilfe/internet-telefonie/internet/easy-login",
+          "checked_on": "2026-11-21"
+        },
+        {
+          "url": "https://www.telekom.de/hilfe/geraete/service/einrichtung-support/easy-support-funktion",
+          "checked_on": "2026-11-21"
+        }
+      ],
+      "impact": "Owner observation and static presets support the automatic-service requirement, but do not prove personal PPP credentials are downloaded, exact backend protocol, or native phone/TR069 compatibility. General Telekom pages are context, not this device's implementation evidence.",
+      "fix": "Trace original autodetect/backend and actual PPP authentication separately from TR069/ACS/telephone. Implement only verified authorized mechanisms; keep private data private and do not invent ACS endpoints or assume ACS is required before basic line login.",
+      "offline_regression": "Reports must distinguish static-preset identity, accepted line authentication, actual account download and phone provisioning; unknowns stay unknown/false.",
+      "real_acceptance": "Prove basic automatic Internet first on the owner line. Qualify account download/ACS/phone only with separate observed evidence."
+    },
+    {
+      "id": "M76-17",
+      "severity": "P1",
+      "classification": "provenance_and_ABI_evidence_gap",
+      "title": "Legacy GPL/BSP interfaces are not proof of the exact live runtime ABI",
+      "trigger": "Porting old xdsl ioctl headers, kernel modules or proprietary hooks.",
+      "evidence": [
+        {
+          "path": "research/vb235v/tools/xdsl_capture_decode.py",
+          "line": 1,
+          "note": "Offline source-derived296-byte ioctl, no active handler validation."
+        },
+        {
+          "path": "research/vb235v/findings/dsl-ethernet-transport.json",
+          "line": 1,
+          "note": "Exact live libpt/libblapi and absent legacy device nodes; mappings do not prove calls."
+        },
+        {
+          "path": "offline-analysis/m56-dsl-original-rootfs/extracted/userfs/bin/hsm",
+          "note": "ELF64 little-endian AArch64; PT_INTERP=/lib/ld-musl-aarch64.so.1. No glibc-interpreter mismatch is claimed."
+        }
+      ],
+      "impact": "Proprietary ae_wan/hooks matching the live module are not fully reconstructed. Legacy node/ioctl descriptions and source call inventories do not prove the live path. Kernel ABI, DMA address/cache/alignment/endianness and ownership are unresolved gates.",
+      "fix": "Record exact artifact hashes, source lineage, symbols and live-use witnesses for each interface. Do not transplant5.4.55 modules or invoke diagnostics based only on an old header. Verify AArch64 musl dependencies and implement native bounded kernel interfaces.",
+      "offline_regression": "Reject unpinned artifacts/unsupported layouts; verify ioctl sizes, DMA width/alignment/ownership, kernel APIs and module/helper dependencies.",
+      "real_acceptance": "Identify actual running native modules/helpers/netdev/control/data path and compare with measured exact OEM behavior, not just similar source."
+    },
+    {
+      "id": "M76-18",
+      "severity": "P1",
+      "classification": "confirmed_validation_limit_and_release_process_requirement",
+      "title": "Offline agreement cannot establish endpoint, line or cold-boot equivalence",
+      "trigger": "Promoting modeled callbacks or selector comparisons to a hardware-ready claim.",
+      "evidence": [
+        {
+          "path": "research/vb235v/tools/emulate_dsl_libpt.py",
+          "line": 250,
+          "note": "Real endpoint compatibility false."
+        },
+        {
+          "path": "research/vb235v/tools/check_telekom_factory_flow.js",
+          "line": 123,
+          "note": "No network and modeled backend."
+        },
+        {
+          "path": "research/vb235v/tools/pcs_rate_contract.py",
+          "line": 121,
+          "note": "Not complete programming/runtime equivalence."
+        }
+      ],
+      "impact": "Current tests honestly label scope but fixtures can self-confirm selected contracts while missing timing, DMA/cache, source correlation, real endpoint/line and recovery. DSL is disconnected; full equivalence and immediate auto-login are not established.",
+      "fix": "Separate source review, exact guest execution, native runtime, endpoint hardware, real line and LAN service evidence. Require independent OEM traces and stage-specific failure/retry observability before every release gate.",
+      "offline_regression": "Keep current contracts and new negatives, add independent golden inputs, and prevent fixture-generated ready/success from entering production state.",
+      "real_acceptance": "Pass the final-image owner-line checklist below. Any unresolved mandatory gate blocks DSL release even when all offline tests pass."
+    }
+  ],
+  "minimum_dependency_order": [
+    {
+      "gate": "G0",
+      "dependency": "Freeze image and exact private OEM input manifest; preserve factory/rescue.",
+      "exit_evidence": "Inventory proves native components and input availability; changed/missing inputs rejected."
+    },
+    {
+      "gate": "G1",
+      "dependency": "Exclusive board/PCS owner before endpoint access.",
+      "exit_evidence": "Measured mux/reset/clock/SerDes sequence, quiesced DMA/IRQs and restoration after failed takeover."
+    },
+    {
+      "gate": "G2",
+      "dependency": "DDR/iNIC/tclinux loading and verified execute stages.",
+      "exit_evidence": "Current-stage ACK/integrity/deadline and recovery from interrupted download."
+    },
+    {
+      "gate": "G3",
+      "dependency": "Native ae_wan-equivalent management/data path and metadata lifecycle.",
+      "exit_evidence": "Current interface/owner/generation, bounded receiver and no stale-ready/fatal host error."
+    },
+    {
+      "gate": "G4",
+      "dependency": "Real current showtime/modulation/annex/bearer provider.",
+      "exit_evidence": "Agrees with independent OEM/line evidence and invalidates on loss/error."
+    },
+    {
+      "gate": "G5",
+      "dependency": "ATM/PTM service executor and verified VLAN/MTU policy.",
+      "exit_evidence": "Actual readback and bidirectional discovery on intended service."
+    },
+    {
+      "gate": "G6",
+      "dependency": "Automatic PPPoE discovery/session/auth and IPv4 configuration.",
+      "exit_evidence": "Fresh accepted session, IPCP/routes/DNS and LAN IPv4 without manual credentials."
+    },
+    {
+      "gate": "G7",
+      "dependency": "IPv6CP, DHCPv6-PD, LAN RA/addressing and renewal.",
+      "exit_evidence": "Real LAN IPv6 with prefix/route/DNS lifecycle."
+    },
+    {
+      "gate": "G8",
+      "dependency": "Retry/reconnect/reload/partial failure and mode rollback.",
+      "exit_evidence": "Measured bounded recovery from line loss, endpoint reset, helper death and partial initialization."
+    },
+    {
+      "gate": "G9",
+      "dependency": "Final clean-image owner-line cold acceptance.",
+      "exit_evidence": "Repeated full power-off/on reaches automatic dual-stack LAN service; optional phone/ACS/offload qualified separately."
+    }
+  ],
+  "minimum_end_to_end_acceptance": [
+    "Remind owner to attach the disconnected DSL line before testing. Record a sanitized factory baseline on this same line. Clarify actual ADSL/VDSL service; one line cannot be assumed to test both.",
+    "Final flashed image with clean overlay and no old PPP session. No manual credentials, hidden CLI setup, host-assisted firmware load or preserved factory runtime. Preserve factory/rescue.",
+    "From full power-off, timestamp the boot generation, input hashes and verified ownership/load/ready/showtime stages. Choose deadlines from measured OEM and supported line behavior rather than an invented fixed timeout.",
+    "Read back actual bearer/PVC/encapsulation/VLAN. Observe new PADI/PADO/PADR/PADS, authentication and negotiated configuration for this boot. A ready bit, Requested or PPP PID is insufficient.",
+    "LAN client obtains configuration, resolves DNS and exchanges verified IPv4/IPv6 traffic. Check MTU/PMTU, delegated prefix/routes and renewal. Report family-specific failure explicitly.",
+    "Repeat cold/warm/service starts, line unplug/replug, endpoint/helper death and controlled partial-stage failure. Prove state invalidation, bounded recovery, responsive management and no resource leak.",
+    "Recheck intended Ethernet availability and restoration in the measured board mode. True2.5G throughput, PPPoE/VLAN offload, phone and ACS require separate evidence."
+  ],
+  "external_primary_sources": [
+    {
+      "url": "https://www.telekom.de/hilfe/internet-telefonie/internet/easy-login",
+      "checked_on": "2026-11-21",
+      "paraphrase": "Telekom describes automatic line-based recognition/storage of Internet access and fixed-line number information; this is context, not proof of this native implementation."
+    },
+    {
+      "url": "https://www.telekom.de/hilfe/geraete/service/einrichtung-support/easy-support-funktion",
+      "checked_on": "2026-11-21",
+      "paraphrase": "EasySupport describes remote configuration for supported enabled devices on Telekom service; native VB235v ACS compatibility is not established."
+    }
+  ],
+  "publication": {
+    "credentials": false,
+    "customer_accounts": false,
+    "MAC_addresses": false,
+    "device_serials": false,
+    "private_firmware_bytes": false,
+    "raw_disassembly": false,
+    "calibration_bytes": false,
+    "private_logs_published": false
+  },
+  "new_reply_observations": {
+    "actual_pinned_ARM64_code": true,
+    "modeled_socket_and_replies": true,
+    "device_operations": false,
+    "cases": [
+      {
+        "case": "valid",
+        "return_u64": 0,
+        "status_word": 287454020,
+        "instructions": 601,
+        "recv_calls": 1
+      },
+      {
+        "case": "bad_magic",
+        "return_u64": 0,
+        "status_word": 287454020,
+        "instructions": 601,
+        "recv_calls": 1
+      },
+      {
+        "case": "bad_version",
+        "return_u64": 0,
+        "status_word": 287454020,
+        "instructions": 601,
+        "recv_calls": 1
+      },
+      {
+        "case": "different_operation",
+        "return_u64": 0,
+        "status_word": 287454020,
+        "instructions": 601,
+        "recv_calls": 1
+      },
+      {
+        "case": "different_suboperation",
+        "return_u64": 0,
+        "status_word": 287454020,
+        "instructions": 601,
+        "recv_calls": 1
+      },
+      {
+        "case": "different_source_mac",
+        "return_u64": 0,
+        "status_word": 287454020,
+        "instructions": 601,
+        "recv_calls": 1
+      },
+      {
+        "case": "short_payload",
+        "return_u64": 0,
+        "status_word": 287454020,
+        "instructions": 601,
+        "recv_calls": 1
+      },
+      {
+        "case": "short_header",
+        "return_u64": 0,
+        "status_word": 0,
+        "instructions": 601,
+        "recv_calls": 1
+      }
+    ],
+    "library_sha256": "eb8dc5d2929120e48b58d9bb67a717346a46837e191533f02b957d363f77ff7f",
+    "mutations": {
+      "bad_magic": "Alter payload magic.",
+      "bad_version": "Alter payload version.",
+      "different_operation": "Alter reply operation word.",
+      "different_suboperation": "Alter reply suboperation word.",
+      "different_source_mac": "Use a different synthetic Ethernet source.",
+      "short_payload": "Truncate Ethernet frame to32bytes, retaining status at frame offset26.",
+      "short_header": "Truncate frame to13bytes; model memory beyond copied data is fresh/zero."
+    },
+    "reproduction": "Use pinned emulate_dsl_libpt.Transaction with a synthetic host record. Wrap modeled sendto to mutate its generated reply, then execute unchanged guest pt_pkt_recv/SRC_blapi. All OS/socket replies remain synthetic.",
+    "outer_filter_review": {
+      "reviewed": [
+        "pt_fd_open AF_PACKET protocol selector",
+        "SO_BINDTODEVICE and timeout/mark options",
+        "pt_pkt_recv length/source handling",
+        "SRC_blapi selected comparison"
+      ],
+      "observed_preconditions": "Linux EtherType and interface socket selection provide implicit filtering in a real OS. No additional BPF/source/transaction filter was observed in the reviewed helper functions.",
+      "not_exhausted": "Every proprietary outer caller, trust relationship and whole-appliance exposure remains outside the complete evidence.",
+      "classification": "Direct-reuse/native-port contract risk, not a complete OEM vulnerability claim."
+    }
+  },
+  "new_error_observations": {
+    "cases": [
+      {
+        "case": "setsockopt-failure",
+        "option": 2,
+        "outcome": "guest-exit-1"
+      },
+      {
+        "case": "setsockopt-failure",
+        "option": 20,
+        "outcome": "guest-exit-1"
+      },
+      {
+        "case": "setsockopt-failure",
+        "option": 25,
+        "outcome": "guest-exit-1"
+      },
+      {
+        "case": "setsockopt-failure",
+        "option": 36,
+        "outcome": "guest-exit-1"
+      },
+      {
+        "case": "shmget-failure",
+        "outcome": "guest-exit-1"
+      },
+      {
+        "case": "shmat-failure",
+        "exception": "Invalid memory read (UC_ERR_READ_UNMAPPED)"
+      }
+    ],
+    "option_names": {
+      "2": "SO_REUSEADDR",
+      "20": "SO_RCVTIMEO",
+      "25": "SO_BINDTODEVICE",
+      "36": "SO_MARK"
+    },
+    "reproduction": "Run pinned Metadata pt_fd_open with modeled option_fails; separately override shmget=-1 and shmat=pointer-width-1. Guest instructions are unchanged; no real IPC exists."
+  },
+  "exact_original_boot_artifacts": [
+    {
+      "name": "hsm",
+      "bytes": 26560,
+      "sha256": "9254ac7fc0fa9699c6266cb4b854d6ed9d9f9d11e128153daa2228baabe4a92a"
+    },
+    {
+      "name": "ddr_cal.bin",
+      "bytes": 22744,
+      "sha256": "7ea80b9b2c30f6687a0b14e1e8bc259f9daaf554b138770b4fb1b1886dfe1404"
+    },
+    {
+      "name": "iNIC.bin",
+      "bytes": 39556,
+      "sha256": "2840bd859eb27dbcc2997abde5223a7059ef3d97e89d047a2854eef664ed341f"
+    },
+    {
+      "name": "tclinux.bin",
+      "bytes": 4214743,
+      "sha256": "c6e0a8d0cbaf282b956a9fd3b9050cb073434947c6a32c9b95976b72eaa2a412"
+    }
+  ],
+  "HSM_ABI_and_static_witnesses": {
+    "ELF": "64-bit little-endian AArch64",
+    "PT_INTERP": "/lib/ld-musl-aarch64.so.1",
+    "not_a_glibc_interpreter_mismatch": true,
+    "ifname_producer_copy_limit": 9,
+    "ifname_producer_offsets": [
+      "0x4013fc",
+      "0x401430"
+    ],
+    "metadata_signal_clear_offsets": [
+      "0x4018e0",
+      "0x4018e8",
+      "0x4018f0"
+    ],
+    "selected_metadata_intermediate_flags": [
+      5,
+      2
+    ],
+    "complete_producer_semantics_reconstructed": false
+  },
+  "authored_source_fingerprints": [
+    {
+      "path": "research/vb235v/DSL-ETHERNET-TRANSPORT.md",
+      "sha256": "f44a85000fb5ed7733ae3b047cbeb29a2bd67e27360cf446561572f971bd8095"
+    },
+    {
+      "path": "research/vb235v/DSL-METADATA-READINESS.md",
+      "sha256": "c32f6e64cdffd0f57b6bb07145a6b629a5865651f8600313aed59f3a9ad42b1d"
+    },
+    {
+      "path": "research/vb235v/TELEKOM-AUTOCONNECT.md",
+      "sha256": "5103a1f32ddf65ca507e0a601df5c7d35ff9739133b2d6a0d378d8e0f15d3aa0"
+    },
+    {
+      "path": "research/vb235v/bringup/m71-dual-2p5g/an7583-tplink_vb235v-ram-multigig.dts",
+      "sha256": "243390189a6bf6f86d1d883aed5f469aa34f7312f051007aec9a341e0a03b7fe"
+    },
+    {
+      "path": "research/vb235v/bringup/m71-dual-2p5g/ethernet-integration.patch",
+      "sha256": "a387d8dffef3160c6370c280ab855219f9eb13e391efb0a409dc7004cbf47eda"
+    },
+    {
+      "path": "research/vb235v/bringup/m72-phy-reset-receiver/pcs-ethernet-receiver.patch",
+      "sha256": "3fcfd779f59d6492135535dc64db4979278cd210605364bc7a642f16db8e69f4"
+    },
+    {
+      "path": "research/vb235v/bringup/m73-persistent-system/99-vb235v-persistent",
+      "sha256": "71b6076d14320e2d9f38b56ecfcf588231f1bb629671e2b25c2d81634758c8d3"
+    },
+    {
+      "path": "research/vb235v/bringup/m73-persistent-system/an7583-tplink_vb235v.dts",
+      "sha256": "8019f40a36861ba6f6e779b39b36e0d88639bd9231c2a9abb5009a6d34df92b7"
+    },
+    {
+      "path": "research/vb235v/findings/dsl-ethernet-transport.json",
+      "sha256": "c514102061ad924b0137488e2b02649bf2b363ec85eeccd451b26ccb0a689140"
+    },
+    {
+      "path": "research/vb235v/findings/dsl-host-boot-artifacts.json",
+      "sha256": "8261cc6137e95b7df4eb293040d3903a82af7eb0aea2910eab448291d8fc97db"
+    },
+    {
+      "path": "research/vb235v/findings/dsl-original-linkstatus-m61.json",
+      "sha256": "651a1f9a6749ccf8a36bef2fe2ea4ae850d14dbd241e6161a879a9252387338b"
+    },
+    {
+      "path": "research/vb235v/tools/check_pcs_binding_samples.py",
+      "sha256": "cce7521a72c57155abf26da35e0772704af686a374bc047be72742350120ac75"
+    },
+    {
+      "path": "research/vb235v/tools/check_pcs_overlay.py",
+      "sha256": "478bc9c02f8f4dc3eea7fc3a591fd12c49dae4b5a8561dbc0d18d956b208a814"
+    },
+    {
+      "path": "research/vb235v/tools/check_pcs_profile.py",
+      "sha256": "33ae22aba2a7cc30942d3e434f87570be7f9899a8610b4b610d85cc2f2d38fe3"
+    },
+    {
+      "path": "research/vb235v/tools/check_pcs_receiver_model.py",
+      "sha256": "58dca5640830dbabc2acf4fc6beee6a92a3a0a5608b7d4b15428eeaa020fb6c2"
+    },
+    {
+      "path": "research/vb235v/tools/check_telekom_factory_flow.js",
+      "sha256": "137ba74f0c4ba5fea43468d7a8a148699d8ce9ae9eed51893e7acedfec069e27"
+    },
+    {
+      "path": "research/vb235v/tools/dsl_pt_wire.py",
+      "sha256": "b1a75b5e0623ad7ab9677ce363b13a3e3bba35aa122dac08eabc450bbf78e79d"
+    },
+    {
+      "path": "research/vb235v/tools/emulate_dsl_libpt.py",
+      "sha256": "b2530e2534340d832d1f33ff8acdfe3e19f85f748a76072d78623313622e4a2a"
+    },
+    {
+      "path": "research/vb235v/tools/emulate_dsl_linkstatus.py",
+      "sha256": "0f273c51621e32a3b6936164bd9fce685a085f9e9ffedadcf46dad3a2e912c94"
+    },
+    {
+      "path": "research/vb235v/tools/emulate_dsl_metadata.py",
+      "sha256": "2c735db7b392c671b82949067c4f6e95f8a0e91013240008f9366d4b8c06857c"
+    },
+    {
+      "path": "research/vb235v/tools/pcs_profile_harness.c",
+      "sha256": "485d2d63617569918e63523524816564b1547fb2de78659985419898c0420879"
+    },
+    {
+      "path": "research/vb235v/tools/pcs_rate_contract.py",
+      "sha256": "446245536a9c353123e40f16792872a7c60c15eb301b880b287456192244e360"
+    },
+    {
+      "path": "research/vb235v/tools/pcs_receiver_contract.py",
+      "sha256": "a55ea5a5b0d7fe74d353325c97b179381719585815239b99d83af2d9cd381b41"
+    },
+    {
+      "path": "research/vb235v/tools/pcs_receiver_harness.c",
+      "sha256": "f6383c61f83c642537394d0073192bb1a25059691e7677382e449e5af3e34a15"
+    },
+    {
+      "path": "research/vb235v/tools/serdes_boot_inventory.py",
+      "sha256": "c092ab33c89fee41c1ad02b7e271a3707f24e2d21babe09fd5f6b3f705a2b4ae"
+    },
+    {
+      "path": "research/vb235v/tools/telekom_factory_profile.py",
+      "sha256": "b123821070b3f672f413f140c1631c868acdccab90ca79af574f7cdc554a8967"
+    },
+    {
+      "path": "research/vb235v/tools/xdsl_capture_decode.py",
+      "sha256": "a29328e3d65cc786d1e3b29df7a532f5bed7d2bda8223399912385d0cf24d73f"
+    }
+  ],
+  "created_utc": "2026-11-21T20:23:51.672847+00:00"
+}
