@@ -1,0 +1,94 @@
+{
+  "schema": 1,
+  "milestone": "M79-v2",
+  "frozen_utc": "2026-11-21T21:39:33.775154+00:00",
+  "classification": "minimal-followup-fix-for-v1-live-double-park-regression; offline-complete-hardware-pending",
+  "v1_commit": "3fdc6a21",
+  "v1_files_unchanged": true,
+  "security_claim": "Resource cleanup regression; no demonstrated remote exploit or CVE.",
+  "live_v1_evidence": {
+    "trace": "offline-analysis/m79-wifi-primary-rebind/cycle-1-private.log",
+    "sha256": "38e5bc7913269d4b901b5869b25ffbfa61f2b734b275c52e13c760672de03eb3",
+    "observed": "WARNING kthread_park, lr mt76_dma_cleanup; common cleanup attempted second park.",
+    "parent_reported": "Cold r2 passed, both vectors released with HIF2 still bound; valid calibration rebind restored wiphy within 3 seconds. WARN means clean-teardown acceptance failed."
+  },
+  "root_cause": "v1 explicitly disabled TX worker, then common DMA cleanup disabled the same live task again; kthread_park rejects already-set KTHREAD_SHOULD_PARK.",
+  "test_gap_corrected": "v1 host worker-disable was a no-op and DMA cleanup omitted the real common body. V2 extracts real util.h helpers, common DMA cleanup and final free-device body.",
+  "minimal_fix": "Permanent unregister uses mt76_worker_teardown (kthread_stop then task=NULL); subsequent common disable and final teardown are no-ops while producer-before-IRQ order remains intact.",
+  "production_changes": [
+    "mt7996/init.c: one disable-to-teardown call replacement plus comment"
+  ],
+  "napi_audit": {
+    "production_changed": false,
+    "tx": "Unregister disables/deletes once; LISTED clears although dev remains non-NULL; common LISTED guard prevents second disable/delete.",
+    "rx": "Unregister disables once; common DMA cleanup only deletes."
+  },
+  "calibration": {
+    "changed": false,
+    "private_guard_eeprom_c_sha256": "f2b5559f47256ad8e001d4b912f44b82b4fea87043681d882cb1f396b73f61aa",
+    "fail_closed_reference_fallback_policy": "unchanged",
+    "v1_94_synthetic_boundary_cases": "Remain applicable to byte-identical loader; not claimed as a new hardware test."
+  },
+  "pinned_contracts": {
+    "mt76_util_h_sha256": "48efd7e85a2d51eb88235bdedb133e2bcb149ff988e4668dc5f412e71360e632",
+    "linux_kthread_c_sha256": "edc2aa0e2788de9f706e6a155d2eee0593c1dac61c6f3f480fc929f32c30c90e"
+  },
+  "validation": {
+    "host_scenarios": 1440,
+    "sanitizers": [
+      "ASan",
+      "UBSan"
+    ],
+    "worker_model": "Initial unparked and already-parked tasks; v2 park=0 stop=576, no live worker survives cleanup.",
+    "v1_regression_reproduced": true,
+    "v1_warning_prior_successful_park_calls": 1,
+    "mutation_failures_detected": [
+      "tx-napi-double-disable",
+      "rx-napi-double-disable",
+      "hif2-vector-leak",
+      "handler-after-free",
+      "reset-work-after-free"
+    ],
+    "compile": "30 distinct translation units; fresh MODPOST and three regenerated metadata objects; three modules linked.",
+    "optional_compile": "12 unit/config combinations passed for WED, NPU, WED+NPU; no offload qualification.",
+    "source_and_package_patch_fixture": "passed: seven hashes, only init.c differs, idempotent prepare and wrong-v1-prerequisite rejection.",
+    "checkpatch": "strict --no-signoff: 0 errors / warnings / checks",
+    "limitations": [
+      "Exact prepared compile flags/kernel symbol inputs replayed in an isolated tree; fresh MODPOST and module metadata compilation completed.",
+      "Unchanged prepared kernel .module-common.o reused. No module installed/loaded; final image integration and live tests are parent-owned.",
+      "Kernel scheduling/DMA hardware mocked; kthread park stop and NAPI enabled/listed contract explicitly modeled."
+    ]
+  },
+  "modules": {
+    "mt76.ko": {
+      "path": "/home/duanx/m79-wifi-recovery-v2/mt76/mt76.ko",
+      "sha256": "7f9d02315131534d84399c543ff7913c045e8e08a574719461f478e4cc38932c",
+      "vermagic": "6.18.60 SMP mod_unload aarch64"
+    },
+    "mt76-connac-lib.ko": {
+      "path": "/home/duanx/m79-wifi-recovery-v2/mt76/mt76-connac-lib.ko",
+      "sha256": "f15f4fe58f5afe611fe2259bbab50da7535644799b68c88f407a5f4475c843b8",
+      "vermagic": "6.18.60 SMP mod_unload aarch64"
+    },
+    "mt7996/mt7996e.ko": {
+      "path": "/home/duanx/m79-wifi-recovery-v2/mt76/mt7996/mt7996e.ko",
+      "sha256": "4cdadfcdfb11d50eda7eda6564df5e0ad051f849a2cdc3adf02873033bbb83be",
+      "vermagic": "6.18.60 SMP mod_unload aarch64"
+    }
+  },
+  "patch": {
+    "path": "bringup/m79-wifi-recovery-v2/122-vb235v-mt7996-worker-teardown.patch",
+    "sha256": "53bc1696f4453e3e30a04564c7f16c4925f1ca7f5b2ed94f53f49d1347e985d0",
+    "additive_after_unchanged_120_121": true
+  },
+  "hardware_v2": {
+    "performed": false,
+    "COM3_SP3_SSH_used": false,
+    "modules_installed": false,
+    "NAND_written": false,
+    "next": "Parent verifies complete synchronized fixture, cold boot, primary-only unbind/rebind without any kthread/NAPI/IRQ/WARN, then remaining M79 recovery/STA tests."
+  },
+  "shared_tree_mutated_by_child": false,
+  "commit_or_push_by_child": false,
+  "delivery_status": "frozen-for-parent-integration"
+}

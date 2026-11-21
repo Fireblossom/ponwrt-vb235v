@@ -1,0 +1,44 @@
+{
+  "wed": {
+    "mt7996/pci": {
+      "exit_status": 0
+    },
+    "mt7996/init": {
+      "exit_status": 0
+    },
+    "mt7996/mac": {
+      "exit_status": 0
+    },
+    "dma": {
+      "exit_status": 0
+    }
+  },
+  "npu": {
+    "mt7996/pci": {
+      "exit_status": 0
+    },
+    "mt7996/init": {
+      "exit_status": 0
+    },
+    "mt7996/mac": {
+      "exit_status": 0
+    },
+    "dma": {
+      "exit_status": 0
+    }
+  },
+  "wed-npu": {
+    "mt7996/pci": {
+      "exit_status": 0
+    },
+    "mt7996/init": {
+      "exit_status": 0
+    },
+    "mt7996/mac": {
+      "exit_status": 0
+    },
+    "dma": {
+      "exit_status": 0
+    }
+  }
+}

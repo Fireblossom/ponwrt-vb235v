@@ -1,0 +1,48 @@
+{
+  "status": "compile-link-fresh-modpost-passed",
+  "source_tree_read_only": "/home/duanx/vb235v-build-20261116/ponwrt-system-m55/build_dir/target-aarch64_cortex-a53_musl/linux-airoha_vb235v/mt76-2026.10.28~0936617d",
+  "isolated_output": "/home/duanx/m79-wifi-recovery-v2/mt76",
+  "compiled_units": [
+    ".agg-rx.o.cmd",
+    ".channel.o.cmd",
+    ".debugfs.o.cmd",
+    ".dma.o.cmd",
+    ".eeprom.o.cmd",
+    ".mac80211.o.cmd",
+    ".mcu.o.cmd",
+    ".mmio.o.cmd",
+    ".mt76-connac-lib.mod.o.cmd",
+    ".mt76.mod.o.cmd",
+    ".mt76_connac3_mac.o.cmd",
+    ".mt76_connac_mac.o.cmd",
+    ".mt76_connac_mcu.o.cmd",
+    ".pci.o.cmd",
+    ".scan.o.cmd",
+    ".trace.o.cmd",
+    ".tx.o.cmd",
+    ".util.o.cmd",
+    ".wed.o.cmd",
+    "mt7996/.coredump.o.cmd",
+    "mt7996/.debugfs.o.cmd",
+    "mt7996/.dma.o.cmd",
+    "mt7996/.eeprom.o.cmd",
+    "mt7996/.init.o.cmd",
+    "mt7996/.mac.o.cmd",
+    "mt7996/.main.o.cmd",
+    "mt7996/.mcu.o.cmd",
+    "mt7996/.mmio.o.cmd",
+    "mt7996/.mt7996e.mod.o.cmd",
+    "mt7996/.pci.o.cmd"
+  ],
+  "limitations": [
+    "Exact prepared compile flags/kernel symbol inputs replayed in an isolated tree; fresh MODPOST and module metadata compilation completed.",
+    "Unchanged prepared kernel .module-common.o reused. No module installed/loaded; final image integration and live tests are parent-owned."
+  ],
+  "modules": {
+    "mt76.ko": "7f9d02315131534d84399c543ff7913c045e8e08a574719461f478e4cc38932c",
+    "mt76-connac-lib.ko": "f15f4fe58f5afe611fe2259bbab50da7535644799b68c88f407a5f4475c843b8",
+    "mt7996/mt7996e.ko": "4cdadfcdfb11d50eda7eda6564df5e0ad051f849a2cdc3adf02873033bbb83be"
+  },
+  "fresh_modpost": true,
+  "fresh_module_symvers_sha256": "0c228f73604f7dabc63a306bfec35871dd9f4826a5a3566892f38a8ace08a113"
+}

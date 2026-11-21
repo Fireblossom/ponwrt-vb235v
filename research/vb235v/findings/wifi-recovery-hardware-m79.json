@@ -1,0 +1,75 @@
+{
+  "schema": 1,
+  "milestone": "M79-v2-hardware",
+  "validated_utc": "2026-11-21T21:54:49.795737+00:00",
+  "status": "confirmed resource-lifecycle and failed-calibration recovery regressions passed on hardware",
+  "security_claim": "No demonstrated remote exploit/CVE or complete wireless security qualification is claimed.",
+  "installation": {
+    "kernel": "6.18.60",
+    "base_revision": "M75-phy-page-v1",
+    "development_overlay_module_set": true,
+    "full_package_rebuilt_with_fresh_modpost": true,
+    "complete_new_system_image_built": false,
+    "modules_sha256": {
+      "mt76.ko": "32e6cfb325ffe085620d408315caab1ad5aae5e2e1592d187d71f476b84a1b09",
+      "mt76-connac-lib.ko": "27fb5595491a2de2fe98c5fd07b04a3abbfa518fc9ca5afe4641192834438adf",
+      "mt7996e.ko": "01488d0f0d2f284f0beb55bdaebb44e04d7e6340988d28d19ef8b69473b00847"
+    }
+  },
+  "passed": {
+    "SP3_cold_boot": true,
+    "SP3_power_restoration_confirmed": true,
+    "primary_only_unbind_rebind_cycles": 3,
+    "invalid_input_rejection_then_valid_rebind_cycles": 2,
+    "HIF2_supplier_unbind_unbound_primary_before_resource_release": true,
+    "full_mt76_stack_unload_reload": true,
+    "native_netifd_station_bands": [
+      {
+        "band": "2g",
+        "authenticated": true,
+        "DHCP_obtained": true,
+        "TCP_download_bytes": 8388608,
+        "TCP_upload_bytes": 8388608,
+        "both_SHA256_matched": true
+      },
+      {
+        "band": "5g",
+        "authenticated": true,
+        "DHCP_obtained": true,
+        "TCP_download_bytes": 8388608,
+        "TCP_upload_bytes": 8388608,
+        "both_SHA256_matched": true
+      }
+    ],
+    "no_kernel_warnings_in_final_boot": true,
+    "private_ART_guard_preserved": true,
+    "reference_calibration_fallback_absent": true,
+    "no_IRQ_vector_growth": true,
+    "wired_management_remained_1000_full": true,
+    "all_protected_regions_full_SHA256_readback_unchanged": true
+  },
+  "failed_intermediate_experiments": [
+    {
+      "experiment": "initial unsynchronized development-module staging",
+      "result": "Power loss left three zero-length overlay files; no new driver executed. Corrected with sync around atomic rename and verified by later cold boot."
+    },
+    {
+      "experiment": "M79 v1 first primary-only unbind",
+      "result": "Both vector sets released and valid rebind succeeded, but duplicate worker park triggered a real kernel warning. Additive patch 122 plus strengthened host model corrected it; v2 hardware tests passed."
+    }
+  ],
+  "final_state": {
+    "owner_network_and_wireless_configuration_restored": true,
+    "radios_disabled": true,
+    "firmware_search_path_empty": true,
+    "wired_management_1000_full": true,
+    "raw_protected_flash_writes_issued": false,
+    "writable_UBIFS_overlay_updated": true
+  },
+  "remaining": [
+    "Complete combined image build, upgrade and reboot validation.",
+    "AP mode, WPA3 and intended dual-band concurrency qualification.",
+    "Wireless WED/NPU offload qualification on a complete matching backend.",
+    "Long-duration RF/performance and radio-firmware security audit."
+  ]
+}

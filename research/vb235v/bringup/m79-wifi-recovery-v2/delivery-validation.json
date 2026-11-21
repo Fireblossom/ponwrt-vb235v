@@ -1,0 +1,11 @@
+{
+  "status": "passed",
+  "fresh_additive_patch_applies": true,
+  "seven_source_hashes_match": true,
+  "only_init_c_changed": true,
+  "prepare_idempotent": true,
+  "wrong_v1_patch_rejected": true,
+  "baseline_source_unchanged": true,
+  "checkpatch": "total: 0 errors, 0 warnings, 0 checks, 9 lines checked\n\n/mnt/c/Users/duan changxu/Desktop/TP/ponwrt-vb235v/research/vb235v/bringup/m79-wifi-recovery-v2/122-vb235v-mt7996-worker-teardown.patch has no obvious style problems and is ready for submission.",
+  "patch_sha256": "53bc1696f4453e3e30a04564c7f16c4925f1ca7f5b2ed94f53f49d1347e985d0"
+}

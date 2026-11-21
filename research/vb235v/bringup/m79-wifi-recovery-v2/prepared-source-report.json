@@ -1,0 +1,13 @@
+{
+  "status": "passed",
+  "source_sha256": {
+    "mt7996/pci.c": "38c229f274f6499263b25f974427820070d3e801dcf37444d198d5113ba5ac9d",
+    "mt7996/init.c": "256ecd3f2115a72d43f39f1f547c816ea35ed665f43a5c0a18209369b395166a",
+    "mt7996/mt7996.h": "f4ebe52e5a04579417e0b898388cccd763fbb46ba66b43907eb80857ba78f36a",
+    "mt7996/mac.c": "b493911ad4c413b6846b2623e122200bc1067fb5dadca6cc497d199c14df5fc6",
+    "mt7996/coredump.c": "74ab67839c04504fdc16f56738d5d7fe0e6aa0751d18738cb248119e75884d95",
+    "dma.c": "2a1d3ff93163647be94b1d1cd9e983c6323e9cf1e56dd4a8159671f67c5ec5fb",
+    "mt7996/eeprom.c": "f2b5559f47256ad8e001d4b912f44b82b4fea87043681d882cb1f396b73f61aa"
+  },
+  "private_eeprom_guard_unchanged": true
+}

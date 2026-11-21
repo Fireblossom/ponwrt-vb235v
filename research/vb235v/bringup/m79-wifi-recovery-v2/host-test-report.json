@@ -1,0 +1,50 @@
+{
+  "status": "passed",
+  "stdout": "PASS: 1440 actual-source scenarios, worker stop/free idempotence and NAPI disable/delete ownership held; park=0 stop=576.",
+  "real_functions": [
+    "util.h: mt76_worker_disable/teardown",
+    "dma.c: mt76_dma_cleanup",
+    "mac80211.c: mt76_free_device",
+    "mt7996_pci_quiesce",
+    "mt7996_unregister_device",
+    "mt7996_pci_release",
+    "mt7996_pci_probe",
+    "mt7996_pci_remove"
+  ],
+  "v1_regression": {
+    "reproduced": true,
+    "returncode": -6,
+    "stderr_tail": "WARNING: kthread_park: KTHREAD_SHOULD_PARK already set (v1 live failure); prior successful park calls=1\n"
+  },
+  "mutations": {
+    "tx-napi-double-disable": {
+      "detected": true,
+      "returncode": -6,
+      "stderr_tail": "mutation-tx-napi-double-disable: /home/duanx/m79-wifi-recovery-v2/host/mutation-tx-napi-double-disable.c:181: napi_disable: Assertion `n->enabled' failed.\n"
+    },
+    "rx-napi-double-disable": {
+      "detected": true,
+      "returncode": -6,
+      "stderr_tail": "mutation-rx-napi-double-disable: /home/duanx/m79-wifi-recovery-v2/host/mutation-rx-napi-double-disable.c:181: napi_disable: Assertion `n->enabled' failed.\n"
+    },
+    "hif2-vector-leak": {
+      "detected": true,
+      "returncode": -6,
+      "stderr_tail": "mutation-hif2-vector-leak: /home/duanx/m79-wifi-recovery-v2/host/mutation-hif2-vector-leak.c:161: ieee80211_free_hw: Assertion `d==&current->mt76&&!primary.handlers&&!secondary.handlers&&!primary.vectors&&!secondary.vectors&&refs==0&&d->irq_tasklet.killed' failed.\n"
+    },
+    "handler-after-free": {
+      "detected": true,
+      "returncode": -6,
+      "stderr_tail": "mutation-handler-after-free: /home/duanx/m79-wifi-recovery-v2/host/mutation-handler-after-free.c:148: pci_free_irq_vectors: Assertion `!p->handlers&&p->vectors==1' failed.\n"
+    },
+    "reset-work-after-free": {
+      "detected": true,
+      "returncode": -6,
+      "stderr_tail": "mutation-reset-work-after-free: /home/duanx/m79-wifi-recovery-v2/host/mutation-reset-work-after-free.c:162: ieee80211_free_hw: Assertion `!current->init_work.pending&&!current->dump_work.pending&&!current->reset_work.pending&&!current->rc_work.pending&&!current->wed_rro.work.pending' failed.\n"
+    }
+  },
+  "test_source_sha256": "ebc781e4b933e4837a14fc2258655fcdfcc57ac2b3f4c90acd540ae3a846a261",
+  "limitations": [
+    "Kernel scheduling/DMA hardware mocked; kthread park stop and NAPI enabled/listed contract explicitly modeled."
+  ]
+}
