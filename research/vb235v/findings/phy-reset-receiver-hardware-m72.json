@@ -137,6 +137,13 @@
     "kernel_configuration_unchanged_from_M71": true,
     "COM3_native_shell_readback_passed": true
   },
+  "independent_peer_test": {
+    "status": "deferred_by_owner",
+    "current_wiring_preserved": true,
+    "cable_change_requested_now": false,
+    "negotiation_and_frame_integrity_validated": false,
+    "resume_when_owner_is_ready": true
+  },
   "remaining": [
     "Stable copper negotiation against a verified cable or independent PHY peer",
     "Paired physical frame integrity and port-reopen regression",

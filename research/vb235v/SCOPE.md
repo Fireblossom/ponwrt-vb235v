@@ -49,3 +49,9 @@ prioritized the two 2.5G port drivers. Continue PHY/PCS initialization,
 negotiation and isolated frame integrity work with the existing port-pair
 cable. These results must not be presented as routed-throughput qualification.
 Do not bridge the two sockets while they are connected to each other.
+
+The owner subsequently deferred the requested independent-peer/cable-change
+test until a later session. Keep the existing wiring and retain independent
+peer negotiation, physical data integrity and 2.5G throughput as pending.
+Do not interpret this deferral as cancellation of driver development or as
+validation of either external port.

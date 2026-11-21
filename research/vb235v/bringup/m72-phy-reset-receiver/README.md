@@ -95,3 +95,8 @@ The original firmware's cable diagnostics reported open pairs in both
 directions, but also timed out in NLP Hi-Z detection on every pair. These are
 inconclusive diagnostics, not proof of a bad cable. A verified cable or an
 independent PHY peer is needed for the next hardware control.
+
+The owner deferred that independent-peer/cable-change control until a later
+session. Keep the current port-pair cable arrangement. Independent-peer
+negotiation and frame integrity remain pending; the intermittent 2500/full
+observations do not qualify either port as working.
