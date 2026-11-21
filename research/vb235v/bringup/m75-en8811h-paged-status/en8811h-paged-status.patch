@@ -1,0 +1,17 @@
+--- a/drivers/net/phy/air_en8811h.c
++++ b/drivers/net/phy/air_en8811h.c
+@@ -1134,7 +1134,13 @@
+ 		return 0;
+ 
+ 	/* Get real speed from vendor register */
+-	val = phy_read(phydev, AIR_AUX_CTRL_STATUS);
++	/* The boot firmware can leave the vendor bank on page 4. Standard
++	 * Clause 22 registers still work there, but AUX is page-specific.
++	 * Select the standard page under the MDIO bus lock and restore the
++	 * previous page, including on read failure.
++	 */
++	val = phy_read_paged(phydev, AIR_PHY_PAGE_STANDARD,
++			     AIR_AUX_CTRL_STATUS);
+ 	if (val < 0)
+ 		return val;
+ 	switch (val & AIR_AUX_CTRL_STATUS_SPEED_MASK) {

@@ -1,0 +1,251 @@
+{
+  "schema": 1,
+  "milestone": "M75",
+  "date": "2026-11-21",
+  "scope": "Component-level behavioral audit of all currently modeled hardware and major missing original driver domains. This is an evidence-backed first pass, not proof that every driver path or all original modules are equivalent.",
+  "comparison_policy": [
+    "Use exact live OEM artifacts when available; label GPL/BSP sources separately because their bytes often differ.",
+    "Compare explicit state ownership, page/bank selection, reset/clock order, firmware ABI, memory/DMA layout, errors, teardown and cold/warm recovery.",
+    "Require negative-path and final-image checks; successful initialization, a version string or a single link bit is insufficient.",
+    "Keep intentional protective differences distinct from implementation defects and missing coverage."
+  ],
+  "components": [
+    {
+      "id": "external-PHY",
+      "classification": "confirmed-defect-fixed",
+      "priority": "high",
+      "evidence_and_difference": "Original air_ref_clk_speed selects standard page before AUX read; native callback assumed page 0. Actual PHY15 was on page 4: raw AUX=0, page-0 AUX=0x28.",
+      "required_action_and_validation": "Use phy_read_paged; keep normal decoding and MDIO error propagation. Live 1000/full and three reopen cycles checked; image/cold-boot validation recorded separately.",
+      "public_evidence": [
+        "m74-gigabit-external-peer-validation.json",
+        "phy-reset-receiver-hardware-m72.json"
+      ]
+    },
+    {
+      "id": "Wi-Fi-calibration",
+      "classification": "confirmed-integration-defect-fixed",
+      "priority": "high",
+      "evidence_and_difference": "M65 guarded private ART EEPROM loading in build_dir, but its patch was not persisted in the package patch queue. Installed M73 mt7996e lacks its marker and logs reference EEPROM fallback despite the private 7680-byte input being present.",
+      "required_action_and_validation": "M75 persists the M65 patch, verifies prepared source and final module/private input hashes, and cold-boots with the private ART marker and no reference fallback. Deliberately invalid calibration was rejected. Recovery after failed binding is tracked separately and did not pass.",
+      "public_evidence": [
+        "wifi-station-hardware-m65.json",
+        "integrated-acceleration-hardware-m70.json"
+      ]
+    },
+    {
+      "id": "thermal",
+      "classification": "confirmed-coverage-gap",
+      "priority": "high",
+      "evidence_and_difference": "Original live DT has a thermal sensor at 0x1efbd000 and a CPU thermal zone. Native DT omits them; runtime has cooling devices but no temperature zones.",
+      "required_action_and_validation": "Port the AN7583 sensor/calibration and cooling bindings; validate plausible temperature against original system, trips and recovery before sustained load. No thermal protection equivalence is claimed.",
+      "public_evidence": [
+        "stock-board-map.json"
+      ]
+    },
+    {
+      "id": "CPU-clock-and-DVFS",
+      "classification": "confirmed-binding-defect",
+      "priority": "high",
+      "evidence_and_difference": "Native cpufreq probe returns ENOENT for the cpu clock and has no policies. Original DT has OPP/frequency controllers. Two CPUs and PSCI/hotplug working does not establish clock scaling.",
+      "required_action_and_validation": "Implement the actual CPU clock/OPP contract, not a guessed fixed clock. Compare measured operating rates and transition order under load and hotplug.",
+      "public_evidence": [
+        "smp-hardware-m67.json"
+      ]
+    },
+    {
+      "id": "watchdog",
+      "classification": "confirmed-coverage-gap",
+      "priority": "high",
+      "evidence_and_difference": "Native /sys/class/watchdog is empty. Neither driver registration nor an armed watchdog was observed; the original watchdog baseline is still incomplete.",
+      "required_action_and_validation": "Identify original watchdog ownership and reset reason handling, then test bounded expiry, normal feeding and recovery. Do not claim hang recovery from panic=10 or rescue-core existence.",
+      "public_evidence": [
+        "m73-persistent-install-upgrade-validation.json"
+      ]
+    },
+    {
+      "id": "PCIe-and-QPHY",
+      "classification": "source-ordering-risk",
+      "priority": "high",
+      "evidence_and_difference": "Both native endpoints currently reach 5 GT/s x1, matching the original post-driver RAM baseline. The development port-0 initialization pulses a shared reset; port-1 relies on observed probe ordering. Root-port 1 also reports an unassigned 8-GiB BAR0.",
+      "required_action_and_validation": "Make shared-reset ownership/order explicit and test reversed probe/deferred probe, unbind/rebind and error recovery. Preserve endpoint BAR success separately from the root-port warning.",
+      "public_evidence": [
+        "ram-dual-pcie-hardware-m64.json",
+        "pcie-post-driver-comparison-m66.json"
+      ]
+    },
+    {
+      "id": "Ethernet-MAC-identity",
+      "classification": "confirmed-integration-gap",
+      "priority": "medium",
+      "evidence_and_difference": "Native external eth1 and eth2 have random address assignment type 1; startup logs show generated random addresses. Fixed factory identity has not been wired into these MAC devices.",
+      "required_action_and_validation": "Locate and validate each factory address source and port mapping; require stable, distinct addresses across cold boots. Do not invent ART offsets or publish device addresses.",
+      "public_evidence": [
+        "ram-lan-port-mapping-m58.json"
+      ]
+    },
+    {
+      "id": "external-PHY-reset-and-firmware",
+      "classification": "behavioral-difference-risk",
+      "priority": "high",
+      "evidence_and_difference": "Measured GPIO35 resets PHY15 and GPIO34 resets PHY14. Native production DT lacks GPIO reset bindings. Original RAM baseline used PHY driver 1.2.12 / firmware 25080112; native uses firmware 25062302.",
+      "required_action_and_validation": "Integrate reset through the GPIO/PHY framework; compare cold/warm/reopen paths and both port roles. Keep firmware revisions explicit; a version difference alone is not proof of failure and is not the cause of the confirmed AUX-page bug.",
+      "public_evidence": [
+        "phy-reset-receiver-hardware-m72.json"
+      ]
+    },
+    {
+      "id": "Ethernet-PCS-and-SerDes",
+      "classification": "partial-hardware-qualification",
+      "priority": "high",
+      "evidence_and_difference": "M72 corrected PON electrical RX/CDR initialization. M75 1G peer data on eth2 now passes, but prior intermittent dual-2500 carrier and failed paired frames did not qualify eth1 or true 2.5G traffic.",
+      "required_action_and_validation": "Test eth1 independently, then genuine 2.5G peers and frame integrity/reopen at each speed. Review ownership before enabling the DSL/PON transport; do not infer copper health from PCS link bits.",
+      "public_evidence": [
+        "phy-reset-receiver-hardware-m72.json",
+        "pcs-dsl-rate-contract.json"
+      ]
+    },
+    {
+      "id": "NPU-PPE-QDMA",
+      "classification": "validated-subset-with-ABI-risk",
+      "priority": "high",
+      "evidence_and_difference": "Original NPU firmware/layout and native host API differ from generic assumptions: GET_INFO works while generic GET_VERSION is unsupported. M69 fixed stale flow cookies; M70 validated repeated IPv4 TCP/UDP hardware flow cleanup. Native PPE hardware byte counters are disabled.",
+      "required_action_and_validation": "Preserve firmware/layout/hash gates and independent CPU-bypass evidence. Test IPv6, VLAN, PPPoE, MTU/fragments, simultaneous traffic, link loss and teardown before provider forwarding qualification. Zero PPE counters do not prove inactivity.",
+      "public_evidence": [
+        "npu-host-interface.json",
+        "npu-hardware-m68.json",
+        "flow-cleanup-hardware-m69.json",
+        "integrated-acceleration-hardware-m70.json"
+      ]
+    },
+    {
+      "id": "EIP93-crypto",
+      "classification": "intentional-validated-safety-difference",
+      "priority": "high",
+      "evidence_and_difference": "Native combined AEAD accepted tampered tags in an earlier board test. The current board-specific guard disables that registration and uses generic authenc over hardware AES/HMAC; 34 oracle cases and 48 tamper rejections passed.",
+      "required_action_and_validation": "Retain fail-closed combined-AEAD policy and recheck the guard in final source/image. Extend to workload concurrency and intended VPN modes; copying original registration behavior is not automatically correct.",
+      "public_evidence": [
+        "integrated-acceleration-hardware-m70.json"
+      ]
+    },
+    {
+      "id": "SPI-NAND-ECC-BBT-and-UBI",
+      "classification": "intentional-bounded-policy-difference",
+      "priority": "high",
+      "evidence_and_difference": "Original NAND code may rebuild/write BBT/BMT; native policy preserves factory mapping and only admits the 319-PEB system body. Geometry/ECC and protected readbacks passed. Runtime bad-block retirement is deliberately disabled. Current slot0 ECC corrected bits are nonzero with zero uncorrectable errors; counts alone do not establish new damage.",
+      "required_action_and_validation": "Keep anchor/map checks and separate factory BMT reserve from UBI reserve. Qualify erase/program failure handling, scrub/read-disturb, power loss and wear before a production release; do not repair/reclaim factory areas automatically.",
+      "public_evidence": [
+        "nand-source-contract.json",
+        "hybrid-mapping-ecc-validation.json",
+        "m73-persistent-install-upgrade-validation.json"
+      ]
+    },
+    {
+      "id": "USB-host-and-PHY",
+      "classification": "confirmed-missing-component",
+      "priority": "medium",
+      "evidence_and_difference": "Original live DT exposes xHCI and USB PHY/SerDes resources. Native DT has no USB controller/PHY nodes; no USB devices or root hubs enumerate. Registered platform driver names alone do not mean hardware initialization.",
+      "required_action_and_validation": "Port the original resource, reset, clock, VBUS and lane ownership contract; test USB2/USB3 enumeration, hotplug, DMA and power. The workstation USB NIC does not test the router USB host.",
+      "public_evidence": [
+        "stock-board-map.json",
+        "stock-serdes-boot.json"
+      ]
+    },
+    {
+      "id": "GPIO-LED-buttons-and-UART",
+      "classification": "partial-coverage",
+      "priority": "medium",
+      "evidence_and_difference": "UART works; external reset mapping and recovery Reset GPIO were measured. Linux board GPIO, LED/pinctrl and button handling are not complete; switch PHY LED pinctrl reports a failure. Physical held-Reset cold-entry remains untested.",
+      "required_action_and_validation": "Model GPIO/pinctrl ownership instead of inheriting bootloader values. Test polarity/debounce and user-visible LEDs, then physical recovery entry independently of COM3/SP3 boot.",
+      "public_evidence": [
+        "reset-button-hardware-mapping.json",
+        "phy-reset-receiver-hardware-m72.json",
+        "m73-persistent-install-upgrade-validation.json"
+      ]
+    },
+    {
+      "id": "DSL-endpoint-and-Telekom-auto-connect",
+      "classification": "implementation-and-line-test-gap",
+      "priority": "high",
+      "evidence_and_difference": "Original hsm/iNIC/endpoint firmware and shared metadata/transport behavior are recorded; native host lifecycle and provider replay are only partially implemented. Native Ethernet carrier or a provider preset cannot establish DSL synchronization, automatic credentials or provisioning.",
+      "required_action_and_validation": "Reproduce original reset/clock/image/metadata/interrupt ordering and reconnect states; attach the owner line only after notification. Verify line synchronization, autonomous Internet connection and provider provisioning separately.",
+      "public_evidence": [
+        "dsl-host-boot-artifacts.json",
+        "dsl-metadata-readiness-m62.json",
+        "telekom-factory-autoconnect.json",
+        "telekom-factory-flow-replay.json"
+      ]
+    },
+    {
+      "id": "voice-DSP-PCM-SLIC",
+      "classification": "implementation-and-ABI-gap",
+      "priority": "high",
+      "evidence_and_difference": "Available voice BSP contains legacy 5.4 binary modules/libraries and no selected C implementation. Several live and BSP executable/relocation sections differ; matching symbols or a successful module build does not prove ABI or behavior compatibility.",
+      "required_action_and_validation": "Map the exact live DSP/PCM/SLIC lifecycle, interrupt, DMA and userspace ABI. Implement/adapt for 6.18 and test provisioning, ring/hook/audio paths with the real hardware.",
+      "public_evidence": [
+        "voice-bsp-availability-m55.json",
+        "voice-bsp-symbol-map.json",
+        "live-vs-bsp-comparison.json"
+      ]
+    },
+    {
+      "id": "boot-recovery-install-and-upgrade",
+      "classification": "validated-subset-with-recovery-gaps",
+      "priority": "high",
+      "evidence_and_difference": "M73 installs and upgrades with retained configuration, protected-region readback and cold boot. Normal M73 and independent M54 rescue remain separate; slot0 is intact. Missing mktemp previously showed generic stage2 success text is insufficient. Health acknowledgement, trial counts and power-loss rollback are absent.",
+      "required_action_and_validation": "Retain image/runtime dependency gates, exact volume hashes and independent reboot evidence. Test interruption and physical rescue; make stage2 prewrite failures explicit in future backend hardening.",
+      "public_evidence": [
+        "m73-persistent-install-upgrade-validation.json"
+      ]
+    },
+    {
+      "id": "Wi-Fi-failed-probe-recovery",
+      "classification": "confirmed-failure-path-problem",
+      "priority": "high",
+      "evidence_and_difference": "A controlled repeat read back the restored firmware search path before rebinding valid input. Rebinding still produced duplicate MSI/MSI-X enable warnings, firmware/patch semaphore timeouts, reset-work warnings and IRQ40 disable/unhandled interrupts. Native mt7996/pci.c allocates HIF2 vectors in primary probe while primary removal only puts HIF2 and unregisters the device. This is an observed failure path; exact interrupt/resource causal ownership is still under review.",
+      "required_action_and_validation": "Review and repair primary/HIF2 IRQ ownership, quiescence and probe-error work cancellation. Validate normal primary-only unbind/rebind, failed initialization followed by good calibration, repeated full module unload/reload and cold recovery. Do not count invalid-input rejection alone as successful recovery. The first fixture also had an unverified empty sysfs write; the repeat explicitly verified restoration and reproduced the failure.",
+      "public_evidence": [
+        "pcie-post-driver-comparison-m66.json",
+        "ram-dual-pcie-hardware-m64.json"
+      ],
+      "native_source_sites": [
+        {
+          "file": "mt76/mt7996/pci.c",
+          "line": 181,
+          "purpose": "HIF2 vector allocation from primary probe"
+        },
+        {
+          "file": "mt76/mt7996/pci.c",
+          "line": 239,
+          "purpose": "Primary remove path"
+        },
+        {
+          "file": "mt76/mt7996/pci.c",
+          "line": 207,
+          "purpose": "Failed-probe IRQ/vector cleanup"
+        }
+      ]
+    }
+  ],
+  "coverage": {
+    "component_areas": 18,
+    "original_module_inventory": "86 distinct loaded modules captured; not all receive instruction-level equivalence analysis in this pass",
+    "runtime_sweep": "12 read-only command groups; raw logs and identifiers remain private",
+    "native_DT_missing_domains": [
+      "thermal sensor/zone",
+      "USB controller/PHY",
+      "watchdog registration",
+      "GPIO/LED/button board model"
+    ],
+    "current_PCIe_all_four_functions": "5 GT/s x1",
+    "native_external_MAC_random_assignment": true
+  },
+  "fix_build_gates": [
+    "23 source hashes: 14 M72 integration prerequisites, EN8811H, mt76 EEPROM and seven NAND admission/protection sources",
+    "Persistent kernel and package patch queues",
+    "Exact FIT/rootfs/board/partition admission",
+    "Final SquashFS and installer runtime module/calibration identity",
+    "Cold-boot private calibration marker and no default fallback",
+    "Observed 1000/full, port reopen and bidirectional data integrity"
+  ],
+  "private_material_published": false
+}

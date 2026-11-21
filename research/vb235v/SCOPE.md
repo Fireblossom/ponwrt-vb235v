@@ -64,3 +64,19 @@ factory mapping tables and the first two boot blocks/environment. Preserve
 the original-kernel RAM diagnostics and return-to-factory boot path. This does
 not authorize reclaiming factory slot0. DSL, voice and stable dual-2.5G remain
 unfinished; installation tests do not qualify a complete replacement release.
+
+The owner then connected the workstation's 1G USB NIC to one external 2.5G
+socket and requested negotiation verification and a driver fix. This resumes
+an independent 1G peer test on that socket; it does not qualify 2.5G speed or
+the other socket. Preserve the independent upstream workstation connection.
+The owner also requested a systematic component-by-component comparison of
+original and native driver behavior to identify latent problems. Compare
+state ownership, reset/clock/firmware order, memory/DMA contracts, negative
+paths and lifecycle recovery; distinguish measured defects, intentional
+protective differences and unverified coverage.
+
+The owner further requested an independent sub-agent audit of the complete
+DSL path against the original firmware. The intended acceptance criterion is
+cold power-on followed by autonomous Telekom synchronization and Internet
+session establishment, without manual account entry. Offline codecs, ARM64
+instruction models and provider UI replay do not satisfy that criterion.
