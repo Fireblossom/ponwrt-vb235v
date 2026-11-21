@@ -1,0 +1,344 @@
+{
+  "milestone": "M70",
+  "complete": true,
+  "scope": "Cold-booted integrated storage-free RAM image; persistent Linux installation remains unsupported.",
+  "flash_write_commands_sent": false,
+  "saveenv_sent": false,
+  "artifact": {
+    "fit_sha256": "8c06d7d4efdaf2052cdaa60a815a612bb63b1efbb6732fb882a9606e86d809b3",
+    "fit_bytes": 12216748,
+    "kernel_memory_bytes": 36765696,
+    "kernel_config_sha256": "2651e9ef83d84777f7d3189702cb3c2d9523a549023f5e2704a342e458e10214",
+    "storage_controllers": 0,
+    "CPU_count": 2,
+    "NPU_processing_cores": 6
+  },
+  "integration": {
+    "NPU_firmware_embedded": true,
+    "WiFi_private_calibration_embedded": true,
+    "EIP93_driver_auto_loaded": true,
+    "WiFi_driver_auto_loaded": true,
+    "wireless_disabled_no_AP_by_default": true,
+    "replacement_flowtable_module_loaded": false,
+    "replacement_crypto_module_loaded": false
+  },
+  "NPU": {
+    "status_reads": [
+      "[   60.861297] M68_NPU_STATUS boot=0000003f heap=00000000 sram=00000000 prior_mbox=00000003",
+      "[   60.869428] M68_NPU_CORE core=0 pc=84005000",
+      "[   60.873622] M68_NPU_CORE core=1 pc=8400d07c",
+      "[   60.877803] M68_NPU_CORE core=2 pc=8400edaa",
+      "[   60.881978] M68_NPU_CORE core=3 pc=8400e43e",
+      "[   60.886167] M68_NPU_CORE core=4 pc=8400e8aa",
+      "[   60.890347] M68_NPU_CORE core=5 pc=840000da",
+      "[   60.894636] M68_NPU_GET_INFO ret=0 info=00000000 mbox=00000007"
+    ],
+    "firmware_mailbox_GET_INFO_verified": true
+  },
+  "crypto": {
+    "passed_cases": 34,
+    "tampered_AAD_ciphertext_tag_rejections": 48,
+    "authenc_provider": "generic authenc, hardware AES/HMAC primitives",
+    "native_combined_AEAD_registration_disabled_on_this_board": true,
+    "initial_native_combined_tag_verification_failed": true,
+    "interrupts_before": 83284,
+    "interrupts_after": 89898,
+    "throughput_claimed": false
+  },
+  "NAT_cases": [
+    {
+      "case": "udp-software",
+      "offload_requested": false,
+      "CPU_ingress_counter_packets": [
+        2000,
+        2001
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": false,
+      "live_bound_PPE_entries": 0,
+      "live_NPU_attached": false,
+      "UDP_echo_packets": 2000,
+      "UDP_payload_bytes": 2376000,
+      "every_datagram_verified": true
+    },
+    {
+      "case": "udp-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        32,
+        33
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "UDP_echo_packets": 2000,
+      "UDP_payload_bytes": 2376000,
+      "every_datagram_verified": true
+    },
+    {
+      "case": "tcp-download-software",
+      "offload_requested": false,
+      "CPU_ingress_counter_packets": [
+        16082,
+        55809
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": false,
+      "live_bound_PPE_entries": 0,
+      "live_NPU_attached": true,
+      "TCP_download_bytes": 33554432,
+      "TCP_download_SHA256_matched": true
+    },
+    {
+      "case": "tcp-download-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        36,
+        26
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_download_bytes": 33554432,
+      "TCP_download_SHA256_matched": true
+    },
+    {
+      "case": "tcp-upload-software",
+      "offload_requested": false,
+      "CPU_ingress_counter_packets": [
+        23035,
+        5294
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": false,
+      "live_bound_PPE_entries": 0,
+      "live_NPU_attached": true,
+      "TCP_upload_bytes": 33554432,
+      "TCP_upload_SHA256_matched": true
+    },
+    {
+      "case": "tcp-upload-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        32,
+        37
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_upload_bytes": 33554432,
+      "TCP_upload_SHA256_matched": true
+    },
+    {
+      "case": "repeat-1-upload-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        32,
+        34
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_upload_bytes": 33554432,
+      "TCP_upload_SHA256_matched": true
+    },
+    {
+      "case": "repeat-1-download-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        32,
+        24
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_download_bytes": 33554432,
+      "TCP_download_SHA256_matched": true
+    },
+    {
+      "case": "repeat-2-upload-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        32,
+        36
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_upload_bytes": 33554432,
+      "TCP_upload_SHA256_matched": true
+    },
+    {
+      "case": "repeat-2-download-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        34,
+        24
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_download_bytes": 33554432,
+      "TCP_download_SHA256_matched": true
+    },
+    {
+      "case": "repeat-3-upload-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        32,
+        37
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_upload_bytes": 33554432,
+      "TCP_upload_SHA256_matched": true
+    },
+    {
+      "case": "repeat-3-download-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        33,
+        23
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_download_bytes": 33554432,
+      "TCP_download_SHA256_matched": true
+    },
+    {
+      "case": "repeat-4-upload-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        32,
+        39
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_upload_bytes": 33554432,
+      "TCP_upload_SHA256_matched": true
+    },
+    {
+      "case": "repeat-4-download-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        33,
+        22
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_download_bytes": 33554432,
+      "TCP_download_SHA256_matched": true
+    },
+    {
+      "case": "fw4-upload-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        32,
+        34
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_upload_bytes": 33554432,
+      "TCP_upload_SHA256_matched": true
+    },
+    {
+      "case": "fw4-download-hardware",
+      "offload_requested": true,
+      "CPU_ingress_counter_packets": [
+        32,
+        27
+      ],
+      "fixture_PPE_entries_cleared_after_delete": true,
+      "live_HW_OFFLOAD_observed": true,
+      "live_bound_PPE_entries": 2,
+      "live_NPU_attached": true,
+      "TCP_download_bytes": 33554432,
+      "TCP_download_SHA256_matched": true
+    }
+  ],
+  "concurrent_SMP": {
+    "runs": 12,
+    "errors": 0,
+    "cpu_mask": 3,
+    "checksum": "3fd3420cdc24990e",
+    "fw4_upload_download_passed": true
+  },
+  "native_netifd_station": {
+    "both_bands_passed": true,
+    "credentials_published": false,
+    "configuration_restored": true,
+    "networks": [
+      {
+        "band": "2g",
+        "authenticated": true,
+        "DHCP_address_obtained": true,
+        "frequency_MHz": 2442,
+        "TCP_download_bytes": 8388608,
+        "TCP_upload_bytes": 8388608,
+        "both_SHA256_matched": true,
+        "RX_TX_bytes_increased": [
+          9393612,
+          8892612
+        ],
+        "seconds": 2.672
+      },
+      {
+        "band": "5g",
+        "authenticated": true,
+        "DHCP_address_obtained": true,
+        "frequency_MHz": 5765,
+        "TCP_download_bytes": 8388608,
+        "TCP_upload_bytes": 8388608,
+        "both_SHA256_matched": true,
+        "RX_TX_bytes_increased": [
+          9389784,
+          8792658
+        ],
+        "seconds": 2.157
+      }
+    ]
+  },
+  "wired_link": {
+    "observed_Mbps": 100,
+    "full_duplex": true,
+    "gigabit_negotiation_verified": false,
+    "gigabit_only_attempt": "No carrier in 12 seconds; partner gigabit capability observed; original advertisements and 100M management restored."
+  },
+  "external_MDIO_discovery": {
+    "EN8811H_addresses": [
+      14,
+      15
+    ],
+    "PHY_ID": "03a2a411",
+    "physical_port_data_path_verified": false
+  },
+  "host_regression_tests": {
+    "discovered": 37,
+    "skipped": 3,
+    "result": "OK; skipped legacy M55 mkimage-dependent cases"
+  },
+  "remaining": [
+    "Two 2.5G port/PCS hardware tests in M71",
+    "1G management socket gigabit negotiation",
+    "VPN/IPsec integration and throughput",
+    "DSL line/provisioning and voice",
+    "Permanent replacement Linux image/install gates"
+  ]
+}

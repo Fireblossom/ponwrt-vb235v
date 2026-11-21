@@ -15,7 +15,11 @@ NPU_BOARD='tplink,vb235v-ram-npu-development'
 SOURCE=Path(__file__).resolve().parents[1]/'bringup/m68-npu'
 
 def audit_npu_dtb(data):
-    nodes,reserved=parse(data);base=copy.deepcopy(nodes)
+    nodes,reserved=parse(data)
+    return audit_npu_dtb_nodes(nodes,reserved,hashlib.sha256(data).hexdigest())
+
+def audit_npu_dtb_nodes(nodes,reserved,dtb_sha256):
+    base=copy.deepcopy(nodes)
     expected_compat=(NPU_BOARD+'\0'+SMP_BOARD+'\0tplink,vb235v-ram-dual-pcie-development\0tplink,vb235v-ram-pcie-development\0airoha,an7583\0').encode()
     require(base['/']['compatible']==expected_compat,'Unexpected NPU board identity')
     base['/']['compatible']=expected_compat[len(NPU_BOARD)+1:]
@@ -38,7 +42,7 @@ def audit_npu_dtb(data):
     if '/__symbols__' in base:
         for key,path in [('npu',npu),('npu_binary',memory)]:
             require(base['/__symbols__'].pop(key,None)==(path+'\0').encode(),'Incorrect NPU symbol')
-    result=audit_smp_dtb_nodes(base,reserved,hashlib.sha256(data).hexdigest())
+    result=audit_smp_dtb_nodes(base,reserved,dtb_sha256)
     result.update(board=NPU_BOARD,dt_nodes=len(nodes),NPU_nodes=1,NPU_processing_cores=6,
                   NPU_reserved_bytes=0xa00000,NPU_firmware_private_input=True,NPU_hardware_validated=False)
     return result

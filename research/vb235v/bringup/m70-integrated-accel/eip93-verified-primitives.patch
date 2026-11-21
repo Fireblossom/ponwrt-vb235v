@@ -1,0 +1,34 @@
+--- a/drivers/crypto/inside-secure/eip93/eip93-main.c
++++ b/drivers/crypto/inside-secure/eip93/eip93-main.c
+@@ -106,11 +106,22 @@
+ 	return 1;
+ }
+ 
++/* This board's native combined decrypt accepted a modified tag. Keep
++ * hardware AES/hash primitives and let generic authenc verify the ICV.
++ */
++static bool eip93_skip_native_aead(unsigned int type)
++{
++	return type == EIP93_ALG_TYPE_AEAD &&
++	       of_machine_is_compatible("tplink,vb235v-ram-accel-development");
++}
++
+ static void eip93_unregister_algs(u32 supported_algo_flags, unsigned int i)
+ {
+ 	unsigned int j;
+ 
+ 	for (j = 0; j < i; j++) {
++		if (eip93_skip_native_aead(eip93_algs[j]->type))
++			continue;
+ 		if (!eip93_algo_is_supported(eip93_algs[j]->flags,
+ 					     supported_algo_flags))
+ 			continue;
+@@ -138,6 +149,8 @@
+ 		u32 alg_flags = eip93_algs[i]->flags;
+ 
+ 		eip93_algs[i]->eip93 = eip93;
++		if (eip93_skip_native_aead(eip93_algs[i]->type))
++			continue;
+ 
+ 		if (!eip93_algo_is_supported(alg_flags, supported_algo_flags))
+ 			continue;

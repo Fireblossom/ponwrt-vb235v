@@ -21,7 +21,9 @@ class Session:
         host=self.transport.get_remote_server_key()
         assert [host.get_name(),host.get_base64()]==config['host_key'],'SSH host pin mismatch'
         self.transport.auth_publickey('root',paramiko.Ed25519Key.from_private_key_file(str(keypath)))
-        assert self.run('id -u; uname -r; cat /tmp/sysinfo/board_name').splitlines()==[b'0',b'6.18.60',b'tplink,vb235v-ram-npu-development']
+        board=config.get('board','tplink,vb235v-ram-npu-development')
+        assert board in ['tplink,vb235v-ram-npu-development','tplink,vb235v-ram-accel-development']
+        assert self.run('id -u; uname -r; cat /tmp/sysinfo/board_name').splitlines()==[b'0',b'6.18.60',board.encode()]
         assert b'tmpfs / tmpfs' in self.run('cat /proc/mounts')
 
     def bind_interface(self,sock):

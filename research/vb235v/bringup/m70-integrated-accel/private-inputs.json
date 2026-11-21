@@ -1,0 +1,5 @@
+{
+  "lib/firmware/vb235v/stock-npu-rv32.bin": {"bytes":121132,"sha256":"d2ae9338e1391ced12fefef79a90d60c3108c16bc589584463047fe19a299bf9","input":"npu_rv32.bin"},
+  "lib/firmware/vb235v/stock-npu-data.bin": {"bytes":3220,"sha256":"a8e61916d4261fec3da18c6f5461e06e54acfd18f1a4ed23d3f971176e2ba221","input":"npu_data.bin"},
+  "lib/firmware/vb235v/mt7990-board-eeprom.bin": {"bytes":7680,"sha256":"2ad1a5f4a9fb450039135a826112ef4cf8044bac274857700ad3ea8499f0e2fd","input":"eeprom"}
+}

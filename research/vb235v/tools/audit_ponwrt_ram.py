@@ -103,7 +103,7 @@ def audit_config(path, *, allow_native_lan=False):
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def audit_initramfs(archive, *, extra_sources=None):
+def audit_initramfs(archive, *, extra_sources=None, extra_files=None):
     require(110 <= len(archive) <= MAX_FIT, 'Initramfs outside its byte budget')
     cursor = 0
     entries = {}
@@ -178,14 +178,22 @@ def audit_initramfs(archive, *, extra_sources=None):
         item, payload = resolve(name)
         require(item['mode'] & 0o111 and payload == source.read_bytes(),
                 'Additional initramfs script differs: ' + name)
+    private_verified = {}
+    for name, expected in (extra_files or {}).items():
+        item, payload = resolve(name)
+        digest = hashlib.sha256(payload).hexdigest()
+        require(item['mode'] & 0o170000 == 0o100000 and not item['mode'] & 0o111 and
+                len(payload) == expected['bytes'] and digest == expected['sha256'],
+                'Hash-pinned initramfs input differs: ' + name)
+        private_verified[name] = {'bytes': len(payload), 'sha256': digest}
     return {'entries': len(entries), 'archive_bytes': len(archive),
             'archive_sha256': hashlib.sha256(archive).hexdigest(),
             'required_AArch64_userspace_sha256': verified, 'runtime_checker_matches': True,
             'upgrade_rejection_hooks_match': True,
-            'init_sha256': hashlib.sha256(init).hexdigest()}
+            'init_sha256': hashlib.sha256(init).hexdigest(), 'hash_pinned_inputs': private_verified}
 
 
-def audit_fit(data, initramfs=None, *, dtb_auditor=audit_dtb, initramfs_extra_sources=None):
+def audit_fit(data, initramfs=None, *, dtb_auditor=audit_dtb, initramfs_extra_sources=None, initramfs_extra_files=None):
     require(40 <= len(data) <= MAX_FIT, 'FIT length outside RAM upload bounds')
     nodes, _ = parse(data, max_bytes=MAX_FIT)
     confs = nodes.get('/configurations', {})
@@ -218,7 +226,7 @@ def audit_fit(data, initramfs=None, *, dtb_auditor=audit_dtb, initramfs_extra_so
                   persistent_installation_supported=False)
     if initramfs is not None:
         require(kernel.find(initramfs) >= 0, 'Verified initramfs is not embedded in this FIT kernel')
-        result['initramfs'] = audit_initramfs(initramfs, extra_sources=initramfs_extra_sources)
+        result['initramfs'] = audit_initramfs(initramfs, extra_sources=initramfs_extra_sources, extra_files=initramfs_extra_files)
         result['userspace_contents_verified'] = True
     return result
 

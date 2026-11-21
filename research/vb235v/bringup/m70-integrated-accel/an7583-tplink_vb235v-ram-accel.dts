@@ -1,0 +1,26 @@
+// SPDX-License-Identifier: GPL-2.0-only
+/include/ "an7583-tplink_vb235v-ram-npu.dts"
+
+/ {
+	model = "TP-LinkBox 7 VB235v integrated acceleration RAM development";
+	compatible = "tplink,vb235v-ram-accel-development", "tplink,vb235v-ram-npu-development", "tplink,vb235v-ram-smp-development", "tplink,vb235v-ram-dual-pcie-development", "tplink,vb235v-ram-pcie-development", "airoha,an7583";
+	crypto@1fb70000 {
+		compatible = "inside-secure,safexcel-eip93ies";
+		reg = <0 0x1fb70000 0 0x1000>;
+		interrupts = <0 44 4>;
+	};
+};
+
+&scuclk {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	/* Management-bus discovery only: no external PHY is admitted yet. */
+	mdio0: mdio-bus@c8 {
+		compatible = "airoha,an7583-mdio";
+		reg = <0xc8>;
+		clocks = <&scuclk 9>;
+		resets = <&scuclk 23>;
+		#address-cells = <1>;
+		#size-cells = <0>;
+	};
+};
