@@ -1,0 +1,156 @@
+{
+  "milestone": "M72",
+  "complete": false,
+  "scope": "PON Ethernet receiver source correction, measured reset mapping and original-driver cross-check; complete dual-2.5G data operation remains unverified.",
+  "flash_write_commands_sent": false,
+  "forwarding_benchmark_performed": false,
+  "artifact": {
+    "fit_sha256": "9d7b8055f147dab4695512546db80b213bc25cbe999e31652226bcbb5596e6b8",
+    "fit_bytes": 12221000,
+    "kernel_memory_bytes": 36765696,
+    "kernel_config_sha256": "2651e9ef83d84777f7d3189702cb3c2d9523a549023f5e2704a342e458e10214",
+    "storage_controllers": 0,
+    "CPU_count": 2,
+    "NPU_processing_cores": 6
+  },
+  "source": {
+    "correction": "Initialize electrical RX parameters for the PON Ethernet profile, use the Ethernet 2.5G CDR band and retain the physical PON PLL clock-driver supply condition.",
+    "hashes": {
+      "drivers/net/pcs/airoha/pcs-an7583.c": {
+        "baseline": "bc66b6e01e6e36859f623eeda79de1f2167857e3248efd9ea06084a3b5482935",
+        "candidate": "c79b28e122654b07f3ae07dca36c48a1ee4eee851f10f0198e9e701cf3629f9c"
+      }
+    },
+    "integrated_sources_verified": 14,
+    "persisted_target_patch": "961-vb235v-pcs-ethernet-receiver.patch"
+  },
+  "cold_boot": {
+    "complete": true,
+    "RAM_root_without_MTD_or_UBI": true,
+    "same_M71_RAM_board_identity": true,
+    "gigabit_Mbps": 1000,
+    "duplex": "full",
+    "8MiB_wire_download_hash_matched": true,
+    "8MiB_wire_upload_hash_matched": true
+  },
+  "receiver_status": {
+    "PON_PCS_BMSR": 4,
+    "ETH_PCS_BMSR": 4,
+    "both_PCS_link_bits_set": true,
+    "copper_link_or_physical_data_not_inferred_from_PCS_bits": true,
+    "PCS_link_observation_is_snapshot_only": true,
+    "PON_PCS_link_bit_later_sample_after_reset": false
+  },
+  "reset_mapping": {
+    "GPIO35_resets_PHY15": true,
+    "GPIO34_resets_PHY14": true,
+    "selective_missing_ID_while_asserted_observed": true,
+    "expected_ID_after_release": "03a2a411",
+    "other_GPIO_direction_mux_fields_preserved": true,
+    "inherited_output_high_guard_required": true
+  },
+  "M71_reset_experiments": {
+    "first_pair_both_2500_full": true,
+    "first_pair_raw_frame_test_passed": false,
+    "three_same_sequence_repeats_reached_stable_dual_carrier": [
+      false,
+      false,
+      false
+    ],
+    "reset_is_a_complete_link_fix": false,
+    "per_PHY_reset_reload_candidate_passed": false
+  },
+  "M72_copper_tests": {
+    "cold_first_up_passed": false,
+    "matched_C22_C45_forced_master_slave_trials_reached_dual_link": [
+      false,
+      false
+    ],
+    "PHY_roles_restored": true,
+    "physical_frame_test_passed": false
+  },
+  "original_RAM_comparison": {
+    "kernel_byte_exact_original": true,
+    "kernel_sha256": "17230050718d0e494227aea2af9da6299bf9b72557c145ad73ca28ca3bc4f02a",
+    "storage_nodes_removed": true,
+    "factory_userspace_not_run": true,
+    "dedicated_packet_pool_configuration_added_before_QDMA": true,
+    "core_wired_driver_initialization_completed": true,
+    "same_1G_socket_switch_port": 3,
+    "same_1G_socket_Mbps": 1000,
+    "same_1G_socket_duplex": "full",
+    "external_PHY_firmware_version": "25080112",
+    "external_PHY_driver_version": "1.2.12",
+    "external_MAC_management_modules_loaded": true,
+    "both_external_links_down_after_explicit_power_up": true,
+    "XSI_interrupt_registration_failed": true,
+    "full_factory_2p5G_baseline_established": false
+  },
+  "original_cable_diagnostics": {
+    "source": "Original 8811_bbu_api and firmware in RAM",
+    "NLP_HiZ_detection_timed_out_on_all_pairs_both_directions": true,
+    "PHY15_reported_pairs": [
+      {
+        "status": "open",
+        "length_m": 2.4
+      },
+      {
+        "status": "open",
+        "length_m": 2.4
+      },
+      {
+        "status": "open",
+        "length_m": 3.2
+      },
+      {
+        "status": "open",
+        "length_m": 4.0
+      }
+    ],
+    "PHY14_reported_pairs": [
+      {
+        "status": "normal",
+        "length_m": 0.0
+      },
+      {
+        "status": "normal",
+        "length_m": 0.0
+      },
+      {
+        "status": "open",
+        "length_m": 2.4
+      },
+      {
+        "status": "open",
+        "length_m": 3.2
+      }
+    ],
+    "valid_cable_qualification": false,
+    "cable_fault_proven": false,
+    "independent_known_good_cable_or_peer_crosscheck_needed": true
+  },
+  "validation": {
+    "unit_tests": 37,
+    "skipped": 3,
+    "skip_reason": "Legacy M55 mkimage unavailable for three tests",
+    "public_diagnostic_modules_compiled": true,
+    "kernel_configuration_unchanged_from_M71": true,
+    "COM3_native_shell_readback_passed": true
+  },
+  "remaining": [
+    "Stable copper negotiation against a verified cable or independent PHY peer",
+    "Paired physical frame integrity and port-reopen regression",
+    "Native reset GPIO integration through the GPIO subsystem",
+    "Permanent Linux image integration remains separate"
+  ],
+  "M72_public_reset_fixture": {
+    "selective_reset_mapping_reproduced": true,
+    "both_2500_full": true,
+    "raw_paired_frames_passed": false,
+    "subsequent_same_reset_reached_dual_link": false,
+    "promiscuous_and_reversed_first_direction_trials_performed": false,
+    "native_PHY_module_restored": true,
+    "ports_restored_down": true,
+    "management_Mbps_after_repeat": 1000
+  }
+}

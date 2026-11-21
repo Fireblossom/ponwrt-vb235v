@@ -3,7 +3,7 @@
 import argparse,hashlib,json
 from pathlib import Path
 HERE=Path(__file__).resolve().parent
-def verify_sources(tree):
+def verify_sources(tree,overrides=None):
     kernel=tree/'build_dir/target-aarch64_cortex-a53_musl/linux-airoha_vb235v/linux-6.18.60'
     expected={}
     for folder,manifest in [('m68-npu','source-hashes.json'),('m70-integrated-accel','crypto-source-hashes.json'),('m71-dual-2p5g','integration-source-hashes.json')]:
@@ -15,6 +15,9 @@ def verify_sources(tree):
         relative='drivers/phy/airoha/'+name
         expected[relative]=hashlib.sha256((HERE.parent/'m64-dual-pcie'/name).read_bytes()).hexdigest()
         assert hashlib.sha256((tree/'target/linux/airoha/files'/relative).read_bytes()).hexdigest()==expected[relative],'QPHY overlay differs'
+    if overrides:
+        assert set(overrides)<=set(expected),'Override is not an integrated source prerequisite'
+        expected.update(overrides)
     actual={name:hashlib.sha256((kernel/name).read_bytes()).hexdigest() for name in expected}
     assert actual==expected,'Integrated source prerequisite changed'
     assert (kernel/'drivers/phy/airoha/Makefile').read_bytes().count(b'obj-y += phy-vb235v-qp-pcie.o')==1

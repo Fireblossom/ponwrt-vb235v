@@ -43,3 +43,9 @@ the wired data path and actual hardware offload. Generic four-node stock DT
 templates do not establish four usable ARM cores: the captured original live
 cpuinfo and ATF expose processors 0 and 1. Keep NPU processing-core counts
 separate from the Linux ARM CPU topology.
+
+On 2026-11-21 the owner deferred forwarding-throughput qualification and
+prioritized the two 2.5G port drivers. Continue PHY/PCS initialization,
+negotiation and isolated frame integrity work with the existing port-pair
+cable. These results must not be presented as routed-throughput qualification.
+Do not bridge the two sockets while they are connected to each other.

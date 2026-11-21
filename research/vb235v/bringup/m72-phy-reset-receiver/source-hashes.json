@@ -1,0 +1,6 @@
+{
+  "drivers/net/pcs/airoha/pcs-an7583.c": {
+    "baseline": "bc66b6e01e6e36859f623eeda79de1f2167857e3248efd9ea06084a3b5482935",
+    "candidate": "c79b28e122654b07f3ae07dca36c48a1ee4eee851f10f0198e9e701cf3629f9c"
+  }
+}

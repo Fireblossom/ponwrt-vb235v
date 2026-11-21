@@ -1,0 +1,30 @@
+--- a/drivers/net/pcs/airoha/pcs-an7583.c
++++ b/drivers/net/pcs/airoha/pcs-an7583.c
+@@ -525,7 +525,7 @@
+ 		}
+ 	}
+ 
+-	if (data->port_type != AIROHA_PCS_PON) {
++	if (!an7583_pcs_optical_profile(priv)) {
+ 		cdr_pr_xfick_en = true;
+ 		phyck_sel_force = true;
+ 		phyck_rstb = true;
+@@ -610,7 +610,8 @@
+ 			   FIELD_PREP(AIROHA_PCS_ANA_CDR_PR_BETA_DAC,
+ 				      cdr_pr_beta_dac));
+ 
+-	if (data->port_type == AIROHA_PCS_ETH &&
++	if ((data->port_type == AIROHA_PCS_ETH ||
++	     (priv->pon_ethernet && !an7583_pcs_optical_profile(priv))) &&
+ 	    interface == PHY_INTERFACE_MODE_2500BASEX)
+ 		regmap_update_bits(priv->pcs_ana,
+ 				   AIROHA_PCS_ANA_PXP_CDR_PR_VREG_IBAND_VAL,
+@@ -771,7 +772,7 @@
+ 			   AIROHA_PCS_ANA_TXPLL_VTP_EN);
+ 
+ 	if (data->port_type == AIROHA_PCS_ETH ||
+-	    an7583_pcs_optical_profile(priv))
++	    data->port_type == AIROHA_PCS_PON)
+ 		regmap_update_bits(priv->pcs_ana, AIROHA_PCS_ANA_PXP_TDC_SYNC_CK_SEL,
+ 				AIROHA_PCS_ANA_PLL_LDO_CKDRV_VSEL |
+ 				AIROHA_PCS_ANA_PLL_LDO_CKDRV_EN,
