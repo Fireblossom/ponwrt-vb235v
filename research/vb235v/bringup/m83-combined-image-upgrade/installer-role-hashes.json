@@ -1,0 +1,7 @@
+{
+  "path": "target/linux/airoha/image/vb235v-persistent.mk",
+  "baseline": "ae933235c8ba5225e7375388ab221a00bb5775b1ea8ea384bfacfd4876ad8949",
+  "candidate": "926097483b42812be472313d613fa0cef035b16b19a4fadd44fbc6881ae40d81",
+  "normal_builder_path": "target/linux/airoha/image/mkits-vb235v-system.py",
+  "normal_builder_sha256": "d7c81956dc398f8d8c24a5f4561d3aa7dbb68c99bdd4911957401457783f0a98"
+}

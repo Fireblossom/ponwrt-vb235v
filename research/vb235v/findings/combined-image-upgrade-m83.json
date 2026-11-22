@@ -1,0 +1,86 @@
+{
+  "milestone": "M83-combined-v1",
+  "status": "complete candidate built and audited; hardware upgrade acceptance pending",
+  "integration": {
+    "base": "M75 protected NAND and paged PHY status",
+    "CPU": "M78 opt-in configuration plus frozen M81 driver; builtin, default performance, transitions disarmed",
+    "WiFi": "M79 v2 recovery and M82 default-off gate",
+    "diagnostics": "M77 authenticated frontend and RPC package",
+    "DSL": "M77 development runtime packaged, UCI enabled=0; no DSL-ready claim"
+  },
+  "management_fixes": [
+    "M83 final defaults phase restores fresh-install TLS after M77/M73 lexical ordering removed HTTPS",
+    "Only exact known isolated LAN migrates to br-lan with lan-test and eth2; eth1 excluded",
+    "DHCP continues advertising neither gateway nor DNS",
+    "Separate fallback SSH instance binds literal 169.254.235.1 using existing Ed25519 key",
+    "Explicit Dropbear Interface with no address skips instance instead of listening on wildcard",
+    "Dynamic read-only Windows NIC68 source discovery handles APIPA to DHCP transition"
+  ],
+  "host_validation": {
+    "real_UCI_cases": 21,
+    "Dropbear_and_fallback_cases": 12,
+    "prepare_twice_byte_idempotent": true,
+    "foreign_prerequisite_rejected_before_mutation": true,
+    "shared_inputs_unchanged_in_fixture": 48
+  },
+  "CPU_RAM_experiment": {
+    "FIT_bytes": 6595712,
+    "FIT_sha256": "6b33e3e2fc0fcf2874a3f8e8229d2389966a99e2ede19c46bacd4fb42fe705c4",
+    "two_builds_byte_identical": true,
+    "raw_newc_bytes": 2104832,
+    "same_M75_kernel_machine_code": true,
+    "DT_changes_only": ["safe chosen.bootargs", "real M78 root opt-in"],
+    "exact_M81_module_sha256": "e55f925a7664966b5741efd1d4c70f3db411c27e58114ee73a3825c11122cc9e",
+    "archive_FIT_and_normal_upgrade_rejection_checked": true,
+    "UART_Hz": 1843200,
+    "UART_baud": 115200,
+    "known_RAM_regions_and_live_M84_baseline_LMB_disjoint": true,
+    "hardware_boot_and_relocation_acceptance": "tracked by coordinator; not inferred from offline audit"
+  },
+  "U_Boot_network_gap": {
+    "exact_M73_control_DT": "an7583-vb235v-recovery",
+    "ethernet0": "gdm1 integrated switch internal fixed-link",
+    "gdm2": "disabled",
+    "gdm3": "disabled",
+    "CONFIG_PHY_AIROHA": "not set",
+    "external_EN8811H_ports_supported": false,
+    "M54_and_M73_1G_LAN_HTTP_path": "passed on hardware",
+    "same_CPU_mini_HTTP_upload": {
+      "bytes": 6595712,
+      "seconds": 0.328,
+      "sha256": "6b33e3e2fc0fcf2874a3f8e8229d2389966a99e2ede19c46bacd4fb42fe705c4",
+      "private_proof": "offline-analysis/m84-network-mini-upload-r2/report.json"
+    }
+  },
+  "mandatory_upgrade_acceptance": [
+    "actual written kernel/rootfs UBI volume SHA",
+    "booted M83 revision and expected components",
+    "configuration and SSH identity preservation",
+    "all protected regions fully read back and hashed",
+    "normal and fixed rescue paths",
+    "primary and literal fallback management listeners with no WAN exposure"
+  ],
+  "formal_upgrade_accepted": false,
+  "NAND_origin_private_configuration_backup": {
+    "passed": true,
+    "archive_bytes": 60318,
+    "archive_sha256": "535ff1a006d0f7fa6bb793e171ac62e7769f759d9c055f7858d71598e1058e63",
+    "verified_live_file_count": 20,
+    "owner_file_count": 3,
+    "owner_setup_token_kept": true,
+    "standard_backup_option": "",
+    "archive_or_identity_contents_in_repository": false
+  },
+  "artifacts": {
+    "sysupgrade": {"bytes": 13107460, "sha256": "23e1f1d6e36b6bf126c722f678686159a174053dfe230cde0238a87cb7375c98"},
+    "normal_kernel_FIT": {"bytes": 4489857, "sha256": "3108e18e619a6cee4600186c6bfe17085cb4c27637587cce57f14eabebbd0fc7"},
+    "RAM_installer_FIT": {"bytes": 12447292, "sha256": "0a54d6e739fdfba69d8792bd402e9fbdd466e65efa36c3745d0b4d4cd95805df"}
+  },
+  "installer_inherited_defect_fixed": {
+    "before": "RAM installer reused normal bootargs, including automatic ubi.mtd attachment",
+    "after": "dedicated DT copy with rdinit=/init and no root/ubi arguments, separate RAM role marker",
+    "normal_sysupgrade_Image_DTB_FIT_byte_hashes_unchanged": true,
+    "production_C_checker_admits_normal_rejects_RAM_role": true
+  },
+  "source_directory": "research/vb235v/bringup/m83-combined-image-upgrade"
+}

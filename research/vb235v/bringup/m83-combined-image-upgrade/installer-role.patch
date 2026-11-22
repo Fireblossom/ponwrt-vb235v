@@ -1,0 +1,24 @@
+--- a/target/linux/airoha/image/vb235v-persistent.mk
++++ b/target/linux/airoha/image/vb235v-persistent.mk
+@@ -5,6 +5,12 @@
+   $(call Build/fit-image,lzma)
+ endef
+ 
++define Build/vb235v-install-fit-m83
++  python3 $(TOPDIR)/target/linux/airoha/image/mkits-vb235v-install-m83.py \
++	$@ $(KDIR)/image-$(DEVICE_DTS).dtb $@.its
++  $(call Build/fit-image,lzma)
++endef
++
+ define Device/tplink_vb235v
+   DEVICE_VENDOR := TP-Link
+   DEVICE_MODEL := LinkBox 7 VB235v
+@@ -14,7 +20,7 @@
+   KERNEL_LOADADDR := 0x80200000
+   KERNEL_ENTRY := 0x80200000
+   KERNEL := kernel-bin | lzma | vb235v-system-fit
+-  KERNEL_INITRAMFS := kernel-bin | lzma | vb235v-system-fit
++  KERNEL_INITRAMFS := kernel-bin | lzma | vb235v-install-fit-m83
+   KERNEL_INITRAMFS_SUFFIX := -install.itb
+   BLOCKSIZE := 256k
+   PAGESIZE := 4096

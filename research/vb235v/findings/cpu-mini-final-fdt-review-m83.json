@@ -1,0 +1,26 @@
+{
+  "gate_passed": true,
+  "prep_transient_FDT_allocation": [
+    2597588992,
+    2597625751
+  ],
+  "final_working_FDT": [
+    2597588992,
+    2597605376
+  ],
+  "final_totalsize": 16384,
+  "exact_final_live_LMB_reservation": true,
+  "transient_and_final_ranges_nonoverlap": true,
+  "old_kernel_initrd_resident_reservations_preserved": true,
+  "safe_chosen_verified": true,
+  "no_device_access": true,
+  "artifact_sha256": "6b33e3e2fc0fcf2874a3f8e8229d2389966a99e2ede19c46bacd4fb42fe705c4",
+  "historical_offline_review": true,
+  "input_sha256": {
+    "prep": "e9e541725c2cf74f0e99d3551453062c110ec9933a96b76c052652c00fa8bd54",
+    "header": "1bda5d79dd5086a85204995a4d14312aac81f564d66a1cb86b5bdf19c01b50c4",
+    "chosen": "4a9b98ebc0c2daf6462498abc2c27fce50018cef25e51c4d5a7c44541e91db79",
+    "before": "699761586cc92f8ece0306243415739bec1c43a91d94e481383e3ddb0b88576c",
+    "after": "0f93f768e605b8780982a0853f66503968574604ed5534f00e00ad03984a0c0f"
+  }
+}

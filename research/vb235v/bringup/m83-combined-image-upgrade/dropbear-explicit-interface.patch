@@ -1,0 +1,25 @@
+--- a/package/network/services/dropbear/files/dropbear.init
++++ b/package/network/services/dropbear/files/dropbear.init
+@@ -206,6 +206,8 @@
+ 	[ -n "${vrf}" ] && [ -n "${BOOT}" ] && return 0
+ 
+ 	local iface ndev ipaddrs
++	local address_binding_requested=0
++	[ -n "${Interface}" ] && address_binding_requested=1
+ 
+ 	# 'DirectInterface' should specify single interface
+ 	# but end users may misinterpret this setting
+@@ -311,6 +313,13 @@
+ 		done
+ 		break
+ 	done
++
++	# An explicitly configured address interface must never fall back to
++	# a wildcard listener while it is down or has no suitable addresses.
++	if [ "$address_binding_requested" = 1 ] && [ -z "$iface" ] && [ -z "$ipaddrs" ]; then
++		logger -t "${NAME}" -p daemon.notice "Configured interface has no address; skipping listener"
++		return 0
++	fi
+ 
+ 	local pid_file="/var/run/${NAME}.${1}.pid"
+ 

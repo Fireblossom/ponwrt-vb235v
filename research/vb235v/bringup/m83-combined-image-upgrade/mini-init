@@ -1,0 +1,18 @@
+#!/bin/busybox sh
+# SPDX-License-Identifier: GPL-2.0-only
+# CPU-only RAM session. No flash mount, installer, procd, UCI or wireless.
+export PATH=/usr/sbin:/usr/bin:/sbin:/bin
+umask 077
+mount -t proc proc /proc || exec sh
+mount -t sysfs sysfs /sys || exec sh
+mount -t devtmpfs devtmpfs /dev || exec sh
+mount -t tmpfs -o mode=1777 tmpfs /tmp || exec sh
+mkdir -p /tmp/run
+exec </dev/console >/dev/console 2>&1
+echo 'M83_CPU_MINI_RAM: no NAND filesystems mounted; frequency transitions remain disabled.'
+echo 'Run /usr/libexec/vb235v-cpu-observe first. No automatic CPU SET is issued.'
+echo 'Wired firmware is present, but physical link and addressing require explicit inspection.'
+while :; do
+    sh -i < /dev/console > /dev/console 2>&1
+    sleep 1
+done

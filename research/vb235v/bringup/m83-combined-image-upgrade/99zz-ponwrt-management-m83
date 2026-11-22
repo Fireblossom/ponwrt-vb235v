@@ -1,0 +1,4 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0-only
+# Sorts after M73's 99-vb235v-persistent, including on a fresh installation.
+exec /usr/libexec/ponwrt-management-m83 --apply

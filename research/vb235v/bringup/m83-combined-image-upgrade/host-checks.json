@@ -1,0 +1,46 @@
+{
+  "schema": 1,
+  "milestone": "M83-combined-v1",
+  "real_UCI_management_cases_passed": 21,
+  "actual_Dropbear_init_and_fallback_cases_passed": 12,
+  "prepare_fixture": {
+    "shared_inputs_checked_unchanged": 50,
+    "two_applications_byte_identical": true,
+    "foreign_Dropbear_prerequisite_rejected_before_mutation": true
+  },
+  "mini": {
+    "bytes": 6595712,
+    "sha256": "6b33e3e2fc0fcf2874a3f8e8229d2389966a99e2ede19c46bacd4fb42fe705c4",
+    "two_independent_builds_byte_identical": true,
+    "SOURCE_DATE_EPOCH": 1795303547,
+    "raw_newc_bytes": 2104832,
+    "cpio_entries_excluding_trailer": 51,
+    "normal_M75_kernel_payload_unchanged": true,
+    "exact_M81_module_and_cycle_script": true,
+    "normal_sysupgrade_python_inspector_rejects_mini": true,
+    "exact_production_C_checker_native_host_execution_rejects_mini": true,
+    "valid_board_metadata_does_not_admit_mini": true,
+    "live_M84_baseline_LMB_and_DT_known_ranges_disjoint": true,
+    "actual_initrd_FDT_relocations_verified": false,
+    "hardware_booted_by_this_agent": false
+  },
+  "dynamic_Windows_source_discovery": {
+    "APIPA_candidates_derived": true,
+    "DHCP_candidates_derived": true,
+    "upstream_NIC_excluded": true,
+    "NIC_or_routes_mutated": false
+  },
+  "readback_collector_fixture_cases_passed": 4,
+  "backup_archive_fixture_cases_passed": 23,
+  "prepared_FDT_gate_fixture_cases_passed": 8,
+  "historical_CPU_mini_final_FDT_actual_ranges_independently_verified": true,
+  "full_candidate_built": true,
+  "full_candidate_artifact_audit_passed": true,
+  "exact_production_C_checker_admits_built_normal_image": true,
+  "installer_safe_bootargs_and_distinct_RAM_role_tested": true,
+  "normal_artifacts_unchanged_by_installer_repair": true,
+  "formal_upgrade_accepted": false,
+  "DSL_ready": false,
+  "WLAN_NPU_accepted": false,
+  "device_accessed_by_this_agent": false
+}
