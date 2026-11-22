@@ -1,0 +1,72 @@
+{
+  "milestone": "M84",
+  "observed_date_local": "2026-11-22",
+  "status": "OPEN: internal 1G Linux carrier failure; not a completed fix",
+  "baseline": {
+    "bootstrap_M54_recovery_HTTP": "PASS",
+    "normal_M73_recovery_HTTP": "PASS",
+    "Windows_USB_link_Mbps_in_Uboot": 1000,
+    "same_CPU_RAM_FIT_network_upload": {
+      "bytes": 6595712,
+      "seconds": 0.328,
+      "sha256": "6b33e3e2fc0fcf2874a3f8e8229d2389966a99e2ede19c46bacd4fb42fe705c4",
+      "receiver_SHA256_matches": true,
+      "independent_RAM_CRC32_matches": true,
+      "three_FIT_payload_SHA256_checks": "PASS"
+    },
+    "CPU_mini_after_serial_upload": "lan-test carrier0/speed-1",
+    "same_CPU_mini_after_recovery_HTTP_upload": "lan-test carrier0/speed-1",
+    "existing_M75_persistent_Linux_after_cold_boot": "lan-test carrier0/speed-1, netifd LAN up, Windows USB disconnected"
+  },
+  "PHY11_initial_C22": {
+    "PHY_ID": "c0ff0420",
+    "BMCR": "1040",
+    "BMSR_both_reads": "7949",
+    "advertisement": "0de1",
+    "link_partner_ability": "0000",
+    "control_1000": "0200",
+    "status_1000": "4000",
+    "page31": "0000"
+  },
+  "read_only_switch_snapshot": {
+    "module_sha256": "2186121915eb7cad14ff7b04a45306107cc0ca997a7325b5f51a5524b3cbead9",
+    "SYS_CTRL_0x1fb5f000": "00717fc0",
+    "GEPHY_CONN_CFG_0x1fb5fc14": "c00017a5",
+    "DPHY_CKIN_SEL": 1,
+    "PHY_CORE_REG_CLK_SEL": 1,
+    "ETHER_AFE_PWD": 0,
+    "PHY_RST": 0,
+    "module_unloaded": true,
+    "MMIO_writes": false
+  },
+  "bounded_standard_diagnostics": [
+    {
+      "operation": "One normal lan-test interface down/up",
+      "result": "No carrier recovery"
+    },
+    {
+      "operation": "Match working U-Boot standard power state: internal PHY9,10,12 BMCR1840 to1040, clearing only PDOWN with fresh ID/page/value gates and per-write readback",
+      "result": "No carrier/LPA recovery after each PHY or after all three",
+      "vendor_calibration_writes": false,
+      "production_patch_justified": false
+    },
+    {
+      "operation": "Standard ETHTOOL_NWAY_RST on lan-test",
+      "result": "Request accepted, no carrier recovery after16seconds"
+    }
+  ],
+  "inferences": {
+    "network_upload_entry_alone_recovers_Linux_PHY": "Not supported by paired test",
+    "stale_page_or_standard_BMCR_PDOWN_on_attached_PHY": "Not supported by reads",
+    "visible_GEPHY_clock_select_or_AFE_power_fields_lost": "Not supported by exact snapshot",
+    "root_cause": "Unresolved; OEM additional calibration/configuration and native reset/init differences need further audit"
+  },
+  "safety_and_state": {
+    "CPU_SMC_SET_count_in_both_RAM_boots": 0,
+    "CPU_frequency_MHz": 1200,
+    "calibration_or_PLL_writes": false,
+    "firmware_install_dispatched": false,
+    "final_boot": "Existing M75 NAND system; temporary RAM experiments ended by cold restart",
+    "complete_private_sysupgrade_backup": "Captured and SHA/file-identity verified, including owner setup token; secrets not published"
+  }
+}
