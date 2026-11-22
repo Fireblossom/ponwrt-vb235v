@@ -1,0 +1,58 @@
+{
+  "kind": "offline exact original PHY initialization contract, not an executable hardware recipe",
+  "original_module": {
+    "path": "offline-analysis\\live-driver-evidence\\20261115T235533Z\\modules\\5.4.55\\eth_ephy.ko",
+    "bytes": 257560,
+    "sha256": "501629d2ab4685023c826c7ee798c2797a0aa715ba00bf8f0a0d57346953c42d"
+  },
+  "mdi_resister": {
+    "function": "PreCalSet",
+    "instructions": "f498-f4d4",
+    "MMIO_read": "0x1fa20258",
+    "mask": "0x00800000",
+    "expression": "(raw & BIT(23)) ? 5 : 0",
+    "scope": "normalinit/R50Calibration/phyTxAmpcomp use selector comparisons, not a guessed resistor unit",
+    "read_only_diagnostic": "One board-gated read of this ordinary SCU register can determine selector; do not modify SCU or substitute a hardcoded selector."
+  },
+  "transformer_status": {
+    "function": "auto_select_transformer",
+    "ports": [
+      9,
+      10,
+      11,
+      12
+    ],
+    "bit_for_phy": "phy_address-9",
+    "entry_action": "Writes standard BMCR0x0140 (AN disabled, full duplex, speed1000) through __ECNT_HOOK",
+    "stimulus": "MMD31 test modes; MMD30 registers00dd,017d..0184,00c9,0151; token-ring node0f indices10/11; port-specific MMD31 register0015",
+    "settle_ms": 500,
+    "sample": "MMD31 register001a read four times, last returned unsigned value selected",
+    "set_bit_if_last_sample_lte": "0x00df",
+    "clear_bit_if_last_sample_gt": "0x00df",
+    "cleanup": "Multiple MMD writes and token-ring writes before status update; BMCR normal restoration belongs later initialization",
+    "passive_read_boundary": "An unconditioned current001a reading does not establish transformer_status. Active test cannot be replaced by a fixed board bitmask without evidence."
+  },
+  "native_boundary": {
+    "mt7988_setup": "Switch reset, GEPHY clock/AFE fields, SYS_CTRL_PHY_RST then common setup",
+    "an7583_phy_config_init": "Only clears standard BMCR_PDOWN on attached PHY",
+    "extra_generic_soft_reset": "No soft_reset callback on this PHY driver; phy_init_hw does not invoke an absent callback"
+  },
+  "hardware_experiment_status": {
+    "CPU": "real vb235v-smc policy1200/performance observed, SET count remains0",
+    "two_register_snapshot": "GEPHYc00017a5/SYS_CTRL00717fc0 match intended visible clock/power/reset fields",
+    "PDOWN_and_AN": "Powering unusedPHY9/10/12 and standard attached11 AN restart did not restore link",
+    "full_vs_mini": "Parent reports full NAND M75 userspace also carrier0; not solely a missing mini userspace component"
+  },
+  "safe_next_steps": [
+    "Preserve source and current kernel candidate frozen.",
+    "Read SCU selector only if parent separately reviews and schedules probe.",
+    "Use previously validated external PHY15 path for CPU cycle when cable fixture permits.",
+    "Complete original active transformer/calibration error and cleanup contracts before any native analog port."
+  ],
+  "not_proposed": [
+    "fixed normalinit table transplant",
+    "skip-PHY-reset production patch",
+    "active transformer test on live router",
+    "guessed analog/MMIO writes"
+  ]
+}

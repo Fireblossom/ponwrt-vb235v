@@ -1,0 +1,55 @@
+{
+  "make_executed": false,
+  "source_sha256": "35706f6b22851e536df00919a38eaca4665a49a3b5ccb532b8f2940a0bdb5586",
+  "module": "/home/duanx/m85-switch-snapshot/vb235v-switch-snapshot.ko",
+  "module_sha256": "9d8264a4f0ed41826762bc48ff057a3c947cc4ecd0b0c592ef83f93d932f2419",
+  "protected_inputs_unchanged": {
+    "/home/duanx/vb235v-build-20261116/ponwrt-system-m55/build_dir/target-aarch64_cortex-a53_musl/linux-airoha_vb235v/linux-6.18.60/.config": "daa2c5a73d56e1a3f7270264b36acad2735c797dfbc360f4926426e299c595cc",
+    "/home/duanx/vb235v-build-20261116/ponwrt-system-m55/build_dir/target-aarch64_cortex-a53_musl/linux-airoha_vb235v/linux-6.18.60/Module.symvers": "8ce1c9ad6eee8c2d95533bd0aafe62c501f1b6b614055c28acabe2d98dbdeb74",
+    "/home/duanx/vb235v-build-20261116/ponwrt-system-m55/build_dir/target-aarch64_cortex-a53_musl/linux-airoha_vb235v/linux-6.18.60/include/generated/utsrelease.h": "6397d2b9e6b1e1d646559a5cffe294f0d3a06378438331221b8f12b764c61437",
+    "/home/duanx/vb235v-build-20261116/ponwrt-system-m55/build_dir/target-aarch64_cortex-a53_musl/linux-airoha_vb235v/linux-6.18.60/include/generated/autoconf.h": "84c63427e61654425a5d9a12ef8d9bffb57fc3c9a3df5853b4a94edd9466359d"
+  },
+  "undefined_symbols": [
+    "__ioremap_prot",
+    "_printk",
+    "arm64_use_ng_mappings",
+    "iounmap",
+    "of_address_to_resource",
+    "of_device_is_available",
+    "of_find_compatible_node",
+    "of_machine_compatible_match"
+  ],
+  "probe_addresses": [
+    "0x1fb5f000",
+    "0x1fb5fc14"
+  ],
+  "register_reads": 2,
+  "mmio_writes": 0,
+  "smc_calls": 0,
+  "mdio_iac_operations": 0,
+  "stripped_module": {
+    "file": "/home/duanx/m85-switch-snapshot/vb235v-switch-snapshot-stripped.ko",
+    "bytes": 6296,
+    "sha256": "2186121915eb7cad14ff7b04a45306107cc0ca997a7325b5f51a5524b3cbead9",
+    "operation": "strip --strip-debug",
+    "undefined_imports_identical": true,
+    "modinfo_identical": true,
+    "two_readl_calls_retained": true,
+    "hardware_test": "parent PASS, removed after two read-only observations"
+  },
+  "hardware_observation": {
+    "executor": "root under hardware lease",
+    "evidence": "offline-analysis/m85-switch-snapshot-live/snapshot-private.log",
+    "loaded_stripped_sha256": "2186121915eb7cad14ff7b04a45306107cc0ca997a7325b5f51a5524b3cbead9",
+    "SYS_CTRL": "00717fc0",
+    "GEPHY_CONN_CFG": "c00017a5",
+    "DPHY_CKIN_SEL": 1,
+    "PHY_CORE_REG_CLK_SEL": 1,
+    "ETHER_AFE_PWD": 0,
+    "PHY_RST": 0,
+    "module_removed": true,
+    "MMIO_writes": 0,
+    "CPU_SET_count": 0,
+    "interpretation": "Visible GEPHY clock selection and AFE powerdown fields match native intended post-init state. Hidden analog/debug calibration and shared-PHY dependency remain unknown."
+  }
+}

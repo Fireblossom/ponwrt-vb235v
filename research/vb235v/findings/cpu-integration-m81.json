@@ -1,0 +1,411 @@
+{
+  "milestone": "M81",
+  "baseline_repository_head": "4b25cffa",
+  "status": "query-and-real-policy-hardware-pass; controlled SET pending wired initialization fixture",
+  "scope": "CPU integration and supervised frequency control at unchanged boot voltage; not complete DVFS/AVS/thermal",
+  "retained_contract": {
+    "default_governor": "performance",
+    "default_allow_transitions": false,
+    "requires_m78_dt_opt_in": true,
+    "required_linux_cpus": 2,
+    "frequencies_khz": [
+      500000,
+      1200000
+    ],
+    "smc_states": [
+      0,
+      14
+    ],
+    "exact_retained_bl31_sha_gate": true,
+    "independent_get_and_mux_check": true,
+    "legacy_minus2_requires_readback": true,
+    "no_direct_pll_or_avs_writes": true,
+    "no_automatic_retry_or_rollback": true
+  },
+  "changes": [
+    "Read-only preflight combines fresh SMC GET, final CPU mux/divider and actual read-only BL31 payload SHA gate",
+    "Track actual SET call count, probe_complete and last raw mux/divider",
+    "Enabling transitions requires completed probe, no fault, valid identity/clock and no available known thermal/AVS SCU client",
+    "Internal diagnostic/admission fields now have getter-only kernel_param_ops;0400 sysfs permissions alone did not prevent boot/module parameter injection",
+    "Disarming always succeeds without hardware operation",
+    "RAM-only single-pair script first verifies disabled500MHz request is rejected with zero SETs, then exactly one500 and one1200 SET with dual-core/shared-memory probe and concurrent wired pings",
+    "Correct userspace sysfs store semantics: return code is discarded by core, so negative hardware gate uses new explicit denial, actual zero SET count and live1200 readback",
+    "Restore cached userspace request to current1200MHz with zero SETs before arming after the disarmed500MHz negative test"
+  ],
+  "known_gap_separation": {
+    "voltage": "boot voltage retained unchanged; no voltage measurement or calibrated AVS regulator port",
+    "thermal": "M80 research only; active thermal/AVS DT nodes prevent CPU arming until shared-SCU serialization exists",
+    "production_claim": "not claimed; current measured result is observation only"
+  },
+  "source_hashes": {
+    "vb235v-cpufreq.c": {
+      "baseline": "c9b6a5ed4e94814bff3330c9df2d9f82ec6cd1cfb3614f701e124f91fe259cbc",
+      "candidate": "bae8213e6880846f9c3fd6f5da1ed5198f5d68e7748d22d571f33447d93aba2b"
+    },
+    "vb235v-cpufreq-contract.h": {
+      "baseline": "6ec0a43584a1adbd47b5bebfbc32749274f94ae1da75ebc412e078af359dc34d",
+      "candidate": "fa571dbf871be7dd9e7ae991d28469fadba749d88a6321dff404a9367046fa2b"
+    }
+  },
+  "integration": {
+    "prepare": "research/vb235v/bringup/m81-cpu-integration/prepare.py",
+    "order": "existing M75+/M77 preparation -> M78 -> M81; do not rerun M78 after M81",
+    "config_and_dt_changes": "none beyond required M78 state; validates performance/generic-driver-disable/opt-in",
+    "installed_tools": [
+      "/usr/libexec/vb235v-cpu-observe",
+      "/usr/libexec/vb235v-cpu-cycle",
+      "/usr/libexec/vb235v-cpu-smp-probe"
+    ],
+    "smp_probe_source": "research/vb235v/tools/vb235v_smp_probe.c, existing M67 checker",
+    "protected_scopes": "No Wi-Fi/frontend/network role/NAND guard or revision modifications",
+    "shared_build_execution": "CPU agent did not run shared-tree make or prepare"
+  },
+  "query_probe": {
+    "source": "vb235v-cpu-query.c",
+    "sha256": "9bc1f15ae8c70a6a47f304a119b349112394dae63b4bc0dd98cbb7e5556a1b24",
+    "vermagic": "6.18.60 SMP mod_unload aarch64",
+    "behavior": [
+      "exact board and2 possible/online CPUs",
+      "exactly one SMC GET",
+      "log GET before any MCUCFG read",
+      "unknown GET aborts further probing",
+      "one MCUCFG read, no SET/MMIO/DT/cpufreq/MTD/AVS writes"
+    ],
+    "hardware_executor": "root under exclusive lease",
+    "hardware_evidence": "offline-analysis/m81-cpu-query-hardware/report.json",
+    "hardware_report": {
+      "complete": true,
+      "started_utc": "2026-11-21T22:58:25.086911+00:00",
+      "SMC_SET_issued": false,
+      "MMIO_writes_issued": false,
+      "DT_modified": false,
+      "cpufreq_registered": false,
+      "probe_sha256": "9bc1f15ae8c70a6a47f304a119b349112394dae63b4bc0dd98cbb7e5556a1b24",
+      "insmod_status": 0,
+      "observed": {
+        "smc_mhz": "1200",
+        "mux_div_raw": "767",
+        "possible_cpus": "2",
+        "online_cpus": "2",
+        "armpll_div1": "Y"
+      },
+      "probe_removed": true,
+      "wired_1000": true,
+      "two_cpus_online": true
+    }
+  },
+  "compile_validation": {
+    "direct_compiler_modpost_link": {
+      "kernel_config_sha256": "3a820bca9c2fd6ecd71aac89fc95e421955ba68e9622e1c5db2a196d1b65032b",
+      "kernel_symvers_sha256": "8ce1c9ad6eee8c2d95533bd0aafe62c501f1b6b614055c28acabe2d98dbdeb74",
+      "make_executed": false,
+      "modules": {
+        "vb235v-cpu-query": {
+          "file": "/home/duanx/m81-cpu-isolated/vb235v-cpu-query.ko",
+          "sha256": "9bc1f15ae8c70a6a47f304a119b349112394dae63b4bc0dd98cbb7e5556a1b24"
+        },
+        "vb235v-cpufreq": {
+          "file": "/home/duanx/m81-cpu-isolated/vb235v-cpufreq.ko",
+          "sha256": "e55f925a7664966b5741efd1d4c70f3db411c27e58114ee73a3825c11122cc9e"
+        }
+      }
+    },
+    "make_executed": false,
+    "output_directory": "/home/duanx/m81-cpu-isolated",
+    "actual_elf_checks": "PASS getter-only internal/preflight parameter ops, gated allow setter, query exact import allowlist and one SMC call",
+    "host_contract": "PASS UBSan with read-only/arming, shared-SCU refusal, units, exact identity, states0/14, legacy acknowledgement, bad GET/mux/status and fault latch",
+    "prepare_fixture": "PASS M78->M81 in disposable fixture, byte-identical two passes, parent revision retained, wrong source rejected before mutation",
+    "shell_syntax": "PASS observe/cycle/mini-init",
+    "known_warning": "OpenWrt MODULE_INFO_STRIP description metadata warning only; no unresolved symbols"
+  },
+  "current_kernel_capabilities": {
+    "KEXEC_FILE": false,
+    "OF_OVERLAY": false,
+    "DEVMEM": false,
+    "MODULES": true,
+    "MODULE_UNLOAD": true,
+    "MODVERSIONS": false,
+    "NET_AIROHA": true,
+    "NET_AIROHA_NPU": true,
+    "SPI_AIROHA_SNFI": true,
+    "MTD_SPI_NAND": true,
+    "AIR_EN8811H_PHY": "module"
+  },
+  "minimal_ram_requirements": {
+    "kernel": "same reviewed M81 kernel source, M78 opt-in/MTD protection preserved",
+    "init": "mini-init.sh proc/sysfs/devtmpfs/tmpfs only then serial shell; no flash mount/procd/UCI/autoload/CPU SET/ADC",
+    "root_contents": [
+      "BusyBox with actual ELF interpreter and NEEDED libraries",
+      "CPU observe/cycle/SMP probe",
+      "kernel builtin CPU driver and MTD/SHA support"
+    ],
+    "wired_additions": [
+      "lib/firmware/vb235v/stock-npu-rv32.bin121132 bytes",
+      "lib/firmware/vb235v/stock-npu-data.bin3220 bytes",
+      "air_en8811h.ko",
+      "lib/firmware/airoha/EthMD32.dm.bin",
+      "lib/firmware/airoha/EthMD32.DSP.bin",
+      "explicit real-interface setup; current physical cable eth2"
+    ],
+    "build_owner": "M83 and root coordinate full/mini image and shared-tree lease; CPU agent does not overwrite shared initramfs",
+    "transport": "verified115200 UART with fixed1.8432MHz input; root owns RAM upload/serial/power; no UART overclock or warm-DDR guesses"
+  },
+  "acceptance": {
+    "first_actual_query": "PASS1200MHz, MCUCFG0x2ff source1 divider0,2possible/2online, probe removed, wiredeth2 remains1000",
+    "real_cpufreq_policy": "PASS M75-module mini-r3 RAM experiment: vb235v-smc,performance,1200MHz,2CPUs,BL31 verified,SET0,disarmed",
+    "runtime_disarmed_request_negative": "PENDING working wired fixture; reviewed mini-r3 already booted with real policy and zero SETs",
+    "controlled_500_to_1200": "PENDING working wired fixture; reviewed mini-r3 already booted with real policy and zero SETs",
+    "dual_core_plus_wired_at_both_rates": "PENDING working wired fixture; reviewed mini-r3 already booted with real policy and zero SETs",
+    "cold_recovery_zero_set_default": "PENDING working wired fixture; reviewed mini-r3 already booted with real policy and zero SETs"
+  },
+  "next_action": "root schedules verified external PHY15 wired fixture, then existing frozen cycle once and cold recovery; no additional user authorization required",
+  "files": {
+    "check-objects.py": "73ae4323984bd71c763ad779f9a2df3e4b8152d76ccc647f533e39ed79c31591",
+    "compile-isolated.py": "7ffbf76c26a0c19d71d6b83d94114c4d7e2a1ce2afb09389e534c351f18cdf27",
+    "cpu-cycle.sh": "273a8c1586295dc850d21f81281cf9d63c7230a74c1cb2c46fd4ba3bb620f277",
+    "cpu-observe.sh": "0004e16aae569358feba0acda211cd1f5f94b902993de7bb0f632a767d861d91",
+    "mini-init.sh": "a333fe95ba40aa116b97348041a77887cb1535107fd033db31df15e47a8f7f75",
+    "prepare.py": "2e87a05e0a375a743fb1f38bf458720020506a02eaeaf4f8891c816201bb48ef",
+    "README.md": "769a2d46b18c3a7d05ca3fddabfa5d6e41aa048621b0aa9cc4ede1e0df823fb0",
+    "source-hashes.json": "c722919ff4f187240470ff4e3ca16f23616e551b0fec160ed5c753b0b0ed8d66",
+    "test-contract.c": "358a5ef4c178f6a96ee45d2ca980ae55da9f5199979c6b7c398043b8a1ed7b52",
+    "test-prepare.py": "df8f94f2e6dd24694a4f22b883d7f8dc1356e926222512316b0574e5e9033e9a",
+    "vb235v-cpu-query.c": "284ddbe49a458b0710799035d3f10b95ff1b98f819601973ac0e1b94e6cb9940",
+    "vb235v-cpufreq-contract.h": "fa571dbf871be7dd9e7ae991d28469fadba749d88a6321dff404a9367046fa2b",
+    "vb235v-cpufreq.c": "bae8213e6880846f9c3fd6f5da1ed5198f5d68e7748d22d571f33447d93aba2b"
+  },
+  "approved_m75_module_ram_experiment": {
+    "normal_payload_and_governor_proof": {
+      "normal_elf_sha256": "2f2aaaa5a02425b78c660eabb512b17cd413d0dc5537f006047a0d2c2b034d81",
+      "elf_objcopy_image_sha256": "db085661e37ac2547b874777950081cbc6ec6528938ba1397dccefeb826a58c2",
+      "normal_fit_sha256": "3c1528eeb4cb4ea2e8494d39a61873cf6ed605445dd803e1a138118b632e42cc",
+      "normal_lzma_payload_sha256": "9181e3529ad48ea5196449f6e1ba0e72e6d1c30bbb523c28d9fe554d9d9fe357",
+      "normal_embedded_cpio_bytes": 512,
+      "normal_embedded_cpio_names": [
+        "dev",
+        "dev/console",
+        "root",
+        "TRAILER!!!"
+      ],
+      "normal_embedded_init_present": false,
+      "symbols": {
+        "cpufreq_gov_performance": "0xffffffc080d32628",
+        "cpufreq_gov_performance_init": "0xffffffc080bd57f8",
+        "cpufreq_gov_userspace": "0xffffffc080d326f8",
+        "cpufreq_gov_userspace_init": "0xffffffc080bd5830",
+        "cpufreq_fallback_governor": "0xffffffc080649680",
+        "initrd_start": "0xffffffc080d55060",
+        "initrd_end": "0xffffffc080d55058",
+        "__initramfs_start": "0xffffffc080c0e134",
+        "__initramfs_size": "0xffffffc080c0e338"
+      },
+      "fallback_machine_code_hex": "403700b000a01891c0035fd6",
+      "fallback_returns_performance_address": "0xffffffc080d32628",
+      "suggested_explicit_bootarg": "cpufreq.default_governor=performance"
+    },
+    "independent_mini_r3_proof": {
+      "fit_sha256": "6b33e3e2fc0fcf2874a3f8e8229d2389966a99e2ede19c46bacd4fb42fe705c4",
+      "fit_bytes": 6595712,
+      "images": {
+        "/images/kernel": {
+          "bytes": 4477480,
+          "sha256": "9181e3529ad48ea5196449f6e1ba0e72e6d1c30bbb523c28d9fe554d9d9fe357",
+          "compression": "lzma"
+        },
+        "/images/fdt": {
+          "bytes": 12183,
+          "sha256": "8cc12563353cfeba335027adb7a3193e55458c844309ec182b9d740c50f2817a",
+          "compression": "none"
+        },
+        "/images/ramdisk": {
+          "bytes": 2104832,
+          "sha256": "3024426d0e691d984e2a9e99fc9ee76e1f315493e7a40b06ff0afa149cc8706e",
+          "compression": "none"
+        }
+      },
+      "safe_bootargs": "console=ttyS0,115200n8 earlycon=uart8250,mmio32,0x1fbf0000,115200n8 rdinit=/init cpufreq.default_governor=performance loglevel=7 panic=0",
+      "exact_module": "lib/modules/6.18.60/vb235v-cpufreq.ko",
+      "exact_cycle": "usr/libexec/vb235v-cpu-cycle",
+      "cpio_entries_including_trailer": 52,
+      "normal_payload_unchanged": true,
+      "dt_opt_in": true,
+      "runtime_policy_and_SET": "policy observation PASS; controlled SET pending working wired fixture",
+      "active_incompatible_scu_clients": [],
+      "readonly_boot_prefix_partition": "/spi@1fa10000/nand@0/partitions/partition@0",
+      "enabled_cpu_nodes": [
+        "/cpus/cpu@0",
+        "/cpus/cpu@1"
+      ]
+    },
+    "live_kernel_governor_proof": {
+      "available_symbol_names": [
+        "cpufreq_gov_performance_limits",
+        "cpufreq_gov_performance_init",
+        "cpufreq_gov_userspace_init"
+      ],
+      "existing_policy_nodes": ""
+    },
+    "approval": "root accepted only offline opt-in DT+RAM rdinit module experiment, no live-DT bypass or force-loading",
+    "normal_m75_default": "ondemand; exact strong performance fallback proven and mini explicitly selectsperformance",
+    "load_gate": "No policy before loading; exactly onevb235v-smc withperformance/SET0 afterward; otherwise stop",
+    "final_builtin_profile": "M83 retains formal M78->M81 built-in/configuration integration",
+    "hardware_boot_and_control": "RAM boot/policy observation PASS through serial and HTTP paths; controlled SET pending working wired fixture"
+  },
+  "hardware_policy_observation": {
+    "executor": "root under hardware lease",
+    "evidence": "offline-analysis/m84-cpu-mini-observe/report.json",
+    "report": {
+      "complete": true,
+      "CPU_SET_requested": false,
+      "flash_writes": false,
+      "prior_boot_banner_check_passed": false,
+      "RAM_boot_verified": true,
+      "init_bytes_match": true,
+      "no_UBI_root_attached": true,
+      "online_CPUs": 2,
+      "CPU_policy": "vb235v-smc",
+      "governor": "performance",
+      "observed_MHz": 1200,
+      "CPU_SET_count": 0,
+      "transitions_armed": false,
+      "BL31_verified": true
+    },
+    "normal_kernel_generic_error": "old generic Airoha missing CPU clock still expected in module experiment, no existing policy; actual M81 registered successfully",
+    "mini_fixture_notes": [
+      "CONFIG_DEVTMPFS absent; mounting devtmpfs failed nonfatally, static dev/console remained usable",
+      "Expected init stdout banner absent; root verified exact/init bytes, safe cmdline, mounts and RAM identity before proceeding",
+      "No driver or image changes were required to establish actual policy"
+    ]
+  },
+  "wired_fixture_boundary": {
+    "CPU_SET_count_at_failure": 0,
+    "symptom": "lan-test internal PHY11 carrier0/speed-1, no link partner advertisement after30sec; one standard down/up did not recover",
+    "read_only_MDIO": {
+      "PHY_ID": "c0ff0420",
+      "BMCR": "1040",
+      "BMSR_two_reads": [
+        "7949",
+        "7949"
+      ],
+      "ADV": "0de1",
+      "LPA": "0000",
+      "CTRL1000": "0200",
+      "STAT1000": "4000",
+      "page31": "0000"
+    },
+    "ruled_out": [
+      "page31 nonzero",
+      "explicit BMCR powerdown",
+      "Windows ICMP as cause of pre-IP carrier0",
+      "any CPU SET as trigger"
+    ],
+    "full_userspace_search": "No extra rawMDIO/phytool/ethtool initialization found in reviewed init/uci-defaults/board scripts",
+    "clk_unused_review": "GSW/bus/EMI en75xx clk_ops expose rate ops only, no disable/unprepare; clk_disable_unused is not proven to directly gate them; PCIe gate remains separate",
+    "native_init": "an7583_phy_config_init only clears BMCR_PDOWN; mt7988_setup sets GEPHY_CONN_CFG31/30, clears AFE_PWD28:24 then resets PHYs",
+    "original_difference": "Exact eth_ephy.ko init_module/tcPhyInit->tcPhyInit_patch contains PreCalSet, tcPhyVerLookUp,ePhyInit, transformer selection, R45 analog calibration, TX-amplitude compensation and normalinit; ePhyInit selected branch invokes PHY9..12 debug-configuration writer",
+    "causation": "Not established; no analog parameters/timing/fuses have been ported and no speculative hardware writes issued",
+    "next_controlled_comparison": "root cold return to existing M75 NAND without flash writes, capture full userspace internal1G baseline; CPU mini controlled SET remains pending working wired baseline.",
+    "same_image_HTTP_comparison": {
+      "executor": "root",
+      "same_mini_bytes": 6595712,
+      "upload_seconds": 0.328,
+      "result": "policy 1200 MHz / SET0 repeated successfully, internal PHY11 still carrier0 after HTTP-initialized U-Boot path",
+      "interpretation": "U-Boot network initialization alone did not restore Linux link. Both final boots used known QDMA quiesce reset; collateral reset effects remain unproven."
+    },
+    "SCU_reset_mask_exact_map": {
+      "register": "0x1fb00834",
+      "bit1": "FE_PDMA_RST",
+      "bit2": "FE_QDMA_RST",
+      "bit21": "FE_RST",
+      "GSW_reset_bit": 23,
+      "interpretation": "mask21/1/2 does not explicitly assert GSW/PHY; global FE collateral effects unknown"
+    },
+    "internal_phy_scan": {
+      "evidence": "offline-analysis/m84-internal-phy-scan/scan-private.log",
+      "PHY8": "all zero, invalid",
+      "PHY9_10_12": {
+        "ID": "c0ff0420",
+        "BMCR": "1840",
+        "PDOWN": true
+      },
+      "PHY11": {
+        "ID": "c0ff0420",
+        "BMCR": "1040",
+        "PDOWN": false
+      },
+      "common": {
+        "BMSR": "7949",
+        "LPA": "0000",
+        "page31": "0000"
+      },
+      "comparison": "Validated U-Boot powers all internal PHYs; native config_init powers attached PHY11 only. Shared master/AFE dependency not established."
+    },
+    "read_only_GEPHY_snapshot": {
+      "executor": "root under hardware lease",
+      "evidence": "offline-analysis/m85-switch-snapshot-live/snapshot-private.log",
+      "loaded_stripped_sha256": "2186121915eb7cad14ff7b04a45306107cc0ca997a7325b5f51a5524b3cbead9",
+      "SYS_CTRL": "00717fc0",
+      "GEPHY_CONN_CFG": "c00017a5",
+      "DPHY_CKIN_SEL": 1,
+      "PHY_CORE_REG_CLK_SEL": 1,
+      "ETHER_AFE_PWD": 0,
+      "PHY_RST": 0,
+      "module_removed": true,
+      "MMIO_writes": 0,
+      "CPU_SET_count": 0,
+      "interpretation": "Visible GEPHY clock selection and AFE powerdown fields match native intended post-init state. Hidden analog/debug calibration and shared-PHY dependency remain unknown."
+    },
+    "other_PHY_PDOWN_controlled_test": {
+      "executor": "root under hardware lease",
+      "evidence": "offline-analysis/m84-other-PHY-PDOWN-test/report.json",
+      "sequence": [
+        9,
+        10,
+        12
+      ],
+      "each_fresh_BMCR": "1840",
+      "each_target_and_readback": "1040",
+      "changed_field_only": "standard BMCR_PDOWN bit11 cleared",
+      "observations": "After each 3sec, attached11 BMCR1040/BMSR7949/LPA0; after all plus5sec still carrier0",
+      "CPU_SET_count": 0,
+      "result": "No link restoration; no production patch generated. Attached11 standard autoneg restart remains separate pending test."
+    },
+    "standard_AN_restart": {
+      "executor": "root under hardware lease",
+      "operation": "ETHTOOL_NWAY_RST on attached PHY11",
+      "accepted": true,
+      "observation_after_seconds": 16,
+      "carrier": 0,
+      "CPU_SET_count": 0,
+      "result": "No link restoration; no advertisement, vendor-calibration or guessed reset writes"
+    },
+    "original_initialization_deeper_review": {
+      "PreCalSet": "Clears GEPHY bit28, sleeps100ms, then PBUS BMCR1040 across internal PHYs; parent PDOWN-only experiment covers only this early portion",
+      "normalinit": "Iterates PHY9..12, selects MMD30/MMD31 tables by transformer_status per-port bit and mdi_resister selector",
+      "auto_select_transformer": "Uses hook calls, MMD and token-ring probes/writes before setting per-port transformer status",
+      "doGePhyALLAnalogCal_R45_calls": [
+        "R50Calibration",
+        "TX_OFFSET_Calibration",
+        "TX_AMP_Calibration",
+        "GECal_Rext"
+      ],
+      "evidence_directory": "offline-analysis/m81-cpu-integration/original-*-private.txt",
+      "porting_boundary": "No single table is safe to copy until transformer/resistor selection and calibration outcomes are decoded. No vendor analog writes issued."
+    },
+    "native_generic_PHY_reset_review": "AN7583 phy_driver has no soft_reset callback; exact phy_init_hw calls software reset only when that callback exists. No additional generic BMCR_RESET is established on this path.",
+    "OEM_bootstrap_source_comparison": {
+      "source": "offline-analysis/uboot-network-provider/drivers/net/airoha/arht_eth.c:2942",
+      "AN7583_GEPHY_literal": "c00017a5",
+      "delay_us": 2000,
+      "following_operations": "PBUS BMCR1040 across internal PHYs, five MMD31 entries labelled LED, xfi_mac_init",
+      "snapshot_literal_match": true,
+      "legacy_table_boundary": "Adjacent older tcswitch.c tables do not cover AN7583 PHY ID0420 and must not be transplanted."
+    },
+    "full_NAND_M75_comparison": {
+      "executor": "root",
+      "evidence": "offline-analysis/m84-NAND-1g-baseline",
+      "result": "normal full netifd/application startup and >30sec still internal1G NO-CARRIER",
+      "interpretation": "Not solely missing mini userspace; no CPU SET has been made. No production PHY workaround inferred."
+    }
+  }
+}

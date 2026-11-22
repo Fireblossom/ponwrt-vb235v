@@ -1,0 +1,10 @@
+{
+  "vb235v-cpufreq.c": {
+    "baseline": "c9b6a5ed4e94814bff3330c9df2d9f82ec6cd1cfb3614f701e124f91fe259cbc",
+    "candidate": "bae8213e6880846f9c3fd6f5da1ed5198f5d68e7748d22d571f33447d93aba2b"
+  },
+  "vb235v-cpufreq-contract.h": {
+    "baseline": "6ec0a43584a1adbd47b5bebfbc32749274f94ae1da75ebc412e078af359dc34d",
+    "candidate": "fa571dbf871be7dd9e7ae991d28469fadba749d88a6321dff404a9367046fa2b"
+  }
+}
