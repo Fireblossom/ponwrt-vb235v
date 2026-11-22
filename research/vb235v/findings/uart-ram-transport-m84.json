@@ -1,0 +1,56 @@
+{
+  "milestone": "M84",
+  "scope": "CRC-only YMODEM-1K RAM transport, not a firmware installer",
+  "receiver": {
+    "core": "M73 normal U-Boot",
+    "source": "common/xyzModem.c",
+    "source_sha256": "72f538bbaa91696196d3b0ad730bf5bdaa27aff33e0e3e530ad4844bf78f2e79",
+    "baud": 115200,
+    "format": "8N1"
+  },
+  "host_checks": {
+    "status": "PASS",
+    "coverage": [
+      "CRC16 known vector",
+      "exact announced size including real trailing padding bytes",
+      "sequence wrap",
+      "NAK and lost ACK without duplicate append",
+      "immediate ACK and two-EOT peers",
+      "partial host writes",
+      "receiver cancellation",
+      "uncertain final ACK stops without sending another header",
+      "unsafe metadata and non-CRC receiver rejected"
+    ]
+  },
+  "small_hardware_transfer": {
+    "status": "PASS",
+    "bytes": 1047,
+    "CRC32": "2e571ebf",
+    "data_frames": 2,
+    "retries": 0,
+    "receiver_size_and_CRC32_match": true
+  },
+  "CPU_mini_hardware_transfer": {
+    "status": "PASS",
+    "bytes": 6595712,
+    "sha256": "6b33e3e2fc0fcf2874a3f8e8229d2389966a99e2ede19c46bacd4fb42fe705c4",
+    "CRC32": "ff4c012a",
+    "data_frames": 6442,
+    "retries": 0,
+    "seconds": 697.719,
+    "receiver_size_and_CRC32_match": true,
+    "kernel_FDT_ramdisk_FIT_SHA256_verified": true,
+    "load_address": "0x90000000",
+    "live_LMB_nonoverlap_checked": true
+  },
+  "execution_boundary": {
+    "sender_opens_no_port": true,
+    "sender_issues_no_boot_or_flash_command": true,
+    "RAM_range_and_DMA_quiescence_require_separate_checks": true,
+    "separate_staged_RAM_boot_observed": true,
+    "separate_CPU_observation": "vb235v-smc performance policy, 1200 MHz, two CPUs, verified retained BL31, zero SETs; frequency transitions still pending"
+  },
+  "flash_writes": false,
+  "saveenv": false,
+  "limitation": "RAM transport and successful boot do not establish CPU transition, PHY, DSL, WLAN offload or combined upgrade acceptance."
+}
